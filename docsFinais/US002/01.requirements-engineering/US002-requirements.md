@@ -10,14 +10,12 @@ As an Editor, I want to add an industry in a position XY of the selected map.
 
 **From the specifications document:**
 
->As a user with the Editor role, I should be able to create an industry in the map, as long as the chosen coordinate is inside it's boundaries and isn't already occupied.
+>The Scenario Editor must allow the user to define the restrictions and
+conditions for using a given map: time, technological and historical restrictions that will impact the type of industry available and which one is favoured.
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** There can be no overbuilding.
-* **AC2:** The industry must be placed in a coordinate inside the available map.
-* **AC3:** The Scenario Editor must allow the user to define the restrictions and
-  conditions for using a given map: time, technological and historical restrictions that will impact the type of industry available and which one is favoured.
+* None
 
 ### 1.4. Found out Dependencies
 
@@ -41,6 +39,7 @@ As an Editor, I want to add an industry in a position XY of the selected map.
 ### 1.6. System Sequence Diagram (SSD)
 
 ![System Sequence Diagram](svg/US002-SSD.svg)
+**_Other alternatives might exist._**
 
 
 ### 1.7 Other Relevant Remarks

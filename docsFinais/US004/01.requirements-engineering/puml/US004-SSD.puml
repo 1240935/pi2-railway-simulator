@@ -1,0 +1,36 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant ":System" as System
+
+activate Employee
+
+    Employee -> System : ask to create a scenario for a map
+    activate System
+
+        System --> Employee : Shows all existing maps
+    deactivate System
+
+    Employee -> System : selects a map
+    activate System
+
+        System --> Employee : receives the selected map
+    deactivate System
+
+    Employee -> System : types requested scenario data (name, description, restrictions)
+    activate System
+
+        System --> Employee : shows all data and requests confirmation
+    deactivate System
+
+    Employee -> System : confirms data for scenario creation
+    activate System
+
+        System --> Employee : displays success message (scenario created))
+    deactivate System
+@enduml

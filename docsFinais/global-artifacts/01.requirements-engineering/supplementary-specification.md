@@ -26,14 +26,13 @@ _Evaluates the user interface. It has several subcategories,
 among them: error prevention; interface aesthetics and design; help and
 documentation; consistency and standards._
 
-The system should follow a consistent design, ensuring uniformity in UI elements across different screens.
+The system must follow a consistent user interface design across all screens.
 
-The interface should provide clear error messages and guidance when the user encounters an issue.
+Clear error messages should be provided to assist users in troubleshooting.
 
-Help and documentation should be available within the system, offering instructions for map editing, scenario creation, and simulation functionalities.
+Help documentation must be available to guide users through system functionalities.
 
-The UI should be intuitive, allowing users to easily interact with the map editor and simulation tools.
-
+The UI should prioritize usability, ensuring an intuitive experience for both editors and players.
 ## Reliability
 
 _Refers to the integrity, compliance and interoperability of the software. The requirements to be considered are: frequency and severity of failure, possibility of recovery, possibility of prediction, accuracy, average time between failures._
@@ -41,7 +40,7 @@ _Refers to the integrity, compliance and interoperability of the software. The r
 - The system must be able to recover from failures by maintaining a persistent state of the railway network.
 - Error-handling mechanisms should be implemented to minimize disruptions in the simulation process.
 - The system should log errors and provide diagnostic tools to help identify and resolve issues.
-- The average time between failures should be maximized through robust testing and error prevention strategies.
+  The system must comply with integrity and reliability standards to ensure data consistency.
 
 ## Performance
 
@@ -90,9 +89,9 @@ database integrity, resource limits, operating system._
 _Specifies or constraints the features inherent to the interaction of the
 system being developed with other external systems._
 
-- The system should integrate with external statistical tools to analyze railway network performance.
-- The application should support exporting data in standard formats such as CSV and JSON.
-- The system should provide an API for third-party integration.
+The system should integrate with external statistical tools to analyze railway network performance.
+
+The system should provide mechanisms for interoperability with necessary external components.
 
 ### Physical Constraints
 

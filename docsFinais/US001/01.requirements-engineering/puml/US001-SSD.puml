@@ -1,0 +1,33 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Editor
+participant ":System" as System
+
+activate Editor
+
+    Editor -> System : asks to create a map
+    activate System
+
+        System --> Editor : receives the request and asks for a size
+    deactivate System
+
+    Editor -> System : types a size
+    activate System
+
+        System --> Editor : receives and validates the size and asks for a name
+    deactivate System
+
+    Editor -> System : types a name
+    activate System
+
+        System --> Editor : receives and validates the name
+        System --> Editor : creates the map and displays operation success
+    deactivate System
+
+
+@enduml

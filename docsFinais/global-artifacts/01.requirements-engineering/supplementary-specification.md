@@ -14,11 +14,11 @@ The system must allow the generation of reports related to railway network perfo
 
 (ii) - The system must include security mechanisms such as role-based access control (RBAC) to restrict user permissions.
 
-Audit logs must capture details of user actions, including timestamp, action type, and affected data.
+* Audit logs must capture details of user actions, including timestamp, action type, and affected data.
 
-Reporting tools should allow users to generate and export reports on network connectivity, train delays, and cargo efficiency.
+* Reporting tools should allow users to generate and export reports on network connectivity, train delays, and cargo efficiency.
 
-The system should support compliance with data protection regulations, ensuring secure data handling and storage.
+* The system should support compliance with data protection regulations, ensuring secure data handling and storage.
 
 ## Usability
 

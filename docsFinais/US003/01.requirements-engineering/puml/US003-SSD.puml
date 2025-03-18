@@ -1,0 +1,45 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Organization\nEmployee" as Employee
+participant ":System" as System
+
+activate Employee
+
+    Employee -> System : asks to add a city to the map
+    activate System
+
+        System --> Employee : receives the request and asks for the city name
+    deactivate
+
+     Employee -> System : type the city name
+        activate System
+
+    System --> Employee : receives the name and asks for the city position (X,Y)
+        deactivate System
+
+     Employee -> System : type the position
+        activate System
+
+    System --> Employee : receives the position and asks the number of blocks
+        deactivate System
+
+    Employee -> System : type the number of blocks
+    activate System
+
+        System --> Employee : receives the number of blocks and confirms if all data is correct
+    deactivate System
+
+        System --> Employee : shows all data and requests confirmation
+    deactivate System
+
+    Employee -> System : confirms data
+    activate System
+
+        System --> Employee : add the city to the map
+    deactivate System
+@enduml

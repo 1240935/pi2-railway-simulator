@@ -1,0 +1,36 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant ":System" as System
+
+activate Employee
+
+    Employee -> System : asks to add a new industry on the map
+    activate System
+
+        System --> Employee : shows map and asks for the coordinates
+    deactivate System
+
+    Employee -> System : types the coordinates
+    activate System
+
+        System --> Employee : receives data, confirms the availability of the coordinates \nand shows the available industries to be created
+    deactivate System
+
+    Employee -> System :chooses which type to build
+    activate System
+
+        System --> Employee : receives the chosen type and shows all data \nand requests confirmation
+    deactivate System
+
+    Employee -> System : confirms data and accepts or cancels the order
+    activate System
+
+        System --> Employee : displays operation success and creates the \n requested industry on the map
+    deactivate System
+@enduml

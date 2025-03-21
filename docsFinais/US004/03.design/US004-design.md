@@ -49,7 +49,7 @@ Other software classes (i.e. Pure Fabrication) identified:
 
 This diagram shows the full sequence of interactions between the classes involved in the realization of this user story.
 
-![Sequence Diagram - Full](svg/US006-SD-full.svg)
+![Sequence Diagram - Full](svg/US004-SD-full.svg)
 
 ### Split Diagrams
 
@@ -57,24 +57,24 @@ The following diagram shows the same sequence of interactions between the classe
 
 It uses Interaction Occurrence (a.k.a. Interaction Use).
 
-![Sequence Diagram - split](svg/US006-SD-split.svg)
+![Sequence Diagram - split](svg/US004-SD-split.svg)
 
 **Get Task Category List Partial SD**
 
-![Sequence Diagram - Partial - Get Task Category List](svg/US006-SD-partial-get-task-category-list.svg)
+![Sequence Diagram - Partial - Get Task Category List](svg/US004-SD-partial-get-task-category-list.svg)
 
 **Get Task Category Object**
 
-![Sequence Diagram - Partial - Get Task Category Object](svg/US006-SD-partial-get-task-category.svg)
+![Sequence Diagram - Partial - Get Task Category Object](svg/US004-SD-partial-get-task-category.svg)
 
 **Get Employee**
 
-![Sequence Diagram - Partial - Get Employee](svg/US006-SD-partial-get-employee.svg)
+![Sequence Diagram - Partial - Get Employee](svg/US004-SD-partial-get-employee.svg)
 
 **Create Task**
 
-![Sequence Diagram - Partial - Create Task](svg/US006-SD-partial-create-task.svg)
+![Sequence Diagram - Partial - Create Task](svg/US004-SD-partial-create-task.svg)
 
 ## 3.3. Class Diagram (CD)
 
-![Class Diagram](svg/US006-CD.svg)
+![Class Diagram](svg/US004-CD.svg)

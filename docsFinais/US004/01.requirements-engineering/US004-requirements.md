@@ -1,4 +1,4 @@
-# US004 - Create a Task
+# US004 - Create a scenario
 
 ## 1. Requirements Engineering
 
@@ -19,13 +19,6 @@ As an Editor, I want to create a scenario for a selected map.
 
 **From the client clarifications:**
 
-> **Question:** Which is the unit of measurement used to estimate duration?
->
-> **Answer:** Duration is estimated in days.
-
-> **Question:** Monetary data is expressed in any particular currency?
->
-> **Answer:** Monetary data (e.g. estimated cost of a task) is indicated in POT (virtual currency internal to the platform).
 
 ### 1.3. Acceptance Criteria
 
@@ -54,7 +47,7 @@ As an Editor, I want to create a scenario for a selected map.
 **Output Data:**
 
 * List of existing maps available for selection
-* (In)Success of the operation
+* (In) Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)
 

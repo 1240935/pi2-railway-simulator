@@ -1,0 +1,27 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Editor
+participant ":System" as System
+
+activate Editor
+
+    Editor -> System : asks to build a station
+    activate System
+
+        System --> Editor : receives the request and asks for the coordinates
+    deactivate System
+
+    Editor -> System : types the XY coordinates
+    activate System
+
+        System --> Editor : receives and validates the coordinates \n and checks if the terrain selected is occupied
+        System --> Editor : builds the station and displays operation success
+    deactivate System
+
+
+@enduml

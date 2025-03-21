@@ -1,5 +1,4 @@
-# US003 - Add City to the Map
-
+# US003 - Add a City
 ## 1. Requirements Engineering
 
 ### 1.1. User Story Description
@@ -22,7 +21,7 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on "US003 - Add City to the Map" as there must be a map already created
+* There is a dependency on "US001 - Create a Map" as there must be a map already created
 
 ### 1.5 Input and Output Data
 

@@ -1,0 +1,46 @@
+# US007 - View Station Details
+
+## 1. Requirements Engineering
+
+### 1.1. User Story Description
+
+As a Player, I want to list all the stations to select one to see its details, including the existing building and the demand/supply cargoes.
+
+### 1.2. Customer Specifications and Clarifications 
+
+**From the specifications document:**
+
+>	The Player wants to view a list of all stations that are available to select and see its details, like the station's name, location and status (active or inactive). He wants to check the buildings that already exist, their types and their functions. He also wants to see the cargo information, like the tyoes and quantities the station demands and supllies.   
+
+
+### 1.3. Acceptance Criteria
+
+There's no Acceptance Criteria
+
+### 1.4. Found out Dependencies
+
+* There is a dependency on "US007 - View Station Details" as the game must already have a map, buildings and stations.
+
+### 1.5 Input and Output Data
+
+**Input Data:**
+
+* Ask for the list
+* Select the station
+	
+
+
+**Output Data:**
+
+* List of station
+* Details of the pretended station
+
+### 1.6. System Sequence Diagram (SSD)
+
+![System Sequence Diagram](svg/US007-SSD.svg)
+
+**_Other alternatives might exist._**
+
+### 1.7 Other Relevant Remarks
+
+* No other relevant remarks

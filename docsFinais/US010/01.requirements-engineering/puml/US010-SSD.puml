@@ -1,0 +1,36 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to assign a route to a train
+    activate System
+
+        System --> Employee : shows available stations to create a route to
+    deactivate System
+
+    Employee -> System : selects a station
+    activate System
+
+        System --> Employee :shows available cargo to be picked up
+    deactivate System
+
+    Employee -> System : chooses which cargo it wants to pick up
+    activate System
+
+        System --> Employee : shows all data and ETA and requests confirmation
+    deactivate System
+
+    Employee -> System : confirms or cancels route
+    activate System
+
+        System --> Employee : sends the train on it's route or cancels it
+    deactivate System
+@enduml

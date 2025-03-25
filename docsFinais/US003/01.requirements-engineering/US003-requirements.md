@@ -11,7 +11,7 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 
 **From the specifications document:**
 
->	An Editor wants to change the map adding a city. To do this, the Editor must add all the city information (name, position and number of blocks). The data must follow some rules like: the cty cannot have special characters and digits; the house blocks can be assigned manually or automatically. 
+>An Editor wants to change the map adding a city. To do this, the Editor must add all the city information (name, position and number of blocks). The data must follow some rules like: the cty cannot have special characters and digits; the house blocks can be assigned manually or automatically. 
 
 
 ### 1.3. Acceptance Criteria

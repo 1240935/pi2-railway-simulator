@@ -10,10 +10,7 @@ As an Editor, I want to create a scenario for a selected map.
 
 **From the specifications document:**
 
- Each scenario is characterized by defining restrictions and conditions for using a given map, namely
- time restrictions, the period in which the simulation will take place; technological restrictions, 
- for example, which locomotives or industries are available in the scenario;
-  and historical restrictions, consisting in historical events that influence the scenario and change the operating conditions of the simulator.
+> As an user with the Editor role, I should be able to create a scenario for a certain map. Within the scenario creation, a name should be given, followed by a description. There are also restrictions integrated in this scenario, such as time, technological and historical ones.
 
 **From the client clarifications:**
 

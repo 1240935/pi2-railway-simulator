@@ -10,8 +10,7 @@ As an Editor, I want to add an industry in a position XY of the selected map.
 
 **From the specifications document:**
 
->The Scenario Editor must allow the user to define the restrictions and
-conditions for using a given map: time, technological and historical restrictions that will impact the type of industry available and which one is favoured.
+> As an user with the Editor role, I should be able to create an industry in a certain map, with user given coordinates and type. To do so, coordinates need to be declared by the user and then the type of industry needs to be selected, chosen from the available ones.
 
 ### 1.3. Acceptance Criteria
 

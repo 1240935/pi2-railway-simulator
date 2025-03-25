@@ -13,19 +13,13 @@ activate Editor
     Editor -> System : asks to create a map
     activate System
 
-        System --> Editor : receives the request and asks for a size
+        System --> Editor : receives the request and asks for a size and a name
     deactivate System
 
-    Editor -> System : types a size
+    Editor -> System : types a size and a name
     activate System
 
-        System --> Editor : receives and validates the size and asks for a name
-    deactivate System
-
-    Editor -> System : types a name
-    activate System
-
-        System --> Editor : receives and validates the name \n
+        System --> Editor : receives and validates the name and the size
         System --> Editor : creates the map and displays operation success
     deactivate System
 

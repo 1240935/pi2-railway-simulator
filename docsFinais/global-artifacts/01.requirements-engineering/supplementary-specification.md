@@ -6,50 +6,40 @@ _Specifies functionalities that:
 &nbsp; &nbsp; (i) are common across several US/UC;  
 &nbsp; &nbsp; (ii) are not related to US/UC, namely: Audit, Reporting and Security._
 
-(i) - The system must support authentication mechanisms to secure access to the platform.
-
-The system must provide audit logging to track significant actions performed by users.
-
-The system must allow the generation of reports related to railway network performance, train schedules, and cargo transport efficiency.
-
-(ii) - The system must include security mechanisms such as role-based access control (RBAC) to restrict user permissions.
-
-* Audit logs must capture details of user actions, including timestamp, action type, and affected data.
-
-* Reporting tools should allow users to generate and export reports on network connectivity, train delays, and cargo efficiency.
-
-* The system should support compliance with data protection regulations, ensuring secure data handling and storage.
-
+* Map Editor: Create rectangular maps with cities and industries (primary sector, transforming industries, mixed industries).
+* Scenario Editor: Define restrictions for a map (time, technological, historical).
+* Simulator: Simulate the operation of a railway network, including stations, lines, trains, and cargo.
+* Statistical Tools: Assess network performance, analyze connectivity, and quality of services.
+* Topological Representation of Railway Lines: Represent connections between stations without graphical detail.
+* Station Management: Create, upgrade, and view stations with buildings and cargo data.
+* Train Management: Buy trains, assign them to routes, and manage cargo.
+* Cargo Generation: Automatically generate cargo at stations based on cities and industries served.
 ## Usability
 
 _Evaluates the user interface. It has several subcategories,
 among them: error prevention; interface aesthetics and design; help and
 documentation; consistency and standards._
-
-The system must follow a consistent user interface design across all screens.
-
-Clear error messages should be provided to assist users in troubleshooting.
-
-Help documentation must be available to guide users through system functionalities.
-
-The UI should prioritize usability, ensuring an intuitive experience for both editors and players.
+* User Interface: Simple and intuitive design for the map editor, scenario editor, and simulator, ensuring ease of navigation and operation.
+* Error Prevention: Provide clear validation for user input (for example, no special characters or digits in city names).
+* Help and Documentation: Documentation should be in English, with clear guidelines for using the system and understanding each feature.
+* Testing and Feedback: Implement user feedback loops to improve usability during iterative sprints.
 ## Reliability
 
 _Refers to the integrity, compliance and interoperability of the software. The requirements to be considered are: frequency and severity of failure, possibility of recovery, possibility of prediction, accuracy, average time between failures._
 
-- The system must be able to recover from failures by maintaining a persistent state of the railway network.
-- Error-handling mechanisms should be implemented to minimize disruptions in the simulation process.
-- The system should log errors and provide diagnostic tools to help identify and resolve issues.
-  The system must comply with integrity and reliability standards to ensure data consistency.
+* System should have a high degree of availability, with minimal downtime.
+* Regular backups of data should be created to prevent loss of map and scenario configurations.
+* Error recovery should be smooth, with users receiving clear error messages and instructions for resolution.
+* Unit tests will be conducted to minimize errors in the core functionality (map editor, scenario editor, simulator).
 
 ## Performance
 
 _Evaluates the performance requirements of the software, namely: response time, start-up time, recovery time, memory consumption, CPU usage, load capacity and application availability._
 
-- The system should have a startup time of less than 5 seconds.
-- The response time for user actions, such as placing elements on the map or modifying railway routes, should not exceed 500ms.
-- The simulation should run smoothly with minimal CPU and memory overhead.
-- The system should support handling at least 100 concurrent users without performance degradation.
+* Start-up time should be optimized, aiming for under 10 seconds.
+* Memory usage and CPU consumption should be efficient, especially for large maps and scenarios.
+* Response times should be under 2 seconds for UI interactions like station building and train assignments.
+* The system should be capable of handling large networks with multiple stations, trains, and industries without performance degradation.
 
 ## Supportability
 
@@ -57,10 +47,12 @@ _The supportability requirements gathers several characteristics, such as:
 testability, adaptability, maintainability, compatibility,
 configurability, installability, scalability and more._
 
-- The system should be developed following a modular architecture, facilitating maintainability and scalability.
-- The software should be compatible with multiple operating systems (Windows, macOS, Linux).
-- The codebase should follow clean coding practices to improve testability and debugging.
-- The system should support configuration options to customize maps, scenarios, and simulation parameters.
+* The code should be modular and follow Object-Oriented principles for easy maintenance and extension.
+* The system should be compatible with major operating systems like Windows, MacOS, and Linux.
+* The application should be easily configurable for new features, such as adding new industries, trains, or historical events.
+* Implement Javadoc for Java classes to generate useful documentation for future developers.
+* The system should support unit tests for all methods except those dealing with I/O operations.
+* The application should allow easy installation, with a clear set of setup instructions for new users.
 
 ## +
 
@@ -68,37 +60,32 @@ configurability, installability, scalability and more._
 
 _Specifies or constraints the system design process. Examples may include: programming languages, software process, mandatory standards/patterns, use of development tools, class library, etc._
 
-- The system must be developed using Java.
-- The Test-Driven Development (TDD) approach must be followed.
-- The project should be managed using the Agile SCRUM methodology.
-- The design should adhere to Object-Oriented Programming (OOP) principles.
+* The application must be developed in Java using an Object-Oriented approach.
+* Follow best Object-Oriented (OO) practices in design, ensuring modularity and maintainability.
+* The Test-Driven Development (TDD) approach should be followed, ensuring that tests are written before implementation.
+* The JUnit 5 framework will be used for unit testing, and JaCoCo will be used for code coverage reporting.
+* All images/figures should be in SVG format for scalability and clarity.
 
 ### Implementation Constraints
 
 _Specifies or constraints the code or construction of a system such
-such as: mandatory standards/patterns, implementation languages,
+ as: mandatory standards/patterns, implementation languages,
 database integrity, resource limits, operating system._
 
-- The system should store data persistently using object serialization.
-- Java coding standards (CamelCase, Javadoc documentation) must be followed.
-- The system should use JUnit 5 for unit testing and JaCoCo for test coverage reports.
-- The database must ensure data integrity and consistency, particularly for train schedules and cargo transport records.
+* The system will rely on object serialization to persist data across multiple runs of the simulator.
+* All business rules must be validated when recording and updating data.
+* The code should follow recognized Java coding standards, such as CamelCase for variable names and methods.
 
 ### Interface Constraints
 
 _Specifies or constraints the features inherent to the interaction of the
 system being developed with other external systems._
 
-The system should integrate with external statistical tools to analyze railway network performance.
-
-The system should provide mechanisms for interoperability with necessary external components.
-
+* Integration with GitHub for version control and project management.
+* Ensure interoperability with external systems for statistical tools, if applicable.
 ### Physical Constraints
 
 _Specifies a limitation or physical requirement regarding the hardware used to house the system, as for example: material, shape, size or weight._
 
-The system should be able to run on standard desktop computers with reasonable processing power.
-
-The software should be optimized to run on high-resolution displays.
-
-No specialized hardware should be required for running the application.
+* The software should be designed to run, specially, on modern hardware configurations but with no minimum requirements.
+* The system should be optimized to work on both personal computers and servers, ensuring flexibility for different deployment scenarios.

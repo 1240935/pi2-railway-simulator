@@ -1,4 +1,4 @@
-# US006 - Create a Task 
+# US002 - Place an Industry
 
 ## 2. Analysis
 
@@ -8,4 +8,4 @@
 
 ### 2.2. Other Remarks
 
-n/a
+None

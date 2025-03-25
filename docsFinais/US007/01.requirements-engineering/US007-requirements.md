@@ -25,14 +25,15 @@ There's no Acceptance Criteria
 
 **Input Data:**
 
-* Ask for the list
-* Select the station
-	
+* Typed data:
+    * the list
 
+* Selected data:
+  * the station
 
 **Output Data:**
 
-* List of station
+* List of stations
 * Details of the pretended station
 
 ### 1.6. System Sequence Diagram (SSD)

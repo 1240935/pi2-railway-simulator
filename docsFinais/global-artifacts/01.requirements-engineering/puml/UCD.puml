@@ -1,35 +1,34 @@
 @startuml
-'skinparam monochrome true
-skinparam packageStyle rectangle
-'skinparam shadowing false
 
-skinparam rectangle{
-    BorderColor yellow
-}
-
-'title Use Case Diagram Example
+actor Editor
+actor Player
+actor "Product Owner" as ProductOwner
 
 left to right direction
 
-rectangle "System Actors" as actors {
-    actor Freelancer
-    actor "Organization\nEmployee" as Employee
-}
+(Create a Map - US001) as US001
+(Place an Industry - US002) as US002
+(Add a City - US003) as US003
+(Create a Scenario - US004) as US004
+(Build a Station - US005) as US005
+(Upgrade a Station - US006) as US006
+(View Station Details - US007) as US007
+(Buy a Train - US009) as US009
+(Route Selection - US010) as US010
+(Simulate Cargo Generation - US012) as US012
 
+Editor -right-> US001
+Editor -right-> US002
+Editor -right-> US003
+Editor -right-> US004
 
-note right of Freelancer
-    Actor identified but still
-    no concrete use cases
-end note
+Player -right-> US005
+Player -right-> US006
+Player -right-> US007
+Player -right-> US009
+Player -right-> US010
 
-rectangle "Use Cases" as usecases{
-    usecase "UC6 - Create a Task" as UC6
-    Employee --> UC6
-}
-note right of actors
-    Rectangles and Titles are for
-    demonstration purposes only.
-    Omitt on your diagrams.
-end note
+ProductOwner -right-> US012
+
 
 @enduml

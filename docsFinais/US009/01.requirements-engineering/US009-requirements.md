@@ -17,7 +17,7 @@ As a Player, I want to buy a train.
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** The player should choose the locomotive from a list of available locomotives for the scenario as well as a current date."
+* **AC1:** The player should choose the locomotive from a list of available locomotives for the scenario as well as a current date.
 
 
 ### 1.4. Found out Dependencies
@@ -27,10 +27,11 @@ As a Player, I want to buy a train.
 ### 1.5 Input and Output Data
 
 **Input Data:**
+* Typed data:
+    * the list of locomotives available to buy;
 
-* Asks for the list of locomotives available to buy
-* Bought locomotive
-
+* Selected data:
+    * locomotive to be bought
 
 **Output Data:**
 
@@ -44,5 +45,3 @@ As a Player, I want to buy a train.
 **_Other alternatives might exist._**
 
 ### 1.7 Other Relevant Remarks
-
-* The created task stays in a "not published" state in order to distinguish from "published" tasks.

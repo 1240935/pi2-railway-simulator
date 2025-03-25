@@ -1,4 +1,4 @@
-# US012 - Create a simulator that generates cargos
+# US012 - Simulate Cargo Generation
 
 ## 1. Requirements Engineering
 
@@ -6,12 +6,13 @@
 
 As a Product Owner, I want to create a simulator that generates
 cargoes at current stations, automatically, considering the cities and
-industries that the railway network serves. AC1: This simulator should
-provide options for start/pause.
+industries that the railway network serves.
 
 ### 1.2. Customer Specifications and Clarifications 
 
 **From the specifications document:**
+
+As an user with the Product Owner role, I should be able to start a simulation of cargo. This simulation consists in gathering information, such as the cities and industries available for cargo generation covered by the railway and the stations where the cargo should appear, and simulate at user command with the start and pause input.
  
 
 **From the client clarifications:**
@@ -19,9 +20,9 @@ provide options for start/pause.
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** All required fields must be filled in.
-* **AC2:** This simulator should provide options for start/pause.
-* **AC3:** Cargo generation must consider the cities and industries present on the map
+* **AC1:** This simulator should
+  provide options for start/pause.
+
 ### 1.4. Found out Dependencies
 
 * There is a dependency on "US005 - Build a station" as at least one station must exist to generate cargo.
@@ -31,21 +32,15 @@ provide options for start/pause.
 **Input Data:**
 
 * Typed data:
-  * Simulation start command
-  * Simulation pause command
+  * simulation start command
+  * simulation pause command
 	
 * Selected data:
-    * Existing cities and their respective cargo demands
-    * Existing industries and their respective cargo production
-    * Stations where cargo can be generated
-    * Available railway network structure (connections between stations)
 
 **Output Data:**
 
-* Cargo generated at each station, based on nearby cities and industries
-* Updated station storage reflecting newly generated cargo
-* Real-time status of the simulation (running/paused)
-* Logs of generated cargo and its corresponding origin points
+* real-time status of the simulation (running/paused)
+* generated cargo and its corresponding origin points
 
 ### 1.6. System Sequence Diagram (SSD)
 
@@ -55,5 +50,3 @@ provide options for start/pause.
 
 ### 1.7 Other Relevant Remarks
 
-* The created task remains in a "not published" state until it is explicitly published.
-* The simulator should operate within the defined railway network context, ensuring that cargo is generated according to the capacities of stations and the demands of industries and cities.

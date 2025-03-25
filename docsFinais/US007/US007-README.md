@@ -1,9 +1,9 @@
-# US006 - Create a Task 
+# US007 - View Station Details
 
-[Requirements Engineering](01.requirements-engineering/US007-requirements)
+[Requirements Engineering](01.requirements-engineering/US007-requirements.md)
 
-[Analysis](02.analysis/US007-analysis)
+[Analysis](02.analysis/US007-analysis.md)
 
-[Design](03.design/US007-design)
+[Design](03.design/US007-design.md)
 
-[Tests & Implementation](04.tests-and-implementation/US007-tests-and-implementation)
+[Tests & Implementation](04.tests-and-implementation/US007-tests-and-implementation.md)

@@ -3,48 +3,32 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-'left to right direction
-
 skinparam classAttributeIconSize 0
-
 hide circle
 hide methods
 
-'title Domain Model
+'title Domain Model - User Story 004
 
-class Organization {
+class Map {
     name
-    vatNumber
-    website
-    phoneNumber
-    email
+    size
 }
 
-class Task {
-    reference
-    description
-    informalDescription
-    technicalDescription
-    duration
-    cost
-}
-
-class TaskCategory {
-    description
-}
-
-class Employee {
+class Scenario {
     name
-    email
-    position
-    phone
+    description
+    timeRestrictions
+    technologicalRestrictions
+    historicalRestrictions
 }
 
-Organization "1" - "*" Employee : has
-Organization "1" - "*" Task: owns
+class Editor {
+    username
+    password
+}
 
-Employee "1" -- "*" Task : creates
-
-Task "*" - "1" TaskCategory: cataloged as
+Editor "1" -- "*" Map : creates
+Editor "1" -- "*" Scenario : creates
+Scenario "1" -- "1" Map : based on
 
 @enduml

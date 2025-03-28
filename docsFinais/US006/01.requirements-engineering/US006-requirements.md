@@ -12,7 +12,11 @@ As a Player, I want to upgrade a selected station with a building.
 
 ### 1.3. Acceptance Criteria
 
-+ None
++ Each type of station improvement has a date from which it is available.
+  
++ Some equipments are mutually exclusive (e.g., small and grand hotel)
+  and some equipments/buildings replace others (the telegraph was initially used to facilitate the operation of trains at stations, and was later
+  replaced by the telephone, so after the advent of telephone, telegraph is no more available).
 
 ### 1.4. Found out Dependencies
 
@@ -31,7 +35,7 @@ As a Player, I want to upgrade a selected station with a building.
 **Output Data:**
 
 * List of existing stations
-* List of upgrades available
+* List of available upgrades
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

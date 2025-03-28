@@ -4,13 +4,15 @@
 
 ### 1.1. User Story Description
 
-As an Editor, I want to add an industry in a position XY of the selected map.
+As an Editor, I want to add an industry (selected from the
+available industries) in a position XY of the selected (current) map.
 
 ### 1.2. Customer Specifications and Clarifications 
 
 **From the specifications document:**
 
-> As an user with the Editor role, I should be able to create an industry in a certain map, with user given coordinates and type. To do so, coordinates need to be declared by the user and then the type of industry needs to be selected, chosen from the available ones.
+> As a user with the Editor role, I should be able to create an industry in a certain map, with user given coordinates and type.
+  To do so, coordinates need to be declared by the user and then the type of industry needs to be selected, chosen from the available ones.
 
 ### 1.3. Acceptance Criteria
 

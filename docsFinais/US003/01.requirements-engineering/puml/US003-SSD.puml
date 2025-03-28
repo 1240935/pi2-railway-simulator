@@ -5,7 +5,7 @@ skinparam shadowing false
 
 autonumber
 
-actor "Organization\nEmployee" as Employee
+actor "Editor" as Employee
 participant ":System" as System
 
 activate Employee
@@ -16,23 +16,10 @@ activate Employee
         System --> Employee : receives the request and asks for the city name
     deactivate
 
-     Employee -> System : type the city name
+     Employee -> System : type the city name, coordinates, number and postion (if wanted) of blocks
         activate System
 
-    System --> Employee : receives the name and asks for the city position (X,Y)
-        deactivate System
-
-     Employee -> System : type the position
-        activate System
-
-    System --> Employee : receives the position and asks the number of blocks
-        deactivate System
-
-    Employee -> System : type the number of blocks
-    activate System
-
-        System --> Employee : receives the number of blocks and confirms if all data is correct
-    deactivate System
+    System --> Employee : receives the name, XY coordinates, number of blocks and position (if given)
 
         System --> Employee : shows all data and requests confirmation
     deactivate System

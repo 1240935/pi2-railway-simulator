@@ -25,7 +25,7 @@ activate Employee
     Employee -> System : chooses which cargo it wants to pick up
     activate System
 
-        System --> Employee : shows all data and ETA and requests confirmation
+        System --> Employee : shows all data and requests confirmation
     deactivate System
 
     Employee -> System : confirms or cancels route

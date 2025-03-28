@@ -8,7 +8,7 @@ As a Player, I want to upgrade a selected station with a building.
 
 ### 1.2. Customer Specifications and Clarifications 
 
-+ None
+>As an user with the Player role, I should be able to upgrade an existing station, adding a building to it. To do so, a station must be selected as well as the type of building wanted. 
 
 ### 1.3. Acceptance Criteria
 

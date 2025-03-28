@@ -11,7 +11,7 @@ valid station and the respective list of cargoes to be picked up
 
 **From the specifications document:**
 
-As an user with the Player role, I should be able to choose a train from the list and assign in to a route. This route should include a valid station as a stop for the train. In the station, there should be a list of cargoes to be picked up by the train.
+As an user with the Player role, I should be able to choose a train from the list and assign it to a route. This route should include a valid station as a stop for the train. In the station, there should be a list of cargoes to be picked up by the train.
 
 **From the client clarifications:**
 
@@ -41,7 +41,6 @@ As an user with the Player role, I should be able to choose a train from the lis
 **Output Data:**
 
 * Success or failure of the operation
-* ETA - Estimated time of arrival
 
 ### 1.6. System Sequence Diagram (SSD)
 

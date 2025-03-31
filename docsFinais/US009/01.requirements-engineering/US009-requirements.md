@@ -14,6 +14,18 @@ As a Player, I want to buy a train.
 
 **From the client clarifications:**
 
+> **Question**: "I have verified that in the US in reference there is a dependency referring to a list of locomotives available for the current scenario and date. However, I haven't found any specific User Story that deals with the construction or display of this list. Will this listing functionality be detailed in a future US?"
+>
+> **Answer**: "The locomotives that will be presented in the selection list are restricted to the current date and any restrictions that may have been defined in the scenario.
+The presentation of the list of locomotives is part of US009."
+
+> **Question**: "Can a player buy the same train multiple times?"
+> 
+>  **Answer**: "The same type of locomotive, yes; but these locomotives will have unique identification (like a plate or a serial number)."
+
+> **Question**: "Is there a limit to how many trains a player can own, like an inventory that can get full?"
+>
+> **Answer**: "There is no physical limit, just the available memory."
 
 ### 1.3. Acceptance Criteria
 
@@ -22,7 +34,7 @@ As a Player, I want to buy a train.
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on "US009 - Buy A Train" as there must be a list of locomotives already created.
+* There is a dependency on US004, as the available locomotives are different from scenario to scenario.
 
 ### 1.5 Input and Output Data
 

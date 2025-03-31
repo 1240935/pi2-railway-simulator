@@ -11,23 +11,31 @@ valid station and the respective list of cargoes to be picked up
 
 **From the specifications document:**
 
-As a user with the Player role, I should be able to choose a train from the list and assign in to a route. This route should include a valid station as a stop for the train. 
+>As a user with the Player role, I should be able to choose a train from the list and assign in to a route. This route should include a valid station as a stop for the train. 
 In the station, there should be a list of cargoes to be picked up by the train.
 
 **From the client clarifications:**
 
-> Question: A route is a list of stations where the train passes. If there is many stations but no railway lines, are we able to create a route?
+> **Question**: "A route is a list of stations where the train passes. If there are many stations but no railway lines, are we able to create a route?"
+>
+> **Answer**: "If there is no path between any pair of consecutive points of the route, the player should be warned, then the player can opt between cancel/proceed."
 
-> Answer: If there is no path between any pair of consective points of the route, the player should be warned, then the player can opt between cancel/proceed
+> **Question**: "Can multiple cargo types be assigned to the same train?"
+> 
+> **Answer**: "Yes."
+
+> **Question**: "Does a route have a limit of stations that can be assigned?"
+>
+> **Answer**: "No."
 
 ### 1.3. Acceptance Criteria
 
-* None
+* There's no Acceptance Criteria
 
 ### 1.4. Found out Dependencies
 
-* There is an inherent dependency in almost all other us's, as this one needs, at least 2 stations 
- a train and a route to exist so that it can be run.
+* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least 2 stations, railways and 
+ a train to exist so that it can be run.
 
 ### 1.5 Input and Output Data
 
@@ -39,12 +47,11 @@ In the station, there should be a list of cargoes to be picked up by the train.
     * a train
     * a route
     * a station
-    * List of cargoes to be picked up
+    * list of cargoes to be picked up
 
 **Output Data:**
 
 * Success or failure of the operation
-* ETA - Estimated time of arrival
 
 ### 1.6. System Sequence Diagram (SSD)
 

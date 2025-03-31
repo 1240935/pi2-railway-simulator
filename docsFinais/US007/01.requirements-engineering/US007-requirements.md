@@ -10,8 +10,13 @@ As a Player, I want to list all the stations to select one to see its details, i
 
 **From the specifications document:**
 
->	The Player wants to view a list of all stations that are available to select and see its details, like the station's name, location and status (active or inactive). He wants to check the buildings that already exist, their types and their functions. He also wants to see the cargo information, like the tyoes and quantities the station demands and supllies.   
+>The Player wants to view a list of all stations that are available to select and see its details, like the station's name, location and status (active or inactive). He wants to check the buildings that already exist, their types and their functions. He also wants to see the cargo information, like the tyoes and quantities the station demands and supllies.
 
+**From the client clarifications:**
+
+> **Question**: "When the user selects an existing station, does it automatically show all the associated info to that station or the user selects the station then has to select the required option ? eg: 'show details'"
+> 
+> **Answer**: "That's a matter of UX/UI, each team can decide what works best."
 
 ### 1.3. Acceptance Criteria
 
@@ -19,7 +24,7 @@ There's no Acceptance Criteria
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on "US007 - View Station Details" as the game must already have a map, buildings and stations.
+* There is a dependency on US001, US005 and US006 as the simulation must already have a map, buildings and stations.
 
 ### 1.5 Input and Output Data
 

@@ -12,11 +12,36 @@ As an Editor, I want to create a map with a size and a name.
 > As a user with the Editor role, I should be able to create a map, which needs to include a name and a size. For the size, there is an imposed, lower and upper limit which it may obey in its dimensions. As for the name, it is free of choice, however the language should be appropriate.
 
 **From the client clarifications:**
+
+> **Question**: "Can a scenario have the same name as a map?"
 >
+> **Answer**: "Yes, as they are different objects."
+
+> **Question**: "Do the maps created only cover countries or can they be extended to entire continents?
+For example, an entire map of Europe."
+> 
+> **Answer**: "There are no restrictions on the geographical areas represented."
+
+> **Question**: "What are the minimum and maximum dimensions allowed for a map (e.g., width and height in units or pixels)?"
+> 
+> **Answer**: "Should be positive integer."
+
+> **Question**: "Is there a predefined list of sizes, or should users be able to input custom dimensions?"
+>
+> **Answer**: "Custom dimensions but suggesting predefined sizes could be a good idea."
+
+> **Question**: "Are there any requirements or restrictions for the map's name (e.g., character limit, allowed/disallowed characters)?"
+> 
+> **Answer**: "File name like restrictions."
+
+> **Question**: "Should map names be unique within the system?"
+> 
+> **Answer**: "Yes."
 
 ### 1.3. Acceptance Criteria
 
-There is no acceptance criteria for this user story.
+* AC1: The maps dimensions are positive integers
+* AC2: Map name should be a valid file name
 
 ### 1.4. Found out Dependencies
 

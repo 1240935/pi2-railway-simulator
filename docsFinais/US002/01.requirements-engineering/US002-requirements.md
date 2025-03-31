@@ -14,13 +14,23 @@ available industries) in a position XY of the selected (current) map.
 > As a user with the Editor role, I should be able to create an industry in a certain map, with user given coordinates and type.
   To do so, coordinates need to be declared by the user and then the type of industry needs to be selected, chosen from the available ones.
 
+**From the client clarifications:**
+
+> **Question**: "When adding a new industry to a map, is there any other necessary input aside from position and industry type?"
+>
+> **Answer**: "No."
+
+> **Question**: "For US002, is it possible to select more than one industry at the same time to be placed on the map?"
+> 
+>  **Answer**: "This is more a question of UX/UI than of how the US itself works, so the teams are free to decide."
+
 ### 1.3. Acceptance Criteria
 
 * None
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US01, as it needs a map to be available for the industry to be placed on.
+* There is a dependency on US001, as it needs a map to be available for the industry to be placed on.
 
 ### 1.5 Input and Output Data
 

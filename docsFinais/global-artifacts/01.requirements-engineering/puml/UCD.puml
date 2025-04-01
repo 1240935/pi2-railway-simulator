@@ -1,4 +1,4 @@
-@startuml
+d@startuml
 
 actor Editor
 actor Player
@@ -17,16 +17,16 @@ left to right direction
 (Route Selection - US010) as US010
 (Simulate Cargo Generation - US012) as US012
 
-Editor -right-> US001
-Editor -right-> US002
-Editor -right-> US003
 Editor -right-> US004
+Editor -right-> US003
+Editor -right-> US002
+Editor -right-> US001
 
-Player -right-> US005
-Player -right-> US006
-Player -right-> US007
-Player -right-> US009
 Player -right-> US010
+Player -right-> US009
+Player -right-> US007
+Player -right-> US006
+Player -right-> US005
 
 ProductOwner -right-> US012
 

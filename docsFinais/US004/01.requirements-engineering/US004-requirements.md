@@ -12,12 +12,13 @@ As an Editor, I want to create a scenario for a selected map.
 
 > As an user with the Editor role, I should be able to create a scenario for a certain map. Within the scenario creation, a name should be given, followed by a description. There are also restrictions integrated in this scenario, such as time, technological and historical ones.
 
-**From the client clarifications:**
+**From the client clarifications:** 
 
 
 ### 1.3. Acceptance Criteria
-
-There is no Accpetance Criteria related to this User Story. 
+AC1: Definition of the behaviour of ports, which cargoes they import/export and/or transform;
+AC2: Definition of the available locomotion types (steam, diesel, and/or electric).
+AC3: (Re)Definition of the factors that alter the generation (frequency) of generating industries
 
 ### 1.4. Found out Dependencies
 

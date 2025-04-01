@@ -34,7 +34,7 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 ### 1.3. Acceptance Criteria
 
 * **AC1:** A city name cannot have special characters or digits.
-* **AC2:** The house blocks can be assigned manually or automatically (randomly around the city tag position).
+* **AC2:** The house blocks can be assigned manually or automatically (randomly around the city tag position accordingly to normal distribution)
 
 ### 1.4. Found out Dependencies
 
@@ -62,4 +62,4 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 
 ### 1.7 Other Relevant Remarks
 
-* Nothing to say.
+* Nothing to say.  

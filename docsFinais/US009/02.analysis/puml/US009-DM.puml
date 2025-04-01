@@ -3,48 +3,33 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-'left to right direction
-
 skinparam classAttributeIconSize 0
 
 hide circle
 hide methods
 
-'title Domain Model
-
-class Organization {
-    name
-    vatNumber
-    website
-    phoneNumber
-    email
-}
-
-class Task {
-    reference
-    description
-    informalDescription
-    technicalDescription
-    duration
+class Locomotive {
+    model
+    speed
+    capacity
     cost
 }
 
-class TaskCategory {
-    description
-}
-
-class Employee {
+class Player {
     name
     email
-    position
-    phone
+    balance
 }
 
-Organization "1" - "*" Employee : has
-Organization "1" - "*" Task: owns
+class Store {
+    name
+    location
+}
 
-Employee "1" -- "*" Task : creates
+Player "1" - "*" Locomotive : buys
+Store "1" - "*" Locomotive : sells
 
-Task "*" - "1" TaskCategory: cataloged as
+Player "1" - "*" Store : purchases from
+
 
 @enduml

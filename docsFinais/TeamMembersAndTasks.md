@@ -27,19 +27,19 @@ At last, remember that each User Story does not stand alone... it needs to be in
 
 **This table must be always up-to-date.**
 
-| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)| Sprint 1                    | Sprint 2 | Sprint 3 |
-|----------------------------|-----------------------------|--|--|
-| [Glossary](docsFinais/global-artifacts/01.requirements-engineering/glossary.md) | all                         | all | all |
-| [Use Case Diagram (UCD)](docsFinais/global-artifacts/01.requirements-engineering/use-case-diagram.md) | all                         | all | all |
-| [Supplementary Specification](docsFinais/global-artifacts/01.requirements-engineering/supplementary-specification.md) | all                         | all | all |
-| [Domain Model](docsFinais/global-artifacts/02.analysis/puml/DM.puml) | all                         | all | all |
-| US01 (SDP Activities)      | [1240936](docsFinais/US001) |  |  |
-| US02 (SDP Activities)      | [1240935](docsFinais/US002) |  |  |
-| US03 (SDP Activities)      | [1240941](docsFinais/US003) |  |  |
-| US04 (SDP Activities)      | [1240934](docsFinais/US004) |  |  |
-| US05 (SDP Activities)      | [1240936](docsFinais/US005) |  |  |
-| US06 (SDP Activities)      | [1240935](docsFinais/US006) |  |  |
-| US07 (SDP Activities)      | [1240941](docsFinais/US007) |  |  |
-| US09 (SDP Activities)      | [1240941](docsFinais/US009) |  |  |
-| US10 (SDP Activities)      | [1240935](docsFinais/US010) |  |  |
-| US12 (SDP Activities)      | [1240934](docsFinais/US012) |  |  |
+| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)| Sprint 1                         | Sprint 2 | Sprint 3 |
+|----------------------------|----------------------------------|--|--|
+| [Glossary](global-artifacts/01.requirements-engineering/glossary.md) | all                              | all | all |
+| [Use Case Diagram (UCD)](global-artifacts/01.requirements-engineering/use-case-diagram.md) | all                              | all | all |
+| [Supplementary Specification](global-artifacts/01.requirements-engineering/supplementary-specification.md) | all                              | all | all |
+| [Domain Model](global-artifacts/02.analysis/puml/DM.puml) | all                              | all | all |
+| US01 (SDP Activities)      | [1240936](US001/US001-README.md) |  |  |
+| US02 (SDP Activities)      | [1240935](US002/US002-README.md) |  |  |
+| US03 (SDP Activities)      | [1240941](US003/US003-README.md) |  |  |
+| US04 (SDP Activities)      | [1240934](US004/US004-README.md) |  |  |
+| US05 (SDP Activities)      | [1240936](US005/US005-README.md) |  |  |
+| US06 (SDP Activities)      | [1240935](US006/US006-README.md) |  |  |
+| US07 (SDP Activities)      | [1240941](US007/US007-README.md) |  |  |
+| US09 (SDP Activities)      | [1240941](US009/US009-README.md) |  |  |
+| US10 (SDP Activities)      | [1240935](US010/US010-README.md) |  |  |
+| US12 (SDP Activities)      | [1240934](US012/US012-README.md) |  |  |

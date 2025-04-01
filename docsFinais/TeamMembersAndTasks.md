@@ -27,7 +27,7 @@ At last, remember that each User Story does not stand alone... it needs to be in
 
 **This table must be always up-to-date.**
 
-| Task                       | Sprint 1                    | Sprint 2 | Sprint 3 |
+| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)| Sprint 1                    | Sprint 2 | Sprint 3 |
 |----------------------------|-----------------------------|--|--|
 | [Glossary](docsFinais/global-artifacts/01.requirements-engineering/glossary.md) | all                         | all | all |
 | [Use Case Diagram (UCD)](docsFinais/global-artifacts/01.requirements-engineering/use-case-diagram.md) | all                         | all | all |

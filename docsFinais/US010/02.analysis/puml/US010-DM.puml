@@ -10,41 +10,41 @@ skinparam classAttributeIconSize 0
 hide circle
 hide methods
 
-'title Domain Model
 
-class Organization {
+class Player {
     name
-    vatNumber
-    website
-    phoneNumber
-    email
+    password
 }
 
-class Task {
-    reference
-    description
-    informalDescription
-    technicalDescription
-    duration
+class Train{
+    type
+    positionXY
     cost
+    id
 }
 
-class TaskCategory {
-    description
+class Route {
+    beginningStation
+    stops
+    finishStation
+
 }
 
-class Employee {
-    name
-    email
-    position
-    phone
+class Station {
+    type
+    positionXY
 }
 
-Organization "1" - "*" Employee : has
-Organization "1" - "*" Task: owns
+class Cargoes{
+type
+weight
+value
+}
 
-Employee "1" -- "*" Task : creates
-
-Task "*" - "1" TaskCategory: cataloged as
-
+Player -- Route : "1" creates
+Player -- Cargoes : "1*" chooses
+Player -- Train :"1" assigns
+Route -- Station  :"2*" Lists
+Train -- Route :"1" assigned to
+Train -- Cargoes :"1*" assigned to
 @enduml

@@ -20,7 +20,7 @@ available industries) in a position XY of the selected (current) map.
 >
 > **Answer**: "No."
 
-> **Question**: "For US002, is it possible to select more than one industry at the same time to be placed on the map?"
+> **Question**: "Is it possible to select more than one industry at the same time to be placed on the map?"
 > 
 >  **Answer**: "This is more a question of UX/UI than of how the US itself works, so the teams are free to decide."
 

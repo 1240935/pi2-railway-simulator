@@ -2,12 +2,12 @@
 skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
-
+'skinparam linetype ortho
+'left to right direction
 skinparam classAttributeIconSize 0
 hide circle
 hide methods
 
-'title Domain Model - User Story 004
 
 class Map {
     name
@@ -15,11 +15,10 @@ class Map {
 }
 
 class Scenario {
-    name
-    description
-    timeRestrictions
-    technologicalRestrictions
-    historicalRestrictions
+    portsCargo
+    portsBehaviour
+    locomotionTypes
+    industryChangers
 }
 
 class Editor {
@@ -27,8 +26,8 @@ class Editor {
     password
 }
 
-Editor "1" -- "*" Map : creates
-Editor "1" -- "1" Scenario : creates
-Scenario "1" -- "1" Map : based on
+Editor "1" - "*" Map : creates >
+Editor "1" - "*" Scenario : creates >
+Scenario "1" -- "1" Map : associated to >
 
 @enduml

@@ -5,8 +5,6 @@
 
 As an Editor, I want to add a city in a position XY of the selected map, with a name and a positive number of house blocks.
 
-
-
 ### 1.2. Customer Specifications and Clarifications 
 
 **From the specifications document:**
@@ -46,12 +44,13 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 
 * Typed data:
     * a city name
-    * a position (X,Y)
+    * a XY city position
     * a positive number of blocks
+    * a XY block position (if wanted)
 
 **Output Data:**
 
-* City added to the map
+* Data for confirmation
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

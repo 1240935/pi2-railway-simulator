@@ -55,8 +55,12 @@ There are no dependencies in this user story.
     * a size
     * a name
 
+* Selected data:
+
+
 **Output Data:**
 
+* Data for confirmation
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

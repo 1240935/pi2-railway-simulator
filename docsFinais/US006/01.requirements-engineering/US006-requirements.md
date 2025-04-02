@@ -34,7 +34,7 @@ Combinations, as long as they respect the above restrictions, are all possible."
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on "US005 - Build a station" as there must be at least one station to upgrade.
+* There is a dependency on US005 as there must be at least one station to upgrade.
 
 ### 1.5 Input and Output Data
 

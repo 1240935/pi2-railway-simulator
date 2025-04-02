@@ -26,7 +26,7 @@ the centre should be defined by the Player (NE,SE,NW,SW).
 
 > **Question**: "Can the Player buy stations? Or does the Editor create the stations, and they automatically become available to the Player?"
 >
-> **Answer**: "Yes, the player buys stations and places them in the scenario during the simulation/game."
+> **Answer**: "Yes, the Player buys stations and places them in the scenario during the simulation/game."
 
 > **Question**: "If overbuilding occurs, the program stops running and the game ends or simply gives an error message and asks again for the station construction place?"
 > 
@@ -35,7 +35,7 @@ Overbuilding in the Editor is possible, the existing building is replaced for th
 
 > **Question**: "Should users have options to select different station types (Depot, Station, Terminal) based on the game rules?"
 > 
-> **Answer**: "No, a player can build depots, stations and terminal as far he have available budget and there no overbuilding."
+> **Answer**: "No, a player can build depots, stations and terminal as far he has available budget and there no overbuilding."
 
 ### 1.3. Acceptance Criteria
 
@@ -50,12 +50,18 @@ Overbuilding in the Editor is possible, the existing building is replaced for th
 **Input Data:**
 
 * Typed data:
-    * station building request;
-    * coordinates;
+    * XY position
+    * a centre
+    * a name
 
+* Selected data:
+  * a type
 
 **Output Data:**
 
+* List of available station types
+* Recommended name
+* Data for confirmation
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

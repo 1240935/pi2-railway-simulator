@@ -2,12 +2,13 @@
 skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
-
+'skinparam linetype ortho
+'left to right direction
 skinparam classAttributeIconSize 0
-
 hide circle
 hide methods
 
+left to right direction
 
 class Editor {
     name
@@ -24,8 +25,6 @@ class Industry {
     positionXY
 }
 
-
-Editor "1" -- "1..*" Map: creates
-Map "1" -- "*" Industry: has
-Editor "1" -- "*" Industry: creates
+Editor "1" -- "*" Map: creates >
+Map "1" -- "*" Industry: contains >
 @enduml

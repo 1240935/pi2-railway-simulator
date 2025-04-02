@@ -19,7 +19,14 @@ activate Editor
     Editor -> System : types a size and a name
     activate System
 
-        System --> Editor : receives and validates the name and the size
+        System --> Editor : receives and validates the name and the size, \n displays the data and asks for confirmation
+
+    deactivate System
+
+    Editor -> System : confirms data
+
+    activate System
+
         System --> Editor : creates the map and displays operation success
     deactivate System
 

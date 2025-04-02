@@ -2,11 +2,16 @@
 skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
-
+'skinparam linetype ortho
+'left to right direction
 skinparam classAttributeIconSize 0
+hide circle
+hide methods
 
 hide circle
 hide methods
+
+left to right direction
 
 class Map {
     name
@@ -15,9 +20,9 @@ class Map {
 
 class City {
     name
-    positionX
-    positionY
+    positionXY
     houseBlocks
+    blocksXYPosition
 }
 
 class Editor {
@@ -25,8 +30,7 @@ class Editor {
     password
 }
 
-Map "1" -- "*" City : contains
-Editor "1" -- "*" City : creates
-Editor "1" -- "1..*" Map : creates
+Map "1" -- "*" City : contains >
+Editor "1" -- "*" Map : creates >
 
 @enduml

@@ -37,15 +37,17 @@ available industries) in a position XY of the selected (current) map.
 **Input Data:**
 
 * Typed data:
-    * a coordinate
+    * a XY position
 	
 * Selected data:
-    * a type of industry
+    * an industry type
 
 **Output Data:**
 
+* List of available industry types
+* Data for confirmation
 * (In)Success of the operation
-* The placement of the industry on the grid
+
 
 ### 1.6. System Sequence Diagram (SSD)
 

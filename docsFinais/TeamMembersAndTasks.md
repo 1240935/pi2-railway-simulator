@@ -7,9 +7,10 @@ The team is formed by the students identified in the following table.
 | Student Number | Name                  |
 |----------------|-----------------------|
 | **1240934**    | Francisco Vasconcelos |
-| **1240941**    | Paulo Ferreira        |
 | **1240935**    | Gabriel Inácio        |
 | **1240936**    | Gonçalo Azevedo       |
+| **1240941**    | Paulo Ferreira        |
+
 
 # 2. Task Distribution ###
 
@@ -27,19 +28,19 @@ At last, remember that each User Story does not stand alone... it needs to be in
 
 **This table must be always up-to-date.**
 
-| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)| Sprint 1                         | Sprint 2 | Sprint 3 |
-|----------------------------|----------------------------------|--|--|
-| [Glossary](global-artifacts/01.requirements-engineering/glossary.md) | all                              | all | all |
-| [Use Case Diagram (UCD)](global-artifacts/01.requirements-engineering/use-case-diagram.md) | all                              | all | all |
-| [Supplementary Specification](global-artifacts/01.requirements-engineering/supplementary-specification.md) | all                              | all | all |
-| [Domain Model](global-artifacts/02.analysis/puml/DM.puml) | all                              | all | all |
-| US01 (SDP Activities)      | [1240936](US001/US001-README.md) |  |  |
-| US02 (SDP Activities)      | [1240935](US002/US002-README.md) |  |  |
-| US03 (SDP Activities)      | [1240941](US003/US003-README.md) |  |  |
-| US04 (SDP Activities)      | [1240934](US004/US004-README.md) |  |  |
-| US05 (SDP Activities)      | [1240936](US005/US005-README.md) |  |  |
-| US06 (SDP Activities)      | [1240935](US006/US006-README.md) |  |  |
-| US07 (SDP Activities)      | [1240941](US007/US007-README.md) |  |  |
-| US09 (SDP Activities)      | [1240941](US009/US009-README.md) |  |  |
-| US10 (SDP Activities)      | [1240935](US010/US010-README.md) |  |  |
-| US12 (SDP Activities)      | [1240934](US012/US012-README.md) |  |  |
+| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)                            | Sprint 1                                                                               |
+|--------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| Glossary                                                                                               | [1240936](global-artifacts/01.requirements-engineering/glossary.md)                    |
+| Use Case Diagram (UCD)               | [1240936](global-artifacts/01.requirements-engineering/use-case-diagram.md)            |
+| Supplementary Specification | [1240936](global-artifacts/01.requirements-engineering/supplementary-specification.md) |
+| [Domain Model]                                              | [all] (global-artifacts/02.analysis/puml/DM.puml)                                     |
+| US001 (SDP Activities)                                                                                 | [1240936](US001/US001-README.md)                                                       |
+| US002 (SDP Activities)                                                                                 | [1240935](US002/US002-README.md)                                                       |
+| US003 (SDP Activities)                                                                                 | [1240941](US003/US003-README.md)                                                       |
+| US004 (SDP Activities)                                                                                 | [1240934](US004/US004-README.md)                                                       |
+| US005 (SDP Activities)                                                                                 | [1240936](US005/US005-README.md)                                                       |
+| US006 (SDP Activities)                                                                                 | [1240935](US006/US006-README.md)                                                       |
+| US007 (SDP Activities)                                                                                 | [1240941](US007/US007-README.md)                                                       |
+| US09 (SDP Activities)                                                                                  | [1240941](US009/US009-README.md)                                                       |
+| US10 (SDP Activities)                                                                                  | [1240935](US010/US010-README.md)                                                       |
+| US12 (SDP Activities)                                                                                  | [1240934](US012/US012-README.md)                                                       |

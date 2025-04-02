@@ -10,27 +10,22 @@ participant ":System" as System
 
 activate Employee
 
-    Employee -> System : ask to create a scenario for a map
+    Employee -> System : asks to create a scenario for a map
     activate System
 
-        System --> Employee : Shows all existing maps
+        System --> Employee : shows all existing maps and asks for the scenario conditions
     deactivate System
 
-    Employee -> System : selects a map
+    Employee -> System : selects a map and types requested scenario data, including the port's cargo and \n behaviour, the available locomotion types and the industry generation changers
+
     activate System
 
-        System --> Employee : receives the selected map
-    deactivate System
-
-    Employee -> System : types requested scenario data (name, description, restrictions)
-    activate System
-
-        System --> Employee : shows all data and requests confirmation
+        System --> Employee : receives and shows all data and requests confirmation
     deactivate System
 
     Employee -> System : confirms data for scenario creation
     activate System
 
-        System --> Employee : displays success message (scenario created))
+        System --> Employee : creates the scenario and displays success
     deactivate System
 @enduml

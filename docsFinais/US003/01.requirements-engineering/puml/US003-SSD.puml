@@ -19,14 +19,13 @@ activate Employee
      Employee -> System : type the city name, coordinates, number and postion (if wanted) of blocks
         activate System
 
-    System --> Employee : receives the name, XY coordinates, number of blocks and position (if given)
+    System --> Employee : receives the name, XY coordinates, number of blocks and position (if given),\n and shows the data and asks for confirmation
 
-        System --> Employee : shows all data and requests confirmation
     deactivate System
 
     Employee -> System : confirms data
     activate System
 
-        System --> Employee : add the city to the map
+        System --> Employee : adds the city to the map
     deactivate System
 @enduml

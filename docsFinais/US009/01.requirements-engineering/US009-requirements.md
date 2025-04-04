@@ -40,7 +40,7 @@ The presentation of the list of locomotives is part of US009."
 
 **Input Data:**
 * Typed data:
-    * the list of locomotives available to buy;
+    * list request
 
 * Selected data:
     * locomotive to be bought

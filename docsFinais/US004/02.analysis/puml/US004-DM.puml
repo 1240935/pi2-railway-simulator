@@ -15,8 +15,11 @@ class Map {
 }
 
 class Scenario {
-    portsCargo
+    timeRestriction
+    portsCargoes
     portsBehaviour
+    locomotiveTypes
+    industriesTypes
     locomotionTypes
     industryChangers
 }

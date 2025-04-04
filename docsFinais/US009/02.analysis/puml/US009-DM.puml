@@ -9,27 +9,36 @@ hide circle
 hide methods
 
 class Locomotive {
-    model
-    speed
-    capacity
+    type
+    power
+    acceleration
+    topSpeed
+    operationStartYear
+    fuelCost
+    maintenancePYear
     cost
+    ID
 }
 
 class Player {
     name
-    email
-    balance
+    password
+    budget
 }
 
-class Store {
-    name
-    location
+
+class Scenario {
+    timeRestriction
+    portsCargoes
+    portsBehaviour
+    locomotiveTypes
+    industriesTypes
+    locomotionTypes
+    industryChangers
 }
 
-Player "1" - "*" Locomotive : buys
-Store "1" - "*" Locomotive : sells
-
-Player "1" - "*" Store : purchases from
+Scenario "1" -- "1" Locomotive: conditions >
+Player "1" - "1" Locomotive: buys  >
 
 
 @enduml

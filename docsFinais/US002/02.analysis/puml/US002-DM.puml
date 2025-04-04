@@ -23,6 +23,8 @@ class Map {
 class Industry {
     type
     positionXY
+    resourceType
+    resourceGeneration
 }
 
 Editor "1" -- "*" Map: creates >

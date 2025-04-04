@@ -5,7 +5,7 @@ skinparam shadowing false
 
 autonumber
 
-actor "Organization\nEmployee" as Employee
+actor "Player" as Employee
 participant ":System" as System
 
 activate Employee
@@ -19,11 +19,7 @@ activate Employee
     Employee -> System : selects a station of the list
     activate System
 
-        System --> Employee : shows all the station details
+        System --> Employee : shows all the station details and displays operation success
     deactivate System
 
- 
-
-        System --> Employee : displays operation success
-    deactivate System
 @enduml

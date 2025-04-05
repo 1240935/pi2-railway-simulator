@@ -13,7 +13,7 @@ usecase "US004 - Create a Scenario" as US004
 usecase "US005 - Build a Station" as US005
 usecase "US006 - Upgrade a Station" as US006
 usecase "US007 - View Station Details" as US007
-usecase "US009 - Buy a Train" as US009
+usecase "US009 - Buy a Locomotive" as US009
 usecase "US010 - Route Selection" as US010
 usecase "US012 - Simulate Cargo Generation" as US012
 

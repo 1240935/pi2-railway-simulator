@@ -2,49 +2,77 @@
 skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
-
+'skinparam linetype ortho
 'left to right direction
-
 skinparam classAttributeIconSize 0
-
 hide circle
 hide methods
 
-'title Domain Model
+left to right direction
 
-class Organization {
+class ProductOwner {
     name
-    vatNumber
-    website
-    phoneNumber
-    email
+    password
 }
 
-class Task {
-    reference
-    description
-    informalDescription
-    technicalDescription
-    duration
+class Cargo {
+    type
+    quantity
+    availability
+}
+
+class Industry {
+    type
+    positionXY
+    resourceType
+    resourceGeneration
+}
+
+class Station {
+    type
+    positionXY
+    centre
+    name
     cost
+    capacity
+    radius
 }
 
-class TaskCategory {
-    description
+class Cargo {
+    type
+    quantity
+    status
 }
 
-class Employee {
+class City {
     name
-    email
-    position
-    phone
+    positionXY
+    houseBlocks
+    blocksXYPosition
+    people
+    mail
+    finalProduct
 }
 
-Organization "1" - "*" Employee : has
-Organization "1" - "*" Task: owns
+class Railway{
+    length
+    size
+    cost
+    type
+}
 
-Employee "1" -- "*" Task : creates
+class Simulator{
+    status
+}
 
-Task "*" - "1" TaskCategory: cataloged as
+ProductOwner "1" -- "1" Simulator: controls >
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "*" City: considers >
+Simulator "1" -- "*" Industry: considers >
+Simulator "1" -- "*" Station: considers >
+Station "1" -- "*" Cargo : manages >
+Station "1..*" -- "2..*" Railway : connects <
+City "1..*" -- "2..*" Railway : connects <
+Industry "1..*" -- "2..*" Railway : connects <
 
 @enduml

@@ -1,4 +1,4 @@
-# US009 - Buy A Train
+# US009 - Buy a Locomotive
 
 ## 1. Requirements Engineering
 
@@ -26,6 +26,22 @@ The presentation of the list of locomotives is part of US009."
 > **Question**: "Is there a limit to how many trains a player can own, like an inventory that can get full?"
 >
 > **Answer**: "There is no physical limit, just the available memory."
+ 
+> **Question**: "How is the availability of locomotives determined?"
+> 
+> **Answer**: "Each locomotive model has a one-year entry into service period, after which it becomes available for purchase."
+
+> **Question**: "Monetary data is expressed in any particular currency?"
+> 
+> **Answer**: "An abstract one."
+
+> **Question**: "What happens if the player does not have enough budget to buy a locomotive?"
+> 
+> **Answer**: "He can't buy! Bonds and loans will not be considered right now."
+ 
+> **Question**: "Is there a limit to the number of locomotives a player can buy?"
+> 
+> **Answer**: "No limit."
 
 ### 1.3. Acceptance Criteria
 

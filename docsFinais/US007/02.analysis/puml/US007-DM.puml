@@ -29,7 +29,7 @@ class Building {
 class Cargo {
     type
     quantity
-    availability
+    status
 }
 
 class Player {
@@ -40,6 +40,6 @@ class Player {
 
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : manages >
-Player "1" -- "*" Station : lists
+Player "1" -- "*" Station : builds >
 
 @enduml

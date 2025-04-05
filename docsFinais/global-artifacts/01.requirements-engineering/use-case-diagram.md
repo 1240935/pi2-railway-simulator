@@ -13,7 +13,7 @@
 | US005 | [Build a Station](../../US005/US005-README.md)           |
 | US006 | [Upgrade a Station](../../US006/US006-README.md)         |
 | US007 | [View Station Details](../../US007/US007-README.md)      |
-| US009 | [Buy a Train](../../US009/US009-README.md)               |
+| US009 | [Buy a Locomotive](../../US009/US009-README.md)          |
 | US010 | [Route Selection](../../US010/US010-README.md)           |
 | US012 | [Simulate Cargo Generation](../../US012/US012-README.md) |
 

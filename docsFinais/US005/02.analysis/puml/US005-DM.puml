@@ -10,15 +10,12 @@ hide methods
 
 left to right direction
 
-class Editor {
+class Player {
     name
     password
+    budget
 }
 
-class Map {
-    size
-    name
-}
 
 class Station {
     type
@@ -30,6 +27,6 @@ class Station {
     radius
 }
 
-Editor "1" -- "*" Map: creates >
-Map "1" -- "*" Station: contains >
+
+Player "1" -- "*" Station: builds >
 @enduml

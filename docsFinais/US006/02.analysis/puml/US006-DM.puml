@@ -10,14 +10,10 @@ hide methods
 
 left to right direction
 
-class Editor {
+class Player {
     name
     password
-}
-
-class Map {
-    size
-    name
+    budget
 }
 
 class Station {
@@ -36,7 +32,6 @@ class Building {
     upgrade
 }
 
-Editor "1" -- "*" Map: creates >
-Map "1" -- "*" Station: contains >
+Player "1" -- "*" Station: builds >
 Station "*" -- "1 "Building:  upgrades with  >
 @enduml

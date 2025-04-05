@@ -31,6 +31,6 @@ class Editor {
 
 Editor "1" - "*" Map : creates >
 Editor "1" - "*" Scenario : creates >
-Scenario "1" -- "1" Map : associated to >
+Scenario "*" -- "1" Map : uses >
 
 @enduml

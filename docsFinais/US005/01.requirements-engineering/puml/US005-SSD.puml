@@ -5,33 +5,33 @@ skinparam shadowing false
 
 autonumber
 
-actor "Editor" as Editor
-participant ":System" as System
+actor "Player" as Player
+participant "System" as System
 
-activate Editor
+activate Player
 
-    Editor -> System : asks to build a station
+    Player -> System : asks to build a station
     activate System
 
-        System --> Editor : receives the request, shows the available types \n and asks for the coordinates and the centre
+        System --> Player : receives the request, shows the available types \n and asks for the coordinates and the centre
     deactivate System
 
-    Editor -> System : selects the type and writes the XY coordinates
+    Player -> System : selects the type and writes the XY coordinates
     activate System
 
-        System --> Editor : receives and validates the coordinates and checks if the terrain \n selected is occupied, asks for the centre (in case of Station), \n and suggests a name for the station based on the closest city
+        System --> Player : receives and validates the coordinates and checks if the terrain \n selected is occupied, asks for the centre (in case of Station), \n and suggests a name for the station based on the closest city
     deactivate System
 
-    Editor -> System : types the centre compass coordinate (if Station is chosen)\n and the wanted station name (if not following the recommendation)
+    Player -> System : types the centre compass coordinate (if Station is chosen)\n and the wanted station name (if not following the recommendation)
     activate System
 
-    System --> Editor : receives and shows all data and requests confirmation
+    System --> Player : receives and shows all data and requests confirmation
         deactivate System
 
-        Editor -> System : confirms data
+        Player -> System : confirms data
         activate System
 
-        System --> Editor : builds the requested station and displays success
+        System --> Player : builds the requested station and displays success
         deactivate System
 
 

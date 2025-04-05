@@ -44,14 +44,15 @@ In the station, there should be a list of cargoes to be picked up by the train.
 * Typed data:
 	
 * Selected data:
-    * a train
-    * a route
-    * a station
+    * a beginning and ending station
+    * a locomotive
+    * stops
     * list of cargoes to be picked up
 
 **Output Data:**
 
-* Success or failure of the operation
+* Data for confirmation
+* (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)
 

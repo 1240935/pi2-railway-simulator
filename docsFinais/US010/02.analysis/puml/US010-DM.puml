@@ -2,49 +2,66 @@
 skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
-
+'skinparam linetype ortho
 'left to right direction
-
 skinparam classAttributeIconSize 0
-
 hide circle
 hide methods
 
+left to right direction
 
 class Player {
     name
     password
+    balance
 }
 
-class Train{
+class Locomotive {
     type
-    positionXY
+    power
+    acceleration
+    topSpeed
+    operationStartYear
+    fuelCost
+    maintenancePYear
     cost
-    id
+    ID
 }
 
 class Route {
     beginningStation
     stops
     finishStation
-
 }
 
 class Station {
     type
     positionXY
+    centre
+    name
+    cost
+    capacity
+    radius
 }
 
-class Cargoes{
-type
-weight
-value
+class Cargo {
+    type
+    quantity
+    status
 }
 
-Player -- Route : "1" creates
-Player -- Cargoes : "1*" chooses
-Player -- Train :"1" assigns
-Route -- Station  :"2*" Lists
-Train -- Route :"1" assigned to
-Train -- Cargoes :"1*" assigned to
+class Railway{
+    length
+    size
+    cost
+    type
+}
+
+Player "1" -- "*" Route : creates >
+Player "1" -- "*"  Cargo : selects >
+Player "1" -- "1..*" Locomotive : buys >
+Railway "1..*" -- "2..*" Station : connects >
+Locomotive "1..*" -- "*" Route : assigned to >
+Locomotive "1..*" -- "1..*" Cargo : transported by <
+Railway "1..*" -- "1" Route: uses <
 @enduml

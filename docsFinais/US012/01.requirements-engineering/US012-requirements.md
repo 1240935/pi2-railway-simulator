@@ -39,13 +39,21 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 >
 > **Answer**: "There are no train schedules!"
 
+> **Question**: "Is there a limit to cargo storage?"
+> 
+> **Answer**: "24."
+ 
+> **Question**: "How should cargo generation be done? At fixed time intervals or based on specific events (train arrival)?"
+>
+> **Answer**: "Accordingly to the frequency defined for the industry and house blocks by the station (the distribution along the year can be fixed or random)."
+
 ### 1.3. Acceptance Criteria
 
 * **AC1:** This simulator should provide options for start/pause.
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US005 as at least one station must exist to generate cargo.
+* There is a dependency on US00 US005 as at least one station must exist to generate cargo.
 
 ### 1.5 Input and Output Data
 
@@ -53,15 +61,17 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 **Input Data:**
 
 * Typed data:
-  * simulation start command
-  * simulation pause command
+  * a start command
+  * a pause command
 	
 * Selected data:
 
 **Output Data:**
 
-* real-time status of the simulation (running/paused)
-* generated cargo and its corresponding origin points
+* Simulation status (running/paused)
+* Generated cargo 
+* (In)Success of the operation
+
 
 ### 1.6. System Sequence Diagram (SSD)
 

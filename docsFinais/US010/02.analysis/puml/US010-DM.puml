@@ -13,11 +13,11 @@ left to right direction
 class Player {
     name
     password
-    balance
+    budget
 }
 
 class Locomotive {
-    type
+    locomotion
     power
     acceleration
     topSpeed
@@ -25,7 +25,7 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    ID
+    iD
 }
 
 class Route {
@@ -64,4 +64,6 @@ Railway "1..*" -- "2..*" Station : connects >
 Locomotive "1..*" -- "*" Route : assigned to >
 Locomotive "1..*" -- "1..*" Cargo : transported by <
 Railway "1..*" -- "1" Route: uses <
+Station "1" -- "*" Cargo : stores >
+
 @enduml

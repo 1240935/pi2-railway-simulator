@@ -4,7 +4,7 @@
 
 ### 1.1. User Story Description
 
-As a Player, I want to buy a train.
+As a Player, I want to buy a locomotive.
 
 ### 1.2. Customer Specifications and Clarifications 
 
@@ -56,7 +56,7 @@ The presentation of the list of locomotives is part of US009."
 
 **Input Data:**
 * Typed data:
-    * list request
+    * the request
 
 * Selected data:
     * locomotive to be bought
@@ -64,6 +64,7 @@ The presentation of the list of locomotives is part of US009."
 **Output Data:**
 
 * List of locomotives available to buy
+* Data for confirmation
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

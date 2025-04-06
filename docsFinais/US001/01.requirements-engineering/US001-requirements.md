@@ -52,6 +52,7 @@ There are no dependencies in this user story.
 **Input Data:**
 
 * Typed data:
+    * the request
     * a size
     * a name
 

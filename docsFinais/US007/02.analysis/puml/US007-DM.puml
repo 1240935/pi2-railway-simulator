@@ -39,7 +39,7 @@ class Player {
 }
 
 Station "1" -- "*" Building : upgrades with >
-Station "1" -- "*" Cargo : manages >
+Station "1" -- "*" Cargo : stores >
 Player "1" -- "*" Station : builds >
 
 @enduml

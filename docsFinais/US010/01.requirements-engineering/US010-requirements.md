@@ -42,15 +42,17 @@ In the station, there should be a list of cargoes to be picked up by the train.
 **Input Data:**
 
 * Typed data:
+    * the request         
 	
 * Selected data:
     * a beginning and ending station
     * a locomotive
     * stops
-    * list of cargoes to be picked up
+    * list of cargoes
 
 **Output Data:**
 
+* Available stations, locomotives and cargo
 * Data for confirmation
 * (In)Success of the operation
 

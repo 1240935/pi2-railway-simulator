@@ -32,6 +32,17 @@ class Building {
     upgrade
 }
 
+class Scenario {
+    timeRestriction
+    portsCargoes
+    portsBehaviour
+    locomotiveTypes
+    industriesTypes
+    locomotionTypes
+    industryChangers
+}
+
 Player "1" -- "*" Station: builds >
+Scenario "1" - "*" Building: conditions >
 Station "*" -- "1 "Building:  upgrades with  >
 @enduml

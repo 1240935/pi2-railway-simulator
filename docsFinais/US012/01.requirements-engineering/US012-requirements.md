@@ -61,6 +61,7 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 **Input Data:**
 
 * Typed data:
+  * the request
   * a start command
   * a pause command
 	

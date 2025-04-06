@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks for the list of stations that are available to select
+    activate System
+
+        System --> Employee : shows the list of stations
+    deactivate System
+
+    Employee -> System : selects a station of the list
+    activate System
+
+        System --> Employee : shows all the station details and displays operation success
+    deactivate System
+
+@enduml

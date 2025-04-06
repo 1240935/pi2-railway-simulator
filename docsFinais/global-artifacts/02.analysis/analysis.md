@@ -10,103 +10,120 @@ To identify domain conceptual classes, start by making a list of candidate conce
 
 **Business Transactions**
 
-* 
+* Route
+* Simulator
 
 ---
 
 **Transaction Line Items**
 
-* 
+* Cargo
+* Building
 
 ---
 
 **Product/Service related to a Transaction or Transaction Line Item**
 
-* 
+* Locomotive
+* Railway
 
 ---
 
 **Transaction Records**
 
-* 
+* Scenario
 
 ---  
 
 **Roles of People or Organizations**
 
-* 
+* Editor
+* Player
+* Product Owner
 
 ---
 
 **Places**
 
-* 
+* Map
+* City
+* Industry
+* Station
 
 ---
 
 **Noteworthy Events**
 
-* 
+* Simulator
 
 ---
 
 **Physical Objects**
 
-* 
+* Locomotive
+* Railway
+* Station
+* City
+* Building
+* City
 
 ---
 
 **Descriptions of Things**
 
-* 
+* None
 
 ---
 
 **Catalogs**
 
-* 
+* Scenario
 
 ---
 
 **Containers**
 
-* 
+* Map
 
 ---
 
 **Elements of Containers**
 
-* 
+* Industry
+* City 
+* Station
+* Building
+* Railway
 
 ---
 
 **Organizations**
 
-* 
+* None
 
 ---
 
 **Other External/Collaborating Systems**
 
-* 
+* None
 
 ---
 
 **Records of finance, work, contracts, legal matters**
 
-* 
+* None
 
 ---
 
 **Financial Instruments**
 
-* 
+* None
 
 ---
 
 **Documents mentioned/used to perform some work/**
 
-* 
+* None
 
 ---
 
@@ -124,10 +141,37 @@ An association is a relationship between instances of objects that indicates a r
 - etc.
 
 
-| Concept (A) 		|  Association   	|  Concept (B) |
-|----------	   		|:-------------:		|------:       |
-| C1  	| verb1    		 	| C2  |
-| ...  	| ...    		 	| ...  |
+| Concept (A) 		  |    Association   	     | Concept (B) |
+|-----------------|:----------------------:|------------:|
+| Editor  	       |    creates    		 	     |         Map |
+| Editor  	       |    creates    		 	     |    Scenario |
+| Player  	       |    selects    		 	     |    Scenario |
+| Player  	       |     builds    		 	     |     Station |
+| Player  	       |    creates    		 	     |       Route |
+| Player  	       |    selects    		 	     |       Cargo |
+| Player  	       |      buys    		 	      |  Locomotive |
+| ProductOwner  	 |    controls    		 	    |   Simulator |
+| Map  	          |    contains    		 	    |     Station |
+| Map  	          |    contains    		 	    |    Industry |
+| Map  	          |    contains    		 	    |        City |
+| Map  	          |    contains    		 	    |     Railway |
+| Map  	          |    contains    		 	    |    Building |
+| Scenario  	     |      uses    		 	      |         Map |
+| Scenario  	     |   conditions    		 	   |    Building |
+| Scenario  	     |   conditions    		 	   |    Industry |
+| Scenario  	     |   conditions    		 	   |  Locomotive |
+| Simulator  	    |   generates    		 	    |       Cargo |
+| Simulator  	    |   considers    		 	    |     Station |
+| Simulator  	    |   considers    		 	    |    Industry |
+| Simulator  	    |   considers    		 	    |        City |
+| Station  	      | upgrades with    		 	  |    Building |
+| Station  	      |     stores    		 	     |       Cargo |
+| Locomotive  	   | is assigned to    		 	 |       Route |
+| Railway  	      |    connects    		 	    |     Station |
+| Railway  	      |    connects    		 	    |        City |
+| Railway  	      |    connects    		 	    |    Industry |
+| Railway  	      | is required by    		 	 |       Route |
+
 
 
 

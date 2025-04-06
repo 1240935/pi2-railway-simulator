@@ -41,15 +41,17 @@ Combinations, as long as they respect the above restrictions, are all possible."
 **Input Data:**
 
 * Typed data:
+    * the request 
 	
 * Selected data:
-    * the station
-    * the upgrade
+    * a station
+    * a building
 
 **Output Data:**
 
 * List of existing stations
-* List of available upgrades
+* List of available buildings
+* Data for confirmation
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

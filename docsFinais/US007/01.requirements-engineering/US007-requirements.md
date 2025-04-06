@@ -31,7 +31,7 @@ There's no Acceptance Criteria for this US.
 **Input Data:**
 
 * Typed data:
-  * the list request
+  * the request
 
 * Selected data:
   * a station

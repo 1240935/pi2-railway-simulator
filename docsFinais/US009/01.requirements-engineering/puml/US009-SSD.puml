@@ -6,7 +6,7 @@ skinparam shadowing false
 autonumber
 
 actor "Player" as Employee
-participant ":System" as System
+participant "System" as System
 
 activate Employee
 
@@ -25,6 +25,6 @@ activate Employee
     Employee -> System : confirms the purchase
     activate System
 
-        System --> Employee : displays operation success
+        System --> Employee : buys the locomotive and displays operation success
     deactivate System
 @enduml

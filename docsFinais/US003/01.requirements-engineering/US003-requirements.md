@@ -43,6 +43,7 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 **Input Data:**
 
 * Typed data:
+    * the request 
     * a city name
     * a XY city position
     * a positive number of blocks

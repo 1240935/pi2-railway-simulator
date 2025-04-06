@@ -11,7 +11,7 @@ hide methods
 left to right direction
 
 class Locomotive {
-    type
+    locomotion
     power
     acceleration
     topSpeed
@@ -19,7 +19,7 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    ID
+    iD
 }
 
 class Player {

@@ -29,6 +29,7 @@ As an Editor, I want to create a scenario for a selected map.
 **Input Data:**
 
 * Typed data:
+    * the request
     * time restriction
     * available locomotives
     * available industries

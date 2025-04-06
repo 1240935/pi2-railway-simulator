@@ -19,18 +19,18 @@ activate Employee
     Employee -> System : selects a station
     activate System
 
-        System --> Employee : receives the chosen station and \nshows available upgrades
+        System --> Employee : receives the chosen station and shows available buildings
     deactivate System
 
-    Employee -> System : chooses the upgrade
+    Employee -> System : chooses the building
     activate System
 
-        System --> Employee : receives the chosen upgrade \n and shows all the data and cost of the upgrade
+        System --> Employee : receives the chosen building and shows its upgrade and cost
     deactivate System
 
-    Employee -> System : accepts and pays the cost or denies the operation
+    Employee -> System : accepts and pays the cost
     activate System
 
-        System --> Employee : displays operation success and applies the \nupgrade on the chosen station
+        System --> Employee : builds the building and applies the upgrade \n on the chosen station, and displays operation success
     deactivate System
 @enduml

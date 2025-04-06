@@ -70,9 +70,10 @@ Simulator "1" -- "*" Cargo: generates >
 Simulator "1" -- "*" City: considers >
 Simulator "1" -- "*" Industry: considers >
 Simulator "1" -- "*" Station: considers >
-Station "1" -- "*" Cargo : manages >
+Station "1" -- "*" Cargo : stores >
 Station "1..*" -- "2..*" Railway : connects <
 City "1..*" -- "2..*" Railway : connects <
 Industry "1..*" -- "2..*" Railway : connects <
+
 
 @enduml

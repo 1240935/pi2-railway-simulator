@@ -13,7 +13,7 @@ activate Employee
     Employee -> System : asks to assign a route to a train
     activate System
 
-        System --> Employee : shows available stations to create a route to
+        System --> Employee : shows available locomotives and stations to create a route to
     deactivate System
 
     Employee -> System : selects a beginning and an ending station, other stations \n as stops in between and a locomotive to be assigned

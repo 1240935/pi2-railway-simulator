@@ -37,6 +37,7 @@ available industries) in a position XY of the selected (current) map.
 **Input Data:**
 
 * Typed data:
+    * the request
     * a XY position
 	
 * Selected data:

@@ -89,7 +89,7 @@ class Cargo {
 }
 
 class Locomotive {
-    type
+    locomotion
     power
     acceleration
     topSpeed
@@ -97,7 +97,7 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    ID
+    iD
 }
 
 class Route {
@@ -111,35 +111,40 @@ class Simulator{
 }
 
 class ProductOwner {
-    name
+    username
     password
 }
 
 Editor "1" -- "*" Map : creates >
 Editor "1" -- "1" Scenario : creates >
-Scenario "*" -- "1" Map : uses >
+Player "1" -- "1" Scenario : selects >
+Player "1" -- "*" Station : builds >
+Player "1" -- "*" Route : creates >
+Player "1" -- "*"  Cargo : selects >
+Player "1" -- "1..*" Locomotive : buys >
+ProductOwner "1" -- "1" Simulator: controls >
 Map "1" -- "*" Station : contains >
 Map "1" -- "*" Industry : contains >
 Map "1" -- "*" City : contains >
-Station "1" -- "*" Building : upgrades with >
-Station "1" -- "*" Cargo : manages >
-Station "1..*" -- "2..*" Railway : connects <
-Player "1" -- "1" Scenario : selects >
-Player "1" -- "*" Station : builds >
-Player "1" - "*" Route : creates >
-Player "1" -- "*"  Cargo : selects >
-Player "1" -- "1..*" Locomotive : buys >
-Locomotive "1..*" -- "*" Route : assigned to >
-Locomotive "1..*" -- "1..*" Cargo : transports >
-Railway "1..*" -- "1" Route: uses <
-City "1..*" -- "2..*" Railway : connects <
-Industry "1..*" -- "2..*" Railway : connects <
+Map "1" -- "*" Railway: contains >
+Map "1" -- "*" Building: contains >
+Scenario "*" -- "1" Map : uses >
+Scenario "*" -- "1" Industry: conditions >
+Scenario "*" -- "1" Building: conditions >
 Scenario "1" -- "*" Locomotive: conditions >
-ProductOwner "1" -- "1" Simulator: controls >
 Simulator "1" -- "*" Cargo: generates >
 Simulator "1" -- "*" City: considers >
 Simulator "1" -- "*" Industry: considers >
 Simulator "1" -- "*" Station: considers >
+Station "1" -- "*" Building : upgrades with >
+Station "1" -- "*" Cargo : stores >
+Locomotive "1..*" -- "*" Route : assigned to >
+Locomotive "1..*" -- "1..*" Cargo : transports >
+Railway "1" -- "1..*" Route: requires <
+Railway "1..*" -- "2..*" City : connects >
+Railway "1..*" -- "2..*" Industry : connects >
+Railway "1..*" -- "2..*" Station : connects >
+
 
 
 @enduml

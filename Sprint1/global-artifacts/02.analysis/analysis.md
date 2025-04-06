@@ -45,7 +45,6 @@ To identify domain conceptual classes, start by making a list of candidate conce
 
 **Places**
 
-* Map
 * City
 * Industry
 * Station
@@ -77,6 +76,9 @@ To identify domain conceptual classes, start by making a list of candidate conce
 
 **Catalogs**
 
+* Locomotive
+* Industry
+* Station
 * Scenario
 
 ---
@@ -84,16 +86,19 @@ To identify domain conceptual classes, start by making a list of candidate conce
 **Containers**
 
 * Map
+* Station
+* Route
 
 ---
 
 **Elements of Containers**
 
 * Industry
-* City 
+* City
 * Station
 * Building
 * Railway
+* Locomotive
 
 ---
 

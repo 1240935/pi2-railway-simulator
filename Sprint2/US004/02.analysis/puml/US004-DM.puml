@@ -1,0 +1,36 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+
+class Map {
+    name
+    size
+}
+
+class Scenario {
+    timeRestriction
+    portsCargoes
+    portsBehaviour
+    locomotiveTypes
+    industriesTypes
+    locomotionTypes
+    industryChangers
+}
+
+class Editor {
+    username
+    password
+}
+
+Editor "1" - "*" Map : creates >
+Editor "1" - "*" Scenario : creates >
+Scenario "*" -- "1" Map : uses >
+
+@enduml

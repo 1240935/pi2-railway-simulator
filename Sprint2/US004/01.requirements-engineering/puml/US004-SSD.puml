@@ -1,0 +1,31 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to create a scenario for a map
+    activate System
+
+        System --> Employee : shows all existing maps and asks for the scenario conditions
+    deactivate System
+
+    Employee -> System : selects a map and types requested scenario data, including the port's cargo and \n behaviour, the available locomotion types and the industry generation changers
+
+    activate System
+
+        System --> Employee : receives and shows all data and requests confirmation
+    deactivate System
+
+    Employee -> System : confirms data for scenario creation
+    activate System
+
+        System --> Employee : creates the scenario and displays success
+    deactivate System
+@enduml

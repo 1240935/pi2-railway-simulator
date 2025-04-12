@@ -1,0 +1,30 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks for the list of locomotives
+    activate System
+
+        System --> Employee : shows the list of locomotives
+    deactivate System
+
+    Employee -> System : selects the pretended locomotive to be bought
+    activate System
+
+        System --> Employee : requests confirmation
+    deactivate System
+
+    Employee -> System : confirms the purchase
+    activate System
+
+        System --> Employee : buys the locomotive and displays operation success
+    deactivate System
+@enduml

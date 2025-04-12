@@ -1,0 +1,36 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Product Owner" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : requests to start the cargo generation simulator
+        activate System
+
+            System --> Employee : confirms simulator has started
+            System --> System : gathers existing stations and \n collects data from  cities and industries
+            System --> Employee : starts cargo generation based on \n supply and demand
+        deactivate System
+
+        Employee -> System : requests to pause the simulator
+        activate System
+
+            System --> Employee : confirms simulator is paused and waits for play
+
+        deactivate System
+        Employee -> System : requests to start the simulator again
+        activate System
+
+            System --> System: confirms simulator started again and continues \n cargo generation from where it stopped
+            System --> Employee: finishes generation when the maximum is reached,\n  displays the generated cargo and displays success
+
+
+
+
+@enduml

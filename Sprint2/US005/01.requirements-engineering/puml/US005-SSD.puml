@@ -1,0 +1,38 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Player
+participant "System" as System
+
+activate Player
+
+    Player -> System : asks to build a station
+    activate System
+
+        System --> Player : receives the request, shows the available types \n and asks for the coordinates and the centre
+    deactivate System
+
+    Player -> System : selects the type and writes the XY coordinates
+    activate System
+
+        System --> Player : receives and validates the coordinates and checks if the terrain \n selected is occupied, asks for the centre (in case of Station), \n and suggests a name for the station based on the closest city
+    deactivate System
+
+    Player -> System : types the centre compass coordinate (if Station is chosen)\n and the wanted station name (if not following the recommendation)
+    activate System
+
+    System --> Player : receives and shows all data and requests confirmation
+        deactivate System
+
+        Player -> System : confirms data
+        activate System
+
+        System --> Player : builds the requested station and displays success
+        deactivate System
+
+
+@enduml

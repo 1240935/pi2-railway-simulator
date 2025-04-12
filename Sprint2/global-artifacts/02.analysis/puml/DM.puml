@@ -1,0 +1,172 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Player {
+    username
+    password
+    budget
+}
+
+class Editor {
+    username
+    password
+}
+
+class Map {
+    name
+    size
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+class Station {
+    type
+    centre
+    name
+    cost
+    capacity
+    radius
+}
+
+class Building {
+    type
+    cost
+    upgrade
+}
+
+class Industry {
+    type
+    resourceType
+    resourceGeneration
+}
+
+class Scenario {
+    portsCargoes
+    portsBehaviour
+}
+
+class City {
+    name
+    people
+    mail
+    finalProduct
+}
+
+class CityBlock{
+    number
+}
+
+class Railway{
+    length
+    size
+    cost
+    type
+}
+
+class Cargo {
+    type
+    quantity
+    status
+}
+
+class Locomotive {
+    locomotion
+    power
+    acceleration
+    topSpeed
+    operationStartYear
+    fuelCost
+    maintenancePYear
+    cost
+    iD
+}
+
+class Route {
+}
+
+class Simulator{
+    status
+}
+
+class ProductOwner {
+    username
+    password
+}
+
+class Train {
+}
+
+class Carriage{
+}
+
+class HistoricalRestriction{
+    industryChangers
+}
+
+class TimeRestrictions{
+    year
+}
+
+class TechnologicalRestrictions{
+    locomotionTypes
+    locomotiveTypes
+    industriesTypes
+}
+
+Editor "1" -- "*" Map : creates >
+Editor "1" -- "*" Scenario : creates >
+Player "1" -- "1" Scenario : selects >
+Player "1" -- "*" Station : builds >
+Player "1" -- "*" Route : creates >
+Player "1" -- "*"  Cargo : selects >
+Player "1" -- "1..*" Locomotive : buys >
+ProductOwner "1" -- "1" Simulator: controls >
+Map "1" -- "*" Station : contains >
+Map "1" -- "*" Industry : contains >
+Map "1" -- "*" City : contains >
+Map "1" -- "*" Railway: contains >
+Map "1" -- "*" Building: contains >
+Position "1" -- "1" City: has <
+Position "1" -- "1" Industry: has <
+Position "1" -- "1" Station: has <
+Position "1" -- "1" Railway: has <
+Position "1" -- "1" CityBlock: has <
+City "1" -- "*" CityBlock: contains
+Scenario "*" -- "1" Map : uses >
+Scenario "*" -- "1" Industry: conditions >
+Scenario "*" -- "1" Building: conditions >
+Scenario "1" -- "*" Locomotive: conditions >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestrictions: includes >
+Scenario "1" -- "*" TimeRestrictions: includes >
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "*" City: considers >
+Simulator "1" -- "*" Industry: considers >
+Simulator "1" -- "*" Station: considers >
+Station "1" -- "*" Building : upgrades with >
+Station "1" -- "*" Cargo : stores >
+Station "2..*" -- "*" Route: has <
+Train "1..*" -- "*" Route : assigned to >
+Railway "1" -- "1..*" Route: requires <
+Railway "1..*" -- "2..*" City : connects >
+Railway "1..*" -- "2..*" Industry : connects >
+Railway "1..*" -- "2..*" Station : connects >
+Train "1" -- "1" Locomotive: is part of <
+Train "1" -- "1" Carriage: is part of <
+Carriage "1..*" -- "*" Cargo: transports >
+
+
+
+@enduml

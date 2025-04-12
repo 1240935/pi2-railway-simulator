@@ -1,0 +1,31 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to add a city to the map
+    activate System
+
+        System --> Employee : receives the request and asks for the city name
+    deactivate
+
+     Employee -> System : type the city name, coordinates, number and postion (if wanted) of blocks
+        activate System
+
+    System --> Employee : receives the name, XY coordinates, number of blocks and position (if given),\n and shows the data and asks for confirmation
+
+    deactivate System
+
+    Employee -> System : confirms data
+    activate System
+
+        System --> Employee : adds the city to the map
+    deactivate System
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+
+class CreateMapUI {
+
+}
+
+class CreateMapController {
+  + createMap(size, name) : Map
+}
+
+class MapRepository {
+  + checkMapNameExists(name) : boolean
+  + save(map) : boolean
+}
+
+class Map {
+  - size : int
+  - name : String
+
+  + Map(size, name)
+
+}
+
+CreateMapUI --> CreateMapController : uses
+CreateMapController --> MapRepository : uses
+CreateMapController --> Map : creates
+MapRepository --> Map : stores
+
+@enduml

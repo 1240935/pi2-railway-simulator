@@ -1,4 +1,4 @@
-# US002 - Place an Industry
+  # US002 - Place an Industry
 
 ## 1. Requirements Engineering
 
@@ -26,7 +26,7 @@ available industries) in a position XY of the selected (current) map.
 
 ### 1.3. Acceptance Criteria
 
-* None
+* **AC1:** Overbuilding is not possible.
 
 ### 1.4. Found out Dependencies
 
@@ -41,10 +41,12 @@ available industries) in a position XY of the selected (current) map.
     * a XY position
 	
 * Selected data:
+    * a map 
     * an industry type
 
 **Output Data:**
 
+* List of available maps
 * List of available industry types
 * Data for confirmation
 * (In)Success of the operation

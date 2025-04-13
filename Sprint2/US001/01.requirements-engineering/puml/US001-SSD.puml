@@ -19,7 +19,7 @@ activate Editor
     Editor -> System : types a size and a name
     activate System
 
-        System --> Editor : receives and validates the name and the size, \n displays the data and asks for confirmation
+        System --> Editor : receives the name and the size, \n displays the data and asks for confirmation
 
     deactivate System
 

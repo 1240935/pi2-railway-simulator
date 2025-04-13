@@ -13,7 +13,13 @@ activate Employee
     Employee -> System : asks to add a new industry on the map
     activate System
 
-        System --> Employee : asks for the coordinates
+        System --> Employee : displays the list of available maps
+    deactivate System
+
+    Employee -> System : selects a map
+    activate System
+
+        System --> Employee : receives the selected map and asks for the coordinates
     deactivate System
 
     Employee -> System : types the coordinates

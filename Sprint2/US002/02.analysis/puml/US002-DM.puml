@@ -22,11 +22,16 @@ class Map {
 
 class Industry {
     type
-    positionXY
     resourceType
     resourceGeneration
 }
 
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
 Editor "1" -- "*" Map: creates >
 Map "1" -- "*" Industry: contains >
+Position "1" -- "1" Industry: has <
 @enduml

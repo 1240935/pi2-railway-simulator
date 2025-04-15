@@ -21,6 +21,7 @@ documentation; consistency and standards._
 _Refers to the integrity, compliance and interoperability of the software. The requirements to be considered are: frequency and severity of failure, possibility of recovery, possibility of prediction, accuracy, average time between failures._
 
 **Error Prevention: Provide clear validation for user input (for example, no special characters or digits in city names).**
+
 **The application ought to employ object serialization to guarantee the
 persistence of the data in two successive runs.**
 

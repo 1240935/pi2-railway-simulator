@@ -10,6 +10,7 @@ autonumber
     actor "Editor" as EDITOR
     participant ":CreateMapUI" as UI
     participant ":CreateMapController" as CTRL
+    participant "Repositories" as REPOS
     participant ":MapRepository" as MAP_REPO
     participant "Map" as MAP
 
@@ -28,29 +29,29 @@ autonumber
 
         EDITOR -> UI : confirms data
         activate UI
+                    UI --> CTRL** : create()
+
+         UI -> CTRL : getMap()
+                    activate CTRL
+                        CTRL -> REPOS : getInstance()
+                        activate REPOS
+                            REPOS --> CTRL: repositories
+                        deactivate REPOS
+                        CTRL -> MAP_REPO : getMapRepository()
+                                        activate MAP_REPO
+                                            MAP_REPO --> CTRL: mapRepository
+                                        deactivate MAP_REPO
+                                        CTRL --> UI : mapRepository
+                                        deactivate CTRL
+
 
 
             UI -> CTRL : createMap(size, name)
             activate CTRL
+                CTRL --> MAP**: create(size, name)
 
-                CTRL -> MAP_REPO : checkMapNameExists(name)
-                activate MAP_REPO
-                    MAP_REPO --> CTRL : false
-                deactivate MAP_REPO
-
-                CTRL -> MAP : create(size, name)
-                activate MAP
-                    MAP --> CTRL : map
-                deactivate MAP
-
-                CTRL -> MAP_REPO : save(map)
-                activate MAP_REPO
-                    MAP_REPO --> CTRL : success
-                deactivate MAP_REPO
-
-            CTRL --> UI : success
-            deactivate CTRL
-
+                CTRL --> UI : map
+                deactivate CTRL
             UI --> EDITOR : displays operation success
         deactivate UI
 

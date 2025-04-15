@@ -15,25 +15,33 @@ class CreateMapUI {
 }
 
 class CreateMapController {
-  + createMap(size, name) : Map
+  +createMap(size, name)
 }
 
 class MapRepository {
-  + checkMapNameExists(name) : boolean
-  + save(map) : boolean
+   +getMap()
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getMapRepository()
 }
 
 class Map {
   - size : int
   - name : String
-
   + Map(size, name)
 
 }
 
-CreateMapUI --> CreateMapController : uses
-CreateMapController --> MapRepository : uses
-CreateMapController --> Map : creates
-MapRepository --> Map : stores
+CreateMapUI ..> CreateMapController
+CreateMapController .> Repositories
+CreateMapController ..> MapRepository
+CreateMapController ..> Map
+MapRepository --> "1" Map : map
+Repositories --> "1" MapRepository : mapRepository
+Repositories -> "1" Repositories : instance
+
 
 @enduml

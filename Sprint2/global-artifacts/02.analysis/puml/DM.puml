@@ -32,24 +32,34 @@ class Position{
 }
 
 class Station {
-    type
-    centre
     name
     cost
     capacity
+}
+
+class StationCenter{
+}
+
+class StationType{
     radius
 }
 
 class Building {
-    type
     cost
+}
+
+class BuildingType {
     upgrade
 }
 
 class Industry {
-    type
-    resourceType
     resourceGeneration
+}
+
+class IndustryType{
+}
+
+class ResourceType{
 }
 
 class Scenario {
@@ -72,13 +82,17 @@ class Railway{
     length
     size
     cost
-    type
+}
+
+class RailwayType{
 }
 
 class Cargo {
-    type
     quantity
     status
+}
+
+class CargoType{
 }
 
 class Locomotive {
@@ -143,7 +157,9 @@ Position "1" -- "1" Industry: has <
 Position "1" -- "1" Station: has <
 Position "1" -- "1" Railway: has <
 Position "1" -- "1" CityBlock: has <
-City "1" -- "*" CityBlock: contains
+City "1" -- "*" CityBlock: contains >
+Industry "1" -- "1" IndustryType: has >
+Industry "1" -- "1" ResourceType: has >
 Scenario "*" -- "1" Map : uses >
 Scenario "*" -- "1" Industry: conditions >
 Scenario "*" -- "1" Building: conditions >
@@ -152,20 +168,22 @@ Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestrictions: includes >
 Scenario "1" -- "*" TimeRestrictions: includes >
 Simulator "1" -- "*" Cargo: generates >
-Simulator "1" -- "*" City: considers >
-Simulator "1" -- "*" Industry: considers >
-Simulator "1" -- "*" Station: considers >
 Station "1" -- "*" Building : upgrades with >
+Building "1" -- "*" BuildingType : has >
 Station "1" -- "*" Cargo : stores >
 Station "2..*" -- "*" Route: has <
+Station "1" -- "1" StationType: has >
+Station "1" -- "1" StationCenter: has >
 Train "1..*" -- "*" Route : assigned to >
 Railway "1" -- "1..*" Route: requires <
 Railway "1..*" -- "2..*" City : connects >
 Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
+Railway "1" -- "1" RailwayType: has >
 Train "1" -- "1" Locomotive: is part of <
 Train "1" -- "1" Carriage: is part of <
 Carriage "1..*" -- "*" Cargo: transports >
+Cargo "1" -- "1" CargoType: has >
 
 
 

@@ -30,7 +30,7 @@ In the station, there should be a list of cargoes to be picked up by the train.
 
 ### 1.3. Acceptance Criteria
 
-* There's no Acceptance Criteria
+* If the selected route isn't connected by railways, it can't be created.
 
 ### 1.4. Found out Dependencies
 

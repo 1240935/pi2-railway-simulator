@@ -30,7 +30,10 @@ Combinations, as long as they respect the above restrictions, are all possible."
 
 ### 1.3. Acceptance Criteria
 
-* There is no Acceptance Criteria for this US.
+* There are buildings that can no longer be built when they come into existence, you can't have two of the same type of upgrade from different
+technological ages, for example when you have a telephone upgrade you can´t buy the telegraph upgrade.
+* There can´t be 2 of the same of upgrade.
+* There are mutually exclusive upgrades, for example the big and the small hotel.
 
 ### 1.4. Found out Dependencies
 

@@ -17,32 +17,40 @@ class Player {
 }
 
 class Station {
-    type
-    positionXY
-    centre
     name
-    cost
     capacity
+}
+
+class StationCenter{
+}
+
+class StationType{
     radius
+    cost
 }
 
 class Building {
-    type
     cost
+}
+
+class BuildingType {
     upgrade
 }
 
 class Scenario {
-    timeRestriction
-    portsCargoes
-    portsBehaviour
-    locomotiveTypes
-    industriesTypes
-    locomotionTypes
-    industryChangers
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
 }
 
 Player "1" -- "*" Station: builds >
-Scenario "1" - "*" Building: conditions >
+Player "*" -- "1" Scenario : selects >
 Station "*" -- "1 "Building:  upgrades with  >
+Station "1" -- "1" StationType: has >
+Station "1" -- "1" StationCenter: has >
+Building "1" -- "1" BuildingType : has >
+Position "1" -- "1" Station: has <
+
 @enduml

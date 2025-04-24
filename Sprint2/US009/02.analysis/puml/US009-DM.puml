@@ -11,7 +11,6 @@ hide methods
 left to right direction
 
 class Locomotive {
-    locomotion
     power
     acceleration
     topSpeed
@@ -22,6 +21,9 @@ class Locomotive {
     iD
 }
 
+class LocomotiveType{
+}
+
 class Player {
     name
     password
@@ -30,17 +32,12 @@ class Player {
 
 
 class Scenario {
-    timeRestriction
-    portsCargoes
-    portsBehaviour
-    locomotiveTypes
-    industriesTypes
-    locomotionTypes
-    industryChangers
 }
 
-Scenario "1" - "*" Locomotive: conditions >
+Player "*" -- "1" Scenario : selects >
 Player "1" -- "1..*" Locomotive: buys  >
+Locomotive "1" -- "1" LocomotiveType: has >
+
 
 
 @enduml

@@ -15,13 +15,6 @@ class Map {
 }
 
 class Scenario {
-    timeRestriction
-    portsCargoes
-    portsBehaviour
-    locomotiveTypes
-    industriesTypes
-    locomotionTypes
-    industryChangers
 }
 
 class Editor {
@@ -29,8 +22,26 @@ class Editor {
     password
 }
 
+class HistoricalRestriction{
+    industryChangers
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class PortsBehaviour{
+}
+
 Editor "1" - "*" Map : creates >
 Editor "1" - "*" Scenario : creates >
 Scenario "*" -- "1" Map : uses >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehaviour: includes >
 
 @enduml

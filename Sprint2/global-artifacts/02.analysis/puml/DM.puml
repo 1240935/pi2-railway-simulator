@@ -33,7 +33,6 @@ class Position{
 
 class Station {
     name
-    cost
     capacity
 }
 
@@ -42,6 +41,7 @@ class StationCenter{
 
 class StationType{
     radius
+    cost
 }
 
 class Building {
@@ -53,7 +53,6 @@ class BuildingType {
 }
 
 class Industry {
-    resourceGeneration
 }
 
 class IndustryType{
@@ -63,15 +62,12 @@ class ResourceType{
 }
 
 class Scenario {
-    portsCargoes
-    portsBehaviour
 }
 
 class City {
     name
     people
     mail
-    finalProduct
 }
 
 class CityBlock{
@@ -80,7 +76,7 @@ class CityBlock{
 
 class Railway{
     length
-    size
+    electrification
     cost
 }
 
@@ -96,7 +92,6 @@ class CargoType{
 }
 
 class Locomotive {
-    locomotion
     power
     acceleration
     topSpeed
@@ -105,6 +100,9 @@ class Locomotive {
     maintenancePYear
     cost
     iD
+}
+
+class LocomotiveType{
 }
 
 class Route {
@@ -129,60 +127,86 @@ class HistoricalRestriction{
     industryChangers
 }
 
-class TimeRestrictions{
+class TimeRestriction{
     year
 }
 
-class TechnologicalRestrictions{
-    locomotionTypes
-    locomotiveTypes
-    industriesTypes
+class TechnologicalRestriction{
 }
+
+class PortsBehaviour{
+}
+
 
 Editor "1" -- "*" Map : creates >
 Editor "1" -- "*" Scenario : creates >
-Player "1" -- "1" Scenario : selects >
+
+Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
+Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
 Player "1" -- "1..*" Locomotive : buys >
+
 ProductOwner "1" -- "1" Simulator: controls >
+Simulator "1" -- "*" Cargo: generates >
+
 Map "1" -- "*" Station : contains >
 Map "1" -- "*" Industry : contains >
 Map "1" -- "*" City : contains >
 Map "1" -- "*" Railway: contains >
 Map "1" -- "*" Building: contains >
+
 Position "1" -- "1" City: has <
 Position "1" -- "1" Industry: has <
 Position "1" -- "1" Station: has <
 Position "1" -- "1" Railway: has <
 Position "1" -- "1" CityBlock: has <
-City "1" -- "*" CityBlock: contains >
+
+City "1" -- "1..*" CityBlock: contains >
+City "1" -- "*" Cargo: consumes >
+
 Industry "1" -- "1" IndustryType: has >
 Industry "1" -- "1" ResourceType: has >
+Industry "1" -- "*" Cargo: produces >
+
 Scenario "*" -- "1" Map : uses >
-Scenario "*" -- "1" Industry: conditions >
-Scenario "*" -- "1" Building: conditions >
-Scenario "1" -- "*" Locomotive: conditions >
 Scenario "1" -- "*" HistoricalRestriction: includes >
-Scenario "1" -- "*" TechnologicalRestrictions: includes >
-Scenario "1" -- "*" TimeRestrictions: includes >
-Simulator "1" -- "*" Cargo: generates >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehaviour: includes >
+
+HistoricalRestriction "1" -- "*" Industry: affects >
+
+TimeRestriction "1" -- "*" BuildingType: affects >
+TimeRestriction "1" -- "*" LocomotiveType: affects >
+
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+TechnologicalRestriction "1" -- "*" IndustryType: affects >
+
+PortsBehaviour "1" -- "*" ResourceType: affects >
+
 Station "1" -- "*" Building : upgrades with >
-Building "1" -- "*" BuildingType : has >
 Station "1" -- "*" Cargo : stores >
 Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
 Station "1" -- "1" StationCenter: has >
+
+Building "1" -- "1" BuildingType : has >
+
+Train "1" -- "1" Locomotive: is part of <
+Train "1" -- "*" Carriage: is part of <
 Train "1..*" -- "*" Route : assigned to >
+
+Locomotive "1" -- "1" LocomotiveType: has >
+
+Carriage "1..*" -- "*" Cargo: transports >
+
 Railway "1" -- "1..*" Route: requires <
-Railway "1..*" -- "2..*" City : connects >
 Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
-Train "1" -- "1" Locomotive: is part of <
-Train "1" -- "1" Carriage: is part of <
-Carriage "1..*" -- "*" Cargo: transports >
+
 Cargo "1" -- "1" CargoType: has >
 
 

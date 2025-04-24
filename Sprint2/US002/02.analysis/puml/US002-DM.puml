@@ -21,10 +21,11 @@ class Map {
 }
 
 class Industry {
-   resourceGeneration
 }
+
 class IndustryType{
 }
+
 class ResourceType{
 }
 
@@ -38,5 +39,5 @@ Map "1" -- "*" Industry: contains >
 Position "1" -- "1" Industry: has <
 Industry "1" -- "1" IndustryType: has >
 Industry "1" -- "1" ResourceType: has >
-Editor "1" -- "1" IndustryType: chooses >
+
 @enduml

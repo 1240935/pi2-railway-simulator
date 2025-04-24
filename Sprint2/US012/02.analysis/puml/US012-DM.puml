@@ -15,27 +15,17 @@ class ProductOwner {
     password
 }
 
-class Cargo {
-    type
-    quantity
-    availability
-}
-
-class Industry {
-    type
-    positionXY
-    resourceType
-    resourceGeneration
-}
-
 class Station {
-    type
-    positionXY
-    centre
     name
-    cost
     capacity
+}
+
+class StationCenter{
+}
+
+class StationType{
     radius
+    cost
 }
 
 class Cargo {
@@ -44,22 +34,6 @@ class Cargo {
     status
 }
 
-class City {
-    name
-    positionXY
-    houseBlocks
-    blocksXYPosition
-    people
-    mail
-    finalProduct
-}
-
-class Railway{
-    length
-    size
-    cost
-    type
-}
 
 class Simulator{
     status
@@ -67,13 +41,10 @@ class Simulator{
 
 ProductOwner "1" -- "1" Simulator: controls >
 Simulator "1" -- "*" Cargo: generates >
-Simulator "1" -- "*" City: considers >
-Simulator "1" -- "*" Industry: considers >
-Simulator "1" -- "*" Station: considers >
+
+Station "1" -- "1" StationType: has >
+Station "1" -- "1" StationCenter: has >
 Station "1" -- "*" Cargo : stores >
-Station "1..*" -- "2..*" Railway : connects <
-City "1..*" -- "2..*" Railway : connects <
-Industry "1..*" -- "2..*" Railway : connects <
 
 
 @enduml

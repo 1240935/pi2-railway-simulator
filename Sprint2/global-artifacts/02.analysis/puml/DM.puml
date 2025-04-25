@@ -179,7 +179,7 @@ Scenario "1" -- "*" PortsBehaviour: includes >
 HistoricalRestriction "1" -- "*" Industry: affects >
 
 TimeRestriction "1" -- "*" BuildingType: affects >
-TimeRestriction "1" -- "*" LocomotiveType: affects >
+TimeRestriction "1" -- "*" Locomotive: affects >
 
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 TechnologicalRestriction "1" -- "*" IndustryType: affects >
@@ -197,6 +197,7 @@ Building "1" -- "1" BuildingType : has >
 Train "1" -- "1" Locomotive: is part of <
 Train "1" -- "*" Carriage: is part of <
 Train "1..*" -- "*" Route : assigned to >
+Train "1..*" -- "1..*" Railway: runs on >
 
 Locomotive "1" -- "1" LocomotiveType: has >
 

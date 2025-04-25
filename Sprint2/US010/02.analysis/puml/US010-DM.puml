@@ -74,12 +74,34 @@ class Train {
 class Carriage{
 }
 
+class HistoricalRestriction{
+    industryChangers
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class PortsBehaviour{
+}
+
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
 Player "1" -- "1..*" Locomotive : buys >
+
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehaviour: includes >
+
+TimeRestriction "1" -- "*" Locomotive: affects >
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 
 Position "1" -- "1" Station: has <
 Position "1" -- "1" Railway: has <
@@ -94,7 +116,6 @@ Locomotive "1" -- "1" LocomotiveType: has >
 Carriage "1..*" -- "*" Cargo: transports >
 
 Railway "1" -- "1..*" Route: requires <
-Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
@@ -103,6 +124,8 @@ Cargo "1" -- "1" CargoType: has >
 Train "1" -- "1" Locomotive: is part of <
 Train "1" -- "*" Carriage: is part of <
 Train "1..*" -- "*" Route : assigned to >
+Train "1..*" -- "1..*" Railway: runs on >
+
 
 
 @enduml

@@ -37,11 +37,29 @@ class Position{
 class Scenario {
 }
 
+class HistoricalRestriction{
+    industryChangers
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class PortsBehaviour{
+}
+
 
 Station "1" -- "1" StationType: has >
 Station "1" -- "1" StationCenter: has >
 Player "1" -- "*" Station: builds >
 Player "*" -- "1" Scenario : selects >
 Position "1" -- "1" Station: has <
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehaviour: includes >
 
 @enduml

@@ -34,9 +34,30 @@ class Player {
 class Scenario {
 }
 
+class HistoricalRestriction{
+    industryChangers
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class PortsBehaviour{
+}
+
+
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "1..*" Locomotive: buys  >
 Locomotive "1" -- "1" LocomotiveType: has >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehaviour: includes >
+TimeRestriction "1" -- "*" Locomotive: affects >
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 
 
 

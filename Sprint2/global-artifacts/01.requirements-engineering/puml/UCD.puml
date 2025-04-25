@@ -17,7 +17,7 @@ usecase "US009 - Buy a Locomotive" as US009
 usecase "US010 - Route Selection" as US010
 usecase "US011 - List all Trains" as US011
 usecase "US012 - Simulate Cargo Generation" as US012
-usecase "US013 - Train Route Verification" as US013
+usecase "US013 - Train Travel Verification" as US013
 usecase "US014 - Railway Lines Maintenance" as US014
 
 Editor -- US004

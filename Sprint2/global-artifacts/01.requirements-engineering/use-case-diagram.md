@@ -16,8 +16,8 @@
 | US008 | [Build a Railway between Stations]()                     |
 | US009 | [Buy a Locomotive](../../US009/US009-README.md)          |
 | US010 | [Route Selection](../../US010/US010-README.md)           |
-| US011 | [List all Trains]()           |
+| US011 | [List all Trains]()                                      |
 | US012 | [Simulate Cargo Generation](../../US012/US012-README.md) |
-| US013 | [Train Route Verification](../../US013/US013-README.md)  |
+| US013 | [Train Travel Verification](../../US013/US013-README.md) |
 | US014 | [Railway Lines Maintenance](../../US014/US014-README.md) |
 

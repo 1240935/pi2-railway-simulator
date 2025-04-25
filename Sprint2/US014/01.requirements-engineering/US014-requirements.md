@@ -1,41 +1,46 @@
-# US010 - Route Selection
+# US014 - Railway Lines Maintenance
 
 ## 1. Requirements Engineering
 
 ### 1.1. User Story Description
 
-As a Player, I want to assign a selected train to a route with a
-valid station and the respective list of cargoes to be picked up
+As a Player, given a railway with stations and railway lines, I
+want to see a route that passes once, and only once, by each railway
+line to carry out maintenance on the lines.
+
 
 ### 1.2. Customer Specifications and Clarifications 
 
 **From the specifications document:**
 
->As a user with the Player role, I should be able to choose a train from the list and assign in to a route. This route should include a valid station as a stop for the train. 
-In the station, there should be a list of cargoes to be picked up by the train.
+> As a user with the Player role, I should be able to see a route that passes exclusively once on all railway lines, so that a global maintenance can take place.
 
 **From the client clarifications:**
 
-> **Question**: "A route is a list of stations where the train passes. If there are many stations but no railway lines, are we able to create a route?"
+> **Question**: "What kind of unit performs the maintenance route? Can it be any kind of train? is there a specific train configuration that needs to be set up by the player?"
 >
-> **Answer**: "If there is no path between any pair of consecutive points of the route, the player should be warned, then the player can opt between cancel/proceed."
+> **Answer**: "Any kind of train will be good."
 
-> **Question**: "Can multiple cargo types be assigned to the same train?"
-> 
-> **Answer**: "Yes."
-
-> **Question**: "Does a route have a limit of stations that can be assigned?"
->
-> **Answer**: "No."
 
 ### 1.3. Acceptance Criteria
 
-* There's no Acceptance Criteria
+* **AC01:** The player should be able to choose between the maintenance
+  of all the lines, or only the electrified ones.
+* **AC02:** A warning message should be displayed in case it is not possible
+  to get such route. If possible, the station(s) where the route can start,
+  should be displayed so that the player may select it.
+* **AC03:** A visualization of the rail network (stations, railway lines)
+  should be displayed to the player (using, for example, Graphviz or
+  GraphStream packages), where electrified railway lines are drawn with
+  a different color from the others.
+* **AC04:** All implemented procedures (except the used for graphic visualization) must only use primitive operations, and not existing functions
+  in JAVA libraries.
+* **AC05:** The algorithm(s) implemented to solve this problem should
+  be documented/detailed in the repository documentation, using markdown format.
 
 ### 1.4. Found out Dependencies
 
-* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least 2 stations, railways and 
- a train to exist so that it can be run.
+* There is a dependency on US005 as it needs at least two stations, US008 as it needs railways, US009 because it needs a locomotive and US010 because it needs a route.
 
 ### 1.5 Input and Output Data
 
@@ -45,14 +50,17 @@ In the station, there should be a list of cargoes to be picked up by the train.
     * the request         
 	
 * Selected data:
-    * a beginning and ending station
-    * a locomotive
-    * stops
-    * list of cargoes
+  * a scenario
+  * lines for maintenance
+  * a starting station
+  * a locomotive
 
 **Output Data:**
 
-* Available stations, locomotives and cargo
+* List of available scenarios
+* Warning message (if no possible route)
+* List of possible starting 
+* List of available locomotives
 * Data for confirmation
 * (In)Success of the operation
 

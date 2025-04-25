@@ -34,7 +34,7 @@ In the station, there should be a list of cargoes to be picked up by the train.
 
 ### 1.4. Found out Dependencies
 
-* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least 2 stations, railways and 
+* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least two stations, railways and 
  a train to exist so that it can be run.
 
 ### 1.5 Input and Output Data

@@ -10,27 +10,33 @@ participant "System" as System
 
 activate Employee
 
-    Employee -> System : asks to assign a route to a train
+    Employee -> System : asks to verify if a type of locomotive is able to travel \n between two stations of the same type
     activate System
 
-        System --> Employee : shows available locomotives and stations to create a route to
+        System --> Employee : shows the list of available scenarios
     deactivate System
 
-    Employee -> System : selects a beginning and an ending station, other stations \n as stops in between and a locomotive to be assigned
+    Employee -> System : selects a scenario
     activate System
 
-        System --> Employee : checks if there is railways between the selected stations, \n alerts if there are no railways between situation \n and shows available cargo to be picked up
+        System --> Employee : shows the list of available locomotive types
     deactivate System
 
-    Employee -> System : chooses the cargo to be picked up
+    Employee -> System : selects a locomotive type
+    activate System
+
+        System --> Employee : shows the list of available station types
+    deactivate System
+
+    Employee -> System : selects a station type
     activate System
 
         System --> Employee : shows all data and requests confirmation
     deactivate System
 
-    Employee -> System : confirms route
+    Employee -> System : confirms all data
     activate System
 
-        System --> Employee : assigns the train to the route and displays success
+        System --> Employee : completes verification, displays a graphical visualization of the stations \n and lines connecting them and displays success
     deactivate System
 @enduml

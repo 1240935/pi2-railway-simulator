@@ -23,7 +23,6 @@ class Editor {
 }
 
 class HistoricalRestriction{
-    industryChangers
 }
 
 class TimeRestriction{
@@ -36,6 +35,10 @@ class TechnologicalRestriction{
 class PortsBehaviour{
 }
 
+class IndustryChanger{
+    effect
+}
+
 Editor "1" - "*" Map : creates >
 Editor "1" - "*" Scenario : creates >
 Scenario "*" -- "1" Map : uses >
@@ -43,5 +46,6 @@ Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
 Scenario "1" -- "*" PortsBehaviour: includes >
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
 
 @enduml

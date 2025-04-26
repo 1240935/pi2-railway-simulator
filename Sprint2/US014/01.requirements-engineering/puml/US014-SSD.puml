@@ -10,27 +10,95 @@ participant "System" as System
 
 activate Employee
 
-    Employee -> System : asks to assign a route to a train
+    Employee -> System : asks to do a railway line maintenance
     activate System
 
-        System --> Employee : shows available locomotives and stations to create a route to
-    deactivate System
+        System --> Employee : shows the list of available scenarios
+            deactivate System
 
-    Employee -> System : selects a beginning and an ending station, other stations \n as stops in between and a locomotive to be assigned
+    Employee -> System : selects a scenario
     activate System
 
-        System --> Employee : checks if there is railways between the selected stations, \n alerts if there are no railways between situation \n and shows available cargo to be picked up
+        System --> Employee : asks if the maintenance should be of all tracks \n or only the electrified one's
     deactivate System
 
-    Employee -> System : chooses the cargo to be picked up
-    activate System
+    alt full maintenance
+    Employee -> System : chooses the full maintenance
+        activate System
 
-        System --> Employee : shows all data and requests confirmation
-    deactivate System
+        alt possible route
 
-    Employee -> System : confirms route
-    activate System
+                    System --> Employee : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+                    deactivate System
 
-        System --> Employee : assigns the train to the route and displays success
-    deactivate System
+                Employee -> System : selects an available station
+                activate System
+
+                    System --> Employee: shows available locomotives to assign to the maintenance route
+                    deactivate System
+
+                Employee -> System : selects an available locomotive
+                activate System
+
+                     System --> Employee : shows all data and requests confirmation
+                    deactivate System
+
+                Employee -> System : confirms all data
+                activate System
+
+                    System --> Employee: assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+                    deactivate System
+
+                end alt
+
+                alt impossible route
+
+                activate System
+
+                     System --> Employee : does not find a route that passes once and only once \n by only electrified railway lines and displays a warning message \n
+                     deactivate System
+
+                end alt
+
+         end alt
+
+    alt electrified maintenance
+
+        Employee -> System : chooses the electrified maintenance
+        activate System
+
+        alt possible route
+
+            System --> Employee : finds a route that passes once and only once by only electrified \n railway lines and displays the stations where the route can start
+            deactivate System
+
+        Employee -> System : selects an available station
+        activate System
+
+            System --> Employee: shows available locomotives to assign to the maintenance route
+            deactivate System
+
+        Employee -> System : selects an available locomotive
+        activate System
+
+             System --> Employee : shows all data and requests confirmation
+            deactivate System
+
+        Employee -> System : confirms all data
+        activate System
+
+            System --> Employee: assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+            deactivate System
+
+        end alt
+
+        alt impossible route
+
+             System --> Employee : does not find a route that passes once and only once \n by only electrified railway lines and displays a warning message \n
+
+        end alt
+
+
+    end alt
+
 @enduml

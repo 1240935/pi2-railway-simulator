@@ -33,10 +33,13 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 
 * **AC1:** A city name cannot have special characters or digits.
 * **AC2:** The house blocks can be assigned manually or automatically (randomly around the city tag position accordingly to normal distribution)
+* **AC3:** The number of house blocks needs to be a positive integer with no maximum limit
+* **AC4:** A city name should not be repeated to avoid Player's confusion
+* **AC5:** Overbuilding is not possible.
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US001 as there must be a map already created and on US002 because there can be and industry in the wanted location.
+* There is a dependency on US001 as there must be a map already created.
 
 ### 1.5 Input and Output Data
 
@@ -45,12 +48,18 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 * Typed data:
     * the request 
     * a city name
-    * a XY city position
+    * XY city coordinates
     * a positive number of blocks
-    * a XY block position (if wanted)
+    * XY block coordinates
+  
+* Selected data:
+  * a map
+  * blocks' position option
 
 **Output Data:**
 
+* List of available maps
+* Blocks' position option 
 * Data for confirmation
 * (In)Success of the operation
 

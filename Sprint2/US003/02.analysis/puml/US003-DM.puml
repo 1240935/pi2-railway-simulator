@@ -50,6 +50,7 @@ Editor "1" -- "*" Map : creates >
 City "1" -- "1..*" CityBlock: contains >
 City "1" -- "*" Cargo: consumes >
 Position "1" -- "1" City: has <
+Position "1" -- "1" CityBlock: has <
 
 
 @enduml

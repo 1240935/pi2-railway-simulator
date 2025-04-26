@@ -124,7 +124,6 @@ class Carriage{
 }
 
 class HistoricalRestriction{
-    industryChangers
 }
 
 class TimeRestriction{
@@ -134,7 +133,11 @@ class TimeRestriction{
 class TechnologicalRestriction{
 }
 
-class PortsBehaviour{
+class PortsBehavior{
+}
+
+class IndustryChanger{
+    effect
 }
 
 
@@ -174,9 +177,10 @@ Scenario "*" -- "1" Map : uses >
 Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-Scenario "1" -- "*" PortsBehaviour: includes >
+Scenario "1" -- "*" PortsBehavior: includes >
 
-HistoricalRestriction "1" -- "*" Industry: affects >
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
+IndustryChanger "1" -- "*" Industry: affects >
 
 TimeRestriction "1" -- "*" BuildingType: affects >
 TimeRestriction "1" -- "*" Locomotive: affects >
@@ -184,7 +188,7 @@ TimeRestriction "1" -- "*" Locomotive: affects >
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 TechnologicalRestriction "1" -- "*" IndustryType: affects >
 
-PortsBehaviour "1" -- "*" ResourceType: affects >
+PortsBehavior "1" -- "*" ResourceType: affects >
 
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >

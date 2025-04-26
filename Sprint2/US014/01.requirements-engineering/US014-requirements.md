@@ -62,6 +62,7 @@ line to carry out maintenance on the lines.
 * List of possible starting 
 * List of available locomotives
 * Data for confirmation
+* Graphical visualization of stations and lines connecting them
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

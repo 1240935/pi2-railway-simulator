@@ -8,8 +8,8 @@ As a Player, I want to build a station (can be a depot, a station
 or a terminal) with a location in the current map. The system should
 propose a name for the station based on the closest city and the station
 (e.g., Porto Terminal, Ovar Station or Silvalde Depot). In case of Depot
-and Terminal, the center is the geometric one, in the case of station,
-the centre should be defined by the Player (NE,SE,NW,SW).
+and Terminal, the center is the geometric one, in the case of Station,
+the center should be defined by the Player (NE,SE,NW,SW).
 
 ### 1.2. Customer Specifications and Clarifications 
 
@@ -35,7 +35,7 @@ Overbuilding in the Editor is possible, the existing building is replaced for th
 
 > **Question**: "Should users have options to select different station types (Depot, Station, Terminal) based on the game rules?"
 > 
-> **Answer**: "No, a player can build depots, stations and terminal as far he has available budget and there no overbuilding."
+> **Answer**: "No, a player can build depots, stations and terminal as far as he has available budget and there is no overbuilding."
 
 ### 1.3. Acceptance Criteria
 
@@ -51,17 +51,20 @@ Overbuilding in the Editor is possible, the existing building is replaced for th
 
 * Typed data:
     * the request
-    * XY position
-    * a centre
+    * XY coordinates
     * a name
+    * a center
+
 
 * Selected data:
+  * a scenario 
   * a type
 
 **Output Data:**
 
-* List of available station types
+* List of available scenarios
 * Recommended name
+* List of available station types
 * Data for confirmation
 * (In)Success of the operation
 

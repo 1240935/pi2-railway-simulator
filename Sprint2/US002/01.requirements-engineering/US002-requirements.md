@@ -26,7 +26,7 @@ available industries) in a position XY of the selected (current) map.
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** Overbuilding is not possible.
+* There is no acceptance criteria in this US.
 
 ### 1.4. Found out Dependencies
 

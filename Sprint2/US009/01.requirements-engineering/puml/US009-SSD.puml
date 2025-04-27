@@ -13,18 +13,24 @@ activate Employee
     Employee -> System : asks for the list of locomotives
     activate System
 
-        System --> Employee : shows the list of locomotives
+    System --> Employee : shows the list of available scenarios
     deactivate System
 
-    Employee -> System : selects the pretended locomotive to be bought
+    Employee -> System : selects a scenario
     activate System
 
-        System --> Employee : requests confirmation
+    System --> Employee : shows the list of available locomotives
     deactivate System
 
-    Employee -> System : confirms the purchase
+    Employee -> System : selects a locomotive
     activate System
 
-        System --> Employee : buys the locomotive and displays operation success
+    System --> Employee : shows all data and requests confirmation
+    deactivate System
+
+    Employee -> System : confirms all data
+    activate System
+
+    System --> Employee : buys the locomotive and displays operation success
     deactivate System
 @enduml

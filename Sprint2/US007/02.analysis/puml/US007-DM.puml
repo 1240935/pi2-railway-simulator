@@ -21,20 +21,18 @@ class Station {
     capacity
 }
 
-class StationCenter{
-}
-
 class StationType{
     radius
     cost
+    center
 }
 
 class Building {
-    cost
 }
 
 class BuildingType {
     upgrade
+    cost
 }
 
 class Scenario {
@@ -53,14 +51,37 @@ class Cargo {
 class CargoType{
 }
 
+class HistoricalRestriction{
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class PortsBehavior{
+}
+
+class IndustryChanger{
+    effect
+}
+
 Player "1" -- "*" Station: builds >
 Player "*" -- "1" Scenario : selects >
 Station "*" -- "1 "Building:  upgrades with  >
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" StationCenter: has >
 Building "1" -- "1" BuildingType : has >
 Position "1" -- "1" Station: has <
 Station "1" -- "*" Cargo : stores >
 Cargo "1" -- "1" CargoType: has >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" PortsBehavior: includes >
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
+TimeRestriction "1" -- "*" BuildingType: affects >
+
 
 @enduml

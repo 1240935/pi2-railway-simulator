@@ -13,24 +13,40 @@ activate Employee
     Employee -> System : asks to assign a route to a train
     activate System
 
-        System --> Employee : shows available locomotives and stations to create a route to
-    deactivate System
+    System --> Employee : shows the list of available scenarios
+    deactivate
 
-    Employee -> System : selects a beginning and an ending station, other stations \n as stops in between and a locomotive to be assigned
+    Employee -> System : selects a scenario
     activate System
 
-        System --> Employee : checks if there is railways between the selected stations, \n alerts if there are no railways between situation \n and shows available cargo to be picked up
+        System --> Employee : shows available locomotives for the assignment
     deactivate System
 
-    Employee -> System : chooses the cargo to be picked up
+    Employee -> System : selects a locomotive
     activate System
 
-        System --> Employee : shows all data and requests confirmation
+    loop selecting the route's stations
+
+    System --> Employee : shows existing stations
     deactivate System
 
-    Employee -> System : confirms route
+    Employee -> System : selects a station to add to the route
     activate System
 
-        System --> Employee : assigns the train to the route and displays success
+    end loop
+
+    System --> Employee: checks if there are railways between all selected stations \n and shows the available cargo to be picked up
+    deactivate System
+
+    Employee -> System: selects the wanted cargo to be picked up
+    activate System
+
+    System --> Employee: shows all data for confirmation
+    deactivate System
+
+    Employee -> System : confirms all data
+    activate System
+
+    System --> Employee : creates the route and displays success
     deactivate System
 @enduml

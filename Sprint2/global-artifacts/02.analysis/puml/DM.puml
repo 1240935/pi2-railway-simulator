@@ -36,19 +36,17 @@ class Station {
     capacity
 }
 
-class StationCenter{
-}
-
 class StationType{
     radius
     cost
+    centre
 }
 
 class Building {
-    cost
 }
 
 class BuildingType {
+    cost
     upgrade
 }
 
@@ -194,7 +192,6 @@ Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
 Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" StationCenter: has >
 
 Building "1" -- "1" BuildingType : has >
 

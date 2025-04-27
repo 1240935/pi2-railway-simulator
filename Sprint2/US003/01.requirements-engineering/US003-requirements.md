@@ -35,7 +35,6 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
 * **AC2:** The house blocks can be assigned manually or automatically (randomly around the city tag position accordingly to normal distribution)
 * **AC3:** The number of house blocks needs to be a positive integer with no maximum limit
 * **AC4:** A city name should not be repeated to avoid Player's confusion
-* **AC5:** Overbuilding is not possible.
 
 ### 1.4. Found out Dependencies
 

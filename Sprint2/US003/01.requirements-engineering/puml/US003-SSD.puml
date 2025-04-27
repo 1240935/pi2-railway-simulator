@@ -55,7 +55,7 @@ activate Employee
     Employee -> System : selects manual block placement
     activate System
 
-    loop for each block
+    loop block positioning
 
     System --> Employee: asks for block position
     deactivate System

@@ -10,16 +10,22 @@ participant "System" as System
 
 activate Employee
 
-    Employee -> System : asks for the list of stations that are available to select
+    Employee -> System : asks for the list of existing stations
     activate System
 
-        System --> Employee : shows the list of stations
+    System --> Employee : shows the list of available scenarios
     deactivate System
 
-    Employee -> System : selects a station of the list
+    Employee -> System : selects a scenario
     activate System
 
-        System --> Employee : shows all the station details and displays operation success
+    System --> Employee : shows the list of stations
+    deactivate System
+
+    Employee -> System : selects a station
+    activate System
+
+    System --> Employee : shows all the station details and displays operation success
     deactivate System
 
 @enduml

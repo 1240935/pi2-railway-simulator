@@ -21,12 +21,10 @@ class Station {
     capacity
 }
 
-class StationCenter{
-}
-
 class StationType{
     radius
     cost
+    center
 }
 
 class Position{
@@ -38,7 +36,6 @@ class Scenario {
 }
 
 class HistoricalRestriction{
-    industryChangers
 }
 
 class TimeRestriction{
@@ -51,9 +48,12 @@ class TechnologicalRestriction{
 class PortsBehaviour{
 }
 
+class IndustryChanger{
+    effect
+}
+
 
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" StationCenter: has >
 Player "1" -- "*" Station: builds >
 Player "*" -- "1" Scenario : selects >
 Position "1" -- "1" Station: has <
@@ -61,5 +61,7 @@ Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
 Scenario "1" -- "*" PortsBehaviour: includes >
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
+
 
 @enduml

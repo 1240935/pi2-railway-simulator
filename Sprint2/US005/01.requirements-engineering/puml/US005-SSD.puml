@@ -28,19 +28,6 @@ activate Player
     System --> Player : checks if the coordinates selected are occupied \n and recommends a name based on the closest city
     deactivate System
 
-    alt recommended name
-
-    Player -> System : selects the recommended name
-    activate System
-
-    end alt
-
-    alt typed name
-
-    Player -> System : types a different name
-
-    end alt
-
     System --> Player: shows the list of available types
     deactivate System
 
@@ -49,22 +36,30 @@ activate Player
 
     alt Depot or Terminal
 
-    System --> Player: defines the center as the geometric one \n and displays all data for confirmation
-
-    end alt
-
-    alt Station
+    else Station
 
         System --> Player: asks for the center compass coordinate \n as the geometric one
-        deactivate System
-
-        Player -> System : types the compass coordinate wanted
-        activate System
-
-        System --> Player: shows all data and requests confirmation
-        deactivate System
 
     end alt
+
+
+     System --> Player: recommends a name based on the closest city
+
+     deactivate System
+
+    alt recommended name
+
+        Player -> System : selects the recommended name
+        activate System
+
+        else typed name
+
+        Player -> System : types a different name
+
+        end alt
+
+        System --> Player : shows all data for confirmation
+        deactivate System
 
         Player -> System : confirms data
         activate System

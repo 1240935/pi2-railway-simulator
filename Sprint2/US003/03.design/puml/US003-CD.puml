@@ -6,7 +6,7 @@ class AddCityUI {
 }
 
 class AddCityController {
-  +addCity(position, name, blocks)
+  +addCity(position, name)
 }
 
 class MapRepository {
@@ -35,7 +35,7 @@ class Position {
  - yCoordinate : int
 }
 
-class CityBlocks{
+class CityBlock{
  - numberBlocks : int
 }
 

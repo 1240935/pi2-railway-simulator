@@ -29,7 +29,6 @@ autonumber
 
         EDITOR -> UI : confirms data
         activate UI
-                    UI --> CTRL** : create()
 
          UI -> CTRL : getMap()
                     activate CTRL

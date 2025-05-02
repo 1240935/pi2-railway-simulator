@@ -36,10 +36,10 @@ class Map {
 }
 
 CreateMapUI ..> CreateMapController
-CreateMapController .> Repositories
+CreateMapController ..> Repositories
 CreateMapController ..> MapRepository
 CreateMapController ..> Map
-MapRepository --> "1" Map : map
+MapRepository --> "*" Map : map
 Repositories --> "1" MapRepository : mapRepository
 Repositories -> "1" Repositories : instance
 

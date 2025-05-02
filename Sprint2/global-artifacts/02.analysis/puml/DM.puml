@@ -34,12 +34,12 @@ class Position{
 class Station {
     name
     capacity
+    centre
 }
 
 class StationType{
     radius
     cost
-    centre
 }
 
 class Building {

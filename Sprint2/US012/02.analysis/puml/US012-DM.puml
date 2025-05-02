@@ -18,12 +18,12 @@ class ProductOwner {
 class Station {
     name
     capacity
+    center
 }
 
 class StationType{
     radius
     cost
-    centre
 }
 
 class Cargo {

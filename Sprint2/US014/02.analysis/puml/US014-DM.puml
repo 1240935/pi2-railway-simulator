@@ -36,12 +36,12 @@ class Route {
 class Station {
     name
     capacity
+    center
 }
 
 class StationType{
     radius
     cost
-    center
 }
 
 class Railway{
@@ -64,21 +64,11 @@ class Train {
 class Carriage{
 }
 
-class HistoricalRestriction{
-}
-
 class TimeRestriction{
     year
 }
 
 class TechnologicalRestriction{
-}
-
-class PortsBehaviour{
-}
-
-class IndustryChanger{
-    effect
 }
 
 Player "*" -- "1" Scenario : selects >
@@ -87,21 +77,17 @@ Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
 Player "1" -- "1..*" Locomotive : buys >
 
-Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-Scenario "1" -- "*" PortsBehaviour: includes >
 
 TimeRestriction "1" -- "*" Locomotive: affects >
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
-HistoricalRestriction "1" -- "*" IndustryChanger: has >
 
 Position "1" -- "1" Station: has <
 Position "1" -- "1" Railway: has <
 
 Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" StationCenter: has >
 
 Locomotive "1" -- "1" LocomotiveType: has >
 

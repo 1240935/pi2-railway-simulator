@@ -1,157 +1,154 @@
 @startuml
-'skinparam monochrome true
+skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
 autonumber
 
-'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
-participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+ actor "Editor" as EDITOR
+    participant ":CreateIndustryUI" as UI
+    participant ":CreateIndustryController" as CTRL
+    participant "Repositories" as REPOS
+    participant "MapRepository" as MREPOS
+    participant "IndustryType <<enumeration>>" as TYPE
+    participant "ResourceType <<enumeration>>" as RETYPE
+    participant "Industry" as INDUSTRY
+    participant "Map" as MAP
+    participant "Position" as POS
 
-activate ORG_EMPLOYEE
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+activate EDITOR
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
-
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
-
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
-
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
-
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
-        deactivate UI
-
-    ORG_EMPLOYEE -> UI : selects a task category
+    EDITOR -> UI : asks to add a new industry on the map
     activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
+
+    UI -> CTRL : getAvailableMaps()
+    activate CTRL
+
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+    REPOS --> CTRL: repositories
+    deactivate REPOS
+
+    CTRL -> MREPOS : getMaps()
+    activate MREPOS
+
+    MREPOS --> CTRL : list of maps
+
+    deactivate MREPOS
+
+    CTRL --> UI : list of available maps
+    deactivate CTRL
+
+    UI --> EDITOR : displays the list of available maps
+
     deactivate UI
 
-    ORG_EMPLOYEE -> UI : types requested data
+    EDITOR -> UI : selects a map
+
     activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
+
+    UI -> CTRL : setMap(map)
+    activate CTRL
+
+    CTRL --> UI : selected map
+    deactivate CTRL
+
+    UI --> EDITOR : asks for coordinates
     deactivate UI
 
-    ORG_EMPLOYEE -> UI : confirms data
+    EDITOR -> UI : types coordinates
     activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
-        activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+    UI -> CTRL : createPosition(xCoordinate, yCoordinate)
+    activate CTRL
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+    CTRL ->POS** : createPosition(xCoordinate, yCoordinate)
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
 
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
+    CTRL -> UI : position
+    deactivate CTRL
 
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
+    UI -> CTRL: checkCoordinates(position)
+    activate CTRL
 
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
+    CTRL -> MAP : checkCoordinates(position)
+    activate MAP
 
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
+    MAP --> CTRL : confirms the coordinate's availability
+    deactivate MAP
 
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
+    CTRL --> UI : shows the coordinate's availability
+    deactivate CTRL
 
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
+    UI -> CTRL : getAvailableIndustriesTypes()
+    activate CTRL
 
-                CTRL --> CTRL : employee
-            deactivate CTRL
+    CTRL -> TYPE : getAvailableIndustriesTypes()
+    activate TYPE
 
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
+    TYPE --> CTRL: list of industries
+    deactivate TYPE
 
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
 
-                    ORG --> ORG : true
-                deactivate ORG
+    CTRL --> UI : list of available industries
 
-                ORG --> CTRL : task
-            deactivate ORG
+    deactivate CTRL
 
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
+    UI --> EDITOR :shows the available industries types
+
     deactivate UI
 
-deactivate ORG_EMPLOYEE
+    EDITOR -> UI :selects one type to build
+    activate UI
 
+    UI -> CTRL : setType(Type)
+    activate CTRL
+
+    CTRL -> UI : selected type
+    deactivate CTRL
+
+    UI -> CTRL: getAvailableResourceTypes()
+    activate CTRL
+
+    CTRL -> RETYPE : getAvailableResourceTypes()
+    activate RETYPE
+
+    RETYPE --> CTRL : list of resource types
+    deactivate RETYPE
+
+    CTRL --> UI : list of available types
+    deactivate CTRL
+
+    UI --> EDITOR : shows the available resource types
+    deactivate UI
+
+    EDITOR -> UI : selects one resource type
+    activate UI
+
+    UI -> CTRL: setReosurceType(resourceType)
+    activate CTRL
+
+    CTRL --> UI: selected resource type
+    deactivate CTRL
+
+    UI --> EDITOR: shows all data and requests \n for confirmation
+    deactivate  UI
+
+    EDITOR --> UI: confirms data
+    activate UI
+
+    UI -> CTRL : createIndustry(type, position, resourceType)
+    activate CTRL
+
+    CTRL -> INDUSTRY** : createIndustry(position, type, resourceType)
+
+    CTRL --> UI : industry
+    deactivate CTRL
+
+    UI --> EDITOR : displays operation success
+    deactivate UI
+    deactivate EDITOR
 @enduml

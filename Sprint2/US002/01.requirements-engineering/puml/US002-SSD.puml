@@ -31,7 +31,13 @@ activate Employee
     Employee -> System :selects one type to build
     activate System
 
-        System --> Employee : receives the chosen type and shows all data \nand requests confirmation
+        System --> Employee : receives the chosen type and shows the \n available types of resources
+    deactivate System
+
+    Employee  -> System : selects one resource to assign
+    activate System
+
+    System --> Employee : receives the chosen resource, shows all data \nand requests confirmation
     deactivate System
 
     Employee -> System : confirms data

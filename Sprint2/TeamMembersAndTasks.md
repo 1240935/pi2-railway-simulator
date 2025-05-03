@@ -28,22 +28,23 @@ At last, remember that each User Story does not stand alone... it needs to be in
 
 **This table must be always up-to-date.**
 
-| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)                                | Sprint 1                         |
-|------------------------------------------------------------------------------------------------------------|----------------------------------|
-| [Glossary](global-artifacts/01.requirements-engineering/glossary.md)                                       | all                              |
-| [Use Case Diagram (UCD)](global-artifacts/01.requirements-engineering/use-case-diagram.md)                 | all                              |
-| [Supplementary Specification](global-artifacts/01.requirements-engineering/supplementary-specification.md) | all                              |
-| [Domain Model](global-artifacts/02.analysis/puml/DM.puml)                                                  | all                              |
-| US001 (SDP Activities)                                                                                     | [1240936](US001/US001-README.md) |
-| US002 (SDP Activities)                                                                                     | [1240935](US002/US002-README.md) |
-| US003 (SDP Activities)                                                                                     | [1240941](US003/US003-README.md) |
-| US004 (SDP Activities)                                                                                     | [1240934](US004/US004-README.md) |
-| US005 (SDP Activities)                                                                                     | [1240936](US005/US005-README.md) |
-| US006 (SDP Activities)                                                                                     | [1240935](US006/US006-README.md) |
-| US007 (SDP Activities)                                                                                     | [1240941](US007/US007-README.md) |
-| US009 (SDP Activities)                                                                                     | [1240941](US009/US009-README.md) |
-| US010 (SDP Activities)                                                                                     | [1240935](US010/US010-README.md) |
-| US012 (SDP Activities)                                                                                     | [1240934](US012/US012-README.md) |
-| US013 (SDP Activities)                                                                                     | [1240936](US013/US013-README.md) |
-| US014 (SDP Activities)                                                                                     | [1240936](US014/US014-README.md) |
+| Task                       [TeamMembersAndTasks.md](TeamMembersAndTasks.md)                                | Sprint 1                         | Sprint 2                         |
+|------------------------------------------------------------------------------------------------------------|----------------------------------|----------------------------------|
+| [Glossary](global-artifacts/01.requirements-engineering/glossary.md)                                       | all                              | all                              |
+| [Use Case Diagram (UCD)](global-artifacts/01.requirements-engineering/use-case-diagram.md)                 | all                              | all                              |
+| [Supplementary Specification](global-artifacts/01.requirements-engineering/supplementary-specification.md) | all                              | all                              |
+| [Domain Model](global-artifacts/02.analysis/puml/DM.puml)                                                  | all                              | all                              |
+| [Design](global-artifacts/03.design/design.md)                                                             | all                              | all                              |
+| US001 (SDP Activities)                                                                                     | [1240936](US001/US001-README.md) | [1240936](US001/US001-README.md) |
+| US002 (SDP Activities)                                                                                     | [1240935](US002/US002-README.md) | [1240935](US002/US002-README.md) |
+| US003 (SDP Activities)                                                                                     | [1240941](US003/US003-README.md) | [1240941](US003/US003-README.md) |
+| US004 (SDP Activities)                                                                                     | [1240934](US004/US004-README.md) | [1240934](US004/US004-README.md) |
+| US005 (SDP Activities)                                                                                     | [1240936](US005/US005-README.md) | [1240936](US005/US005-README.md) |
+| US006 (SDP Activities)                                                                                     | [1240935](US006/US006-README.md) | [1240935](US006/US006-README.md) |
+| US007 (SDP Activities)                                                                                     | [1240941](US007/US007-README.md) | [1240941](US007/US007-README.md) |
+| US009 (SDP Activities)                                                                                     | [1240941](US009/US009-README.md) | [1240941](US009/US009-README.md) |
+| US010 (SDP Activities)                                                                                     | [1240935](US010/US010-README.md) | [1240935](US010/US010-README.md) |
+| US012 (SDP Activities)                                                                                     | [1240934](US012/US012-README.md) | [1240934](US012/US012-README.md) |
+| US013 (SDP Activities)                                                                                     | -                                | [1240936](US013/US013-README.md) |
+| US014 (SDP Activities)                                                                                     | -                                | [1240936](US014/US014-README.md) |
 

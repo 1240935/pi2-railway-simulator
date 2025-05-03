@@ -22,6 +22,8 @@ activate EDITOR
     EDITOR -> UI : asks to add a new industry on the map
     activate UI
 
+    UI --> CTRL** : create()
+
     UI -> CTRL : getAvailableMaps()
     activate CTRL
 

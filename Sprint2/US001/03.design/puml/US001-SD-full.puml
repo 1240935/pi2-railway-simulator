@@ -18,32 +18,45 @@ autonumber
 
         EDITOR -> UI : asks to create a map
         activate UI
+            UI --> CTRL** : create()
+
+            UI -> CTRL : getMap()
+            activate CTRL
+              CTRL -> REPOS : getInstance()
+              activate REPOS
+                REPOS --> CTRL: repositories
+              deactivate REPOS
+                CTRL -> MAP_REPO : getMapRepository()
+              activate MAP_REPO
+                MAP_REPO --> CTRL: mapRepository
+              deactivate MAP_REPO
+                CTRL --> UI : mapRepository
+            deactivate CTRL
 
             UI --> EDITOR : asks for a size and a name
         deactivate UI
 
         EDITOR -> UI :  types a size and a name
         activate UI
+            UI -> CTRL: setSize(size)
+            activate CTRL
+                CTRL --> UI : size
+            deactivate CTRL
+            UI -> CTRL: checkName(name)
+            activate CTRL
+                CTRL --> UI : valid name
+            deactivate CTRL
+            UI -> CTRL: setName(name)
+            activate CTRL
+            CTRL --> UI: name
+            deactivate CTRL
+
             UI --> EDITOR : displays the data and asks for confirmation
+
         deactivate UI
 
         EDITOR -> UI : confirms data
         activate UI
-
-         UI -> CTRL : getMap()
-                    activate CTRL
-                        CTRL -> REPOS : getInstance()
-                        activate REPOS
-                            REPOS --> CTRL: repositories
-                        deactivate REPOS
-                        CTRL -> MAP_REPO : getMapRepository()
-                                        activate MAP_REPO
-                                            MAP_REPO --> CTRL: mapRepository
-                                        deactivate MAP_REPO
-                                        CTRL --> UI : mapRepository
-                                        deactivate CTRL
-
-
 
             UI -> CTRL : createMap(size, name)
             activate CTRL

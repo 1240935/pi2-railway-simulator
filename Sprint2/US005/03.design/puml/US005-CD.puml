@@ -13,6 +13,7 @@ class BuildStationUI {
 }
 
 class BuildStationController {
+  +BuildStationController()
   +getAvailableScenarios() : List<Scenario>
   +setScenario(scenario: Scenario)
   +createPosition(xCoordinate: int, yCoordinate: int) : Position

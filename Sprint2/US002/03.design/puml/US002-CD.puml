@@ -13,6 +13,7 @@ skinparam classAttributeIconSize 0
   }
 
   class CreateIndustryController {
+    +CreateIndustryController()
     +getAvailableMaps()
     +setMap(map: Map)
     +createPosition(xCoordinate: int, yCoordinate: int): Position

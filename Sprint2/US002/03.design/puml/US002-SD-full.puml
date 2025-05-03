@@ -10,11 +10,11 @@ autonumber
     participant ":CreateIndustryController" as CTRL
     participant "Repositories" as REPOS
     participant "MapRepository" as MREPOS
+    participant "Map" as MAP
+    participant "Position" as POS
     participant "IndustryType <<enumeration>>" as TYPE
     participant "ResourceType <<enumeration>>" as RETYPE
     participant "Industry" as INDUSTRY
-    participant "Map" as MAP
-    participant "Position" as POS
 
 
 activate EDITOR
@@ -31,7 +31,7 @@ activate EDITOR
     REPOS --> CTRL: repositories
     deactivate REPOS
 
-    CTRL -> MREPOS : getMaps()
+    CTRL -> MREPOS : getMapRepository()
     activate MREPOS
 
     MREPOS --> CTRL : list of maps
@@ -77,10 +77,10 @@ activate EDITOR
     CTRL -> MAP : checkCoordinates(position)
     activate MAP
 
-    MAP --> CTRL : confirms the coordinate's availability
+    MAP --> CTRL : valid coordinates
     deactivate MAP
 
-    CTRL --> UI : shows the coordinate's availability
+    CTRL --> UI : valid coordinates
     deactivate CTRL
 
     UI -> CTRL : getAvailableIndustriesTypes()
@@ -143,7 +143,8 @@ activate EDITOR
     UI -> CTRL : createIndustry(type, position, resourceType)
     activate CTRL
 
-    CTRL -> INDUSTRY** : createIndustry(position, type, resourceType)
+    CTRL -> INDUSTRY** : create(position, type, resourceType)
+    
 
     CTRL --> UI : industry
     deactivate CTRL

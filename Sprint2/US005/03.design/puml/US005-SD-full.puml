@@ -15,7 +15,6 @@ participant ":CityRepository" as CITY_REPO
 participant "City" as CITY
 participant "StationType <<enumeration>>" as TYPE
 participant "Position" as POSITION
-participant ":StationRepository" as STATION_REPO
 participant "Station" as STATION
 
 
@@ -34,7 +33,7 @@ activate PLAYER
 
                 deactivate REPOS
 
-            CTRL -> SCEN_REPO : getScenarios()
+            CTRL -> SCEN_REPO : getScenarioRepository()
             activate SCEN_REPO
 
             SCEN_REPO --> CTRL : list of scenarios
@@ -67,9 +66,7 @@ activate PLAYER
         UI -> CTRL : createPosition(xCoordinate, yCoordinate)
         activate CTRL
         CTRL -> POSITION **: createPosition(xCoordinate, yCoordinate)
-        activate POSITION
-        POSITION --> CTRL : postion
-        deactivate POSITION
+
         CTRL --> UI : position
         deactivate CTRL
 
@@ -96,10 +93,10 @@ activate PLAYER
 
             CTRL -> TYPE : getAvailableStationTypes()
             activate TYPE
-            TYPE --> CTRL : list of available station types
+                TYPE --> CTRL : list of available station types
             deactivate TYPE
             CTRL --> UI : list of available station types
-            deactivate CTRL
+    deactivate CTRL
 
 
 
@@ -175,19 +172,11 @@ activate PLAYER
     UI --> PLAYER : shows all data for confirmation
     PLAYER -> UI : confirms data
 
-        UI -> CTRL : buildStation()
+        UI -> CTRL : createStation(position, name, type, center)
         activate CTRL
             CTRL -> STATION **: create(position, name, type, center)
-            activate STATION
-            STATION --> CTRL: station
-            deactivate STATION
 
-            CTRL -> STATION_REPO : save(station)
-            activate STATION_REPO
-            STATION_REPO --> CTRL: success
-            deactivate STATION_REPO
-
-        CTRL --> UI : success
+        CTRL --> UI : station
         deactivate CTRL
 
     UI --> PLAYER : displays success

@@ -47,7 +47,7 @@ autonumber
 
             UI -> CTRL : createMap(size, name)
             activate CTRL
-                CTRL --> MAP**: create(size, name)
+                CTRL -> MAP**: create(size, name)
 
                 CTRL --> UI : map
                 deactivate CTRL

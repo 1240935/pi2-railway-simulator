@@ -10,46 +10,34 @@ skinparam classAttributeIconSize 0
 'left to right direction
 
 class BuildStationUI {
-  -controller : BuildStationController
-  +getAvailableScenarios()
-  +setScenario(scenario)
-  +createPosition(xCoordinate, yCoordinate)
-  +checkPosition(position)
-  +setType(type)
-  +setGeometricCenter(position)
-  +setCompassCenter(compassCoord)
-  +getName(city)
-  +setName(name)
-  +buildStation()
 }
 
 class BuildStationController {
-  -scenarioRepo : ScenarioRepository
-  -stationRepo : StationRepository
-  -selectedScenario : Scenario
-  -name : String
-  -type : StationType
-  -position : Position
-  -center : Position
   +getAvailableScenarios() : List<Scenario>
-  +setScenario(scenario)
-  +createPosition(xCoordinate, yCoordinate) : Position
-  +checkPosition(pos : Position) : boolean
-  +getClosestCity(pos : Position) : City
-  +getAvailableStationTypes() : List<StationType>
-  +setType(type : StationType)
-  +setGeometricCenter(pos : Position)
-  +setCompassCenter(compassCoord : String)
+  +setScenario(scenario: Scenario)
+  +createPosition(xCoordinate: int, yCoordinate: int) : Position
+  +checkPosition(pos: Position) : boolean
+  +getClosestCity(pos: Position) : City
+  +getAvailableStationTypes(): List<StationType>
+  +setType(type: StationType)
+  +setGeometricCenter(pos: Position)
+  +setCompassCenter(compassCoord: String)
   +getName(city : City) : String
   +setName(name : String)
-  +buildStation() : void
+  +createStation(position: position, name: String, type: StationType, center: Position)
 }
+
+class Repositories {
+      - Repositories()
+      + getInstance()
+      + getScenarioRepository()
+  }
 
 class Scenario {
   -cities : List<City>
   -stations : List<Station>
-  +checkCoordinates(pos : Position) : boolean
-  +getClosestCity(pos : Position) : City
+  +checkCoordinates(pos: Position) : boolean
+  +getClosestCity(pos: Position) : City
 }
 
 class City {
@@ -84,21 +72,18 @@ enum StationType {
 }
 
 class ScenarioRepository {
-  +getScenarios() : List<Scenario>
+  +getScenarioRepository() : List<Scenario>
   +getScenario(scenario) : Scenario
-}
-
-class StationRepository {
-  +save(station : Station)
 }
 
 BuildStationUI ..> BuildStationController
 BuildStationController ..> ScenarioRepository
-BuildStationController ..> StationRepository
 BuildStationController ..> Scenario
 BuildStationController ..> StationType
+BuildStationController ..> Repositories
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories -> "1" Repositories : instance
 ScenarioRepository --> "1..*" Scenario  : scenario
-StationRepository --> "*" Station : station
 Scenario --> "1..*" City : city
 Scenario --> "*" Station : station
 City --> "1" Position : position

@@ -7,7 +7,7 @@
 | Interaction ID | Question: Which class is responsible for...           | Answer              | Justification (with patterns)                                                                                         |
 |:---------------|:------------------------------------------------------|:--------------------|:----------------------------------------------------------------------------------------------------------------------|
 | Step 1         | ... interacting with the actor?                       | CreateMapUI         | Pure Fabrication: no existing domain class is responsible for interaction; UI class handles user-facing interactions. |
-|                | ... coordinating the US?                              | CreateMapController | Controller                                                                                                            |
+|                | ... coordinating the US?                              | CreateMapController | Controller : Coordinates the use case by delegating responsibilities to domain or fabricated classes.                 |
 |                | ... knowing the user using the system?                | Editor              | IE: knows its own data (e.g. username, password)                                                                      |
 | Step 2         | ... requesting the map name and size?                 | CreateMapUI         | IE: responsible for managing the user input flow.                                                                     |
 | Step 3         | ... saving the inputted map data (name and size)?     | CreateMapUI         | IE: responsible for temporarily storing data until confirmation.                                                      |

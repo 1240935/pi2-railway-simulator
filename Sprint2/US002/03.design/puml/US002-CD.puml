@@ -9,42 +9,72 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-  class CreateIndustryUI
+  class CreateIndustryUI{
+  }
 
   class CreateIndustryController {
     +getAvailableMaps()
     +setMap(map: Map)
-    +createPosition(x: int, y: int): Position
+    +createPosition(xCoordinate: int, yCoordinate: int): Position
     +checkCoordinates(pos: Position): boolean
     +getAvailableIndustriesTypes(): List<IndustryType>
     +setType(type: IndustryType)
     +getAvailableResourceTypes(): List<ResourceType>
     +setReosurceType(resourceType: ResourceType)
-    +createIndustry(type: IndustryType, pos: Position, resType: ResourceType): Industry
+    +createIndustry(type: IndustryType, position: Position, resourceType: ResourceTypeType): Industry
   }
 
 
   class Repositories {
-    +getInstance(): Repositories
+      - Repositories()
+      + getInstance()
+      + getMapRepository()
   }
   class MapRepository {
     +getMaps(): List<Map>
   }
 
   class Industry {
-    +Industry(pos: Position, type: IndustryType, resourceType: ResourceType)
+    -position : Position
+    -type : IndustryType
+    -resourceType: ResourceType
+    +Industry(position: Position, type: IndustryType, resourceType: ResourceType)
   }
 
   class Map {
+    - size : int
+    - name : String
     +checkCoordinates(pos: Position): boolean
   }
 
   class Position {
-    +Position(x: int, y: int)
+    -xCoordinate : int
+    -yCoordinate : int
+    +Position(xCoordinate: int, yCoordinate: int)
   }
 
-  enum IndustryType
-  enum ResourceType
+  enum IndustryType{
+    Primary Sector
+    Transforming
+    Mixed
+  }
+
+  enum ResourceType{
+    Iron
+    Coal
+    Bauxite
+    Nitrate Mines
+    Vegetables
+    Cereals
+    Wool
+    Coffee
+    Rubber
+    Cattle
+    Bakery
+    Textile
+    Automobile
+    Steel Mill
+  }
 
 
 CreateIndustryUI ..> CreateIndustryController
@@ -55,9 +85,11 @@ CreateIndustryController ..> Position
 CreateIndustryController ..> IndustryType
 CreateIndustryController ..> ResourceType
 CreateIndustryController ..> Industry
+Repositories --> "1" MapRepository : map repository
+Repositories -> "1" Repositories : instance
 MapRepository --> "*" Map : map
 Industry --> "1" Position : position
-Industry --> "1" IndustryType : industry type
-Industry --> "1" ResourceType : resource type
+IndustryType --> "1" Industry : industry type
+ResourceType --> "1" Industry : resource type
 
 @enduml

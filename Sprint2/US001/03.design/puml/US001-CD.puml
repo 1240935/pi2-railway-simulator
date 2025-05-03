@@ -15,16 +15,17 @@ class CreateMapUI {
 }
 
 class CreateMapController {
+  +getMap()
   +createMap(size, name)
 }
 
 class MapRepository {
-   +getMap()
+   +getMapRepository()
 }
 
 class Repositories {
     - Repositories()
-    + {static} getInstance()
+    + getInstance()
     + getMapRepository()
 }
 

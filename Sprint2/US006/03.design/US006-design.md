@@ -4,43 +4,37 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...        | Answer                 | Justification (with patterns)                                                                                                       |
-|:---------------|:---------------------------------------------------|:-----------------------|:------------------------------------------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                    | CreateTaskUI           | Pure Fabrication: there is no reason to assign this responsibility to any existing class in the Domain Model.                       |
-|                | ... coordinating the US?                           | CreateTaskController   | Controller                                                                                                                          |
-|                | ... knowing the user using the system?             | UserSession            | IE: cf. A&A component documentation.                                                                                                |
-|                |                                                    | Organization           | IE: knows/has its own Employees                                                                                                     |
-|                |                                                    | Employee               | IE: knows its own data (e.g. email)                                                                                                 |
-| Step 2         | ... knowing all existing task categories to show?  | Repositories           | IE: Repositories maintains Task Categories.                                                                                         |
-|                |                                                    | TaskCategoryRepository | By applying High Cohesion (HC) + Low Coupling (LC) on class Repositories, it delegates the responsibility on TaskCategoryContainer. |
-| Step 3         | ... saving the selected category?                  | CreateTaskUI           | IE: is responsible for keeping the selected category.                                                                               |
-| Step 4         | ... requesting data?                               | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           |
-| Step 5         | ... saving the inputted data?                      | CreateTaskUI           | IE: is responsible for keeping the inputted data.                                                                                   |
-| Step 6         | ... showing all data and requesting confirmation?  | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           |              
-| Step 7         | ... instantiating a new Task?                      | Organization           | Creator (Rule 1): in the DM Organization has a Task.                                                                                |
-|                | ... validating all data (local validation)?        | Task                   | IE: owns its data.                                                                                                                  | 
-|                | ... validating all data (global validation)?       | Organization           | IE: knows all its tasks.                                                                                                            | 
-|                | ... saving the created task?                       | Organization           | IE: owns all its tasks.                                                                                                             | 
-| Step 8         | ... informing operation success?                   | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           | 
+| Interaction ID | Question: Which class is responsible for...       | Answer                   | Justification (with patterns)                                                              |
+|:---------------|:--------------------------------------------------|:-------------------------|:-------------------------------------------------------------------------------------------|
+| Step 1         | ... interacting with the actor?                   | UpgradeStationUI         | Pure Fabrication: created solely to handle user interaction.                               |
+|                | ... coordinating the US?                          | UpgradeStationController | Controller: central point of control for this use case.                                    |
+|                | ... knowing the user using the system?            | Player                   | IE: Knows its own data (e.g. name, current state, etc.).                                   |
+| Step 2         | ... knowing all available scenarios?              | ScenarioRepository       | IE: Manages access to persisted scenarios.                                                 |
+| Step 3         | ... saving the selected scenario?                 | UpgradeStationController | IE: Keeps the current scenario selected during the flow.                                   |
+| Step 4         | ... getting available stations?                   | StationRepository        | IE: Responsible for storing and retrieving stations.                                       |
+| Step 5         | ... saving the selected station?                  | UpgradeStationController | IE: Keeps track of which station the player selected.                                      |
+| Step 6         | ... getting available building types?             | BuildingType             | IE: Enum that defines valid upgrade types.                                                 |
+| Step 7         | ... saving the selected building type?            | UpgradeStationController | IE: Holds selected type to complete the upgrade logic.                                     |
+| Step 8         | ... showing all data and requesting confirmation? | UpgradeStationUI         | IE: Responsible for presenting collected data and requesting final confirmation.           |
+| Step 9         | ... instantiating a new Building?                 | UpgradeStationController | Creator: Has all required data (station, type) to create a new Building.                   |
+|                | ... saving the new building?                      | (Station or Scenario)¹   | IE: Not shown, but typically the Building would be saved in a Station or Scenario context. |
+| Step 10        | ... informing the user of operation success?      | UpgradeStationUI         | IE: Displays confirmation message to the player.                                           |
 
 ### Systematization ##
 
 According to the taken rationale, the conceptual classes promoted to software classes are: 
 
-* Organization
-* Task
-* TaskCategory
-* Employee
+* Scenario
+* Station
+* Building
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
-* CreateTaskUI  
-* CreateTaskController
+* UpgradeStationUI  
+* UpgradeStationController
 * Repositories
-* TaskCategoryRepository
-* OrganizationRepository
-* ApplicationSession
-* UserSession
+* ScenarioRepository
+* StationRepository
 
 
 ## 3.2. Sequence Diagram (SD)

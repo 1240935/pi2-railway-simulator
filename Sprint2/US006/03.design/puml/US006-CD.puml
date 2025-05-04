@@ -10,7 +10,6 @@ skinparam classAttributeIconSize 0
 'left to right direction
 
 class UpgradeStationUI {
-
 }
 
 class UpgradeStationController {
@@ -19,9 +18,9 @@ class UpgradeStationController {
     + setScenario(scenario : Scenario)
     + getAvailableStations()
     + setStation(station : Station)
-    + getAvailableUpgrades(Station) : List<UpgradeType>
-    + setUpgrade(upgrade : Upgrade)
-    + createBuilding(station : Station, upgrade : Upgrade) : Building
+    + getAvailableBuildingTypes(station : Station) : List<BuildingType>
+    + setType(type : BuildingType)
+    + createBuilding(station : Station, type : BuildingType) : Building
 }
 
 class ScenarioRepository {
@@ -39,26 +38,55 @@ class Repositories {
     + getStationRepository()
 }
 
-enum UpgradeType {
-    lista dos upgrades <<<<<<<<<<
+enum BuildingType {
+    Telegraph/Telephone
+    Small Café
+    Large Café
+    Customs
+    Post office
+    Small hotel
+    Large hotel
+    Silo
+    Liquid Storage
+    --
+    upgrade : int
+    cost : int
 }
 
 class Building {
-    + Building(station, upgrade)
+    -station: Station
+    -type: BuildingType
+    + Building(station, type)
+}
+
+class Station{
+    -name : String
+    -position : Position
+    -type : StationType
+    -center : Position
+}
+
+class Scenario{
+   -station : List<Station>
 }
 
 
 ' Relationships
 UpgradeStationUI ..> UpgradeStationController
 UpgradeStationController ..> Repositories
-Repositories --> "1" ScenarioRepository
-Repositories --> "1" StationRepository
 UpgradeStationController ..> ScenarioRepository
 UpgradeStationController ..> StationRepository
-UpgradeStationController ..> UpgradeType
+UpgradeStationController ..> BuildingType
 UpgradeStationController ..> Building
 UpgradeStationController ..> Scenario
-UpgradeStationController ..> Station
-UpgradeStationController ..> UpgradeType
+ScenarioRepository --> "1..*" Scenario  : scenario
+StationRepository --> "1..*" Station  : station
+Scenario --> "*" Station : station
+Station --> "*" Building : building
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories -> "1" Repositories : instance
+Repositories --> "1" StationRepository : station repository
+BuildingType --> "1" Building : building type
+
 
 @enduml

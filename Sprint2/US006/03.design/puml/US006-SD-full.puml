@@ -10,8 +10,9 @@ autonumber
     participant ":UpgradeStationController" as CTRL
     participant "Repositories" as REPOS
     participant "ScenarioRepository" as SREPOS
-    participant "UpgradeType <<enumeration>>" as UTYPE
+    participant "BuildingType <<enumeration>>" as BTYPE
     participant "StationRepository" as STREPOS
+    participant "Building" as BUILDING
 
     activate PLAYER
 
@@ -87,29 +88,29 @@ autonumber
 
         deactivate CTRL
 
-        UI -> CTRL : getAvailableUpgrades()
+        UI -> CTRL : getAvailableBuildingTypes()
                 activate CTRL
 
-                CTRL -> UTYPE : getAvailableUpgradeTypes(station)
-                activate UTYPE
+                CTRL -> BTYPE : getAvailableBuildingTypes(station)
+                activate BTYPE
 
-                UTYPE --> CTRL : list of upgrades
+                BTYPE --> CTRL : list of building types
 
-                deactivate UTYPE
-                CTRL --> UI : list of upgrades
+                deactivate BTYPE
+                CTRL --> UI : list of building types
                 deactivate CTRL
 
-                UI --> PLAYER : shows the list of upgrades
+                UI --> PLAYER : shows the list of building types
                 deactivate UI
 
-                PLAYER -> UI : selects an upgrade
+                PLAYER -> UI : selects a building type
                 activate UI
 
-                UI -> CTRL :setUpgrade(upgrade)
+                UI -> CTRL :setType(type)
 
                 activate CTRL
 
-                CTRL --> UI : upgrade selected
+                CTRL --> UI : type selected
 
                 deactivate CTRL
 
@@ -119,10 +120,10 @@ autonumber
     PLAYER --> UI: confirms data
     activate UI
 
-    UI -> CTRL : createBuilding(station, upgrade)
+    UI -> CTRL : createBuilding(station, type)
     activate CTRL
 
-    CTRL -> BUILDING** : create(station, upgrade)
+    CTRL -> BUILDING** : create(station, type)
 
     CTRL --> UI : building
     deactivate CTRL

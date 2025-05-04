@@ -10,7 +10,7 @@ As a Player, given a railway with stations and lines connecting pairs of station
 
 **From the specifications document:**
 
-> As a user with the Player role, I should be able to verify if a train is able to travel between two stations. To do it, I should be given the option to select the type of train wanted for the verification, together with the type of station pretended.
+> As a user with the Player role, I should be able to verify if a train is able to travel between two stations. To do it, I must provide the system a scenario file with the stations and a scenario file with the lines. Furthermore, I should select the pretended verification and its result, followed by a graphical scheme of the station and lines.
 
 **From the client clarifications:**
 
@@ -49,19 +49,19 @@ As a Player, given a railway with stations and lines connecting pairs of station
 **Input Data:**
 
 * Typed data:
-    * the request         
+    * the request     
+    * a scenario file path with the stations
+    * a scenario file path with the lines 
 	
 * Selected data:
-  * a scenario 
+  * the verification
   * a locomotive type
   * a station type
 
 **Output Data:**
 
-* List of available scenarios
 * List of available locomotive types
 * List of available station types
-* Data for confirmation
 * Graphical visualization of stations and lines connecting them
 * (In)Success of the operation
 

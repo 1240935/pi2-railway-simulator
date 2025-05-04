@@ -13,7 +13,7 @@ line to carry out maintenance on the lines.
 
 **From the specifications document:**
 
-> As a user with the Player role, I should be able to see a route that passes exclusively once on all railway lines, so that a global maintenance can take place.
+> As a user with the Player role, I should be able to see a route that passes exclusively once on all railway lines, so that a global maintenance can take place. 
 
 **From the client clarifications:**
 
@@ -47,19 +47,19 @@ line to carry out maintenance on the lines.
 **Input Data:**
 
 * Typed data:
-    * the request         
+    * the request      
+    * a scenario file path with the stations
+    * a scenario file path with the lines
 	
 * Selected data:
-  * a scenario
-  * lines for maintenance
+  * a type of line for maintenance
   * a starting station
   * a locomotive
 
 **Output Data:**
 
-* List of available scenarios
 * Warning message (if no possible route)
-* List of possible starting 
+* List of possible starting stations
 * List of available locomotives
 * Data for confirmation
 * Graphical visualization of stations and lines connecting them

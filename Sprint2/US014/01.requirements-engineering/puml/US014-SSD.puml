@@ -13,11 +13,18 @@ activate Employee
     Employee -> System : asks to do a railway line maintenance
     activate System
 
-        System --> Employee : shows the list of available scenarios
+         System --> Employee : asks for a scenario file with the stations
             deactivate System
 
-    Employee -> System : selects a scenario
-    activate System
+            Employee -> System : types the file path
+            activate System
+
+            System --> Employee : asks for a scenario file with the lines
+                deactivate System
+
+            Employee -> System : types the file path
+                activate System
+
 
         System --> Employee : asks if the maintenance should be of all tracks \n or only the electrified one's
     deactivate System
@@ -55,7 +62,7 @@ activate Employee
 
                 activate System
 
-                     System --> Employee : does not find a route that passes once and only once \n by only electrified railway lines and displays a warning message \n
+                     System --> Employee : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
                      deactivate System
 
                 end alt

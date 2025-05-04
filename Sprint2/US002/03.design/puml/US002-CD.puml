@@ -21,7 +21,7 @@ skinparam classAttributeIconSize 0
     +getAvailableIndustriesTypes(): List<IndustryType>
     +setType(type: IndustryType)
     +getAvailableResourceTypes(): List<ResourceType>
-    +setReosurceType(resourceType: ResourceType)
+    +setResourceType(resourceType: ResourceType)
     +createIndustry(type: IndustryType, position: Position, resourceType: ResourceTypeType): Industry
   }
 

@@ -1,157 +1,133 @@
 @startuml
-'skinparam monochrome true
+skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
 autonumber
 
-'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
-participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+ actor "Player" as PLAYER
+    participant ":UpgradeStationUI" as UI
+    participant ":UpgradeStationController" as CTRL
+    participant "Repositories" as REPOS
+    participant "ScenarioRepository" as SREPOS
+    participant "UpgradeType <<enumeration>>" as UTYPE
+    participant "StationRepository" as STREPOS
 
-activate ORG_EMPLOYEE
+    activate PLAYER
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+    PLAYER -> UI : asks to upgrade a station
+    activate UI
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+    UI --> CTRL** : create()
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
+    UI -> CTRL : getAvailableScenarios()
+    activate CTRL
 
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
+    CTRL -> REPOS : getInstance()
+    activate REPOS
 
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
+    REPOS --> CTRL: repositories
 
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
+    deactivate REPOS
+
+    CTRL -> SREPOS : getScenarioRepository()
+    activate SREPOS
+
+    SREPOS --> CTRL : list of scenarios
+
+    deactivate SREPOS
+    CTRL --> UI : list of scenarios
+    deactivate CTRL
+
+    UI --> PLAYER : shows the list of scenarios
+    deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+
+    UI -> CTRL :setScenario(scenario)
+
+    activate CTRL
+
+    CTRL --> UI : scenario selected
+
+    deactivate CTRL
+
+
+        UI -> CTRL : getAvailableStations()
+        activate CTRL
+
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+
+        deactivate REPOS
+
+        CTRL -> STREPOS : getStationRepository()
+        activate STREPOS
+
+        STREPOS --> CTRL : list of stations
+
+        deactivate STREPOS
+        CTRL --> UI : list of stations
+        deactivate CTRL
+
+        UI --> PLAYER : shows the list of stations
         deactivate UI
 
-    ORG_EMPLOYEE -> UI : selects a task category
-    activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+        PLAYER -> UI : selects a station
+        activate UI
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
+        UI -> CTRL :setStation(station)
 
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
         activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+        CTRL --> UI : station selected
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+        deactivate CTRL
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
+        UI -> CTRL : getAvailableUpgrades()
+                activate CTRL
 
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
+                CTRL -> UTYPE : getAvailableUpgradeTypes(station)
+                activate UTYPE
 
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
+                UTYPE --> CTRL : list of upgrades
 
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+                deactivate UTYPE
+                CTRL --> UI : list of upgrades
+                deactivate CTRL
 
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
+                UI --> PLAYER : shows the list of upgrades
+                deactivate UI
 
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
+                PLAYER -> UI : selects an upgrade
+                activate UI
 
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
+                UI -> CTRL :setUpgrade(upgrade)
 
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
+                activate CTRL
 
-                CTRL --> CTRL : employee
-            deactivate CTRL
+                CTRL --> UI : upgrade selected
 
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
+                deactivate CTRL
 
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
+    UI --> PLAYER: shows all data and requests \n for confirmation
+    deactivate  UI
 
-                    ORG --> ORG : true
-                deactivate ORG
+    PLAYER --> UI: confirms data
+    activate UI
 
-                ORG --> CTRL : task
-            deactivate ORG
+    UI -> CTRL : createBuilding(station, upgrade)
+    activate CTRL
 
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
+    CTRL -> BUILDING** : create(station, upgrade)
+
+    CTRL --> UI : building
+    deactivate CTRL
+
+    UI --> PLAYER : displays operation success
     deactivate UI
-
-deactivate ORG_EMPLOYEE
-
+    deactivate PLAYER
 @enduml

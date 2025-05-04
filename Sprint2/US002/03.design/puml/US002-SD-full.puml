@@ -130,7 +130,7 @@ activate EDITOR
     EDITOR -> UI : selects one resource type
     activate UI
 
-    UI -> CTRL: setReosurceType(resourceType)
+    UI -> CTRL: setResourceType(resourceType)
     activate CTRL
 
     CTRL --> UI: selected resource type

@@ -1,157 +1,184 @@
 @startuml
-'skinparam monochrome true
+skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
 autonumber
 
-'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
-participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+ actor "Player" as PLAYER
+    participant ":AssignRouteUI" as UI
+    participant ":AssignRouteController" as CTRL
+    participant "Repositories" as REPOS
+    participant "ScenarioRepository" as SREPOS
+    participant "StationRepository" as STREPOS
+    participant "Route" as ROUTE
+    participant "FullRoute" as FULLROUTE
 
-activate ORG_EMPLOYEE
+    activate PLAYER
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+    PLAYER -> UI : asks to assign a route to a train
+    activate UI
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+    UI --> CTRL** : create()
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
+    UI -> CTRL : getAvailableScenarios()
+    activate CTRL
 
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
+    CTRL -> REPOS : getInstance()
+    activate REPOS
 
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
+    REPOS --> CTRL: repositories
 
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
+    deactivate REPOS
+
+    CTRL -> SREPOS : getScenarioRepository()
+    activate SREPOS
+
+    SREPOS --> CTRL : list of scenarios
+
+    deactivate SREPOS
+    CTRL --> UI : list of scenarios
+    deactivate CTRL
+
+    UI --> PLAYER : shows the list of scenarios
+    deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+
+    UI -> CTRL :setScenario(scenario)
+
+    activate CTRL
+
+    CTRL --> UI : scenario selected
+
+    deactivate CTRL
+
+
+        UI -> CTRL : getAvailableLocomotives()
+        activate CTRL
+
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+
+        deactivate REPOS
+
+        CTRL -> LREPOS : getLocomotiveRepository()
+        activate LREPOS
+
+        LREPOS --> CTRL : list of locomotives
+        deactivate LREPOS
+
+        deactivate LTREPOS
+        CTRL --> UI : list of locomotives
+        deactivate CTRL
+
+        UI --> PLAYER : shows the list of locomotives
         deactivate UI
 
-    ORG_EMPLOYEE -> UI : selects a task category
-    activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+        PLAYER -> UI : selects a locomotive
+        activate UI
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
+        UI -> CTRL :setLocomotive(locomotive)
 
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
         activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+        CTRL --> UI : locomotive selected
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+        deactivate CTRL
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
-
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
-
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
+        UI -> CTRL : getAvailableStations()
+                activate CTRL
 
                 CTRL -> REPOS : getInstance()
                 activate REPOS
-                    REPOS --> CTRL: repositories
+
+                REPOS --> CTRL: repositories
+
                 deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
+                CTRL -> STREPOS : getStationRepository()
+                activate STREPOS
 
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
+                STREPOS --> CTRL : list of stations
 
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
+                deactivate STREPOS
+                CTRL --> UI : list of stations
+                deactivate CTRL
 
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
+                loop selecting the route's stations
 
-                CTRL --> CTRL : employee
-            deactivate CTRL
+                UI --> PLAYER : shows the list of stations
+                deactivate UI
 
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
+                PLAYER -> UI : selects a station
+                activate UI
 
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
+                UI -> CTRL : Route.add(station)
 
-                    ORG --> ORG : true
-                deactivate ORG
+                activate CTRL
 
-                ORG --> CTRL : task
-            deactivate ORG
+                CTRL --> UI : station added to route
 
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
+                deactivate CTRL
+
+                end loop
+
+                UI -> CTRL : checkStationConnection(Route)
+                activate CTRL
+
+                CTRL -> MAP : checkStationConnection(Route)
+                    activate MAP
+
+                    MAP --> CTRL : connection exists
+                    deactivate MAP
+
+                    CTRL --> UI : connection exists
+                    deactivate CTRL
+
+                UI -> CTRL : checkForCargo(Route)
+                activate CTRL
+
+                CTRL -> ROUTE** : checkForCargo(station)
+                activate ROUTE
+
+                ROUTE --> CTRL : list of cargo
+                deactivate ROUTE
+
+                CTRL --> UI : list of cargo
+                deactivate CTRL
+
+
+                UI --> PLAYER : shows available cargo
+                deactivate UI
+
+
+                PLAYER -> UI : selects cargo
+                activate UI
+
+                UI -> CTRL : setCargo(cargo)
+                activate CTRL
+
+                CTRL --> UI : cargo selected
+                deactivate CTRL
+
+    UI --> PLAYER: shows all data and requests \n for confirmation
+    deactivate  UI
+
+    PLAYER -> UI: confirms data
+    activate UI
+
+    UI -> CTRL : createFullRoute(route, locomotive, cargo)
+    activate CTRL
+
+    CTRL -> FULLROUTE** : create(route, locomotive, cargo)
+
+    CTRL --> UI : route
+    deactivate CTRL
+
+    UI --> PLAYER : displays operation success
     deactivate UI
-
-deactivate ORG_EMPLOYEE
-
+    deactivate PLAYER
 @enduml

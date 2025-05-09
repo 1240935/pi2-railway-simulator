@@ -1,13 +1,119 @@
 @startuml
-'skinparam monochrome true
+skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
 autonumber
 
-'hide footbox
 actor "Editor" as EDITOR
 participant ":AddCityUI" as UI
-participant
+participant ":AddCityController" as CTRL
+participant "Repositories" as REPOS
+participant ":MapRepository" as MAP_REPOS
+participant "Map" as MAP
+participant "City" as CITY
+participant "Position" as PSTN
+participant "CityBlocks" as CITY_BCK
 
+activate EDITOR
+
+    EDITOR -> UI : asks to add a city
+    activate UI
+        UI --> CTRL : getAvailableMaps()
+            activate CTRL
+            CTRL --> REPOS : getInstance()
+                activate REPOS
+                REPOS --> CTRL : repositories
+                deactivate REPOS
+            CTRL --> MAP_REPOS : getMapRepository()
+                activate MAP_REPOS
+                MAP_REPOS --> CTRL : mapRepository
+                deactivate MAP_REPOS
+             CTRL --> UI : availableMaps
+            deactivate CTRL
+
+
+
+        UI --> EDITOR : displays list of available maps
+    deactivate UI
+
+    EDITOR -> UI : selects a map
+    activate UI
+    UI --> MAP : getSelectedMap()
+        activate MAP
+        MAP --> UI : selectedMap
+        deactivate MAP
+        UI --> EDITOR : asks for city name
+    deactivate UI
+
+    EDITOR -> UI : types the city name
+    activate UI
+        UI --> EDITOR : asks for XY coordinates
+    deactivate UI
+
+    EDITOR -> UI : types XY coordinates
+    activate UI
+        UI --> PSTN : new Position (xCoordinate, yCoordinate)
+        UI --> EDITOR : asks for number of city blocks
+    deactivate UI
+
+    EDITOR -> UI : types number of city blocks
+    activate UI
+        UI --> CITY_BCK : new CityBlocks(blocks)
+        UI --> EDITOR : asks for automatic or manual block placement
+    deactivate UI
+
+    alt Automatic placement
+        EDITOR -> UI : selects automatic placement
+        activate UI
+            UI --> EDITOR : blocks placed automatically
+        deactivate UI
+    end alt
+
+    alt Manual placement
+        EDITOR -> UI : selects manual placement
+        activate UI
+
+        loop block positioning
+            UI --> EDITOR : asks for block position
+            EDITOR -> UI : types block position
+            UI --> EDITOR : block placed at position
+        end loop
+
+        deactivate UI
+    end alt
+
+    UI --> EDITOR : shows all data for confirmation
+
+    EDITOR -> UI : confirms data
+    activate UI
+
+        UI -> CTRL : addCity(position, name, blocks)
+        activate CTRL
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> MAP_REPOS : getMapRepository()
+            activate MAP_REPOS
+                MAP_REPOS --> CTRL : mapRepository
+            deactivate MAP_REPOS
+
+            CTRL -> MAP_REPOS : getSelectedMap()
+                MAP_REPOS --> CTRL : selectedMap
+
+            CTRL -> PSTN : new Position(x, y)
+            CTRL -> CITY_BCK : new CityBlocks(blocks)
+            CTRL -> CITY : new City(position, name, blocks)
+
+            CTRL -> MAP : addCity(city)
+            CTRL --> UI : city added
+        deactivate CTRL
+
+        UI --> EDITOR : displays operation success
+    deactivate UI
+
+deactivate EDITOR
 @enduml

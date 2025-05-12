@@ -4,21 +4,21 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...       | Answer                   | Justification (with patterns)                                                              |
-|:---------------|:--------------------------------------------------|:-------------------------|:-------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                   | UpgradeStationUI         | Pure Fabrication: created solely to handle user interaction.                               |
-|                | ... coordinating the US?                          | UpgradeStationController | Controller: central point of control for this use case.                                    |
-|                | ... knowing the user using the system?            | Player                   | IE: Knows its own data (e.g. name, current state, etc.).                                   |
-| Step 2         | ... knowing all available scenarios?              | ScenarioRepository       | IE: Manages access to persisted scenarios.                                                 |
-| Step 3         | ... saving the selected scenario?                 | UpgradeStationController | IE: Keeps the current scenario selected during the flow.                                   |
-| Step 4         | ... getting available stations?                   | StationRepository        | IE: Responsible for storing and retrieving stations.                                       |
-| Step 5         | ... saving the selected station?                  | UpgradeStationController | IE: Keeps track of which station the player selected.                                      |
-| Step 6         | ... getting available building types?             | BuildingType             | IE: Enum that defines valid upgrade types.                                                 |
-| Step 7         | ... saving the selected building type?            | UpgradeStationController | IE: Holds selected type to complete the upgrade logic.                                     |
-| Step 8         | ... showing all data and requesting confirmation? | UpgradeStationUI         | IE: Responsible for presenting collected data and requesting final confirmation.           |
-| Step 9         | ... instantiating a new Building?                 | UpgradeStationController | Creator: Has all required data (station, type) to create a new Building.                   |
-|                | ... saving the new building?                      | (Station or Scenario)¹   | IE: Not shown, but typically the Building would be saved in a Station or Scenario context. |
-| Step 10        | ... informing the user of operation success?      | UpgradeStationUI         | IE: Displays confirmation message to the player.                                           |
+| Interaction ID | Question: Which class is responsible for...       | Answer                   | Justification (with patterns)                                                    |
+|:---------------|:--------------------------------------------------|:-------------------------|:---------------------------------------------------------------------------------|
+| Step 1         | ... interacting with the actor?                   | UpgradeStationUI         | Pure Fabrication: created solely to handle user interaction.                     |
+|                | ... coordinating the US?                          | UpgradeStationController | Controller: central point of control for this use case.                          |
+|                | ... knowing the user using the system?            | Player                   | IE: Knows its own data (e.g. name, current state, etc.).                         |
+| Step 2         | ... knowing all available scenarios?              | ScenarioRepository       | IE: Manages access to persisted scenarios.                                       |
+| Step 3         | ... saving the selected scenario?                 | UpgradeStationUI         | IE: Keeps the current scenario selected during the flow.                         |
+| Step 4         | ... getting available stations?                   | StationRepository        | IE: Responsible for storing and retrieving stations.                             |
+| Step 5         | ... saving the selected station?                  | UpgradeStationUI         | IE: Keeps track of which station the player selected.                            |
+| Step 6         | ... getting available building types?             | BuildingType             | IE: Enum that defines valid upgrade types.                                       |
+| Step 7         | ... saving the selected building type?            | UpgradeStationUI         | IE: Holds selected type to complete the upgrade logic.                           |
+| Step 8         | ... showing all data and requesting confirmation? | UpgradeStationUI         | IE: Responsible for presenting collected data and requesting final confirmation. |
+| Step 9         | ... instantiating a new Building?                 | UpgradeStationController | Creator: Has all required data (station, type) to create a new Building.         |
+|                | ... saving the new building?                      | Scenario                 | IE: Responsible for saving objects placed on the map                             |
+| Step 10        | ... informing the user of operation success?      | UpgradeStationUI         | IE: Displays confirmation message to the player.                                 |
 
 ### Systematization ##
 

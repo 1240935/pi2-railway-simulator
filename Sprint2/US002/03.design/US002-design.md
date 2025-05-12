@@ -10,8 +10,7 @@
 |                | ... coordinating the US?                          | CreateIndustryController | Controller: Coordinates the use case by delegating responsibilities to domain or fabricated classes. |
 |                | ... knowing the user using the system?            | Editor                   | IE: knows its own data (e.g. username, password).                                                    |
 | Step 2         | ... knowing all existing maps to show?            | Repositories             | IE: Central access point to various repositories.                                                    |
-|                |                                                   | MapRepository            | HC + LC: Repositories delegates to MapRepository for cohesion.                                       |
-| Step 3         | ... saving the selected map?                      | CreateIndustryUI         | IE: Stores temporary user input.                                                                     |
+| Step 3         | ... saving the selected map?                      | CreateIndustryUI         | IE : Stores temporary user input.                                                                    |
 | Step 4         | ... requesting coordinate input?                  | CreateIndustryUI         | IE: Responsible for handling user interactions.                                                      |
 | Step 5         | ... saving the coordinates?                       | CreateIndustryUI         | IE: Temporarily stores input for further use.                                                        |
 | Step 6         | ... validating coordinates?                       | Map                      | IE: Owns map data and knows which coordinates are valid.                                             |
@@ -20,7 +19,7 @@
 | Step 9         | ... knowing all resource types?                   | ResourceType             | IE: Enum represents a fixed list of options, centralizing responsibility.                            |
 | Step 10        | ... saving the selected resource type?            | CreateIndustryUI         | IE: Responsible for holding the resource type selected by the user.                                  |
 | Step 11        | ... showing all data and requesting confirmation? | CreateIndustryUI         | IE: Responsible for interacting with the actor.                                                      |
-| Step 12        | ... instantiating a new Industry?                 | Industry                 | Creator (Rule 1): Industry class is the best candidate to create its instances.                      |
+| Step 12        | ... instantiating a new Industry?                 | Industry                 | Creator: Industry class is the best candidate to create its instances.                               |
 |                | ... validating all data (local validation)?       | Industry                 | IE: Owns its data and can validate its own invariants.                                               |
 |                | ... saving the created industry?                  | Map                      | IE: Map aggregates Industries and is responsible for managing them.                                  |
 | Step 13        | ... informing operation success?                  | CreateIndustryUI         | IE: Responsible for feedback to the user.                                                            |

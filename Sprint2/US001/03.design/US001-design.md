@@ -27,7 +27,6 @@ Other software classes (i.e. Pure Fabrication) identified:
 
 * CreateMapUI
 * CreateMapController
-* Employee
 
 
 ## 3.2. Sequence Diagram (SD)

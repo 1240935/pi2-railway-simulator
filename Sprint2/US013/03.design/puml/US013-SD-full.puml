@@ -6,152 +6,98 @@ skinparam shadowing false
 autonumber
 
 'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Player" as PLAYER
+participant ":VerifyTrainTravelUI" as UI
+participant ":VerifyTrainTravelController" as CTRL
 participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+participant "StationRepository" as STREPO
+participant "LineRepository" as LINEREPO
+participant "LocomotiveType <<enumeration>>" as LOCTYPE
+participant "StationType <<enumeration>>" as STTYPE
+participant "Graph" as GRAPH
+participant "PathVerifier" as PATH
 
-activate ORG_EMPLOYEE
+autonumber
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+activate PLAYER
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+PLAYER -> UI : asks to verify if a type of locomotive is able to travel \n between two stations of the same type
+activate UI
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
+       UI --> CTRL** : create()
 
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
+UI --> PLAYER : asks for a scenario file with the stations
+PLAYER -> UI : types the file path
 
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
+UI -> CTRL : setStationFile(file)
+activate CTRL
 
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
-        deactivate UI
+CTRL --> UI : station file
+deactivate CTRL
+UI --> PLAYER :asks for a scenario file with the lines
+PLAYER -> UI :  types the file path
+UI -> CTRL : setLineFile(file)
+activate CTRL
 
-    ORG_EMPLOYEE -> UI : selects a task category
-    activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
+CTRL -> STREPO : loadStations(file)
+activate STREPO
+STREPO --> CTRL : list of stations
+deactivate STREPO
 
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
-        activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+CTRL -> LINEREPO : loadLines(file)
+activate LINEREPO
+LINEREPO --> CTRL : list of lines
+deactivate LINEREPO
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+CTRL -> LOCTYPE : getAvailableLocomotiveTypes()
+activate LOCTYPE
+LOCTYPE --> CTRL : list of available locomotive types
+deactivate LOCTYPE
+CTRL --> UI : list of available locomotive types
+deactivate CTRL
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+UI --> PLAYER : shows the list of available locomotive types
+PLAYER -> UI : selects a locomotive type
+UI -> CTRL : setType(type)
+activate CTRL
+CTRL --> UI : type
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
+CTRL -> STTYPE : getAvailableStationTypes()
+activate STTYPE
+STTYPE --> CTRL : list of available station types
+deactivate STTYPE
+CTRL --> UI : list of available station types
+deactivate CTRL
 
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
+UI --> PLAYER : shows the list of available station types
+PLAYER -> UI : select station type
+UI -> CTRL : setStationType(type)
+activate CTRL
+CTRL --> UI : type
 
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
+CTRL -> GRAPH : buildGraph(stations, lines)
+activate GRAPH
+GRAPH --> CTRL : graph
+deactivate GRAPH
 
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+CTRL -> PATH : verifyPath(graph, trainType, stationType)
+activate PATH
+PATH --> CTRL : verified graph
+deactivate PATH
 
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
-
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
-
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
-
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
-
-                CTRL --> CTRL : employee
-            deactivate CTRL
-
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
-
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
-
-                    ORG --> ORG : true
-                deactivate ORG
-
-                ORG --> CTRL : task
-            deactivate ORG
-
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
-    deactivate UI
-
-deactivate ORG_EMPLOYEE
+CTRL --> UI : verified graph
+deactivate CTRL
+UI --> PLAYER : completes verification, displays a graphical visualization of the stations \n and lines connecting them and displays success
+deactivate UI
 
 @enduml

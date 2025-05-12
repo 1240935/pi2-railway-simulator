@@ -82,7 +82,7 @@ Repositories --> "1" LineRepository : line repository
 StationRepository --> "1..*" Station : station
 LineRepository --> "1..*" Line : line
 Graph --> "2..*" Station : station
-Graph --> "2..*" Line : line
+Graph --> "1..*" Line : line
 PathVerifier --> "1" Graph :graph
 PathVerifier --> "1" LocomotiveType : locomotive type
 PathVerifier --> "1" StationType : station type

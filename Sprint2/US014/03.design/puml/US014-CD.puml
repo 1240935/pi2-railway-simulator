@@ -9,118 +9,95 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class ApplicationSession
-{
-    - ApplicationSession()
-    + {static} getInstance()
-    + getCurrentSession()
+class RailwayMaintenanceUI {
+
 }
 
-class UserSession
-{
-    + getUserEmail()
-}
-
-class Employee {
-    - name : String
-    - email : String
-    - position : String
-    - phone : String
-}
-
-class Task {
-    - reference :String
-    - description : String
-    - informalDescription : String
-    - technicalDescription : String
-    - duration : int
-    - cost : double
-
-    + Task(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, createdBy)
-}
-
-class TaskCategory {
-    - description : String
-}
-
-class Organization {
-    - name : String
-    - vatNumber : String
-    - website : String
-    - phone : String
-    - email : String
-
-    + Organization(name, vatNumber, webSite, phone, email, postalAddress, manager)
-    + anyEmployeeHasEmail(email)
-    + getEmployeeByEmail(email)
-    + createTask(reference, description, informalDesccription, technicalDescription, \nduration, cost, taskCategory, employee)
-    - addTask(task)
-    - validateTask(task)
-}
-
-class TaskCategoryRepository {
-    + getTaskCategories()
-    + getTaskCategoryByDescription(taskCategoryDescription)
-}
-
-class OrganizationRepository {
-    + getOrganizationByEmployeeEmail(email)
+class RailwayMaintenanceController {
+  +setStationFile(file: File)
+  +setLineFile(file: File)
+  +setMaintenanceType(type: MaintenanceType)
+  +setStartStation(station: Station)
+  +setLocomotive(locomotive: Locomotive)
 }
 
 class Repositories {
-    - Repositories()
-    + {static} getInstance()
-    + getTaskCategoryRepository()
-    + getOrganizationRepository()
+  +getInstance(): Repositories
+  +getStationRepository(): StationRepository
+  +getLineRepository(): LineRepository
+  +getLocomotiveRepository(): LocomotiveRepository
 }
 
-class CreateTaskController {
-    + CreateTaskController()
-    + getTaskCategories()
-    + createTask(reference, description, informalDescription, \n   technicalDescription, duration, cost, taskCategoryDescription)
-    - getTaskCategoryByDescription(taskCategoryDescription)
-    - getEmployeeFromSession()
+class StationRepository {
+  +loadStations(file: File): List<Station>
 }
 
-note right of CreateTaskController
-    categoryDescription is retrieved
-    from selected data
-end note
-
-note bottom of TaskCategoryRepository
-    - used for displaying
-    the task category list
-end note
-
-class CreateTaskUI {
+class LineRepository {
+  +loadLines(file: File): List<Line>
+  +getElectrifiedLines(lines: List<Line>): List<Line>
 }
 
-CreateTaskUI .> CreateTaskController
+class LocomotiveRepository {
+  +getAvailableLocomotives(): List<Locomotive>
+}
 
-CreateTaskController ..> ApplicationSession
-CreateTaskController ..> UserSession
-CreateTaskController ..> TaskCategory
-CreateTaskController ..> TaskCategoryRepository
-CreateTaskController ..> Organization
-CreateTaskController ..> OrganizationRepository
-CreateTaskController .> Repositories
+class Graph {
+  +buildGraph(stations: List<Station>, lines: List<Line>): Graph
+}
 
-Repositories -> "1" Repositories : instance
-Repositories --> "1" OrganizationRepository : organizationRepository
-Repositories -> "1" TaskCategoryRepository : taskCategoryRepository
+class Route {
+  +findEulerianPath(graph: Graph): List<Station>
+}
 
-ApplicationSession -> "1" ApplicationSession : instance
-ApplicationSession ..> UserSession
+class Station {
+  -name : String
+  -position : Position
+  -type : StationType
+  -center : Position
+}
 
-TaskCategoryRepository --> "*" TaskCategory : taskCategories
+class Line {
+  -start: Station
+  -end: Station
+  -isElectrified: boolean
+}
 
-OrganizationRepository --> "*" Organization : organizations
+class Locomotive {
+    -power: int
+    -acceleration: int
+    -topSpeed: int
+    -operationStartYear: int
+    -fuelCost: int
+    -maintenancePYear: int
+    -cost: int
+    -iD: int
+}
 
-Organization --> "*" Task : tasks
-Organization --> "*" Employee : employees
+enum MaintenanceType {
+  Full
+  Electrified
+}
 
-Task --> "1" TaskCategory : taskCategory
-Task --> "1" Employee : createdBy
+RailwayMaintenanceUI ..> RailwayMaintenanceController
+RailwayMaintenanceController ..> StationRepository
+RailwayMaintenanceController ..> LineRepository
+RailwayMaintenanceController ..> LocomotiveRepository
+RailwayMaintenanceController ..> Graph
+RailwayMaintenanceController ..> Route
+RailwayMaintenanceController ..> MaintenanceType
+RailwayMaintenanceController ..> Repositories
+RailwayMaintenanceController ..> Station
+RailwayMaintenanceController ..> Line
+RailwayMaintenanceController ..> Locomotive
 
+Repositories --> "1" StationRepository : station repository
+Repositories --> "1" LineRepository : line repository
+Repositories --> "1" LocomotiveRepository : locomotive repository
 
+StationRepository --> "1..*" Station : station
+LineRepository --> "1..*" Line : line
+Graph --> "1..*" Station : station
+Graph --> "2..*" Line : line
+Route --> "1" Graph : graph
+Route --> "1" MaintenanceType : maintenance type
 @enduml

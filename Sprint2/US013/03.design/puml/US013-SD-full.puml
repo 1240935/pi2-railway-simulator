@@ -36,8 +36,17 @@ PLAYER -> UI : types the file path
 
 UI -> CTRL : setStationFile(file)
 activate CTRL
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
 
-CTRL --> UI : station file
+CTRL -> STREPO : loadStations(file)
+activate STREPO
+STREPO --> CTRL : list of stations
+deactivate STREPO
+
+CTRL --> UI : list of stations
 deactivate CTRL
 UI --> PLAYER :asks for a scenario file with the lines
 PLAYER -> UI :  types the file path
@@ -48,11 +57,6 @@ CTRL -> REPOS : getInstance()
 activate REPOS
 REPOS --> CTRL : repositories
 deactivate REPOS
-
-CTRL -> STREPO : loadStations(file)
-activate STREPO
-STREPO --> CTRL : list of stations
-deactivate STREPO
 
 CTRL -> LINEREPO : loadLines(file)
 activate LINEREPO
@@ -89,10 +93,11 @@ CTRL -> GRAPH : buildGraph(stations, lines)
 activate GRAPH
 GRAPH --> CTRL : graph
 deactivate GRAPH
+CTRL --> UI : graph
 
 CTRL -> PATH : verifyPath(graph, trainType, stationType)
 activate PATH
-PATH --> CTRL : verified graph
+PATH --> CTRL : verification
 deactivate PATH
 
 CTRL --> UI : verified graph

@@ -28,7 +28,6 @@ According to the taken rationale, the conceptual classes promoted to software cl
 * Line
 * LocomotiveType
 * StationType
-* Graph
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
@@ -38,6 +37,8 @@ Other software classes (i.e. Pure Fabrication) identified:
 * StationRepository
 * StationRepository
 * PathVerifier
+* Graph
+
 
 
 ## 3.2. Sequence Diagram (SD)

@@ -1,7 +1,7 @@
 package pt.ipp.isep.dei.repository;
 
 import org.junit.jupiter.api.Test;
-import pt.ipp.isep.dei.domain.TaskCategory;
+import pt.ipp.isep.dei.domain.Position;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ class TaskCategoryRepositoryTest {
     void ensureNewTaskCategorySuccessfullyAdded() {
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
         String taskCategoryDescription = "Task Category Description";
-        TaskCategory taskCategory = new TaskCategory(taskCategoryDescription);
+        Position taskCategory = new Position(taskCategoryDescription);
         taskCategoryRepository.add(taskCategory);
     }
 
@@ -37,9 +37,9 @@ class TaskCategoryRepositoryTest {
     void ensureGetTaskCategoryForExistingTaskCategory() {
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
         String taskCategoryDescription = "Task Category Description";
-        TaskCategory taskCategory = new TaskCategory(taskCategoryDescription);
+        Position taskCategory = new Position(taskCategoryDescription);
         taskCategoryRepository.add(taskCategory);
-        TaskCategory taskCategory1 = taskCategoryRepository.getTaskCategoryByDescription(taskCategoryDescription);
+        Position taskCategory1 = taskCategoryRepository.getTaskCategoryByDescription(taskCategoryDescription);
         assertEquals(taskCategory, taskCategory1);
     }
 
@@ -47,7 +47,7 @@ class TaskCategoryRepositoryTest {
     void ensureGetTaskCategoryFailsForNonExistingTaskCategory() {
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
         String taskCategoryDescription = "Task Category Description";
-        TaskCategory taskCategory = new TaskCategory(taskCategoryDescription);
+        Position taskCategory = new Position(taskCategoryDescription);
         taskCategoryRepository.add(taskCategory);
         String taskCategoryDescription1 = "Task Category Description 1";
         assertThrows(IllegalArgumentException.class,
@@ -59,11 +59,11 @@ class TaskCategoryRepositoryTest {
     void ensureGetTaskCategoriesReturnsAnImmutableList() {
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
         String taskCategoryDescription = "Task Category Description";
-        TaskCategory taskCategory = new TaskCategory(taskCategoryDescription);
+        Position taskCategory = new Position(taskCategoryDescription);
         taskCategoryRepository.add(taskCategory);
 
         assertThrows(UnsupportedOperationException.class,
-                () -> taskCategoryRepository.getTaskCategories().add(new TaskCategory("Task Category Description 1")));
+                () -> taskCategoryRepository.getTaskCategories().add(new Position("Task Category Description 1")));
 
     }
 
@@ -72,7 +72,7 @@ class TaskCategoryRepositoryTest {
         //Arrange
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
         String taskCategoryDescription = "Task Category Description";
-        TaskCategory taskCategory = new TaskCategory(taskCategoryDescription);
+        Position taskCategory = new Position(taskCategoryDescription);
         taskCategoryRepository.add(taskCategory);
         int expectedSize = 1;
 
@@ -88,12 +88,12 @@ class TaskCategoryRepositoryTest {
     void ensureAddingDuplicateTaskCategoryFails() {
         //Arrange
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Position taskCategory = new Position("Task Category Description");
         //Add the first task
         taskCategoryRepository.add(taskCategory);
 
         //Act
-        Optional<TaskCategory> duplicateTaskCategory = taskCategoryRepository.add(taskCategory);
+        Optional<Position> duplicateTaskCategory = taskCategoryRepository.add(taskCategory);
 
         //Assert
         assertTrue(duplicateTaskCategory.isEmpty());
@@ -103,13 +103,13 @@ class TaskCategoryRepositoryTest {
     void ensureAddingDifferentTaskCategoriesWorks() {
         //Arrange
         TaskCategoryRepository taskCategoryRepository = new TaskCategoryRepository();
-        TaskCategory taskCategoryOne = new TaskCategory("Task Category Description One");
-        TaskCategory taskCategoryTwo = new TaskCategory("Task Category Description Two");
+        Position taskCategoryOne = new Position("Task Category Description One");
+        Position taskCategoryTwo = new Position("Task Category Description Two");
         //Add the first task
         taskCategoryRepository.add(taskCategoryOne);
 
         //Act
-        Optional<TaskCategory> result = taskCategoryRepository.add(taskCategoryTwo);
+        Optional<Position> result = taskCategoryRepository.add(taskCategoryTwo);
 
         //Assert
         assertEquals(taskCategoryTwo, result.get());

@@ -1,8 +1,7 @@
 package pt.ipp.isep.dei.ui.console;
 
-import pt.ipp.isep.dei.controller.CreateTaskController;
 import pt.ipp.isep.dei.domain.Task;
-import pt.ipp.isep.dei.domain.TaskCategory;
+import pt.ipp.isep.dei.domain.Position;
 
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +105,7 @@ public class CreateTaskUI implements Runnable {
 
     private String displayAndSelectTaskCategory() {
         //Display the list of task categories
-        List<TaskCategory> taskCategories = controller.getTaskCategories();
+        List<Position> taskCategories = controller.getTaskCategories();
 
         int listSize = taskCategories.size();
         int answer = -1;
@@ -123,10 +122,10 @@ public class CreateTaskUI implements Runnable {
         return description;
     }
 
-    private void displayTaskCategoryOptions(List<TaskCategory> taskCategories) {
+    private void displayTaskCategoryOptions(List<Position> taskCategories) {
         //display the task categories as a menu with number options to select
         int i = 1;
-        for (TaskCategory taskCategory : taskCategories) {
+        for (Position taskCategory : taskCategories) {
             System.out.println("  " + i + " - " + taskCategory.getDescription());
             i++;
         }

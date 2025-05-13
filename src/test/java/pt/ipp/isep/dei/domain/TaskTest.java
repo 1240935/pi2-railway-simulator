@@ -8,8 +8,8 @@ class TaskTest {
 
     @Test
     void ensureTaskIsCreatedSuccessfully() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
     }
@@ -17,8 +17,8 @@ class TaskTest {
     @Test
     void ensureTaskReferenceIsNotNull() {
         //Arrange
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
 
         //Act and Assert
         assertThrows(IllegalArgumentException.class,
@@ -28,8 +28,8 @@ class TaskTest {
 
     @Test
     void testEqualsSameObject() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
 
@@ -38,8 +38,8 @@ class TaskTest {
 
     @Test
     void testEqualsDifferentClass() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
 
@@ -48,8 +48,8 @@ class TaskTest {
 
     @Test
     void testEqualsNull() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
 
@@ -58,8 +58,8 @@ class TaskTest {
 
     @Test
     void testEqualsDifferentObject() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
         Task task1 = new Task("reference1", "description1", "informal description1", "technical description1", 2, 2d,
@@ -70,8 +70,8 @@ class TaskTest {
 
     @Test
     void testEqualsSameObjectDifferentDescription() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
         Task task1 = new Task("reference1", "description", "informal description1", "technical description1", 2, 2d,
@@ -82,8 +82,8 @@ class TaskTest {
 
     @Test
     void testEqualsSameObjectSameDescription() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
         Task task1 = new Task("reference", "description", "informal description", "technical description", 1, 1d,
@@ -94,8 +94,8 @@ class TaskTest {
 
     @Test
     void testHashCodeSameObject() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
 
@@ -104,8 +104,8 @@ class TaskTest {
 
     @Test
     void testHashCodeDifferentObject() {
-        Employee employee = new Employee("john.doe@this.company.com");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.com");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
         Task task1 = new Task("reference1", "description1", "informal description1", "technical description1", 2, 2d,
@@ -116,8 +116,8 @@ class TaskTest {
 
     @Test
     void ensureCloneWorks() {
-        Employee employee = new Employee("john.doe@this.company.org");
-        TaskCategory taskCategory = new TaskCategory("Task Category Description");
+        Player employee = new Player("john.doe@this.company.org");
+        Position taskCategory = new Position("Task Category Description");
         Task task = new Task("reference", "description", "informal description", "technical description", 1, 1d,
                 taskCategory, employee);
         Task clone = task.clone();

@@ -1,13 +1,8 @@
 package pt.ipp.isep.dei;
 
-import pt.ipp.isep.dei.controller.AuthenticationController;
-import pt.ipp.isep.dei.domain.Employee;
-import pt.ipp.isep.dei.domain.Organization;
-import pt.ipp.isep.dei.domain.TaskCategory;
-import pt.ipp.isep.dei.repository.AuthenticationRepository;
-import pt.ipp.isep.dei.repository.OrganizationRepository;
-import pt.ipp.isep.dei.repository.Repositories;
-import pt.ipp.isep.dei.repository.TaskCategoryRepository;
+import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.domain.Editor;
+import pt.ipp.isep.dei.domain.Position;
 
 public class Bootstrap implements Runnable {
 
@@ -23,9 +18,9 @@ public class Bootstrap implements Runnable {
         //get organization repository
         OrganizationRepository organizationRepository = Repositories.getInstance().getOrganizationRepository();
 
-        Organization organization = new Organization("This Company");
-        organization.addEmployee(new Employee("admin@this.app"));
-        organization.addEmployee(new Employee("employee@this.app"));
+        Editor organization = new Editor("This Company");
+        organization.addEmployee(new Player("admin@this.app"));
+        organization.addEmployee(new Player("employee@this.app"));
         organizationRepository.add(organization);
     }
 
@@ -34,13 +29,13 @@ public class Bootstrap implements Runnable {
         //get task category repository
         TaskCategoryRepository taskCategoryRepository = Repositories.getInstance().getTaskCategoryRepository();
 
-        taskCategoryRepository.add(new TaskCategory("Analysis"));
-        taskCategoryRepository.add(new TaskCategory("Design"));
-        taskCategoryRepository.add(new TaskCategory("Implementation"));
-        taskCategoryRepository.add(new TaskCategory("Development"));
-        taskCategoryRepository.add(new TaskCategory("Testing"));
-        taskCategoryRepository.add(new TaskCategory("Deployment"));
-        taskCategoryRepository.add(new TaskCategory("Maintenance"));
+        taskCategoryRepository.add(new Position("Analysis"));
+        taskCategoryRepository.add(new Position("Design"));
+        taskCategoryRepository.add(new Position("Implementation"));
+        taskCategoryRepository.add(new Position("Development"));
+        taskCategoryRepository.add(new Position("Testing"));
+        taskCategoryRepository.add(new Position("Deployment"));
+        taskCategoryRepository.add(new Position("Maintenance"));
     }
 
     private void addUsers() {

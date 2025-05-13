@@ -1,8 +1,8 @@
 package pt.ipp.isep.dei.repository;
 
 import org.junit.jupiter.api.Test;
-import pt.ipp.isep.dei.domain.Employee;
-import pt.ipp.isep.dei.domain.Organization;
+import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.domain.Editor;
 
 import java.util.Optional;
 
@@ -13,9 +13,9 @@ class OrganizationRepositoryTest {
     @Test
     void testAddOrganization() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
+        Editor organization = new Editor("123456789");
 
-        Optional<Organization> returnOrganization = organizationRepository.add(organization);
+        Optional<Editor> returnOrganization = organizationRepository.add(organization);
 
         assertEquals(organization, returnOrganization.get());
     }
@@ -23,12 +23,12 @@ class OrganizationRepositoryTest {
     @Test
     void ensureGetOrganizationByEmployeeWorks() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
-        Employee employee = new Employee("john.doe@this.company.com");
+        Editor organization = new Editor("123456789");
+        Player employee = new Player("john.doe@this.company.com");
         organization.addEmployee(employee);
         organizationRepository.add(organization);
 
-        Optional<Organization> result = organizationRepository.getOrganizationByEmployee(employee);
+        Optional<Editor> result = organizationRepository.getOrganizationByEmployee(employee);
 
         assertEquals(organization, result.get());
     }
@@ -36,13 +36,13 @@ class OrganizationRepositoryTest {
     @Test
     void ensureGetOrganizationByEmployeeFails() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
-        Employee employee = new Employee("john.doe@this.company.com");
+        Editor organization = new Editor("123456789");
+        Player employee = new Player("john.doe@this.company.com");
         organization.addEmployee(employee);
         organizationRepository.add(organization);
 
-        Employee employee2 = new Employee("jane.doe@this.company.com");
-        Optional<Organization> result = organizationRepository.getOrganizationByEmployee(employee2);
+        Player employee2 = new Player("jane.doe@this.company.com");
+        Optional<Editor> result = organizationRepository.getOrganizationByEmployee(employee2);
 
         assertTrue(result.isEmpty());
     }
@@ -50,12 +50,12 @@ class OrganizationRepositoryTest {
     @Test
     void ensureGetOrganizationByEmailWorks() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
-        Employee employee = new Employee("john.doe@this.company.com");
+        Editor organization = new Editor("123456789");
+        Player employee = new Player("john.doe@this.company.com");
         organization.addEmployee(employee);
         organizationRepository.add(organization);
 
-        Optional<Organization> result =
+        Optional<Editor> result =
                 organizationRepository.getOrganizationByEmployeeEmail("john.doe@this.company.com");
 
         assertEquals(organization, result.get());
@@ -64,13 +64,13 @@ class OrganizationRepositoryTest {
     @Test
     void ensureAddOrganizationWorks() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
-        Employee employee = new Employee("john.doe@this.company.com");
+        Editor organization = new Editor("123456789");
+        Player employee = new Player("john.doe@this.company.com");
         organization.addEmployee(employee);
 
         organizationRepository.add(organization);
 
-        Optional<Organization> returnOrganization =
+        Optional<Editor> returnOrganization =
                 organizationRepository.getOrganizationByEmployeeEmail("john.doe@this" + ".company.com");
 
         //Assert
@@ -83,12 +83,12 @@ class OrganizationRepositoryTest {
     @Test
     void ensureAddOrganizationDuplicateFails() {
         OrganizationRepository organizationRepository = new OrganizationRepository();
-        Organization organization = new Organization("123456789");
-        Employee employee = new Employee("john.doe@this.company.com");
+        Editor organization = new Editor("123456789");
+        Player employee = new Player("john.doe@this.company.com");
         organization.addEmployee(employee);
         organizationRepository.add(organization);
 
-        Optional<Organization> result = organizationRepository.add(organization);
+        Optional<Editor> result = organizationRepository.add(organization);
 
         assertTrue(result.isEmpty());
     }

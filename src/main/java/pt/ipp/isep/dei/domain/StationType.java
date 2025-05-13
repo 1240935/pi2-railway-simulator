@@ -14,5 +14,12 @@ public enum StationType {
         this.radius = radius;
     }
 
+    public int getRadius() {
+        return radius;
     }
+
+    public int getCost() {
+        return cost;
+    }
+}
 

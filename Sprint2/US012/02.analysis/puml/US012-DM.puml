@@ -10,11 +10,11 @@ hide methods
 
 left to right direction
 
-class ProductOwner {
-    name
+class Player {
+    username
     password
+    budget
 }
-
 class Station {
     name
     capacity
@@ -37,7 +37,7 @@ class Simulator{
     status
 }
 
-ProductOwner "1" -- "1" Simulator: controls >
+Player "1" -- "1" Simulator: controls >
 Simulator "1" -- "*" Cargo: generates >
 
 Station "1" -- "1" StationType: has >

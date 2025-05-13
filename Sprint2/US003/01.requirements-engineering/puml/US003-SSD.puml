@@ -48,9 +48,7 @@ activate Employee
     System --> Employee : places the blocks automatically around the city
     deactivate System
 
-    end alt
-
-    alt manual block placement
+    else alt manual block placement
 
     Employee -> System : selects manual block placement
     activate System

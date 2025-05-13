@@ -14,18 +14,18 @@ class BuildStationUI {
 
 class BuildStationController {
   +BuildStationController()
-  +getAvailableScenarios() : List<Scenario>
-  +setScenario(scenario: Scenario)
-  +createPosition(xCoordinate: int, yCoordinate: int) : Position
-  +checkPosition(pos: Position) : boolean
-  +getClosestCity(pos: Position) : City
-  +getAvailableStationTypes(): List<StationType>
-  +setType(type: StationType)
-  +setGeometricCenter(pos: Position)
-  +setCompassCenter(compassCoord: String)
-  +getName(city : City) : String
-  +setName(name : String)
-  +createStation(position: position, name: String, type: StationType, center: Position)
+  +getAvailableScenarios()
+  +setScenario(scenario)
+  +createPosition(xCoordinate, yCoordinate)
+  +checkPosition(position)
+  +getClosestCity(position)
+  +getAvailableStationTypes()
+  +setType(type)
+  +setGeometricCenter(position)
+  +setCompassCenter(compassCoord)
+  +getName(city)
+  +setName(name)
+  +createStation(position, name, type, center)
 }
 
 class Repositories {
@@ -35,17 +35,22 @@ class Repositories {
   }
 
 class Scenario {
-  -cities : List<City>
-  -stations : List<Station>
-  +checkCoordinates(pos: Position) : boolean
-  +getClosestCity(pos: Position) : City
+  -map: Map
+  -year: int
+  -locomotiveTypes: List<LocomotiveType>
+  -industryTypes: List<IndustryType>
+  -resourceTypes: List<ResourceType>
+  -importation: boolean
+  -changers: List<IndustryChanger>
+  +checkCoordinates(position)
+  +getClosestCity(position)
 }
 
 class City {
   -name : String
   -position : Position
-  +getName() : String
-  +getPosition() : Position
+  +getName()
+  +getPosition()
 }
 
 class Station {
@@ -59,8 +64,7 @@ class Station {
 class Position {
   -xCoordinate : int
   -yCoordinate : int
-  +Position(xCoordinate : int, yCoordinate : int)
-  +distanceTo(position : Position) : double
+  +Position(xCoordinate, yCoordinate)
 }
 
 enum StationType {
@@ -73,8 +77,8 @@ enum StationType {
 }
 
 class ScenarioRepository {
-  +getScenarioRepository() : List<Scenario>
-  +getScenario(scenario) : Scenario
+  +getScenarioRepository()
+  +getScenario(scenario)
 }
 
 BuildStationUI ..> BuildStationController

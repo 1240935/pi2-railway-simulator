@@ -130,11 +130,11 @@ activate EDITOR
 
     UI --> EDITOR : shows port behavior options
     deactivate UI
-    EDITOR -> UI : selects behavior
+    EDITOR -> UI : selects importation
     activate UI
-    UI -> CTRL : setPortBehavior(behavior)
+    UI -> CTRL : setPortBehavior(importation)
     activate CTRL
-    CTRL --> UI : behavior selected
+    CTRL --> UI : importation selected
     deactivate CTRL
 
     UI -> CTRL : getIndustryChangers()

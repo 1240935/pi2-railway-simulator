@@ -25,7 +25,6 @@ class City {
 }
 
 class CityBlock{
-    number
 }
 
 class Editor {

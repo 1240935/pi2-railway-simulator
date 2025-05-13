@@ -69,7 +69,6 @@ class City {
 }
 
 class CityBlock{
-    number
 }
 
 class Railway{
@@ -110,11 +109,6 @@ class Simulator{
     status
 }
 
-class ProductOwner {
-    username
-    password
-}
-
 class Train {
 }
 
@@ -148,8 +142,8 @@ Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
 Player "1" -- "1..*" Locomotive : buys >
+Player "1" -- "1" Simulator: controls >
 
-ProductOwner "1" -- "1" Simulator: controls >
 Simulator "1" -- "*" Cargo: generates >
 
 Map "1" -- "*" Station : contains >

@@ -9,7 +9,7 @@
 | Step 1         | ... interacting with the actor?                   | CreateIndustryUI         | Pure Fabrication: UI handles user interaction but is not a domain class.                             |
 |                | ... coordinating the US?                          | CreateIndustryController | Controller: Coordinates the use case by delegating responsibilities to domain or fabricated classes. |
 |                | ... knowing the user using the system?            | Editor                   | IE: knows its own data (e.g. username, password).                                                    |
-| Step 2         | ... knowing all existing maps to show?            | Repositories             | IE: Central access point to various repositories.                                                    |
+| Step 2         | ... knowing all existing maps to show?            | MapRepositories          | IE: Access point to all maps.                                                                        |
 | Step 3         | ... saving the selected map?                      | CreateIndustryUI         | IE : Stores temporary user input.                                                                    |
 | Step 4         | ... requesting coordinate input?                  | CreateIndustryUI         | IE: Responsible for handling user interactions.                                                      |
 | Step 5         | ... saving the coordinates?                       | CreateIndustryUI         | IE: Temporarily stores input for further use.                                                        |

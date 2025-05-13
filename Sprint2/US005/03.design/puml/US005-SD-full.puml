@@ -76,22 +76,25 @@ activate PLAYER
 
         activate CTRL
 
-            CTRL -> SCEN_REPO : getScenario(scenarioId)
-
-            activate SCEN_REPO
-                SCEN_REPO --> CTRL : scenario
-            deactivate SCEN_REPO
-
             CTRL -> SCENARIO : checkCoordinates(position)
 
             activate SCENARIO
 
-            SCENARIO --> CTRL : false
-
-            CTRL -> SCENARIO : getClosestCity(position)
-            SCENARIO --> CTRL : city
+            SCENARIO --> CTRL : valid coordinates
 
             deactivate SCENARIO
+
+            CTRL --> UI: valid coordinates
+            deactivate CTRL
+            UI -> CTRL: getAvailableStationTypes
+            activate CTRL
+
+            CTRL -> REPOS : getInstance()
+                            activate REPOS
+
+                            REPOS --> CTRL: repositories
+
+                            deactivate REPOS
 
             CTRL -> TYPE : getAvailableStationTypes()
             activate TYPE
@@ -124,8 +127,10 @@ activate PLAYER
         deactivate CTRL
     else Station
         UI --> PLAYER : asks for compass coordinate
+        deactivate   UI
 
         PLAYER -> UI : types compass coordinate
+        activate UI
         UI -> CTRL : setCompassCenter(compassCoord)
 
         activate CTRL
@@ -136,7 +141,15 @@ activate PLAYER
         deactivate CTRL
 
         end alt
+        UI -> CTRL: getClosestCity(position)
+        activate CTRL
+        CTRL -> SCENARIO : getClosestCity(position)
+                    activate SCENARIO
+                    SCENARIO --> CTRL : city
 
+                    deactivate SCENARIO
+                    CTRL --> UI: city
+                    deactivate CTRL
         UI -> CTRL: getName(city)
         activate CTRL
 
@@ -154,9 +167,11 @@ activate PLAYER
 
 
         UI --> PLAYER : recommends a name based on the closest city
+        deactivate UI
 
         alt recommended name
             PLAYER -> UI : selects recommended name
+            activate UI
             UI -> CTRL : setName(name)
             activate CTRL
             CTRL --> UI : selected name
@@ -172,7 +187,9 @@ activate PLAYER
 
        end alt
     UI --> PLAYER : shows all data for confirmation
+    deactivate UI
     PLAYER -> UI : confirms data
+    activate UI
 
         UI -> CTRL : createStation(position, name, type, center)
         activate CTRL

@@ -39,7 +39,8 @@ class Repositories {
 }
 
 enum BuildingType {
-    Telegraph/Telephone
+    Telegraph
+    Telephone
     Small Café
     Large Café
     Customs
@@ -54,7 +55,6 @@ enum BuildingType {
 }
 
 class Building {
-    -station: Station
     -type: BuildingType
     + Building(station, type)
 }

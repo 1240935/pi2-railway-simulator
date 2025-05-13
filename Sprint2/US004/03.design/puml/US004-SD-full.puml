@@ -14,7 +14,6 @@ participant "Repositories" as REPOS
 participant ":MapRepository" as MAP_REPO
 participant "LocomotiveTypeRepository" as LOCO_REPO
 participant "IndustryTypeRepository" as IND_REPO
-participant "ResourceTypeRepository" as RES_REPO
 participant "IndustryChangerRepository" as CHANGER_REPO
 participant "Scenario" as SCENARIO
 
@@ -65,9 +64,9 @@ activate EDITOR
     UI -> CTRL : getLocomotiveTypes()
     activate CTRL
     CTRL -> REPOS : getInstance()
-                activate REPOS
-                REPOS --> CTRL : repositories
-                deactivate REPOS
+    activate REPOS
+    REPOS --> CTRL : repositories
+    deactivate REPOS
     CTRL -> LOCO_REPO : getLocomotiveTypes()
     activate LOCO_REPO
     LOCO_REPO --> CTRL : list of types
@@ -87,9 +86,9 @@ activate EDITOR
     UI -> CTRL : getIndustryTypes()
     activate CTRL
     CTRL -> REPOS : getInstance()
-                    activate REPOS
-                    REPOS --> CTRL : repositories
-                    deactivate REPOS
+    activate REPOS
+    REPOS --> CTRL : repositories
+    deactivate REPOS
     CTRL -> IND_REPO : getIndustryTypes()
     activate IND_REPO
     IND_REPO --> CTRL : list of types
@@ -102,28 +101,6 @@ activate EDITOR
     EDITOR -> UI : selects types
     activate UI
     UI -> CTRL : setIndustryTypes(types)
-    activate CTRL
-    CTRL --> UI : types selected
-    deactivate CTRL
-
-    UI -> CTRL : getResourceTypes()
-    activate CTRL
-    CTRL -> REPOS : getInstance()
-                        activate REPOS
-                        REPOS --> CTRL : repositories
-                        deactivate REPOS
-    CTRL -> RES_REPO : getResourceTypes()
-    activate RES_REPO
-    RES_REPO --> CTRL : list of types
-    deactivate RES_REPO
-    CTRL --> UI : list of resource types
-    deactivate CTRL
-    UI --> EDITOR : shows resource types
-    deactivate UI
-
-    EDITOR -> UI : selects types
-    activate UI
-    UI -> CTRL : setResourceTypes(types)
     activate CTRL
     CTRL --> UI : types selected
     deactivate CTRL
@@ -164,7 +141,7 @@ activate EDITOR
     EDITOR -> UI : confirms all data
     activate UI
 
-    UI -> CTRL : createScenario(map, year, locomotiveTypes, industryTypes, resourceTypes, behaviour, changers)
+    UI -> CTRL : createScenario(map, year, locomotiveTypes, industryTypes, behaviour, changers)
     activate CTRL
     CTRL -> SCENARIO ** : create(...)
     CTRL --> UI : scenario

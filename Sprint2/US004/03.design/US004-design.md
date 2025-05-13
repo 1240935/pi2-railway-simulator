@@ -17,18 +17,16 @@
 | Step 6         | ... saving the selected locomotive types?                  | CreateScenarioUI          | IE: Keeps track of selected types for the scenario configuration.                    |
 | Step 7         | ... knowing all available industry types?                  | IndustryTypeRepository    | IE: Knows and provides industry type data.                                           |
 | Step 8         | ... saving the selected industry types?                    | CreateScenarioUI          | IE: Stores selected industry types as part of user input.                            |
-| Step 9         | ... knowing all available resource types?                  | ResourceTypeRepository    | IE: Responsible for providing resource type data.                                    |
-| Step 10        | ... saving the selected resource types?                    | CreateScenarioUI          | IE: Stores selected resource types.                                                  |
-| Step 11        | ... showing port behavior options?                         | CreateScenarioUI          | IE: UI handles user interaction for selection among predefined options.              |
-| Step 12        | ... saving the selected port behavior?                     | CreateScenarioUI          | IE: Temporarily stores the selected port behavior option.                            |
-| Step 13        | ... knowing all available industry changers?               | IndustryChangerRepository | IE: Provides data on available industry changers.                                    |
-| Step 14        | ... saving the selected industry changers?                 | CreateScenarioUI          | IE: Stores chosen changers before final scenario creation.                           |
-| Step 15        | ... showing all selected data and asking for confirmation? | CreateScenarioUI          | IE: Responsible for presenting collected information for final user approval.        |
-| Step 16        | ... creating a new scenario instance?                      | Scenario                  | Creator: Scenario class aggregates all configuration data.                           |
+| Step 9         | ... showing port behavior options?                         | CreateScenarioUI          | IE: UI handles user interaction for selection among predefined options.              |
+| Step 10        | ... saving the selected port behavior?                     | CreateScenarioUI          | IE: Temporarily stores the selected port behavior option.                            |
+| Step 11        | ... knowing all available industry changers?               | IndustryChangerRepository | IE: Provides data on available industry changers.                                    |
+| Step 12        | ... saving the selected industry changers?                 | CreateScenarioUI          | IE: Stores chosen changers before final scenario creation.                           |
+| Step 13        | ... showing all selected data and asking for confirmation? | CreateScenarioUI          | IE: Responsible for presenting collected information for final user approval.        |
+| Step 14        | ... creating a new scenario instance?                      | Scenario                  | Creator: Scenario class aggregates all configuration data.                           |
 |                | ... validating local data (e.g., year, type selection)?    | Scenario                  | IE: Scenario knows and validates its own structure.                                  |
 |                | ... validating global consistency (e.g., compatibility)?   | CreateScenarioController  | Controller: Orchestrates validation across domain elements.                          |
 |                | ... saving the created scenario?                           | ScenarioRepository        | IE: Dedicated to persisting Scenario entities.                                       |
-| Step 17        | ... informing the user of success?                         | CreateScenarioUI          | Pure Fabrication: UI displays success feedback to the actor.                         |
+| Step 15        | ... informing the user of success?                         | CreateScenarioUI          | Pure Fabrication: UI displays success feedback to the actor.                         |
 
 ### Systematization ##
 
@@ -38,7 +36,6 @@ According to the taken rationale, the conceptual classes promoted to software cl
 * Map
 * LocomotiveType
 * IndustryType
-* ResourceType
 * IndustryChanger
 * PortBehavior
 
@@ -50,7 +47,6 @@ Other software classes (i.e. Pure Fabrication) identified:
 * MapRepository
 * LocomotiveTypeRepository
 * IndustryTypeRepository
-* ResourceTypeRepository
 * IndustryChangerRepository
 * ScenarioRepository
  

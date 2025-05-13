@@ -36,7 +36,6 @@ As an Editor, I want to create a scenario for a selected map.
     * a map
     * the available locomotive types
     * the available industry types
-    * the available resource types
     * the port's behavior
     * the industry changers
 
@@ -45,7 +44,6 @@ As an Editor, I want to create a scenario for a selected map.
 * List of available maps
 * List of locomotive types
 * List of industry types
-* List of resource types
 * Port's behavior options
 * List of industry changers
 * Data for confirmation

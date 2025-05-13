@@ -37,12 +37,6 @@ activate Employee
     Employee -> System : selects the wanted industry types
     activate System
 
-    System --> Employee : shows the list of resource types and asks to \n choose the ones that will be available in the scenario
-    deactivate System
-
-    Employee -> System : selects the wanted resource types
-    activate System
-
     System --> Employee : shows the port's behavior options and asks to \n choose the one that will be applied in the scenario
     deactivate System
 

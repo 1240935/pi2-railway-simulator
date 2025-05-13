@@ -15,20 +15,20 @@ class UpgradeStationUI {
 class UpgradeStationController {
     + UpgradeStationController()
     + getAvailableScenarios()
-    + setScenario(scenario : Scenario)
+    + setScenario(scenario)
     + getAvailableStations()
-    + setStation(station : Station)
-    + getAvailableBuildingTypes(station : Station) : List<BuildingType>
-    + setType(type : BuildingType)
-    + createBuilding(station : Station, type : BuildingType) : Building
+    + setStation(station )
+    + getAvailableBuildingTypes(station)
+    + setType(type)
+    + createBuilding(station, type)
 }
 
 class ScenarioRepository {
-    + getScenarios() : List<Scenario>
+    + getScenarios()
 }
 
 class StationRepository {
-    + getStations() : List<Station>
+    + getStations()
 }
 
 class Repositories {
@@ -67,7 +67,13 @@ class Station{
 }
 
 class Scenario{
-   -station : List<Station>
+   -map: Map
+   -year: int
+   -locomotiveTypes: List<LocomotiveType>
+   -industryTypes: List<IndustryType>
+   -resourceTypes: List<ResourceType>
+   -behavior: boolean
+   -changers: List<IndustryChanger>
 }
 
 

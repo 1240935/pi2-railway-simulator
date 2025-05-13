@@ -1,4 +1,4 @@
-# US006 - Create a Task
+# US007 - View Station Details
 
 ## 3. Design
 

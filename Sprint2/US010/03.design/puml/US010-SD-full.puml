@@ -33,7 +33,7 @@ autonumber
 
     deactivate REPOS
 
-    CTRL -> SREPOS : getScenarioRepository()
+    CTRL -> SREPOS : getAvailableScenarios()
     activate SREPOS
 
     SREPOS --> CTRL : list of scenarios
@@ -67,7 +67,7 @@ autonumber
 
         deactivate REPOS
 
-        CTRL -> LOCREPOS : getLocomotiveRepository()
+        CTRL -> LOCREPOS : getAvailableLocomotives()
         activate LOCREPOS
 
         LOCREPOS --> CTRL : list of locomotives
@@ -99,7 +99,7 @@ autonumber
 
                 deactivate REPOS
 
-                CTRL -> STREPOS : getStationRepository()
+                CTRL -> STREPOS : getAvailableStations()
                 activate STREPOS
 
                 STREPOS --> CTRL : list of stations

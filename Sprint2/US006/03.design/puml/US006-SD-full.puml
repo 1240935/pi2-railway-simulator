@@ -31,7 +31,7 @@ autonumber
 
     deactivate REPOS
 
-    CTRL -> SREPOS : getScenarioRepository()
+    CTRL -> SREPOS : getScenarios()
     activate SREPOS
 
     SREPOS --> CTRL : list of scenarios
@@ -65,7 +65,7 @@ autonumber
 
         deactivate REPOS
 
-        CTRL -> STREPOS : getStationRepository()
+        CTRL -> STREPOS : getStations()
         activate STREPOS
 
         STREPOS --> CTRL : list of stations

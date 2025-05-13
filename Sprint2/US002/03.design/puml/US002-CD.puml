@@ -15,14 +15,14 @@ skinparam classAttributeIconSize 0
   class CreateIndustryController {
     +CreateIndustryController()
     +getAvailableMaps()
-    +setMap(map: Map)
-    +createPosition(xCoordinate: int, yCoordinate: int): Position
-    +checkCoordinates(pos: Position): boolean
-    +getAvailableIndustriesTypes(): List<IndustryType>
-    +setType(type: IndustryType)
-    +getAvailableResourceTypes(): List<ResourceType>
-    +setResourceType(resourceType: ResourceType)
-    +createIndustry(type: IndustryType, position: Position, resourceType: ResourceTypeType): Industry
+    +setMap(map)
+    +createPosition(xCoordinate, yCoordinate
+    +checkCoordinates(position)
+    +getAvailableIndustriesTypes()
+    +setType(type)
+    +getAvailableResourceTypes()
+    +setResourceType(resourceType)
+    +createIndustry(type, position, resourceType)
   }
 
 
@@ -32,26 +32,26 @@ skinparam classAttributeIconSize 0
       + getMapRepository()
   }
   class MapRepository {
-    +getMaps(): List<Map>
+    +getMaps()
   }
 
   class Industry {
     -position : Position
     -type : IndustryType
     -resourceType: ResourceType
-    +Industry(position: Position, type: IndustryType, resourceType: ResourceType)
+    +Industry(position, type, resourceType)
   }
 
   class Map {
     - size : int
     - name : String
-    +checkCoordinates(pos: Position): boolean
+    +checkCoordinates(position)
   }
 
   class Position {
     -xCoordinate : int
     -yCoordinate : int
-    +Position(xCoordinate: int, yCoordinate: int)
+    +Position(xCoordinate, yCoordinate)
   }
 
   enum IndustryType{

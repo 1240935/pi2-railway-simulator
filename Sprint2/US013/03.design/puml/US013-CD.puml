@@ -13,6 +13,7 @@ class VerifyTrainTravelUI {
 }
 
 class VerifyTrainTravelController {
+  +VerifyTrainTravelController()
   +setStationFile(file: File)
   +setLineFile(file: File)
   +setType(type: LocomotiveType)

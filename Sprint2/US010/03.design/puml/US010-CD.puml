@@ -14,40 +14,47 @@ class AssignRouteUI {
 }
 
 class AssignRouteController {
-    +create()
-      +getAvailableScenarios(): List<Scenario>
-      +setScenario(scenario: Scenario)
-      +getAvailableLocomotives(): List<Locomotive>
-      +setLocomotive(locomotive: Locomotive)
-      +getAvailableStations(): List<Station>
-      +addStation(station: Station)
-      +checkStationConnection(station: Station): boolean
-      +checkCargo(station: Station): List<Cargo>
-      +setCargo(cargo: Cargo)
-      +createRoute(locomotive: Locomotive, stations: List<Station>, cargo: Cargo): Route
+      +AssignRouteController()
+      +getAvailableScenarios()
+      +setScenario(scenario)
+      +getAvailableLocomotives()
+      +setLocomotive(locomotive)
+      +getAvailableStations()
+      +addStation(station)
+      +checkStationConnection(station)
+      +checkCargo(station)
+      +setCargo(cargo)
+      +createRoute(locomotive, stations, cargo)
 }
 
 class Repositories {
-  +getInstance(): Repositories
-  +getScenarioRepository(): ScenarioRepository
-  +getStationRepository(): StationRepository
-  +getLocomotiveRepository(): LocomotiveRepository
+  +getInstance()
+  +getScenarioRepository()
+  +getStationRepository()
+  +getLocomotiveRepository()
 }
 
 class ScenarioRepository {
-  +list(): List<Scenario>
+  +getAvailableScenarios()
 }
 
 class StationRepository {
-  +list(): List<Station>
+  +getAvailableLocomotives()
 }
 
 class LocomotiveRepository {
-  +list(): List<Locomotive>
+  +getAvailableLocomotives()
 }
 
 class Scenario {
-  +checkStationConnection(station: Station): boolean
+    -map: Map
+    -year: int
+    -locomotiveTypes: List<LocomotiveType>
+    -industryTypes: List<IndustryType>
+    -resourceTypes: List<ResourceType>
+    -behavior: boolean
+    -changers: List<IndustryChanger>
+    +checkStationConnection(station)
 }
 
 class Station {
@@ -55,11 +62,11 @@ class Station {
   -position : Position
   -type : StationType
   -center : Position
-  +checkCargo(): List<Cargo>
+  +checkCargo()
 }
 
 class Route {
-  +create(locomotive: Locomotive, stations: List<Station>, cargo: Cargo): Route
+  +create(locomotive, stations, cargo)
   -stations: List<Station>
   -locomotive: Locomotive
   -cargo: Cargo
@@ -74,6 +81,7 @@ class Locomotive {
   -maintenancePYear: int
   -cost: int
   -iD: int
+  -type: LocomotiveType
 }
 
 class Cargo {
@@ -94,6 +102,14 @@ AssignRouteController ..> Route
 AssignRouteController ..> Scenario
 AssignRouteController ..> Locomotive
 AssignRouteController ..> Cargo
+
+StationRepository --> "*" Station : station
+LocomotiveRepository --> "*" Locomotive: locomotive
+ScenarioRepository --> "*" Scenario: scenario
+
+Scenario --> "*" Station : station
+Scenario --> "*" Locomotive : locomotive
+Scenario --> "*" Cargo : cargo
 
 Route --> "1" Locomotive : locomotive
 Route --> "2..*" Station : station

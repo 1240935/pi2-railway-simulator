@@ -45,6 +45,6 @@ At last, remember that each User Story does not stand alone... it needs to be in
 | US009 (SDP Activities)                                                                                     | [1240941](US009/US009-README.md) | [1240941](US009/US009-README.md) |
 | US010 (SDP Activities)                                                                                     | [1240935](US010/US010-README.md) | [1240935](US010/US010-README.md) |
 | US012 (SDP Activities)                                                                                     | [1240934](US012/US012-README.md) | [1240934](US012/US012-README.md) |
-| US013 (SDP Activities)                                                                                     | -                                | [1240936](US013/US013-README.md) |
-| US014 (SDP Activities)                                                                                     | -                                | [1240936](US014/US014-README.md) |
+| US013 (SDP Activities)                                                                                     | -                                | [all](US013/US013-README.md)     |
+| US014 (SDP Activities)                                                                                     | -                                | [all](US014/US014-README.md)     |
 

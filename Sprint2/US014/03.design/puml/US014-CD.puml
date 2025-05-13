@@ -14,6 +14,7 @@ class RailwayMaintenanceUI {
 }
 
 class RailwayMaintenanceController {
+  +RailwayMaintenanceController()
   +setStationFile(file: File)
   +setLineFile(file: File)
   +setMaintenanceType(type: MaintenanceType)

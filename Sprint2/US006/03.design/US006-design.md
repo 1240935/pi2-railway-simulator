@@ -1,4 +1,4 @@
-# US006 - Create a Task
+# US006 - Upgrade a station
 
 ## 3. Design
 

@@ -1,4 +1,4 @@
-# US006 - Create a Task
+# US002 - Place an Industry
 
 ## 3. Design
 

@@ -76,6 +76,7 @@ VerifyTrainTravelController ..> LocomotiveType
 VerifyTrainTravelController ..> StationType
 VerifyTrainTravelController ..> Repositories
 
+Repositories -> "1" Repositories : instance
 Repositories --> "1" StationRepository : station repository
 Repositories --> "1" LineRepository : line repository
 

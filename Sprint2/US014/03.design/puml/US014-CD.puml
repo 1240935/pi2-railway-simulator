@@ -90,6 +90,7 @@ RailwayMaintenanceController ..> Station
 RailwayMaintenanceController ..> Line
 RailwayMaintenanceController ..> Locomotive
 
+Repositories -> "1" Repositories : instance
 Repositories --> "1" StationRepository : station repository
 Repositories --> "1" LineRepository : line repository
 Repositories --> "1" LocomotiveRepository : locomotive repository

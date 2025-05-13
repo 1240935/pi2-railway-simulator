@@ -14,51 +14,75 @@ class AssignRouteUI {
 }
 
 class AssignRouteController {
-    + getAvailableScenarios()
-    + setScenario(scenario : Scenario)
-    + getAvailableLocomotives()
-    + setLocomotive(locomotive : Locomotive)
-    + getAvailableStations()
-    + addStationToRoute(station: Station)
-    + checkStationConnection(): boolean
-    + checkForCargo(): List<Cargo>
-    + setCargo(cargo : Cargo)
-    + createFullRoute(route: Route, locomotive : Locomotive, cargo : Cargo): FullRoute
+    +create()
+      +getAvailableScenarios(): List<Scenario>
+      +setScenario(scenario: Scenario)
+      +getAvailableLocomotives(): List<Locomotive>
+      +setLocomotive(locomotive: Locomotive)
+      +getAvailableStations(): List<Station>
+      +addStation(station: Station)
+      +checkStationConnection(station: Station): boolean
+      +checkCargo(station: Station): List<Cargo>
+      +setCargo(cargo: Cargo)
+      +createRoute(locomotive: Locomotive, stations: List<Station>, cargo: Cargo): Route
 }
 
 class Repositories {
-   - Repositories()
-       + getInstance()
-       + getScenarioRepository()
-       + getStationRepository()
-       + getLocomotiveRepository()
+  +getInstance(): Repositories
+  +getScenarioRepository(): ScenarioRepository
+  +getStationRepository(): StationRepository
+  +getLocomotiveRepository(): LocomotiveRepository
 }
 
 class ScenarioRepository {
-   + getScenarios() : List<Scenario>
+  +list(): List<Scenario>
 }
 
 class StationRepository {
-     + getStations() : List<Station>
+  +list(): List<Station>
 }
 
 class LocomotiveRepository {
-    + getLocomotives() : List<Locomotive>
+  +list(): List<Locomotive>
+}
+
+class Scenario {
+  +checkStationConnection(station: Station): boolean
+}
+
+class Station {
+  -name : String
+  -position : Position
+  -type : StationType
+  -center : Position
+  +checkCargo(): List<Cargo>
 }
 
 class Route {
-    - stations: List<Station>
-    - cargo: List<Cargo>
-    + addStation(Station): void
-    + checkForCargo(): List<Cargo>
+  +create(locomotive: Locomotive, stations: List<Station>, cargo: Cargo): Route
+  -stations: List<Station>
+  -locomotive: Locomotive
+  -cargo: Cargo
 }
 
-class FullRoute {
-    + create(Route, Locomotive, Cargo): FullRoute
+class Locomotive {
+  -power: int
+  -acceleration: int
+  -topSpeed: int
+  -operationStartYear: int
+  -fuelCost: int
+  -maintenancePYear: int
+  -cost: int
+  -iD: int
+}
+
+class Cargo {
+  -quantity: int
+  -status: boolean
+  -type: CargoType
 }
 
 
-' Relationships
 AssignRouteUI ..> AssignRouteController
 AssignRouteController ..> Repositories
 Repositories -> "1" Repositories : instance
@@ -67,12 +91,11 @@ Repositories --> "1" StationRepository : station repository
 Repositories --> "1" LocomotiveRepository : locomotive repository
 
 AssignRouteController ..> Route
-AssignRouteController ..> FullRoute
 AssignRouteController ..> Scenario
 AssignRouteController ..> Locomotive
 AssignRouteController ..> Cargo
 
-Route --> Station
-Route --> Cargo
-
+Route --> "1" Locomotive : locomotive
+Route --> "2..*" Station : station
+Route --> "1..*" Cargo : cargo
 @enduml

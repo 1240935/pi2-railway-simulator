@@ -32,7 +32,9 @@ activate UI
        UI --> CTRL** : create()
 
 UI --> PLAYER : asks for a scenario file with the stations
+deactivate UI
 PLAYER -> UI : types the file path
+activate UI
 
 UI -> CTRL : setStationFile(file)
 activate CTRL
@@ -49,7 +51,9 @@ deactivate STREPO
 CTRL --> UI : list of stations
 deactivate CTRL
 UI --> PLAYER :asks for a scenario file with the lines
+deactivate UI
 PLAYER -> UI :  types the file path
+activate UI
 UI -> CTRL : setLineFile(file)
 activate CTRL
 
@@ -71,7 +75,9 @@ CTRL --> UI : list of available locomotive types
 deactivate CTRL
 
 UI --> PLAYER : shows the list of available locomotive types
+deactivate UI
 PLAYER -> UI : selects a locomotive type
+activate UI
 UI -> CTRL : setType(type)
 activate CTRL
 CTRL --> UI : type
@@ -84,7 +90,9 @@ CTRL --> UI : list of available station types
 deactivate CTRL
 
 UI --> PLAYER : shows the list of available station types
+deactivate UI
 PLAYER -> UI : select station type
+activate UI
 UI -> CTRL : setStationType(type)
 activate CTRL
 CTRL --> UI : type

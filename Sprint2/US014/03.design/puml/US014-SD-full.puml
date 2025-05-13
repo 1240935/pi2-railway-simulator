@@ -21,8 +21,9 @@ PLAYER -> UI : asks to do a railway line maintenance
 activate UI
 UI --> CTRL** : create()
 UI --> PLAYER : asks for a scenario file with the stations
-
-PLAYER -> UI : types the file path
+deactivate UI
+PLAYER -> UI :
+activate UI
 
 UI -> CTRL : setStationFile(file)
 activate CTRL
@@ -40,7 +41,9 @@ CTRL --> UI : list of stations
 deactivate CTRL
 
 UI --> PLAYER : asks for a scenario file with the lines
+deactivate UI
 PLAYER -> UI : types the file path
+activate UI
 UI -> CTRL : setLineFile(file)
 activate CTRL
 CTRL -> REPOS : getInstance()
@@ -55,9 +58,11 @@ CTRL --> UI : list of lines
 deactivate CTRL
 
 UI --> PLAYER : asks if maintenance is full or electrified
+deactivate UI
 
 alt full maintenance
 PLAYER -> UI : chooses full maintenance
+activate UI
 UI -> CTRL : setMaintenanceType(full)
 activate CTRL
 
@@ -75,10 +80,17 @@ CTRL --> UI : list of possible start stations
 deactivate CTRL
 
 UI --> PLAYER : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+deactivate UI
 PLAYER -> UI : selects an available station
+activate UI
 UI -> CTRL : setStartStation(station)
 activate CTRL
+ CTRL -> REPOS : getInstance()
+        activate REPOS
 
+        REPOS --> CTRL: repositories
+
+        deactivate REPOS
 CTRL -> LOCREPO : getAvailableLocomotives()
 activate LOCREPO
 LOCREPO --> CTRL : list of locomotives
@@ -87,15 +99,18 @@ CTRL --> UI : show available locomotives
 deactivate CTRL
 
 UI --> PLAYER : shows available locomotives to assign to the maintenance route
+deactivate UI
 PLAYER -> UI : selects an available locomotive
+activate UI
 UI -> CTRL : setLocomotive(locomotive)
 activate CTRL
 
 CTRL --> UI : show all data and request confirmation
 deactivate CTRL
 UI --> PLAYER : shows all data and requests confirmation
+deactivate UI
 PLAYER -> UI : confirms all data
-
+activate UI
 UI -> CTRL : buildGraph(stations, lines)
 activate CTRL
 CTRL -> GRAPH : buildGraph(stations, lines)
@@ -105,20 +120,27 @@ activate GRAPH
             CTRL --> UI : graph
             deactivate CTRL
 
-UI --> PLAYER : assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+UI --> PLAYER : assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n
 deactivate CTRL
+deactivate UI
+
 
 else impossible route
+
 activate ROUTE
 ROUTE --> CTRL : no path
 deactivate ROUTE
 activate CTRL
 CTRL --> UI : show warning message
 deactivate CTRL
+activate UI
+UI --> PLAYER : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
+deactivate UI
 end alt
 
 else electrified maintenance
 PLAYER -> UI : chooses electrified maintenance
+activate UI
 UI -> CTRL : setMaintenanceType(electrified)
 activate CTRL
 
@@ -140,9 +162,17 @@ CTRL --> UI : list of possible start stations
 deactivate CTRL
 
 UI --> PLAYER : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+deactivate UI
 PLAYER -> UI : selects an available station
+activate UI
 UI -> CTRL : setStartStation(station)
 activate CTRL
+ CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+
+        deactivate REPOS
 
 CTRL -> LOCREPO : getAvailableLocomotives()
 activate LOCREPO
@@ -152,14 +182,18 @@ CTRL --> UI : show available locomotives
 deactivate CTRL
 
 UI --> PLAYER : shows available locomotives to assign to the maintenance route
+deactivate UI
 PLAYER -> UI : selects an available locomotive
+activate UI
 UI -> CTRL : setLocomotive(locomotive)
 activate CTRL
 
 CTRL --> UI : show all data and request confirmation
 deactivate CTRL
 UI --> PLAYER : shows all data and requests confirmation
+deactivate UI
 PLAYER -> UI : confirms all data
+activate UI
 
 UI -> CTRL : buildGraph(stations, lines)
 activate CTRL
@@ -171,6 +205,7 @@ activate GRAPH
             deactivate CTRL
 
 UI --> PLAYER : assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+deactivate UI
 deactivate CTRL
 
 else impossible route
@@ -180,6 +215,9 @@ deactivate ROUTE
 activate CTRL
 CTRL --> UI : show warning message
 deactivate CTRL
+activate UI
+UI --> PLAYER : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
+deactivate UI
 end alt
 end alt
 deactivate UI

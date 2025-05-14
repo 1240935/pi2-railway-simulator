@@ -32,23 +32,12 @@ class Repositories {
       - Repositories()
       + getInstance()
       + getScenarioRepository()
-  }
-
-class Scenario {
-  -map: Map
-  -year: int
-  -locomotiveTypes: List<LocomotiveType>
-  -industryTypes: List<IndustryType>
-  -resourceTypes: List<ResourceType>
-  -importation: boolean
-  -changers: List<IndustryChanger>
-  +checkCoordinates(position)
-  +getClosestCity(position)
-}
+ }
 
 class City {
-  -name : String
-  -position : Position
+  - position: Position
+  - name: String
+  - blocks: List <CityBlocks>
   +getName()
   +getPosition()
 }
@@ -62,7 +51,7 @@ class Scenario {
        -exportation; boolean
        -changers: List<IndustryChanger>
        +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
-~~}
+}
 
 class Position {
   -xCoordinate : int
@@ -84,6 +73,16 @@ class ScenarioRepository {
   +getScenario(scenario)
 }
 
+class Station{
+    -name : String
+    -position : Position
+    -type : StationType
+    -center : Position
+    -building: Building
+    -cargo: Cargo
+    +Station(name,position,type,center)
+}
+
 BuildStationUI ..> BuildStationController
 BuildStationController ..> ScenarioRepository
 BuildStationController ..> Scenario
@@ -97,6 +96,5 @@ Scenario --> "*" Station : station
 City --> "1" Position : position
 Station --> "1" Position : position
 Station --> "1" StationType : station type
-Position -> "1" Position : distance to
 
 @enduml

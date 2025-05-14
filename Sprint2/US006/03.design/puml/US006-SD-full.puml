@@ -1,5 +1,5 @@
 @startuml
-skinparam monochrome true
+'skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
@@ -13,6 +13,7 @@ autonumber
     participant "BuildingType <<enumeration>>" as BTYPE
     participant "StationRepository" as STREPOS
     participant "Building" as BUILDING
+    participant "Station" as STATION
 
     activate PLAYER
 
@@ -126,6 +127,15 @@ autonumber
     CTRL -> BUILDING** : create(station, type)
 
     CTRL --> UI : building
+    deactivate CTRL
+
+    UI -> CTRL: setBuilding(building)
+    activate CTRL
+    CTRL -> STATION : setBuilding(building)
+    activate STATION
+    STATION --> CTRL: building set
+    deactivate STATION
+    CTRL --> UI: building set
     deactivate CTRL
 
     UI --> PLAYER : displays operation success

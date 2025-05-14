@@ -17,10 +17,11 @@ class UpgradeStationController {
     + getAvailableScenarios()
     + setScenario(scenario)
     + getAvailableStations()
-    + setStation(station )
+    + setStation(station)
     + getAvailableBuildingTypes(station)
     + setType(type)
     + createBuilding(station, type)
+    + setBuilding(building)
 }
 
 class ScenarioRepository {
@@ -56,7 +57,7 @@ enum BuildingType {
 
 class Building {
     -type: BuildingType
-    + Building(station, type)
+    + Building(type)
 }
 
 class Station{
@@ -64,21 +65,23 @@ class Station{
     -position : Position
     -type : StationType
     -center : Position
+    -building: Building
+    -cargo: Cargo
+    +setBuilding(building)
 }
 
 class Scenario {
-       -map: Map
-       -year: int
-       -locomotiveTypes: List<LocomotiveType>
-       -industryTypes: List<IndustryType>
-       -importation: boolean
-       -exportation: boolean
-       -changers: List<IndustryChanger>
-       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
-     }
+    -map: Map
+    -year: int
+    -locomotiveTypes: List<LocomotiveType>
+    -industryTypes: List<IndustryType>
+    -importation: boolean
+    -exportation: boolean
+    -changers: List<IndustryChanger>
+    +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
+}
 
 
-' Relationships
 UpgradeStationUI ..> UpgradeStationController
 UpgradeStationController ..> Repositories
 UpgradeStationController ..> ScenarioRepository

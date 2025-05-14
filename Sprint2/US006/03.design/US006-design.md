@@ -16,8 +16,8 @@
 | Step 6         | ... getting available building types?             | BuildingType             | IE: Enum that defines valid upgrade types.                                       |
 | Step 7         | ... saving the selected building type?            | UpgradeStationUI         | IE: Holds selected type to complete the upgrade logic.                           |
 | Step 8         | ... showing all data and requesting confirmation? | UpgradeStationUI         | IE: Responsible for presenting collected data and requesting final confirmation. |
-| Step 9         | ... instantiating a new Building?                 | UpgradeStationController | Creator: Has all required data (station, type) to create a new Building.         |
-|                | ... saving the new building?                      | Scenario                 | IE: Responsible for saving objects placed on the map                             |
+| Step 9         | ... instantiating a new Building?                 | UpgradeStationController | Creator: Has all required data (type) to create a new Building.                  |
+|                | ... saving the new building?                      | BuildingRepository       | IE: Responsible for saving buildings.                                            |
 | Step 10        | ... informing the user of operation success?      | UpgradeStationUI         | IE: Displays confirmation message to the player.                                 |
 
 ### Systematization ##

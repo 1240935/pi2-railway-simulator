@@ -10,7 +10,7 @@ participant "System" as System
 
 activate Employee
 
-    Employee -> System : asks to assign a route to a train
+    Employee -> System : asks to assign a train to a route
     activate System
 
     System --> Employee : shows the list of available scenarios

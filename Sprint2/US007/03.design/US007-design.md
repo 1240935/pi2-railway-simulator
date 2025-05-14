@@ -8,6 +8,7 @@
 |:---------------|:--------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------|
 | Step 1         | ... interacting with the actor?             | ViewStationUI         | Pure Fabrication: UI is responsible for interfacing with the user; not part of the domain model. |
 |                | ... coordinating the US?                    | ViewStationController | Controller: Coordinates the use case by delegating to domain or infrastructure classes.          |
+|                | ... knowing the user using the system?      | Player                | IE: Knows its own data (e.g. name, current state, etc.).                                         |
 | Step 2         | ... knowing all existing scenarios to show? | ScenarioRepository    | IE: ScenarioRepository stores and provides access to all scenarios.                              |
 | Step 3         | ... saving the selected scenario?           | ViewStationUI         | IE: Holds and manages the selected scenario to use in subsequent steps.                          |
 | Step 4         | ... knowing all existing stations to show?  | StationRepository     | IE: StationRepository provides access to stations.                                               |

@@ -18,7 +18,7 @@ autonumber
 
     activate PLAYER
 
-    PLAYER -> UI : asks to assign a route to a train
+    PLAYER -> UI : asks to assign a train to a route
     activate UI
 
     UI --> CTRL** : create()

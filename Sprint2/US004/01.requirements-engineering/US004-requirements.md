@@ -31,6 +31,8 @@ As an Editor, I want to create a scenario for a selected map.
 * Typed data:
     * the request
     * a year
+    * importation availability
+    * exportation availability
 	
 * Selected data:
     * a map
@@ -44,7 +46,6 @@ As an Editor, I want to create a scenario for a selected map.
 * List of available maps
 * List of locomotive types
 * List of industry types
-* Port's behavior options
 * List of industry changers
 * Data for confirmation
 * (In) Success of the operation

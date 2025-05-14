@@ -54,12 +54,16 @@ class Industry {
 }
 
 class IndustryType{
+    importation
+    exportation
 }
 
 class ResourceType{
 }
 
 class Scenario {
+    importation
+    exportation
 }
 
 class City {
@@ -89,6 +93,10 @@ class CargoType{
 }
 
 class Locomotive {
+    iD
+}
+
+class LocomotiveModel{
     power
     acceleration
     topSpeed
@@ -96,7 +104,6 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    iD
 }
 
 class LocomotiveType{
@@ -123,9 +130,6 @@ class TimeRestriction{
 }
 
 class TechnologicalRestriction{
-}
-
-class PortsBehavior{
 }
 
 class IndustryChanger{
@@ -169,18 +173,16 @@ Scenario "*" -- "1" Map : uses >
 Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-Scenario "1" -- "*" PortsBehavior: includes >
+Scenario "1" -- "*" IndustryType: affects >
 
 HistoricalRestriction "1" -- "*" IndustryChanger: has >
 IndustryChanger "1" -- "*" Industry: affects >
 
 TimeRestriction "1" -- "*" BuildingType: affects >
-TimeRestriction "1" -- "*" Locomotive: affects >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
 
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 TechnologicalRestriction "1" -- "*" IndustryType: affects >
-
-PortsBehavior "1" -- "*" ResourceType: affects >
 
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
@@ -194,7 +196,8 @@ Train "1" -- "*" Carriage: is part of <
 Train "1..*" -- "*" Route : assigned to >
 Train "1..*" -- "1..*" Railway: runs on >
 
-Locomotive "1" -- "1" LocomotiveType: has >
+Locomotive "*" -- "1" LocomotiveModel: has >
+LocomotiveModel "1..*" -- "1" LocomotiveType: has >
 
 Carriage "1..*" -- "*" Cargo: transports >
 

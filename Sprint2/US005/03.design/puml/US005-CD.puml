@@ -53,13 +53,16 @@ class City {
   +getPosition()
 }
 
-class Station {
-  -name : String
-  -position : Position
-  -type : StationType
-  -center : Position
-  +Station(name, position, type, center)
-}
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: boolean
+       -exportation; boolean
+       -changers: List<IndustryChanger>
+       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
+~~}
 
 class Position {
   -xCoordinate : int

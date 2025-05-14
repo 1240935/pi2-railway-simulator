@@ -37,11 +37,17 @@ activate Employee
     Employee -> System : selects the wanted industry types
     activate System
 
-    System --> Employee : shows the port's behavior options and asks to \n choose the one that will be applied in the scenario
+    System --> Employee : asks for importation availability in ports
     deactivate System
 
-    Employee -> System : selects the behavior wanted for the ports
+    Employee -> System :  types importation availability
     activate System
+
+    System --> Employee : asks for exportation availability in ports
+        deactivate System
+
+        Employee -> System : types exportation availability
+        activate System
 
     System --> Employee : shows the list of industry changers and asks to \n choose the ones that will affect the scenario
     deactivate System

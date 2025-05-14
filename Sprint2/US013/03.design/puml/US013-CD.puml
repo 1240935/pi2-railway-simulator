@@ -14,11 +14,11 @@ class VerifyTrainTravelUI {
 
 class VerifyTrainTravelController {
   +VerifyTrainTravelController()
-  +setStationFile(file: File)
-  +setLineFile(file: File)
-  +setType(type: LocomotiveType)
-  +setStationType(type: StationType)
-  +verify(): Graph
+  +setStationFile(file)
+  +setLineFile(file)
+  +setType(type)
+  +setStationType(type)
+  +verify(graph)
 }
 
 class Station {
@@ -47,25 +47,25 @@ enum StationType {
 }
 
 class Graph {
-  +buildGraph(stations: List<Station>, lines: List<Line>): Graph
+  +buildGraph(stations, lines)
 }
 
 class PathVerifier {
-  +verifyPath(graph: Graph, type: LocomotiveType, stationType: StationType): Graph
+  +verifyPath(graph, type, stationType)
 }
 
 class Repositories {
-  +getInstance(): Repositories
-  +getStationRepository(): StationRepository
-  +getLineRepository(): LineRepository
+  +getInstance()
+  +getStationRepository()
+  +getLineRepository()
 }
 
 class StationRepository {
-  +loadStations(file: File): List<Station>
+  +loadStations(file)
 }
 
 class LineRepository {
-  +loadLines(file: File): List<Line>
+  +loadLines(file)
 }
 
 VerifyTrainTravelUI ..> VerifyTrainTravelController

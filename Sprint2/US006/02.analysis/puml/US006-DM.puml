@@ -36,6 +36,8 @@ class BuildingType {
 }
 
 class Scenario {
+    importation
+    exportation
 }
 
 class Position{

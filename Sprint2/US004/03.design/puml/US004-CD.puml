@@ -21,10 +21,11 @@
         +setLocomotiveTypes(types)
         +getIndustryTypes()
         +setIndustryTypes(types)
-        +setPortBehavior(behavior)
+        +setImportation(importation)
+        +setExportation(exportation)
         +getAvailableIndustryChangers()
         +setIndustryChangers(changers)
-        +createScenario(map, year, locomotiveTypes, industryTypes, behaviour, changers)
+        +createScenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
 
     }
 
@@ -59,8 +60,9 @@
        -locomotiveTypes: List<LocomotiveType>
        -industryTypes: List<IndustryType>
        -importation: boolean
+       -exportation: boolean
        -changers: List<IndustryChanger>
-       +Scenario(map, year, locomotiveTypes, industryTypes, resourceTypes, behavior, changers)
+       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
      }
 
         class Map{
@@ -73,10 +75,14 @@
             Diesel
             Electric
         }
+
         enum IndustryType{
             Primary Sector
             Transforming
             Mixed
+            --
+            importation: boolean
+            exportation: boolean
         }
      
         enum IndustryChanger{
@@ -86,9 +92,6 @@
             --
             -effect: int
         }
-        class PortBehavior{
-            - behavior: boolean
-        }
 
 
     CreateScenarioUI ..> CreateScenarioController
@@ -96,6 +99,7 @@
     CreateScenarioController ..> Scenario
     CreateScenarioController ..> Repositories
 
+    Repositories -> "1" Repositories : instance
     Repositories --> "1" MapRepository: map repository
     Repositories --> "1" LocomotiveTypeRepository : locomotive type repository
     Repositories --> "1" IndustryTypeRepository : industry type repository
@@ -109,13 +113,12 @@
     Scenario --> "1" Map : map
     Scenario --> "1..*" LocomotiveType: locomotive type
     Scenario --> "1..*" IndustryChanger : industry changer
-    Scenario --> "1" PortBehavior: port behavior
+    Scenario --> "1..*" IndustryType: industry type
 
     CreateScenarioController ..> Map
     CreateScenarioController ..> LocomotiveType
     CreateScenarioController ..> IndustryType
     CreateScenarioController ..> IndustryChanger
-    CreateScenarioController ..> PortBehavior
 
 
     @enduml

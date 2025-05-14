@@ -73,15 +73,8 @@ class Route {
 }
 
 class Locomotive {
-  -power: int
-  -acceleration: int
-  -topSpeed: int
-  -operationStartYear: int
-  -fuelCost: int
-  -maintenancePYear: int
-  -cost: int
   -iD: int
-  -type: LocomotiveType
+  -model: LocomotiveModel
 }
 
 class Cargo {

@@ -17,6 +17,11 @@ class Player {
 }
 
 class Locomotive {
+    iD
+
+}
+
+class LocomotiveModel{
     power
     acceleration
     topSpeed
@@ -24,7 +29,6 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    iD
 }
 
 class LocomotiveType{
@@ -79,6 +83,11 @@ class TimeRestriction{
 class TechnologicalRestriction{
 }
 
+class Scenario{
+    importation
+    exportation
+}
+
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
@@ -89,7 +98,7 @@ Player "1" -- "1..*" Locomotive : buys >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
 
-TimeRestriction "1" -- "*" Locomotive: affects >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 
 Position "1" -- "1" Station: has <
@@ -99,7 +108,9 @@ Station "1" -- "*" Cargo : stores >
 Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
 
-Locomotive "1" -- "1" LocomotiveType: has >
+Locomotive "*" -- "1" LocomotiveModel: has >
+LocomotiveModel "1..*" -- "1" LocomotiveType: has >
+
 
 Carriage "1..*" -- "*" Cargo: transports >
 

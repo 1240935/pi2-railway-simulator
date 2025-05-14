@@ -33,6 +33,8 @@ class Position{
 }
 
 class Scenario {
+    importation
+    exportation
 }
 
 

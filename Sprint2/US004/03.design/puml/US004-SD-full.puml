@@ -105,14 +105,23 @@ activate EDITOR
     CTRL --> UI : types selected
     deactivate CTRL
 
-    UI --> EDITOR : shows port behavior options
+    UI --> EDITOR : asks for importation availability
     deactivate UI
-    EDITOR -> UI : selects importation
+    EDITOR -> UI : types importation availability
     activate UI
-    UI -> CTRL : setPortBehavior(importation)
+    UI -> CTRL : setImportation(importation)
     activate CTRL
-    CTRL --> UI : importation selected
+    CTRL --> UI : importation
     deactivate CTRL
+
+    UI --> EDITOR : asks for exportation availability
+        deactivate UI
+        EDITOR -> UI : types exportation availability
+        activate UI
+        UI -> CTRL : setExportation(exportation)
+        activate CTRL
+        CTRL --> UI : exportation
+        deactivate CTRL
 
     UI -> CTRL : getIndustryChangers()
     activate CTRL
@@ -141,7 +150,7 @@ activate EDITOR
     EDITOR -> UI : confirms all data
     activate UI
 
-    UI -> CTRL : createScenario(map, year, locomotiveTypes, industryTypes, behaviour, changers)
+    UI -> CTRL : createScenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
     activate CTRL
     CTRL -> SCENARIO ** : create(...)
     CTRL --> UI : scenario

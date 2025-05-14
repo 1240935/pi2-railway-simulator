@@ -15,39 +15,39 @@ class RailwayMaintenanceUI {
 
 class RailwayMaintenanceController {
   +RailwayMaintenanceController()
-  +setStationFile(file: File)
-  +setLineFile(file: File)
-  +setMaintenanceType(type: MaintenanceType)
-  +setStartStation(station: Station)
-  +setLocomotive(locomotive: Locomotive)
+  +setStationFile(file)
+  +setLineFile(file)
+  +setMaintenanceType(type)
+  +setStartStation(station)
+  +setLocomotive(locomotive)
 }
 
 class Repositories {
-  +getInstance(): Repositories
-  +getStationRepository(): StationRepository
-  +getLineRepository(): LineRepository
-  +getLocomotiveRepository(): LocomotiveRepository
+  +getInstance()
+  +getStationRepository()
+  +getLineRepository()
+  +getLocomotiveRepository()
 }
 
 class StationRepository {
-  +loadStations(file: File): List<Station>
+  +loadStations(file)
 }
 
 class LineRepository {
-  +loadLines(file: File): List<Line>
-  +getElectrifiedLines(lines: List<Line>): List<Line>
+  +loadLines(file)
+  +getElectrifiedLines(lines)
 }
 
 class LocomotiveRepository {
-  +getAvailableLocomotives(): List<Locomotive>
+  +getAvailableLocomotives()
 }
 
 class Graph {
-  +buildGraph(stations: List<Station>, lines: List<Line>): Graph
-}
+  +buildGraph(stations, lines)
+  }
 
 class Route {
-  +findEulerianPath(graph: Graph): List<Station>
+  +findEulerianPath(graph)
 }
 
 class Station {
@@ -64,14 +64,8 @@ class Line {
 }
 
 class Locomotive {
-    -power: int
-    -acceleration: int
-    -topSpeed: int
-    -operationStartYear: int
-    -fuelCost: int
-    -maintenancePYear: int
-    -cost: int
     -iD: int
+    -model: LocomotiveModel
 }
 
 enum MaintenanceType {

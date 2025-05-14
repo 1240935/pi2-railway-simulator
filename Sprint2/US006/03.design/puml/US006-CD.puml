@@ -66,15 +66,16 @@ class Station{
     -center : Position
 }
 
-class Scenario{
-   -map: Map
-   -year: int
-   -locomotiveTypes: List<LocomotiveType>
-   -industryTypes: List<IndustryType>
-   -resourceTypes: List<ResourceType>
-   -behavior: boolean
-   -changers: List<IndustryChanger>
-}
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: boolean
+       -exportation: boolean
+       -changers: List<IndustryChanger>
+       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
+     }
 
 
 ' Relationships

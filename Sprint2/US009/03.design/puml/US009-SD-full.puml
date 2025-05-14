@@ -6,152 +6,101 @@ skinparam shadowing false
 autonumber
 
 'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
+actor "Player" as PLAYER
+participant ":BuyLocomotiveUI" as UI
+participant ":BuyLocomotiveController" as CTRL
 participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+participant "ScenarioRepository" as SCENARIO_REPO
+participant "LocomotiveModelRepository" as LOC_REPO
+participant "Scenario" as SCENARIO
+participant "LocomotiveRepository" as LOCOMOTIVE_REPO
+participant "Locomotive" as LOCOMOTIVE
 
-activate ORG_EMPLOYEE
+activate PLAYER
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
-
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
-
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
-
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
-
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
-
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
-        deactivate UI
-
-    ORG_EMPLOYEE -> UI : selects a task category
+    PLAYER -> UI : asks for the list of locomotives
     activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+        UI --> CTRL** : create()
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
-
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
+        UI -> CTRL : getAvailableScenarios()
         activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+            CTRL -> SCENARIO_REPO : getScenarios()
+            activate SCENARIO_REPO
+                SCENARIO_REPO --> CTRL : list of scenarios
+            deactivate SCENARIO_REPO
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+            CTRL --> UI : list of scenarios
+        deactivate CTRL
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
-
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
-
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
-
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
-
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
-
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
-
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
-
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
-
-                CTRL --> CTRL : employee
-            deactivate CTRL
-
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
-
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
-
-                    ORG --> ORG : true
-                deactivate ORG
-
-                ORG --> CTRL : task
-            deactivate ORG
-
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
+        UI --> PLAYER : shows available scenarios
     deactivate UI
 
-deactivate ORG_EMPLOYEE
+PLAYER -> UI : selects scenario
+activate UI
+    UI -> CTRL : setScenario(scenario)
+    activate CTRL
+        CTRL --> UI : scenario selected
+    deactivate CTRL
+
+    UI -> CTRL : getAvailableLocomotiveModels()
+    activate CTRL
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+            REPOS --> CTRL: repositories
+        deactivate REPOS
+
+        CTRL -> LOC_REPO : getLocomotiveModels()
+        activate LOC_REPO
+            LOC_REPO --> CTRL : list of locomotives models
+        deactivate LOC_REPO
+
+        CTRL --> UI : list of locomotives
+    deactivate CTRL
+
+    UI --> PLAYER : shows the list of locomotive models
+deactivate UI
+
+PLAYER -> UI : selects locomotive model
+activate UI
+    UI -> CTRL : setModel(model)
+    activate CTRL
+    CTRL --> UI: selected model
+    deactivate CTRL
+
+    UI --> PLAYER: shows all data for confirmation
+
+    deactivate UI
+    PLAYER -> UI: confirms all data
+    activate UI
+
+    UI -> CTRL : createLocomotive(model, iD)
+    activate CTRL
+    CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL: repositories
+            deactivate REPOS
+
+            CTRL -> LOCOMOTIVE_REPO : getLocomotives()
+            activate LOCOMOTIVE_REPO
+                LOCOMOTIVE_REPO --> CTRL : list of locomotives
+            deactivate LOCOMOTIVE_REPO
+      CTRL -> LOCOMOTIVE_REPO : nextID()
+            activate LOCOMOTIVE_REPO
+                LOCOMOTIVE_REPO --> CTRL : iD
+            deactivate LOCOMOTIVE_REPO
+        CTRL -> LOCOMOTIVE** : create(model, iD)
+
+        CTRL --> UI : locomotive
+    deactivate CTRL
+
+    UI --> PLAYER : operation success
+deactivate UI
+
+deactivate PLAYER
 
 @enduml

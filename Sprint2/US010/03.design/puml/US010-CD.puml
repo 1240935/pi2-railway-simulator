@@ -21,7 +21,7 @@ class AssignRouteController {
       +setLocomotive(locomotive)
       +getAvailableStations()
       +addStation(station)
-      +checkStationConnection(station)
+      +areConnected(previousStation, station)
       +checkCargo(station)
       +setCargo(cargo)
       +createRoute(locomotive, stations, cargo)
@@ -47,14 +47,13 @@ class LocomotiveRepository {
 }
 
 class Scenario {
-    -map: Map
-    -year: int
-    -locomotiveTypes: List<LocomotiveType>
-    -industryTypes: List<IndustryType>
-    -resourceTypes: List<ResourceType>
-    -behavior: boolean
-    -changers: List<IndustryChanger>
-    +checkStationConnection(station)
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: boolean
+       -exportation; boolean
+       -changers: List<IndustryChanger>
 }
 
 class Station {
@@ -62,12 +61,14 @@ class Station {
   -position : Position
   -type : StationType
   -center : Position
-  +checkCargo()
+  +checkCargo(station)
 }
 
 class Route {
-  +create(locomotive, stations, cargo)
-  -stations: List<Station>
+  +Route(locomotive, stations, cargo)
+  -beginningStation: Station
+  -endingStation: Station
+  -stops: List <Station>
   -locomotive: Locomotive
   -cargo: Cargo
 }
@@ -83,28 +84,38 @@ class Cargo {
   -type: CargoType
 }
 
+class Railway{
+   -start: Station
+   -end: Station
+   -stops: List <Station>
+   -electrification: boolean
+   -type: RailwayType
+   +areConnected(previousStation, station)
+}
+
 
 AssignRouteUI ..> AssignRouteController
-AssignRouteController ..> Repositories
-Repositories -> "1" Repositories : instance
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" StationRepository : station repository
-Repositories --> "1" LocomotiveRepository : locomotive repository
 
+AssignRouteController ..> Repositories
 AssignRouteController ..> Route
 AssignRouteController ..> Scenario
 AssignRouteController ..> Locomotive
 AssignRouteController ..> Cargo
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories --> "1" StationRepository : station repository
+Repositories --> "1" LocomotiveRepository : locomotive repository
 
 StationRepository --> "*" Station : station
 LocomotiveRepository --> "*" Locomotive: locomotive
 ScenarioRepository --> "*" Scenario: scenario
 
 Scenario --> "*" Station : station
-Scenario --> "*" Locomotive : locomotive
-Scenario --> "*" Cargo : cargo
+Scenario --> "*" Railway: railway
 
 Route --> "1" Locomotive : locomotive
 Route --> "2..*" Station : station
 Route --> "1..*" Cargo : cargo
+Route --> "1..*" Railway: railway
 @enduml

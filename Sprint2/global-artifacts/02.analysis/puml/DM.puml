@@ -76,9 +76,9 @@ class CityBlock{
 }
 
 class Railway{
-    length
+    start
+    end
     electrification
-    cost
 }
 
 class RailwayType{

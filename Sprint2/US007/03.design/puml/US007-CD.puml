@@ -45,7 +45,6 @@ class Scenario {
     -importation: boolean
     -exportation: boolean
     -changers: List<IndustryChanger>
-    +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
 }
 
 
@@ -80,7 +79,8 @@ ViewStationController ..> Station
 Repositories -> "1" Repositories : instance
 Repositories --> "1" ScenarioRepository : scenario repository
 Repositories --> "1" StationRepository : station repository
-
+ScenarioRepository --> "1..*" Scenario : scenario
+StationRepository --> "1..*" Station : station
 Scenario --> "*" Station : station
 
 Station --> "*" Building : building

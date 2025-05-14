@@ -50,7 +50,6 @@ class Scenario {
        -importation: boolean
        -exportation; boolean
        -changers: List<IndustryChanger>
-       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
 }
 
 class Position {

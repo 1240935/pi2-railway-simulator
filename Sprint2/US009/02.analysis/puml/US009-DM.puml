@@ -11,6 +11,10 @@ hide methods
 left to right direction
 
 class Locomotive {
+    iD
+}
+
+class LocomotiveModel{
     power
     acceleration
     topSpeed
@@ -18,7 +22,6 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    iD
 }
 
 class LocomotiveType{
@@ -32,6 +35,8 @@ class Player {
 
 
 class Scenario {
+    importation
+    exportation
 }
 
 class TimeRestriction{
@@ -41,17 +46,15 @@ class TimeRestriction{
 class TechnologicalRestriction{
 }
 
-class PortsBehaviour{
-}
-
-
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "1..*" Locomotive: buys  >
 Locomotive "1" -- "1" LocomotiveType: has >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-TimeRestriction "1" -- "*" Locomotive: affects >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+Locomotive "*" -- "1" LocomotiveModel: has >
+LocomotiveModel "*" -- "1" LocomotiveType: has >
 
 
 

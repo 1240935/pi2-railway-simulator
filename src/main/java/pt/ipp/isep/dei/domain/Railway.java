@@ -2,15 +2,15 @@ package pt.ipp.isep.dei.domain;
 
 public class Railway {
 
-    private Position startPosition;
-    private Position endPosition;
+    private Station start;
+    private Station end;
     private boolean eletrification;
     private RailwayType type;
 
-    Railway(Position startPosition , Position endPosition, boolean eletrification,
+    Railway(Station start , Station end, boolean eletrification,
             RailwayType type){
-        this.startPosition = startPosition;
-        this.endPosition = endPosition;
+        this.start = start;
+        this.end = end;
         this.eletrification = eletrification;
         this.type = type;
     }

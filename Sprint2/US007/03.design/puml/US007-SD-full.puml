@@ -20,7 +20,7 @@ activate PLAYER
 
     PLAYER -> UI : asks to view station
     activate UI
-        UI --> CTRL : create()
+        UI --> CTRL** : create()
 
         UI -> CTRL : getAvailableScenarios()
         activate CTRL

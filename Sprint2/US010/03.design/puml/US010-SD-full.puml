@@ -1,5 +1,5 @@
 @startuml
-skinparam monochrome true
+'skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
@@ -12,7 +12,7 @@ autonumber
     participant "ScenarioRepository" as SREPOS
     participant "StationRepository" as STREPOS
     participant "LocomotiveRepository" as LOCREPOS
-    participant "Scenario" as SCENARIO
+    participant "Railway" as RAILWAY
     participant "Station" as STATION
     participant "Route" as ROUTE
 
@@ -124,18 +124,19 @@ autonumber
 
                 deactivate CTRL
 
-                UI -> CTRL : checkStationConnection(station)
-                activate CTRL
+                UI -> CTRL : checkStationConnection(previousStation, station)
+                   activate CTRL
 
-                CTRL -> SCENARIO : checkStationConnection(station)
-                    activate SCENARIO
+                       CTRL -> RAILWAY : areConnected(previousStation, station)
 
-                    SCENARIO --> CTRL : connection exists
-                    deactivate SCENARIO
+                       activate RAILWAY
 
-                    CTRL --> UI : connection exists
-                    deactivate CTRL
-                    end loop
+                           RAILWAY --> CTRL : connection
+                       deactivate RAILWAY
+
+                   CTRL --> UI : connection
+                   deactivate CTRL
+                end loop
 
                 UI -> CTRL : checkCargo(station)
                 activate CTRL
@@ -164,15 +165,15 @@ autonumber
                 deactivate CTRL
 
     UI --> PLAYER: shows all data and requests \n for confirmation
-    deactivate  UI
+    deactivate UI
 
     PLAYER -> UI: confirms data
     activate UI
 
-    UI -> CTRL : createRoute(locomotive, stations, cargo)
+    UI -> CTRL : createRoute(beginningStation, endingStation, stops, locomotive, cargo)
     activate CTRL
 
-    CTRL -> ROUTE** : create(locomotive, stations, cargo)
+    CTRL -> ROUTE** : create(beginningStation, endingStation, stops, locomotive, cargo)
 
     CTRL --> UI : route
     deactivate CTRL

@@ -18,9 +18,9 @@ class UpgradeStationController {
     + setScenario(scenario)
     + getAvailableStations()
     + setStation(station)
-    + getAvailableBuildingTypes(station)
+    + getAvailableBuildingTypes()
     + setType(type)
-    + createBuilding(station, type)
+    + createBuilding(type)
     + setBuilding(building)
 }
 
@@ -37,6 +37,10 @@ class Repositories {
     + getInstance()
     + getScenarioRepository()
     + getStationRepository()
+}
+
+class BuildingTypeRepository{
+    +getAvailableBuildingTypes()
 }
 
 enum BuildingType {
@@ -78,23 +82,27 @@ class Scenario {
     -importation: boolean
     -exportation: boolean
     -changers: List<IndustryChanger>
-    +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
 }
 
 
 UpgradeStationUI ..> UpgradeStationController
+
 UpgradeStationController ..> Repositories
 UpgradeStationController ..> ScenarioRepository
 UpgradeStationController ..> StationRepository
-UpgradeStationController ..> BuildingType
 UpgradeStationController ..> Building
 UpgradeStationController ..> Scenario
+UpgradeStationController ..> BuildingTypeRepository
+
 ScenarioRepository --> "1..*" Scenario  : scenario
 StationRepository --> "1..*" Station  : station
+
+BuildingTypeRepository --> "1..*" BuildingType : building type
 Scenario --> "*" Station : station
 Station --> "*" Building : building
+
 Repositories --> "1" ScenarioRepository : scenario repository
-Repositories -> "1" Repositories : instance
+Repositories --> "1" Repositories : instance
 Repositories --> "1" StationRepository : station repository
 BuildingType --> "1" Building : building type
 

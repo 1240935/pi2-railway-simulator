@@ -1,90 +1,76 @@
 @startuml
-'skinparam monochrome true
-skinparam packageStyle rectangle
-skinparam shadowing false
-skinparam linetype polyline
-'skinparam linetype orto
-
 skinparam classAttributeIconSize 0
 
-'left to right direction
-
-
-class ViewStationUI {
+class StationListUI {
 }
 
-class ViewStationController {
-  +ViewStationController()
-  +getAvailableScenarios()
-  +setScenario(scenario)
-  +getAvailableStations()
-  +getBuilding(station)
-  +getCargo(station)
+class StationListController {
+  +getStations(): List<Station>
+  +selectStation(stationId): StationDetails
+}
+
+class MapRepository {
+  +getSelectedMap(): Map
 }
 
 class Repositories {
-  -Repositories()
-  +getInstance()
-  +getScenarioRepository()
-  +getStationRepository()
+  - Repositories()
+  + {static} getInstance()
+  + getMapRepository(): MapRepository
 }
 
-class ScenarioRepository {
-  +getScenarios()
+class Map {
+  +getStations(): List<Station>
 }
 
-class StationRepository {
-  +getStations()
+class Station {
+  - id: int
+  - name: String
+  - position: Position
+  - buildings: List<Building>
+  - cargoInfo: CargoInfo
 }
 
-class Scenario {
-    -map: Map
-    -year: int
-    -locomotiveTypes: List<LocomotiveType>
-    -industryTypes: List<IndustryType>
-    -importation: boolean
-    -exportation: boolean
-    -changers: List<IndustryChanger>
-}
-
-
-class Station{
-    -name : String
-    -position : Position
-    -type : StationType
-    -center : Position
-    -building: Building
-    -cargo: Cargo
-    +getBuilding(station)
-    +getCargo(station)
+class Position {
+  - xCoordinate: int
+  - yCoordinate: int
 }
 
 class Building {
-    -type: BuildingType
+  - type: String
+}
+
+class CargoInfo {
+  - demand: List<Cargo>
+  - supply: List<Cargo>
 }
 
 class Cargo {
-  -type: CargoType
-  -quantity: int
+  - name: String
+  - quantity: int
 }
 
+class StationDetails {
+  - station: Station
+  + StationDetails(station: Station)
+}
 
-ViewStationUI ..> ViewStationController
-ViewStationController ..> Repositories
-ViewStationController ..> ScenarioRepository
-ViewStationController ..> StationRepository
-ViewStationController ..> Scenario
-ViewStationController ..> Station
+StationListUI ..> StationListController
+StationListController .> Repositories
+StationListController ..> MapRepository
+StationListController ..> Map
+StationListController ..> Station
+StationListController ..> StationDetails
 
+MapRepository --> "1" Map : selectedMap
+Map --> "*" Station : stations
+Station --> "1" Position
+Station --> "*" Building : buildings
+Station --> "1" CargoInfo
+CargoInfo --> "*" Cargo : demand
+CargoInfo --> "*" Cargo : supply
+
+Repositories --> "1" MapRepository : mapRepository
 Repositories -> "1" Repositories : instance
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" StationRepository : station repository
-ScenarioRepository --> "1..*" Scenario : scenario
-StationRepository --> "1..*" Station : station
-Scenario --> "*" Station : station
-
-Station --> "*" Building : building
-Station --> "*" Cargo : cargo
-
 
 @enduml

@@ -5,7 +5,7 @@ public class Player {
     private String password;
     private int budget;
 
-    private final int DEFAULT_BUDGET = 0;
+    private final int DEFAULT_BUDGET = 1000000000;
 
     public Player(String username, String password) {
         this.password = password;

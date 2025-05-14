@@ -9,7 +9,7 @@ public class Map {
         this.size = size;
     }
 
-    public String getPassword() {
+    public String getName() {
         return name;
     }
 
@@ -17,11 +17,11 @@ public class Map {
         return size;
     }
 
-    public void setPassword(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setUsername(int size) {
+    public void setSize(int size) {
         this.size = size;
     }
 }

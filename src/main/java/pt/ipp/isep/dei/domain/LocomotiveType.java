@@ -4,7 +4,7 @@ public enum LocomotiveType {
     //Tipos
     STEAM(),
     DIESEL(),
-    ELETRIC();
+    ELECTRIC();
 
     LocomotiveType(){
 

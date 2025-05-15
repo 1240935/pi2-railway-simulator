@@ -51,6 +51,7 @@ class Cargo {
 }
 
 class CargoType{
+    cost
 }
 
 class TimeRestriction{

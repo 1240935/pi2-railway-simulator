@@ -53,15 +53,17 @@ class Cargo {
 }
 
 class CargoType{
+    value
 }
 
 class Railway{
     start
     end
-    electrification
 }
 
 class RailwayType{
+    cost
+    electrification
 }
 
 class Position{

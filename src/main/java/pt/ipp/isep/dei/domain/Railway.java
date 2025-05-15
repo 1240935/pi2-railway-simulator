@@ -2,16 +2,25 @@ package pt.ipp.isep.dei.domain;
 
 public class Railway {
 
-    private Station start;
-    private Station end;
-    private boolean eletrification;
-    private RailwayType type;
+    private final Station start;
+    private final Station end;
+    private final RailwayType type;
 
-    Railway(Station start , Station end, boolean eletrification,
-            RailwayType type){
+    Railway(Station start , Station end, RailwayType type){
         this.start = start;
         this.end = end;
-        this.eletrification = eletrification;
         this.type = type;
+    }
+
+    public Station getStart() {
+        return start;
+    }
+
+    public Station getEnd() {
+        return end;
+    }
+
+    public RailwayType getType() {
+        return type;
     }
 }

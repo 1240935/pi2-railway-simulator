@@ -5,10 +5,14 @@ public class Repositories {
     private static Repositories instance;
     // Objeto que vai ser referênciado nos .getMapRepository() <-(concede acesso ao repositorio)
     private MapRepository mapRepository;
+    private StationRepository stationRepo;
+    private ScenarioRepository scenarioRepo;
 
-    // Inicialisa o mapRepository, nada fora desta classe pode instanciar repositórios
+    // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
         mapRepository = new MapRepository();
+        stationRepo = new StationRepository();
+        scenarioRepo = new ScenarioRepository();
     }
 
     // Cria um repositório caso não exista, se existir, retorna o existente, assim só existe 1
@@ -22,5 +26,15 @@ public class Repositories {
     // Getter do repositório de mapas
     public MapRepository getMapRepository() {
         return mapRepository;
+    }
+
+    // Getter do repositório de cenarios
+    public ScenarioRepository getScenarioRepository() {
+        return scenarioRepo;
+    }
+
+    // Getter do repositório de stations
+    public StationRepository getStationRepository() {
+        return stationRepo;
     }
 }

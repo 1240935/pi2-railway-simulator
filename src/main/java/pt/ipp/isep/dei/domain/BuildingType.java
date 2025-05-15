@@ -2,16 +2,16 @@ package pt.ipp.isep.dei.domain;
 
 public enum BuildingType {
     // Tipos
-    TELEGRAPH(1,1),
-    TELEPHONE(1,1),
-    SMALLCAFE(1,1),
-    LARGECAFE(1,1),
-    CUSTOMS(1,1),
-    POSTOFFICE(1,1),
-    SMALLHOTEL(1,1),
-    LARGEHOTEL(1,1),
-    SILO(1,1),
-    LIQUIDSTORAGE(1,1);
+    TELEGRAPH(100,1),
+    TELEPHONE(150,2),
+    SMALLCAFE(200,1),
+    LARGECAFE(300,2),
+    CUSTOMS(500,3),
+    POSTOFFICE(250,1),
+    SMALLHOTEL(400,2),
+    LARGEHOTEL(600,3),
+    SILO(350,2),
+    LIQUIDSTORAGE(450,2);
 
     private final int cost;
     private final int upgrade;

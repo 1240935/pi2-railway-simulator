@@ -9,6 +9,7 @@ actor "Player" as PLAYER
 participant ":StationListUI" as UI
 participant ":StationListController" as CTRL
 participant "Repositories" as REPOS
+participant ":ScenarioRepository" as SCEN_REPOS
 participant ":MapRepository" as MAP_REPOS
 participant "Map" as MAP
 participant "Station" as STATION
@@ -28,15 +29,11 @@ activate PLAYER
                 activate REPOS
                 REPOS --> CTRL : repositories
                 deactivate REPOS
-            CTRL -> MAP_REPOS : getMapRepository()
-                activate MAP_REPOS
-                MAP_REPOS --> CTRL : mapRepository
-                deactivate MAP_REPOS
-            CTRL -> MAP : getStations()
-                activate MAP
-                MAP --> CTRL : stations
-                deactivate MAP
-            CTRL --> UI : availableScenarios (stations)
+            CTRL -> SCEN_REPOS : getScenarioList()
+                activate SCEN_REPOS
+                SCEN_REPOS --> CTRL : list of scenarios
+                deactivate SCEN_REPOS
+            CTRL --> UI : availableScenarios
             deactivate CTRL
 
         UI --> PLAYER : shows available scenarios
@@ -44,8 +41,12 @@ activate PLAYER
 
     PLAYER -> UI : selects a scenario
     activate UI
-        UI -> CTRL : selectScenario(scenarioId)
+        UI -> CTRL : setScenario(scenarioId)
         activate CTRL
+        CTRL -> MAP_REPOS : getMapRepository()
+            activate MAP_REPOS
+            MAP_REPOS --> CTRL : mapRepository
+            deactivate MAP_REPOS
         CTRL -> MAP : getStations()
             activate MAP
             MAP --> CTRL : stations
@@ -57,12 +58,12 @@ activate PLAYER
 
     PLAYER -> UI : selects a station
     activate UI
-        UI -> CTRL : selectStation(stationId)
+        UI -> CTRL : setStation(stationId)
         activate CTRL
         CTRL -> MAP : getStations()
-        activate MAP
-        MAP --> CTRL : stations
-        deactivate MAP
+            activate MAP
+            MAP --> CTRL : stations
+            deactivate MAP
         CTRL -> STATION : getDetails()
         activate STATION
         STATION -> BUILDING : getBuildings()

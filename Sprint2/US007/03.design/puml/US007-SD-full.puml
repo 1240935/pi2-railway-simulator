@@ -5,94 +5,81 @@ skinparam shadowing false
 
 autonumber
 
-'hide footbox
-
 actor "Player" as PLAYER
-participant ":ViewStationUI" as UI
-participant ":ViewStationController" as CTRL
+participant ":StationListUI" as UI
+participant ":StationListController" as CTRL
 participant "Repositories" as REPOS
-participant "ScenarioRepository" as SCENARIO_REPO
-participant "StationRepository" as STREPOS
-participant "Scenario" as SCENARIO
+participant ":ScenarioRepository" as SCEN_REPOS
+participant ":MapRepository" as MAP_REPOS
+participant "Map" as MAP
 participant "Station" as STATION
+participant "StationDetails" as DETAILS
+participant "Building" as BUILDING
+participant "CargoInfo" as CARGOINFO
+participant "Cargo" as CARGO
 
 activate PLAYER
 
-    PLAYER -> UI : asks to view station
+    PLAYER -> UI : asks to see stations
     activate UI
         UI --> CTRL** : create()
-
         UI -> CTRL : getAvailableScenarios()
-        activate CTRL
+            activate CTRL
             CTRL -> REPOS : getInstance()
-            activate REPOS
+                activate REPOS
                 REPOS --> CTRL : repositories
-            deactivate REPOS
-
-            CTRL -> SCENARIO_REPO : getScenarios()
-            activate SCENARIO_REPO
-                SCENARIO_REPO --> CTRL : list of scenarios
-            deactivate SCENARIO_REPO
-
-            CTRL --> UI : list of scenarios
-        deactivate CTRL
+                deactivate REPOS
+            CTRL -> SCEN_REPOS : getScenarioList()
+                activate SCEN_REPOS
+                SCEN_REPOS --> CTRL : list of scenarios
+                deactivate SCEN_REPOS
+            CTRL --> UI : availableScenarios
+            deactivate CTRL
 
         UI --> PLAYER : shows available scenarios
     deactivate UI
 
-PLAYER -> UI : selects scenario
-activate UI
-    UI -> CTRL :setScenario(scenario)
-
+    PLAYER -> UI : selects a scenario
+    activate UI
+        UI -> CTRL : setScenario(scenarioId)
         activate CTRL
-
-        CTRL --> UI : scenario selected
-
+        CTRL -> MAP_REPOS : getMapRepository()
+            activate MAP_REPOS
+            MAP_REPOS --> CTRL : mapRepository
+            deactivate MAP_REPOS
+        CTRL -> MAP : getStations()
+            activate MAP
+            MAP --> CTRL : stations
+            deactivate MAP
+        CTRL --> UI : list of stations
         deactivate CTRL
+        UI --> PLAYER : shows list of stations
+    deactivate UI
 
-
-            UI -> CTRL : getAvailableStations()
-            activate CTRL
-
-            CTRL -> REPOS : getInstance()
-            activate REPOS
-
-            REPOS --> CTRL: repositories
-
-            deactivate REPOS
-
-            CTRL -> STREPOS : getStations()
-            activate STREPOS
-
-            STREPOS --> CTRL : list of stations
-
-            deactivate STREPOS
-            CTRL --> UI : list of stations
-            deactivate CTRL
-
-            UI --> PLAYER : shows the list of stations
-            deactivate UI
-
-PLAYER -> UI : selects station
-activate UI
-    UI -> CTRL : getBuilding(station)
-    activate CTRL
-        CTRL -> STATION : getBuilding(station)
+    PLAYER -> UI : selects a station
+    activate UI
+        UI -> CTRL : setStation(stationId)
+        activate CTRL
+        CTRL -> MAP : getStations()
+            activate MAP
+            MAP --> CTRL : stations
+            deactivate MAP
+        CTRL -> STATION : getDetails()
         activate STATION
-            STATION --> CTRL : building
+        STATION -> BUILDING : getBuildings()
+        STATION -> CARGOINFO : getCargoInfo()
+        activate CARGOINFO
+        CARGOINFO -> CARGO : getDemand()
+        CARGOINFO -> CARGO : getSupply()
+        deactivate CARGOINFO
+        STATION --> CTRL : station details
         deactivate STATION
-        CTRL --> UI : building
-    deactivate CTRL
-    UI -> CTRL : getCargo(station)
-        activate CTRL
-            CTRL -> STATION : getCargo(station)
-            activate STATION
-                STATION --> CTRL : cargo
-            deactivate STATION
-            CTRL --> UI : cargo
+        CTRL -> DETAILS** : create(station)
+        CTRL --> UI : station details
         deactivate CTRL
-    UI --> PLAYER : displays station details and success
-deactivate UI
+
+        UI --> PLAYER : shows station details and success
+    deactivate UI
 
 deactivate PLAYER
 @enduml

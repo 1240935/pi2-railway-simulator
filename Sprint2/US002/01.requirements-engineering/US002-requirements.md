@@ -1,4 +1,4 @@
-# US002 - Place an Industry
+\# US002 - Place an Industry
 
 ## 1. Requirements Engineering
 

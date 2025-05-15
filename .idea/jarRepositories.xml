@@ -17,6 +17,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="graphstream-release" />
+      <option name="name" value="graphstream-release" />
+      <option name="url" value="https://oss.sonatype.org/content/repositories/releases/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="repsy" />
       <option name="name" value="lei-soft" />
       <option name="url" value="https://repo.repsy.io/mvn/pmaio/lei-soft" />

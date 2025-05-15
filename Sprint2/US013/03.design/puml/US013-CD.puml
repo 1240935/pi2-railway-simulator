@@ -23,7 +23,6 @@ class VerifyTrainTravelController {
 
 class Station {
   -name : String
-  -position : Position
   -type : StationType
   -center : Position
 }
@@ -69,6 +68,7 @@ class LineRepository {
 }
 
 VerifyTrainTravelUI ..> VerifyTrainTravelController
+
 VerifyTrainTravelController ..> StationRepository
 VerifyTrainTravelController ..> LineRepository
 VerifyTrainTravelController ..> Graph

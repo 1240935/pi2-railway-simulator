@@ -15,7 +15,6 @@
         <!-- Maven Version Configuration -->
         <maven-compiler-plugin>3.14.0</maven-compiler-plugin>
 
-
         <!-- Project Encoding Configuration -->
         <project.sourceEncoding>UTF-8</project.sourceEncoding>
         <project.build.sourceEncoding>${project.sourceEncoding}</project.build.sourceEncoding>
@@ -57,6 +56,13 @@
             <artifactId>AuthLib</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- GraphStream for visualization -->
+        <dependency>
+            <groupId>org.graphstream</groupId>
+            <artifactId>gs-core</artifactId>
+            <version>1.3</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -65,21 +71,27 @@
             <name>lei-soft</name>
             <url>https://repo.repsy.io/mvn/pmaio/lei-soft</url>
         </repository>
+
+        <!-- GraphStream Maven repository -->
+        <repository>
+            <id>graphstream-release</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <build>
         <plugins>
-            <!-- Required for compiling the project usign maven -->
-            <plugin><!-- Compiler configuration-->
+            <!-- Required for compiling the project using Maven -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <showWarnings>true</showWarnings>   <!-- Needs this -->
+                    <source>15</source>
+                    <target>15</target>
+                    <showWarnings>true</showWarnings>
                     <compilerArgs>
-                        <arg>-Xlint:all</arg>   <!-- recommended -->
+                        <arg>-Xlint:all</arg>
                     </compilerArgs>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -130,6 +142,7 @@
                 </executions>
             </plugin>
 
+            <!-- To create executable jar with dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

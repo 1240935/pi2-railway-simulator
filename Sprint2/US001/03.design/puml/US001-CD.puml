@@ -17,6 +17,7 @@ class CreateMapUI {
 class CreateMapController {
   +CreateMapController()
   +getMap()
+  +checkName(name)
   +createMap(size, name)
 }
 

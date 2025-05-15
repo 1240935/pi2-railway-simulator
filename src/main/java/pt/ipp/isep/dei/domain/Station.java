@@ -13,6 +13,11 @@ public class Station {
         this.type = type;
     }
 
+    public Station(String name, StationType type) {
+        this.name = name;
+        this.type = type;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

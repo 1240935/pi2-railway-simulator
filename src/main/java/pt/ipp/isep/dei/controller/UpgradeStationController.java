@@ -1,8 +1,6 @@
 package pt.ipp.isep.dei.controller;
-
 import pt.ipp.isep.dei.domain.*;
 import pt.ipp.isep.dei.repository.*;
-
 import java.util.List;
 
 public class UpgradeStationController {

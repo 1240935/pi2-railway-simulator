@@ -23,4 +23,5 @@ public class CreateMapUI {
         controller.createMap(size, name);
         System.out.println("Map created successfully.");
     }
+
 }

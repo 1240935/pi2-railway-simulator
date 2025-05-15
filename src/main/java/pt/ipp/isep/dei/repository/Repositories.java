@@ -1,9 +1,7 @@
 package pt.ipp.isep.dei.repository;
 
-import pt.ipp.isep.dei.domain.Line;
 import pt.ipp.isep.dei.domain.Station;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Repositories {

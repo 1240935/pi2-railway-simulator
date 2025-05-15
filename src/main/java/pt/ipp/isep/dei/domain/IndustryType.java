@@ -1,8 +1,8 @@
 package pt.ipp.isep.dei.domain;
 
+
 public enum IndustryType {
-    // Tipos
-    ALUMINUM_MILL(),
+    ALUMINUM_MILL(ResourceType.ALUMINUM, ResourceType.BAUXITE),
     AUTO_PLANT(),
     BAKERY(),
     BAUXITE_MINE(),
@@ -53,15 +53,9 @@ public enum IndustryType {
     private ResourceType importation;
     private ResourceType exportation;
 
-    IndustryType(ResourceType importation, ResourceType exportation) {
+    IndustryType(ResourceType importation,ResourceType exportation) {
         this.importation = importation;
         this.exportation = exportation;
-    }
-
-
-    IndustryType() {
-        this.importation = null;
-        this.exportation = null;
     }
 
     public ResourceType getImportation() {

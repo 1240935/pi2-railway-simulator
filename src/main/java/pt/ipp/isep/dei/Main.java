@@ -1,7 +1,5 @@
 package pt.ipp.isep.dei;
 
-import pt.ipp.isep.dei.ui.console.CreateIndustryUI;
-import pt.ipp.isep.dei.ui.console.CreateMapUI;
 import pt.ipp.isep.dei.ui.console.*;
 
 public class Main {

@@ -1,8 +1,6 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.VerifyTrainTravelController;
-import pt.ipp.isep.dei.domain.LocomotiveType;
-import pt.ipp.isep.dei.domain.StationType;
 
 import java.util.Scanner;
 
@@ -27,17 +25,17 @@ public class VerifyTrainTravelUI {
      * - Optionally visualizes the graph.
      */
     public void start() {
-        System.out.print("Enter path to **stations** CSV file: ");
+        System.out.print("Enter path to stations CSV file: ");
         String stationsFile = scanner.nextLine();
 
-        System.out.print("Enter path to **lines** CSV file: ");
+        System.out.print("Enter path to lines CSV file: ");
         String linesFile = scanner.nextLine();
 
-        LocomotiveType locomotiveType = chooseLocomotiveType();
-        controller.setType(locomotiveType);
+        int locomotiveOption = chooseLocomotiveType();
+        controller.setLocomotiveTypeByOption(locomotiveOption);
 
-        StationType stationType = chooseStationType();
-        controller.setStationType(stationType);
+        int stationOption = chooseStationType();
+        controller.setStationTypeByOption(stationOption);
 
         controller.buildGraphFromFiles(stationsFile, linesFile);
         boolean result = controller.verify();
@@ -50,31 +48,25 @@ public class VerifyTrainTravelUI {
     /**
      * Prompts the user to select a locomotive type.
      *
-     * @return the selected {@link LocomotiveType}, or {@code null} if invalid
+     * @return the selected option number (1-3)
      */
-    private LocomotiveType chooseLocomotiveType() {
+    private int chooseLocomotiveType() {
         System.out.println("Choose Locomotive Type:");
         System.out.println("1. ELECTRIC");
         System.out.println("2. DIESEL");
         System.out.println("3. STEAM");
 
         int choice = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        return switch (choice) {
-            case 1 -> LocomotiveType.ELECTRIC;
-            case 2 -> LocomotiveType.DIESEL;
-            case 3 -> LocomotiveType.STEAM;
-            default -> null;
-        };
+        scanner.nextLine();
+        return choice;
     }
 
     /**
      * Prompts the user to select a station type.
      *
-     * @return the selected {@link StationType}, or {@code null} if invalid
+     * @return the selected option number (1-3)
      */
-    private StationType chooseStationType() {
+    private int chooseStationType() {
         System.out.println("Choose Station Type:");
         System.out.println("1. DEPOT");
         System.out.println("2. STATION");
@@ -82,12 +74,6 @@ public class VerifyTrainTravelUI {
 
         int choice = scanner.nextInt();
         scanner.nextLine();
-
-        return switch (choice) {
-            case 1 -> StationType.DEPOT;
-            case 2 -> StationType.STATION;
-            case 3 -> StationType.TERMINAL;
-            default -> null;
-        };
+        return choice;
     }
 }

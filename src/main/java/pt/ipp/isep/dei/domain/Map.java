@@ -27,6 +27,7 @@ public class Map {
     public void setSize(int size) {
         this.size = size;
     }
+
     public boolean checkCoordinates(Position position) {
         return position.getxCoordinate() >= 0 && position.getxCoordinate() < size &&
                 position.getyCoordinate() >= 0 && position.getyCoordinate() < size;

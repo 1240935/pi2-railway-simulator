@@ -5,134 +5,175 @@ skinparam shadowing false
 
 autonumber
 
-actor "Product Owner" as PO
+actor "Player" as PLAYER
 participant ":CargoSimulatorUI" as UI
 participant ":CargoSimulatorController" as CTRL
 participant "Repositories" as REPOS
-participant ":MapRepository" as MAP_REPOS
-participant "Map" as MAP
+participant "ScenarioRepository" as SREPOS
+participant "StationRepository" as STREPOS
 participant "Station" as STATION
-participant "City" as CITY
-participant "Industry" as INDUSTRY
-participant "RailwayNetwork" as NETWORK
-participant "CargoInfo" as INFO
-participant "Cargo" as CARGO
+participant "Simulator" as SIMULATOR
 
-activate PO
+activate PLAYER
 
-    PO -> UI : requests to start the cargo generation simulator
+    PLAYER -> UI : requests to start the cargo generation simulator
     activate UI
-        UI -> CTRL : getAvailableScenarios()
-        activate CTRL
+
+        UI --> CTRL** : create()
+
+            UI -> CTRL : getAvailableScenarios()
+            activate CTRL
+
             CTRL -> REPOS : getInstance()
-                activate REPOS
-                REPOS --> CTRL : repositories
-                deactivate REPOS
+            activate REPOS
 
-            CTRL -> MAP_REPOS : getMapRepository()
-                activate MAP_REPOS
-                MAP_REPOS --> CTRL : mapRepository
-                deactivate MAP_REPOS
+            REPOS --> CTRL: repositories
 
-            CTRL -> MAP_REPOS : getSelectedMap()
-                activate MAP_REPOS
-                MAP_REPOS --> CTRL : map
-                deactivate MAP_REPOS
+            deactivate REPOS
 
-            CTRL --> UI : available scenarios
-        deactivate CTRL
+            CTRL -> SREPOS : getAvailableScenarios()
+            activate SREPOS
 
-        UI --> PO : displays list of available scenarios
-    deactivate UI
+            SREPOS --> CTRL : list of scenarios
 
-    PO -> UI : selects a scenario
+            deactivate SREPOS
+            CTRL --> UI : list of scenarios
+            deactivate CTRL
+
+            deactivate UI
+
+            UI --> PLAYER : shows the list of scenarios
     activate UI
-        UI -> CTRL : startSimulation()
+
+        UI -> CTRL : setScenario(scenario)
         activate CTRL
 
-            CTRL -> MAP : getStations()
-            activate MAP
-            MAP --> CTRL : stations
-            deactivate MAP
+        CTRL --> UI : scenario selected
+        deactivate CTRL
+        UI -> CTRL : getAvailableStations()
+        activate CTRL
 
-            CTRL -> MAP : getCities()
-            activate MAP
-            MAP --> CTRL : cities
-            deactivate MAP
+        CTRL -> REPOS : getInstance()
+          activate REPOS
 
-            CTRL -> MAP : getIndustries()
-            activate MAP
-            MAP --> CTRL : industries
-            deactivate MAP
+        REPOS --> CTRL: repositories
 
-            CTRL -> MAP : getRailwayNetwork()
-            activate MAP
-            MAP --> CTRL : railway network
-            deactivate MAP
+        deactivate REPOS
 
-            loop for each station
-                CTRL -> NETWORK : isConnected(station, city)
-                alt connected to city
-                    CTRL -> CITY : getDemand()
-                    CITY --> CTRL : cargoDemand
-                    CTRL -> STATION : getCargoInfo()
-                    activate STATION
-                    STATION --> CTRL : info
-                    deactivate STATION
-                    CTRL -> INFO : addDemand(cargoDemand)
-                end alt
+        CTRL -> STREPOS : getAvailableStations()
+        activate STREPOS
 
-                CTRL -> NETWORK : isConnected(station, industry)
-                alt connected to industry
-                    CTRL -> INDUSTRY : getSupply()
-                    INDUSTRY --> CTRL : cargoSupply
-                    CTRL -> STATION : getCargoInfo()
-                    activate STATION
-                    STATION --> CTRL : info
-                    deactivate STATION
-                    CTRL -> INFO : addSupply(cargoSupply)
-                end alt
-            end loop
+        STREPOS --> CTRL : list of available stations
+        deactivate STREPOS
 
-        CTRL --> UI : simulation complete
+        CTRL --> UI: list of available stations
         deactivate CTRL
 
-        UI --> PO : simulation running...
-    deactivate UI
+        UI -> CTRL: getCargo(stations)
+
+        activate CTRL
+
+        CTRL -> STATION: getCargo(stations)
+
+        activate STATION
+
+        STATION --> CTRL: cargo
+
+        deactivate STATION
+
+        CTRL --> UI: cargo
+        deactivate CTRL
+
+        UI -> CTRL: createSimulator(status, stations, cargo)
+
+        activate CTRL
+
+        CTRL -> SIMULATOR** : create(status, stations, cargo)
+
+        CTRL --> UI : simulator
+
+        deactivate CTRL
+
+        UI -> CTRL: setStatus(simulator)
+
+       activate CTRL
+
+       CTRL--> UI: status
+       deactivate CTRL
+
+       loop until cargo quantity reaches 24
+
+       UI -> CTRL: addQuantity(cargo)
+
+       activate CTRL
+
+       CTRL --> UI: quantity
+       deactivate CTRL
+       end loop
+
+
+        UI --> PLAYER : starts cargo generation
+        deactivate UI
 
     alt simulator pause
 
-        PO -> UI : requests to pause the simulator
+        PLAYER -> UI : requests to pause the simulator
         activate UI
-            UI -> CTRL : pauseSimulation()
+            UI -> CTRL : changeStatus(status)
+
             activate CTRL
-            CTRL --> UI : simulation paused
+
+            CTRL --> UI : pause
             deactivate CTRL
-        UI --> PO : simulator paused and awaiting update
+        UI --> PLAYER : simulator paused and awaiting update
         deactivate UI
 
-        PO -> UI : requests to restart the simulator
+        PLAYER -> UI : requests to restart the simulator
         activate UI
-            UI -> CTRL : resumeSimulation()
+
+            UI -> CTRL : changeStatus(status)
             activate CTRL
-            CTRL --> UI : simulator resumed
+
+            CTRL --> UI : play
             deactivate CTRL
-        UI --> PO : simulator resumed
-        deactivate UI
+
+             loop until cargo quantity reaches 24
+
+                   UI -> CTRL: addQuantity(cargo)
+
+                   activate CTRL
+
+                   CTRL --> UI: quantity
+                   deactivate CTRL
+                   end loop
+            deactivate CTRL
+        UI --> PLAYER : simulator resumed
 
     end alt
 
-    UI --> PO : shows final generated cargo
+    UI -> CTRL: getCargo(stations)
+
+            activate CTRL
+
+            CTRL -> STATION: getCargo(stations)
+
+            activate STATION
+
+            STATION --> CTRL: cargo
+
+            deactivate STATION
+
+            CTRL --> UI: cargo
+            deactivate CTRL
+
+    UI --> PLAYER : shows final generated cargo
     deactivate UI
 
-    PO -> UI : confirms the generation data
+    PLAYER -> UI : confirms the generation data
     activate UI
-        UI -> CTRL : confirmSimulationData()
-        activate CTRL
-        CTRL --> UI : operation success
-        deactivate CTRL
-    UI --> PO : displays operation success
+
+    UI --> PLAYER : displays operation success
     deactivate UI
 
-deactivate PO
+deactivate PLAYER
 @enduml

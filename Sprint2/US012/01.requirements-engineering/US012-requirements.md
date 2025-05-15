@@ -12,7 +12,7 @@ industries that the railway network serves.
 
 **From the specifications document:**
 
->As a user with the Product Owner role, I should be able to start a simulation of cargo. This simulation consists in gathering information, such as the cities and industries available for cargo generation covered by the railway and the stations where the cargo should appear, and simulate at user command with the start and pause input.
+>As a user with the Player role, I should be able to start a simulation of cargo. This simulation consists in gathering information, such as the cities and industries available for cargo generation covered by the railway and the stations where the cargo should appear, and simulate at user command with the start and pause input.
  
 
 **From the client clarifications:**

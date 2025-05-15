@@ -10,7 +10,7 @@ import org.graphstream.graph.Edge;
 
 /**
  * Controller class responsible for loading station and line data,
- * building the railway graph, verifying train travel feasibility,
+ * building the railway graph, verifying train travel possibility,
  * and visualizing the graph.
  */
 public class VerifyTrainTravelController {
@@ -50,6 +50,25 @@ public class VerifyTrainTravelController {
     public void setStationType(StationType type) {
         this.stationType = type;
     }
+
+    public void setLocomotiveTypeByOption(int option) {
+        this.locomotiveType = switch (option) {
+            case 1 -> LocomotiveType.ELECTRIC;
+            case 2 -> LocomotiveType.DIESEL;
+            case 3 -> LocomotiveType.STEAM;
+            default -> throw new IllegalArgumentException("Invalid locomotive type option");
+        };
+    }
+
+    public void setStationTypeByOption(int option) {
+        this.stationType = switch (option) {
+            case 1 -> StationType.DEPOT;
+            case 2 -> StationType.STATION;
+            case 3 -> StationType.TERMINAL;
+            default -> throw new IllegalArgumentException("Invalid station type option");
+        };
+    }
+
 
     /**
      * Loads stations and lines from the given CSV files and builds the railway graph.

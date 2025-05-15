@@ -17,11 +17,13 @@ public class CreateMapUI {
         System.out.print("Enter map name: ");
         String name = scanner.nextLine();
         System.out.print("Enter map size: ");
-        int size = scanner.nextInt();
+        String sizeInput = scanner.nextLine();
+        int size = controller.checkSize(sizeInput);
 
         // chama o controller para criar o mapa no repositório
         controller.createMap(size, name);
         System.out.println("Map created successfully.");
+        System.out.println("Created Map: " + controller.getMap(name).toString());
     }
 
 }

@@ -35,4 +35,9 @@ public class Map {
     public void addCity(City city) {
         cities.add(city);
     }
+
+    @Override
+    public String toString() {
+        return "Map{name='" + name + "', size=" + size + "}";
+    }
 }

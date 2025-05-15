@@ -8,6 +8,11 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.Edge;
 
+/**
+ * Controller class responsible for loading station and line data,
+ * building the railway graph, verifying train travel feasibility,
+ * and visualizing the graph.
+ */
 public class VerifyTrainTravelController {
     private String stationsFile;
     private String linesFile;
@@ -17,19 +22,42 @@ public class VerifyTrainTravelController {
     private List<Line> lines;
     private GraphC graph;
 
+    /**
+     * Sets the file paths for stations and lines CSV files.
+     *
+     * @param stationsFile path to the stations CSV file
+     * @param linesFile    path to the lines CSV file
+     */
     public void setFiles(String stationsFile, String linesFile) {
         this.stationsFile = stationsFile;
         this.linesFile = linesFile;
     }
 
+    /**
+     * Sets the locomotive type to be considered for travel verification.
+     *
+     * @param type locomotive type (ELECTRIC, DIESEL, STEAM)
+     */
     public void setType(LocomotiveType type) {
         this.locomotiveType = type;
     }
 
+    /**
+     * Sets the station type to target during travel verification.
+     *
+     * @param type station type (DEPOT, STATION, TERMINAL)
+     */
     public void setStationType(StationType type) {
         this.stationType = type;
     }
 
+    /**
+     * Loads stations and lines from the given CSV files and builds the railway graph.
+     *
+     * @param stationFile path to the stations CSV file
+     * @param lineFile    path to the lines CSV file
+     * @return built GraphC object representing the railway network
+     */
     public GraphC buildGraphFromFiles(String stationFile, String lineFile) {
         Repositories repos = Repositories.getInstance(stationFile, lineFile);
         this.stations = repos.getStationRepository().getStations();
@@ -40,6 +68,11 @@ public class VerifyTrainTravelController {
         return this.graph;
     }
 
+    /**
+     * Verifies if there is a valid travel path according to the selected locomotive and station types.
+     *
+     * @return true if travel is possible, false otherwise
+     */
     public boolean verify() {
         if (graph == null) {
             System.out.println("Cannot verify: graph not built.");
@@ -48,7 +81,10 @@ public class VerifyTrainTravelController {
         return new PathVerifier().verifyPath(graph, locomotiveType, stationType);
     }
 
-
+    /**
+     * Visualizes the railway graph using the GraphStream library.
+     * Stations are shown as nodes and lines as edges, with electrified lines colored red.
+     */
     public void visualizeGraph() {
         if (stations == null || lines == null) {
             System.out.println("Cannot visualize: graph data not loaded.");

@@ -8,9 +8,18 @@ public class City {
     private String name;
     private List<CityBlock> blocks;
 
-    City(Position position, String name, List<CityBlock> blocks){
-        this.position = position;
+    public City(String name, Position position, List<CityBlock> blocks){
         this.name = name;
+        this.position = position;
         this.blocks = blocks;
+    }
+    public String getName() {
+        return name;
+    }
+    public Position getPosition() {
+        return position;
+    }
+    public List<CityBlock> getBlocks() {
+        return blocks;
     }
 }

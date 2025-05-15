@@ -1,8 +1,11 @@
 package pt.ipp.isep.dei.domain;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
     private String name;
     private int size;
+    private List<City> cities = new ArrayList<>();
 
     public Map(String name, int size) {
         this.name = name;
@@ -23,5 +26,13 @@ public class Map {
 
     public void setSize(int size) {
         this.size = size;
+    }
+    public boolean checkCoordinates(Position position) {
+        return position.getxCoordinate() >= 0 && position.getxCoordinate() < size &&
+                position.getyCoordinate() >= 0 && position.getyCoordinate() < size;
+    }
+
+    public void addCity(City city) {
+        cities.add(city);
     }
 }

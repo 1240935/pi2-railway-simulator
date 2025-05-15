@@ -28,13 +28,15 @@ public class CreateIndustryUI {
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
         Position pos = controller.createPosition(x, y);
-/*
+
+
+
         // se as coordenadas não estiverem disponiveis, finaliza o creator (meio errado)
         if (!controller.checkCoordinates(pos)) {
             System.out.println("Invalid coordinates. Exiting.");
             return;
         }
-*/
+
         //mostra os tipos de industria disponiveis (não bem feito)
         System.out.println("Available industry types:");
         IndustryType[] types = controller.getAvailableIndustriesTypes();
@@ -44,17 +46,6 @@ public class CreateIndustryUI {
         System.out.print("Select industry type: ");
         // seleciona o tipo
         controller.setType(types[scanner.nextInt()]);
-
-        //mostra os tipos de recursos disponiveis (não bem feito)
-        System.out.println("Available resource types:");
-        ResourceType[] resources = controller.getAvailableResourceTypes();
-        for (int i = 0; i < resources.length; i++) {
-            System.out.println(i + ": " + resources[i]);
-        }
-        System.out.print("Select resource type: ");
-        //seleciona o tipo
-        controller.setResourceType(resources[scanner.nextInt()]);
-
         //cria a industria
         Industry industry = controller.createIndustry(pos);
         System.out.println("Industry created successfully!");

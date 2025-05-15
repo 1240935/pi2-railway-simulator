@@ -20,8 +20,6 @@ skinparam classAttributeIconSize 0
     +checkCoordinates(position)
     +getAvailableIndustriesTypes()
     +setType(type)
-    +getAvailableResourceTypes()
-    +setResourceType(resourceType)
     +createIndustry(type, position, resourceType)
   }
 
@@ -38,8 +36,7 @@ skinparam classAttributeIconSize 0
   class Industry {
     -position : Position
     -type : IndustryType
-    -resourceType: ResourceType
-    +Industry(position, type, resourceType)
+    +Industry(position, type)
   }
 
   class Map {
@@ -60,22 +57,7 @@ skinparam classAttributeIconSize 0
     Mixed
   }
 
-  enum ResourceType{
-    Iron
-    Coal
-    Bauxite
-    Nitrate Mines
-    Vegetables
-    Cereals
-    Wool
-    Coffee
-    Rubber
-    Cattle
-    Bakery
-    Textile
-    Automobile
-    Steel Mill
-  }
+
 
 
 CreateIndustryUI ..> CreateIndustryController
@@ -84,13 +66,11 @@ CreateIndustryController ..>  MapRepository
 CreateIndustryController ..>  Map
 CreateIndustryController ..> Position
 CreateIndustryController ..> IndustryType
-CreateIndustryController ..> ResourceType
 CreateIndustryController ..> Industry
 Repositories --> "1" MapRepository : map repository
 Repositories -> "1" Repositories : instance
 MapRepository --> "*" Map : map
 Industry --> "1" Position : position
 IndustryType --> "1" Industry : industry type
-ResourceType --> "1" Industry : resource type
 
 @enduml

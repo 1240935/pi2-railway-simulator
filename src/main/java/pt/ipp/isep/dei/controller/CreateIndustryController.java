@@ -7,7 +7,6 @@ public class CreateIndustryController {
     // coisas que o controller seleciona
     private Map selectedMap;
     private IndustryType selectedType;
-    private ResourceType selectedResource;
 
     //construtor, vazio para já
     public CreateIndustryController() {}
@@ -22,16 +21,17 @@ public class CreateIndustryController {
         this.selectedMap = map;
     }
 
+
     //cria a posição
     public Position createPosition(int x, int y) {
+        int size = selectedMap.getSize();
+        if (x >= size || y >= size || x < 0 || y < 0) {
+            System.out.println("Invalid position: coordinates exceed map bounds.");
+            System.exit(1);
+        }
         return new Position(x, y);
     }
-/*
-    //confirma q a posição está vazia
-    public boolean checkCoordinates(Position pos) {
-        return selectedMap != null && selectedMap.checkCoordinates(pos);
-    }
-*/
+
     // mostra os tipos disponiveis de industria da enum (ainda n implementado direito)
     public IndustryType[] getAvailableIndustriesTypes() {
         return IndustryType.values();
@@ -47,13 +47,11 @@ public class CreateIndustryController {
         return ResourceType.values();
     }
 
-    // seleciona o tipo de recurso
-    public void setResourceType(ResourceType resourceType) {
-        this.selectedResource = resourceType;
-    }
-
     // cria a industria com os valores selecionados
     public Industry createIndustry(Position pos) {
-        return new Industry(selectedType, pos, selectedResource);
+        return new Industry(selectedType, pos);
+    }
+    public boolean checkCoordinates(Position position) {
+        return selectedMap != null && selectedMap.checkCoordinates(position);
     }
 }

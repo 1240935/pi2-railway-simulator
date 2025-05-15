@@ -2,14 +2,58 @@ package pt.ipp.isep.dei.domain;
 
 public enum IndustryType {
     // Tipos
-    PRIMARY_SECTOR(false,true),
-    TRANSFORMING(true, true),
-    MIXED;
+    ALUMINUM_MILL(),
+    AUTO_PLANT(),
+    BAKERY(),
+    BAUXITE_MINE(),
+    CANNERY(),
+    CATTLE_YARD(),
+    CHEMICAL_PLANT(),
+    CEMENT_PLANT(),
+    COAL_MINE(),
+    COFFEE_FARM(),
+    COTTON_FARM(),
+    DAIRY_FARM(),
+    DAIRY_PROCESSOR(),
+    ELECTRIC_PLANT(),
+    FERTILIZER_PLANT(),
+    GRAIN_SILO(),
+    GRAVEL_PIT(),
+    HOUSING(),
+    IRON_MINE(),
+    LANDFILL(),
+    LOGGING_CAMP(),
+    LUMBER_MILL(),
+    MEAT_PACKING_PLANT(),
+    NUCLEAR_PLANT(),
+    OIL_REFINERY(),
+    OIL_WELL(),
+    PAPER_MILL(),
+    PRODUCE_ORCHARD(),
+    RUBBER_FARM(),
+    STEEL_MILL(),
+    SHEEP_FARM(),
+    TEXTILE_MILL(),
+    TIRE_FACTORY(),
+    TOOL_AND_DIE_FACTORY(),
+    URANIUM_MINE(),
+    GEOCORE_PLANT(),
+    TOWNHOUSE(),
+    COMMERCIAL(),
+    RETAIL(),
+    DISTILLERY(),
+    BARRACKS(),
+    MILITARY_DEPOT(),
+    MUNITIONS_FACTORY(),
+    WEAPONS_FACTORY(),
+    AIRPORT_TERMINAL(),
+    AIRPORT_TARMAC(),
+    PORT();
 
-    private Boolean importation;
-    private Boolean exportation;
+    private ResourceType importation;
+    private ResourceType exportation;
 
-    IndustryType(boolean importation, boolean exportation) {
+    IndustryType(ResourceType importation, ResourceType exportation) {
         this.importation = importation;
         this.exportation = exportation;
     }
@@ -20,23 +64,23 @@ public enum IndustryType {
         this.exportation = null;
     }
 
-    public Boolean getImportation() {
+    public ResourceType getImportation() {
         return importation;
     }
 
-    public Boolean getExportation() {
+    public ResourceType getExportation() {
         return exportation;
     }
 
-    public boolean getImportation(Scenario scenario) {
-        if (this != MIXED) {
+    public ResourceType getImportation(Scenario scenario) {
+        if (this != PORT) {
             return this.importation;
         }
         return scenario.getImportation();
     }
 
-    public boolean getExportation(Scenario scenario) {
-        if (this != MIXED) {
+    public ResourceType getExportation(Scenario scenario) {
+        if (this != PORT) {
             return this.exportation;
         }
         return scenario.getExportation();

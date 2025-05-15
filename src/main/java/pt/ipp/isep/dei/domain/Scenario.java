@@ -7,11 +7,11 @@ public class Scenario {
     private IndustryType industryType;
     private ResourceType resourceType;
     private IndustryChanger industryChanger;
-    private boolean importation;
-    private boolean exportation;
+    private ResourceType importation;
+    private ResourceType exportation;
 
    Scenario(Map map, int year, LocomotiveType locomotiveType, IndustryType industryType, ResourceType
-           resourceType, IndustryChanger industryChanger, boolean importation, boolean exportation){
+           resourceType, IndustryChanger industryChanger, ResourceType importation, ResourceType exportation){
        this.map = map;
        this.locomotiveType = locomotiveType;
        this.industryType = industryType;
@@ -21,11 +21,11 @@ public class Scenario {
        this.exportation = exportation;
    }
 
-    public boolean getImportation() {
+    public ResourceType getImportation() {
         return importation;
     }
 
-    public boolean getExportation() {
+    public ResourceType getExportation() {
        return exportation;
     }
 }

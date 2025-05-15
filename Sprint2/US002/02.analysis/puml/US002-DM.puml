@@ -26,9 +26,6 @@ class Industry {
 class IndustryType{
 }
 
-class ResourceType{
-}
-
 class Position{
     xCoordinate
     yCoordinate
@@ -38,6 +35,5 @@ Editor "1" -- "*" Map: creates >
 Map "1" -- "*" Industry: contains >
 Position "1" -- "1" Industry: has <
 Industry "1" -- "1" IndustryType: has >
-Industry "1" -- "1" ResourceType: has >
 
 @enduml

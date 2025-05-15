@@ -1,16 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
-import java.util.Objects;
-
 public class Industry {
     private IndustryType industryType;
     private Position position;
-    private ResourceType resourceType;
 
-    public Industry(IndustryType industryType, Position position, ResourceType resourceType){
+    public Industry(IndustryType industryType, Position position){
         this.industryType = industryType;
         this.position = position;
-        this.resourceType = resourceType;
     }
 
     public IndustryType getIndustryType() {
@@ -19,5 +15,13 @@ public class Industry {
 
     public void setIndustryType(IndustryType industryType) {
         this.industryType = industryType;
+    }
+
+    public Position getIndustryPosition() {
+        return position;
+    }
+
+    public void setIndustryPosition(Position position) {
+        this.position = position;
     }
 }

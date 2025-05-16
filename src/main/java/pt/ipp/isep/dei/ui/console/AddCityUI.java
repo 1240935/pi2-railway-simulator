@@ -12,7 +12,7 @@ public class AddCityUI {
         controller = new AddCityController();
         scanner = new Scanner(System.in);
     }
-    public void run() {
+    public void start() {
         System.out.println("==== Add City ====");
         List<String> names = controller.getAvailableMapNames();
         System.out.println("Available maps:");

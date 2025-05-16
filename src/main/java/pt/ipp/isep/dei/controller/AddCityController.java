@@ -2,7 +2,6 @@ package pt.ipp.isep.dei.controller;
 import pt.ipp.isep.dei.domain.*;
 import pt.ipp.isep.dei.repository.Repositories;
 
-import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

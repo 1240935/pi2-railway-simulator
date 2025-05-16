@@ -1,45 +1,25 @@
 package pt.ipp.isep.dei.domain;
 
 public class Player {
-    private String username;
-    private String password;
-    private int budget;
+    private final String username;
+    private final String password;
+    private final double budget;
 
-    private final int DEFAULT_BUDGET = 1000000000;
-
-    public Player(String username, String password) {
-        this.password = password;
+    public Player(String username, String password, double budget) {
         this.username = username;
-        this.budget = DEFAULT_BUDGET;
-    }
-
-    public Player(String username, String password, int budget) {
         this.password = password;
-        this.username = username;
         this.budget = budget;
-    }
-
-    public int getBudget() {
-        return budget;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPassword() {
+        return password;
     }
 
-    public void setBudget(int budget) {
-        this.budget = budget;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public double getBudget() {
+        return budget;
     }
 }

@@ -23,7 +23,6 @@ public class CreateMapUI {
         // chama o controller para criar o mapa no repositório
         controller.createMap(size, name);
         System.out.println("Map created successfully.");
-        System.out.println("Created Map: " + controller.getMap(name).toString());
     }
 
 }

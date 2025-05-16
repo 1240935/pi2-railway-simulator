@@ -1,54 +1,72 @@
 package pt.ipp.isep.dei.ui.console;
-import pt.ipp.isep.dei.domain.*;
-import pt.ipp.isep.dei.controller.*;
+
+import pt.ipp.isep.dei.controller.CreateIndustryController;
+
+import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Console-based UI for creating a new industry on a selected map.
+ * <p>
+ * This interface guides the user through:
+ * <ul>
+ *     <li>Choosing a map</li>
+ *     <li>Entering coordinates for the new industry</li>
+ *     <li>Selecting an industry type</li>
+ *     <li>Creating and displaying the resulting industry</li>
+ * </ul>
+ *
+ * It uses {@link CreateIndustryController} to handle business logic.
+ */
 public class CreateIndustryUI {
-    //  cria uma instancia do controller
-    private CreateIndustryController controller = new CreateIndustryController();
 
+    /** Controller that manages the industry creation logic. */
+    private final CreateIndustryController controller = new CreateIndustryController();
+
+    /**
+     * Starts the industry creation workflow:
+     * <ol>
+     *     <li>Displays available maps and prompts user to select one</li>
+     *     <li>Prompts for valid coordinates within the selected map</li>
+     *     <li>Displays available industry types and prompts user to select one</li>
+     *     <li>Creates the industry and displays confirmation</li>
+     * </ol>
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
-        //printa os mapas disponiveis
         System.out.println("Available maps:");
-        var maps = controller.getAvailableMaps();
-        for (int i = 0; i < maps.size(); i++) {
-            System.out.println(i + ": " + maps.get(i).getName());
+        List<String> mapNames = controller.getAvailableMapNames();
+        for (int i = 0; i < mapNames.size(); i++) {
+            System.out.println(i + ": " + mapNames.get(i));
         }
-        // pede para escolher o mapa pelo seu index
+
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt();
-        // seleciona esse mapa
-        controller.setMap(maps.get(mapIndex));
+        controller.setMapByIndex(mapIndex);
 
-        // seleção das coordenadas para criação da posição
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
-        Position pos = controller.createPosition(x, y);
 
-
-
-        // se as coordenadas não estiverem disponiveis, finaliza o creator (meio errado)
-        if (!controller.checkCoordinates(pos)) {
+        if (!controller.checkCoordinates(x, y)) {
             System.out.println("Invalid coordinates. Exiting.");
             return;
         }
 
-        //mostra os tipos de industria disponiveis (não bem feito)
         System.out.println("Available industry types:");
-        IndustryType[] types = controller.getAvailableIndustriesTypes();
-        for (int i = 0; i < types.length; i++) {
-            System.out.println(i + ": " + types[i]);
+        List<String> industryTypeNames = controller.getAvailableIndustryTypeNames();
+        for (int i = 0; i < industryTypeNames.size(); i++) {
+            System.out.println(i + ": " + industryTypeNames.get(i));
         }
+
         System.out.print("Select industry type: ");
-        // seleciona o tipo
-        controller.setType(types[scanner.nextInt()]);
-        //cria a industria
-        Industry industry = controller.createIndustry(pos);
+        int industryTypeIndex = scanner.nextInt();
+        controller.setIndustryTypeByIndex(industryTypeIndex);
+
+        String industryDescription = controller.createIndustry(x, y);
         System.out.println("Industry created successfully!");
-        System.out.println(industry);
+        System.out.println(industryDescription);
     }
 }

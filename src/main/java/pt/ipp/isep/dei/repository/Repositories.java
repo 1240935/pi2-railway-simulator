@@ -13,6 +13,7 @@ public class Repositories {
     private ScenarioRepository scenarioRepo;
     private LineRepository lineRepository;
     private StationRepository stationRepository;
+    private IndustryRepository industryRepository;
 
     // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
@@ -58,6 +59,10 @@ public class Repositories {
     // Getter do repositório de cenarios
     public ScenarioRepository getScenarioRepository() {
         return scenarioRepo;
+    }
+
+    public IndustryRepository getIndustryRepository(){
+        return  industryRepository;
     }
 
     // Getter do repositório de stations

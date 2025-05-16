@@ -9,17 +9,29 @@ public class Repositories {
     private static Repositories instance;
     // Objeto que vai ser referênciado nos .getMapRepository() <-(concede acesso ao repositorio)
     private MapRepository mapRepository;
-    private StationRepository stationRepo;
     private ScenarioRepository scenarioRepo;
     private LineRepository lineRepository;
     private StationRepository stationRepository;
     private IndustryRepository industryRepository;
+    private BuildingTypeRepository buildingTypeRepository;
+    private IndustryChangerRepository industryChangerRepository;
+    private IndustryTypeRepository industryTypeRepository;
+    private LocomotiveRepository locomotiveRepository;
+    private LocomotiveTypeRepository locomotiveTypeRepository;
 
     // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
         mapRepository = new MapRepository();
-        stationRepo = new StationRepository();
+        stationRepository = new StationRepository();
         scenarioRepo = new ScenarioRepository();
+        lineRepository = new LineRepository();
+        industryRepository = new IndustryRepository();
+        buildingTypeRepository = new BuildingTypeRepository();
+        industryChangerRepository = new IndustryChangerRepository();
+        industryTypeRepository = new IndustryTypeRepository();
+        locomotiveRepository = new LocomotiveRepository();
+        locomotiveTypeRepository = new LocomotiveTypeRepository();
+
     }
 
     // Cria um repositório caso não exista, se existir, retorna o existente, assim só existe 1
@@ -64,6 +76,31 @@ public class Repositories {
     public IndustryRepository getIndustryRepository(){
         return  industryRepository;
     }
+
+    public IndustryTypeRepository getIndustryTypeRepository() {
+        return industryTypeRepository;
+    }
+
+    public BuildingTypeRepository getBuildingTypeRepository() {
+        return buildingTypeRepository;
+    }
+
+    public IndustryChangerRepository getIndustryChangerRepository() {
+        return industryChangerRepository;
+    }
+
+    public LocomotiveRepository getLocomotiveRepository() {
+        return locomotiveRepository;
+    }
+
+    public LocomotiveTypeRepository getLocomotiveTypeRepository() {
+        return locomotiveTypeRepository;
+    }
+
+    public ScenarioRepository getScenarioRepo() {
+        return scenarioRepo;
+    }
+
 
     // Getter do repositório de stations
 

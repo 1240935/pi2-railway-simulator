@@ -41,19 +41,13 @@ activate Employee
                 Employee -> System : selects an available station
                 activate System
 
-                    System --> Employee: shows available locomotives to assign to the maintenance route
-                    deactivate System
-
-                Employee -> System : selects an available locomotive
-                activate System
-
                      System --> Employee : shows all data and requests confirmation
                     deactivate System
 
                 Employee -> System : confirms all data
                 activate System
 
-                    System --> Employee: assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+                    System --> Employee: displays a graphical visualization of the stations and lines \n connecting them and displays operation success
                     deactivate System
 
                 end alt
@@ -82,19 +76,13 @@ activate Employee
         Employee -> System : selects an available station
         activate System
 
-            System --> Employee: shows available locomotives to assign to the maintenance route
-            deactivate System
-
-        Employee -> System : selects an available locomotive
-        activate System
-
              System --> Employee : shows all data and requests confirmation
             deactivate System
 
         Employee -> System : confirms all data
         activate System
 
-            System --> Employee: assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+            System --> Employee: displays a graphical visualization of the stations and lines \n connecting them and displays operation success
             deactivate System
 
         end alt

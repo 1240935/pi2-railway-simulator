@@ -6,10 +6,6 @@ skinparam shadowing false
 autonumber
 
 'hide footbox
-@startuml
-skinparam monochrome true
-skinparam packageStyle rectangle
-skinparam shadowing false
 
 actor "Player" as PLAYER
 participant ":VerifyTrainTravelUI" as UI

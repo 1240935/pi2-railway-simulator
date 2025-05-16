@@ -1,8 +1,11 @@
 @startuml
-skinparam monochrome true
+'skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
+autonumber
+
+'hide footbox
 actor "Player" as PLAYER
 participant ":RailwayMaintenanceUI" as UI
 participant ":RailwayMaintenanceController" as CTRL
@@ -22,7 +25,7 @@ activate UI
 UI --> CTRL** : create()
 UI --> PLAYER : asks for a scenario file with the stations
 deactivate UI
-PLAYER -> UI :
+PLAYER -> UI :  types the file path
 activate UI
 
 UI -> CTRL : setStationFile(file)
@@ -83,44 +86,30 @@ UI --> PLAYER : finds a route that passes once and only once by all \n railway l
 deactivate UI
 PLAYER -> UI : selects an available station
 activate UI
+
 UI -> CTRL : setStartStation(station)
 activate CTRL
- CTRL -> REPOS : getInstance()
-        activate REPOS
 
-        REPOS --> CTRL: repositories
-
-        deactivate REPOS
-CTRL -> LOCREPO : getAvailableLocomotives()
-activate LOCREPO
-LOCREPO --> CTRL : list of locomotives
-deactivate LOCREPO
-CTRL --> UI : show available locomotives
+CTRL --> UI : station
 deactivate CTRL
 
-UI --> PLAYER : shows available locomotives to assign to the maintenance route
-deactivate UI
-PLAYER -> UI : selects an available locomotive
-activate UI
-UI -> CTRL : setLocomotive(locomotive)
-activate CTRL
-
-CTRL --> UI : show all data and request confirmation
-deactivate CTRL
 UI --> PLAYER : shows all data and requests confirmation
 deactivate UI
 PLAYER -> UI : confirms all data
 activate UI
+
 UI -> CTRL : buildGraph(stations, lines)
 activate CTRL
+
 CTRL -> GRAPH : buildGraph(stations, lines)
 activate GRAPH
+
            GRAPH --> CTRL : graph
             deactivate GRAPH
             CTRL --> UI : graph
             deactivate CTRL
 
-UI --> PLAYER : assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n
+UI --> PLAYER :displays a graphical visualization of the stations and lines \n
 deactivate CTRL
 deactivate UI
 
@@ -146,7 +135,7 @@ activate CTRL
 
 CTRL -> LINEREPO : getElectrifiedLines(lines)
 activate LINEREPO
-LINEREPO --> CTRL : lines (electrification = true)
+LINEREPO --> CTRL : lines
 deactivate LINEREPO
 CTRL -> GRAPH : buildGraph(lines)
 activate GRAPH
@@ -166,29 +155,9 @@ deactivate UI
 PLAYER -> UI : selects an available station
 activate UI
 UI -> CTRL : setStartStation(station)
+
 activate CTRL
- CTRL -> REPOS : getInstance()
-        activate REPOS
-
-        REPOS --> CTRL: repositories
-
-        deactivate REPOS
-
-CTRL -> LOCREPO : getAvailableLocomotives()
-activate LOCREPO
-LOCREPO --> CTRL : list of locomotives
-deactivate LOCREPO
-CTRL --> UI : show available locomotives
-deactivate CTRL
-
-UI --> PLAYER : shows available locomotives to assign to the maintenance route
-deactivate UI
-PLAYER -> UI : selects an available locomotive
-activate UI
-UI -> CTRL : setLocomotive(locomotive)
-activate CTRL
-
-CTRL --> UI : show all data and request confirmation
+CTRL --> UI : station
 deactivate CTRL
 UI --> PLAYER : shows all data and requests confirmation
 deactivate UI
@@ -204,7 +173,7 @@ activate GRAPH
             CTRL --> UI : graph
             deactivate CTRL
 
-UI --> PLAYER : assigns the locomotive to the maintenance route,\n displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+UI --> PLAYER : displays a graphical visualization of the stations and lines \n connecting them and displays operation success
 deactivate UI
 deactivate CTRL
 

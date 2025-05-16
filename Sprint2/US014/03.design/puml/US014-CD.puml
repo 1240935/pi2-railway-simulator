@@ -19,14 +19,12 @@ class RailwayMaintenanceController {
   +setLineFile(file)
   +setMaintenanceType(type)
   +setStartStation(station)
-  +setLocomotive(locomotive)
 }
 
 class Repositories {
   +getInstance()
   +getStationRepository()
   +getLineRepository()
-  +getLocomotiveRepository()
 }
 
 class StationRepository {
@@ -36,10 +34,6 @@ class StationRepository {
 class LineRepository {
   +loadLines(file)
   +getElectrifiedLines(lines)
-}
-
-class LocomotiveRepository {
-  +getAvailableLocomotives()
 }
 
 class Graph {
@@ -63,11 +57,6 @@ class Line {
   -isElectrified: boolean
 }
 
-class Locomotive {
-    -iD: int
-    -model: LocomotiveModel
-}
-
 enum MaintenanceType {
   Full
   Electrified
@@ -76,19 +65,16 @@ enum MaintenanceType {
 RailwayMaintenanceUI ..> RailwayMaintenanceController
 RailwayMaintenanceController ..> StationRepository
 RailwayMaintenanceController ..> LineRepository
-RailwayMaintenanceController ..> LocomotiveRepository
 RailwayMaintenanceController ..> Graph
 RailwayMaintenanceController ..> Route
 RailwayMaintenanceController ..> MaintenanceType
 RailwayMaintenanceController ..> Repositories
 RailwayMaintenanceController ..> Station
 RailwayMaintenanceController ..> Line
-RailwayMaintenanceController ..> Locomotive
 
 Repositories -> "1" Repositories : instance
 Repositories --> "1" StationRepository : station repository
 Repositories --> "1" LineRepository : line repository
-Repositories --> "1" LocomotiveRepository : locomotive repository
 
 StationRepository --> "1..*" Station : station
 LineRepository --> "1..*" Line : line

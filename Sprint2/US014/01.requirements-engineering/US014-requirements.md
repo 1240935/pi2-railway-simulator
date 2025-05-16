@@ -40,7 +40,7 @@ line to carry out maintenance on the lines.
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US005 as it needs at least two stations, US008 as it needs railways, US009 because it needs a locomotive and US010 because it needs a route.
+* There is a dependency on US005 as it needs at least two stations, US008 as it needs railways and US010 because it needs a route.
 
 ### 1.5 Input and Output Data
 
@@ -54,13 +54,11 @@ line to carry out maintenance on the lines.
 * Selected data:
   * a type of line for maintenance
   * a starting station
-  * a locomotive
 
 **Output Data:**
 
 * Warning message (if no possible route)
 * List of possible starting stations
-* List of available locomotives
 * Data for confirmation
 * Graphical visualization of stations and lines connecting them
 * (In)Success of the operation

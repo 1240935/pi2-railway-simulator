@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.ipp.isep.dei.domain.*;
@@ -116,24 +117,31 @@ public class VerifyTrainTravelController {
         // Add stations as nodes
         for (Station station : stations) {
             String nodeId = station.getName();
-            Node node = visualGraph.addNode(nodeId);
-            node.setAttribute("ui.label", nodeId);
+            if (visualGraph.getNode(nodeId) == null) {
+                Node node = visualGraph.addNode(nodeId);
+                node.setAttribute("ui.label", nodeId);
+            }
         }
 
-        // Add lines as edges
+        List<String> addedEdges = new ArrayList<>();
         int edgeId = 0;
+
         for (Line line : lines) {
             String from = line.getStart().getName();
             String to = line.getEnd().getName();
 
-            if (visualGraph.getNode(from) == null || visualGraph.getNode(to) == null) {
-                continue;
-            }
+            // Create a unique edge key ignoring direction
+            String edgeKey = (from.compareTo(to) < 0) ? from + "--" + to : to + "--" + from;
 
-            String edgeName = "E" + edgeId++;
-            Edge edge = visualGraph.addEdge(edgeName, from, to, true);
-            String color = line.isElectrified() ? "red" : "black";
-            edge.setAttribute("ui.style", "fill-color: " + color + ";");
+            // Add edge only if not already added
+            if (!addedEdges.contains(edgeKey)) {
+                String edgeName = "E" + edgeId++;
+                Edge edge = visualGraph.addEdge(edgeName, from, to, false);
+                String color = line.isElectrified() ? "red" : "black";
+                edge.setAttribute("ui.style", "fill-color: " + color + ";");
+
+                addedEdges.add(edgeKey);
+            }
         }
 
         visualGraph.setAttribute("ui.stylesheet",

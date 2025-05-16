@@ -62,6 +62,22 @@ public class LineRepository {
         return null;
     }
 
+    /**
+     * Returns only the electrified lines from the given list.
+     *
+     * @param allLines List of all lines
+     * @return List of electrified lines
+     */
+    public List<Line> getElectrifiedLines(List<Line> allLines) {
+        List<Line> electrified = new ArrayList<>();
+        for (Line line : allLines) {
+            if (line.isElectrified()) {
+                electrified.add(line);
+            }
+        }
+        return electrified;
+    }
+
     public List<Line> getLines() {
         return lines;
     }

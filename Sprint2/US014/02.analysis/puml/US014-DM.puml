@@ -16,23 +16,6 @@ class Player {
     budget
 }
 
-class Locomotive {
-    iD
-}
-
-class LocomotiveModel{
-    power
-        acceleration
-        topSpeed
-        operationStartYear
-        fuelCost
-        maintenancePYear
-        cost
-}
-
-class LocomotiveType{
-}
-
 class Route {
 }
 
@@ -61,35 +44,10 @@ class Position{
     yCoordinate
 }
 
-class Train {
-}
 
-class Carriage{
-}
-
-class TimeRestriction{
-    year
-}
-
-class TechnologicalRestriction{
-}
-
-class Scenario{
-    importation
-    exportation
-}
-
-Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
-Player "1" -- "1..*" Locomotive : buys >
-
-Scenario "1" -- "*" TechnologicalRestriction: includes >
-Scenario "1" -- "*" TimeRestriction: includes >
-
-TimeRestriction "1" -- "*" LocomotiveModel: affects >
-TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 
 Position "1" -- "1" Station: has <
 Position "1" -- "1" Railway: has <
@@ -97,16 +55,9 @@ Position "1" -- "1" Railway: has <
 Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
 
-Locomotive "*" -- "1" LocomotiveModel: has >
-LocomotiveModel "1..*" -- "1" LocomotiveType: has >
-
 Railway "1" -- "1..*" Route: requires <
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
-Train "1" -- "1" Locomotive: is part of <
-Train "1" -- "*" Carriage: is part of <
-Train "1..*" -- "*" Route : assigned to >
-Train "1..*" -- "1..*" Railway: runs on >
 
 @enduml

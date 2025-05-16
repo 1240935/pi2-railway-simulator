@@ -56,6 +56,6 @@ public class CreateMapController {
         }
 
         Map map = new Map(name, size);
-        Repositories.getInstance().getMapRepository().addMap(map);
+        //Repositories.getInstance().getMapRepository().addMap(map);
     }
 }

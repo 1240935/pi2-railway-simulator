@@ -1,7 +1,9 @@
 package pt.ipp.isep.dei.domain;
 
 
-public enum IndustryType {
+public enum IndustryType {;
+
+    /*
     ALUMINUM_MILL(ResourceType.ALUMINUM, ResourceType.BAUXITE),
     AUTO_PLANT(),
     BAKERY(),
@@ -50,6 +52,8 @@ public enum IndustryType {
     AIRPORT_TARMAC(),
     PORT();
 
+     */
+
     private ResourceType importation;
     private ResourceType exportation;
 
@@ -66,7 +70,7 @@ public enum IndustryType {
         return exportation;
     }
 
-    public ResourceType getImportation(Scenario scenario) {
+   /* public ResourceType getImportation(Scenario scenario) {
         if (this != PORT) {
             return this.importation;
         }
@@ -79,5 +83,7 @@ public enum IndustryType {
         }
         return scenario.getExportation();
     }
+    *
+    */
 }
 

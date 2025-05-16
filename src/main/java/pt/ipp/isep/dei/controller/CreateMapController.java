@@ -1,13 +1,26 @@
 package pt.ipp.isep.dei.controller;
+
 import pt.ipp.isep.dei.domain.Map;
 import pt.ipp.isep.dei.repository.Repositories;
 
+/**
+ * Controller responsible for creating and validating maps in the system.
+ * Handles map name and size validation, and interacts with the repository to retrieve maps.
+ */
 public class CreateMapController {
-     // construtor default, podemos usá-lo para testes, é instanceado na UI
+
+    /**
+     * Constructs a new {@code CreateMapController}.
+     */
     public CreateMapController() {
     }
 
-    //  procura por um mapa pelo nome, passando por todos os mapas
+    /**
+     * Searches for an existing map by its name in the repository.
+     *
+     * @param name the name of the map to search for
+     * @return the {@link Map} object if found, or {@code null} if no map with the given name exists
+     */
     public Map getMap(String name) {
         for (Map m : Repositories.getInstance().getMapRepository().getMaps()) {
             if (m.getName().equals(name)) {
@@ -16,15 +29,30 @@ public class CreateMapController {
         }
         return null;
     }
+
+    /**
+     * Checks whether a map name is valid.
+     * A valid name contains only alphabetic characters and spaces.
+     *
+     * @param name the map name to validate
+     * @return {@code true} if the name is valid, {@code false} otherwise
+     */
     public boolean checkName(String name) {
         return name.matches("^[a-zA-Z\\s]+$");
     }
+
+    /**
+     * Validates the map size input.
+     * Ensures the input is a numeric string representing a positive integer (no decimals).
+     * If invalid, prints an error and terminates the program.
+     *
+     * @param sizeInput the size input string
+     * @return the validated size as an integer if valid; otherwise, the program exits
+     */
     public int checkSize(String sizeInput) {
-        // Step 1: Is it a number?
         try {
             double temp = Double.parseDouble(sizeInput);
 
-            // Step 2: Is it an integer? (e.g., 5.0 is ok, 5.5 is not)
             if (temp % 1 != 0) {
                 System.out.println("Invalid size! Must be a whole number (no decimals).");
                 System.exit(1);
@@ -32,7 +60,6 @@ public class CreateMapController {
 
             int size = (int) temp;
 
-            // Step 3: Is it positive?
             if (size <= 0) {
                 System.out.println("Invalid size! Must be a positive integer.");
                 System.exit(1);
@@ -48,7 +75,13 @@ public class CreateMapController {
         return -1;
     }
 
-    //Cria um mapa e guarda no repositório
+    /**
+     * Creates a new map with the given size and name.
+     * Validates the name before creation. If invalid, prints an error and terminates.
+     *
+     * @param size the size of the map
+     * @param name the name of the map
+     */
     public void createMap(int size, String name) {
         if (!checkName(name)) {
             System.out.println("Invalid Map name!");
@@ -56,6 +89,5 @@ public class CreateMapController {
         }
 
         Map map = new Map(name, size);
-        //Repositories.getInstance().getMapRepository().addMap(map);
     }
 }

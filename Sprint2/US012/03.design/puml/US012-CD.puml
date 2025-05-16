@@ -1,101 +1,96 @@
 @startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
 skinparam classAttributeIconSize 0
 
+'left to right direction
+
 class CargoSimulatorUI {
+
 }
 
 class CargoSimulatorController {
-  +runSimulation()
+  + getAvailableScenarios(
+  + setScenario(scenario)
+  + getAvailableStations()
+  + getCargo(List<Station>)
+  + createSimulator(status, stations, cargo)
+  + setStatus(simulator)
+  + addQuantity(cargo)
+  + changeStatus(status)
 }
 
-class Repositories {
-  - Repositories()
-  + {static} getInstance()
-  + getMapRepository(): MapRepository
+class Simulator {
+  - status: String
+  - stations: List<Station>
+  - cargo: List<Cargo>
+  + create(status, stations, cargo)
+  + setStatus(status)
+  + addQuantity(cargo)
+  + getCargo()
 }
 
-class MapRepository {
-  +getSelectedMap(): Map
-}
-
-class Map {
-  +getStations(): List<Station>
-  +getCities(): List<City>
-  +getIndustries(): List<Industry>
-  +getRailwayNetwork(): RailwayNetwork
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: boolean
+       -exportation; boolean
+       -changers: List<IndustryChanger>
 }
 
 class Station {
-  - id: int
-  - name: String
-  - position: Position
-  - cargoInfo: CargoInfo
-  + addCargo(cargo: Cargo)
+  -name : String
+  -position : Position
+  -type : StationType
+  -center : Position
+  +checkCargo(station)
 }
 
-class City {
-  - name: String
-  - position: Position
-  - demand: List<Cargo>
-}
-
-class Industry {
-  - name: String
-  - position: Position
-  - supply: List<Cargo>
-}
-
-class Position {
-  - xCoordinate: int
-  - yCoordinate: int
-}
-
-class RailwayNetwork {
-  +isConnected(from: Station, to: City): boolean
-  +isConnected(from: Station, to: Industry): boolean
-}
-
-class CargoInfo {
-  - demand: List<Cargo>
-  - supply: List<Cargo>
-  + addDemand(cargo: Cargo)
-  + addSupply(cargo: Cargo)
-}
 
 class Cargo {
-  - name: String
-  - quantity: int
+  -quantity: int
+  -status: boolean
+  -type: CargoType
+}
+
+class Repositories {
+  + getInstance()
+  + getScenarioRepository()
+  + getStationRepository()
+}
+
+class ScenarioRepository {
+  + getAvailableScenarios()
+}
+
+class StationRepository {
+  + getAvailableStations()
 }
 
 CargoSimulatorUI ..> CargoSimulatorController
-CargoSimulatorController .> Repositories
-CargoSimulatorController ..> MapRepository
-CargoSimulatorController ..> Map
+
+CargoSimulatorController ..> Simulator
+CargoSimulatorController ..> ScenarioRepository
+CargoSimulatorController ..> StationRepository
 CargoSimulatorController ..> Station
-CargoSimulatorController ..> City
-CargoSimulatorController ..> Industry
-CargoSimulatorController ..> RailwayNetwork
-CargoSimulatorController ..> Cargo
-CargoSimulatorController ..> CargoInfo
+CargoSimulatorController ..> Repositories
 
-Repositories --> "1" MapRepository : mapRepository
 Repositories -> "1" Repositories : instance
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories --> "1" StationRepository : station repository
 
-MapRepository --> "1" Map : selectedMap
-Map --> "*" Station : stations
-Map --> "*" City : cities
-Map --> "*" Industry : industries
-Map --> "1" RailwayNetwork : network
+StationRepository --> "*" Station : station
+ScenarioRepository --> "*" Scenario: scenario
 
-Station --> "1" Position
-City --> "1" Position
-Industry --> "1" Position
+Scenario --> "*" Station : station
 
-Station --> "1" CargoInfo
-CargoInfo --> "*" Cargo : demand
-CargoInfo --> "*" Cargo : supply
-
-City --> "*" Cargo : demand
-Industry --> "*" Cargo : supply
+Simulator --> "*" Station: station
+Simulator --> "*" Cargo: cargo
 
 @enduml

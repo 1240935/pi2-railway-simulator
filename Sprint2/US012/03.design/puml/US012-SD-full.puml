@@ -69,11 +69,11 @@ activate PLAYER
         CTRL --> UI: list of available stations
         deactivate CTRL
 
-        UI -> CTRL: getCargo(stations)
+        UI -> CTRL: getCargo(simulator)
 
         activate CTRL
 
-        CTRL -> STATION: getCargo(stations)
+        CTRL -> STATION: getCargo(simulator)
 
         activate STATION
 

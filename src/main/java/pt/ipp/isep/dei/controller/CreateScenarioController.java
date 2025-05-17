@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Controller class responsible for managing the creation of new Scenarios.
- * It handles the selection of maps, years, locomotive types, industry types,
- * resource import/export, and industry changers, and ultimately creates a Scenario.
+ * Controller class responsible for creating a new Scenario.
+ * It handles the selection and configuration of maps, years,
+ * locomotive types, industry types, resource import/export, and industry changers.
  */
 public class CreateScenarioController {
-
     private Map selectedMap;
     private int selectedYear;
     private List<LocomotiveType> locomotiveTypes;
@@ -23,13 +22,13 @@ public class CreateScenarioController {
     private List<IndustryChanger> changers;
 
     /**
-     * Default constructor.
+     * Default constructor for CreateScenarioController.
      */
     public CreateScenarioController() {
     }
 
     /**
-     * Returns the list of available maps from the repository.
+     * Retrieves all available maps from the repository.
      *
      * @return List of available Map objects.
      */
@@ -38,7 +37,7 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns the list of available resource types from the repository.
+     * Retrieves all available resource types from the repository.
      *
      * @return List of available ResourceType objects.
      */
@@ -47,27 +46,27 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns the list of available industry types from the repository.
+     * Retrieves all available industry types from the repository.
      *
-     * @return List of IndustryType objects.
+     * @return List of available IndustryType objects.
      */
     public List<IndustryType> getAvailableIndustryTypes(){
         return Repositories.getInstance().getIndustryTypeRepository().getIndustryTypes();
     }
 
     /**
-     * Returns the list of available locomotive types from the repository.
+     * Retrieves all available locomotive types from the repository.
      *
-     * @return List of LocomotiveType objects.
+     * @return List of available LocomotiveType objects.
      */
     public List<LocomotiveType> getAvailableLocomotivesTypes(){
         return Repositories.getInstance().getLocomotiveTypeRepository().getLocomotiveTypes();
     }
 
     /**
-     * Returns a list of available locomotive type names as Strings.
+     * Retrieves the names of all available locomotive types.
      *
-     * @return List of locomotive type names.
+     * @return List of Strings representing locomotive type names.
      */
     public List<String> getAvailableLocomotiveTypeNames() {
         List<String> names = new ArrayList<>();
@@ -78,9 +77,9 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns a list of available map names as Strings.
+     * Retrieves the names of all available maps.
      *
-     * @return List of map names.
+     * @return List of Strings representing map names.
      */
     public List<String> getAvailableMapNames() {
         List<String> names = new ArrayList<>();
@@ -91,9 +90,9 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns a list of available industry type names as Strings.
+     * Retrieves the names of all available industry types.
      *
-     * @return List of industry type names.
+     * @return List of Strings representing industry type names.
      */
     public List<String> getAvailableIndustryTypeNames() {
         List<String> names = new ArrayList<>();
@@ -104,9 +103,9 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns a list of available resource type names as Strings for import/export.
+     * Retrieves the names of all available resource types for import/export.
      *
-     * @return List of resource type names.
+     * @return List of Strings representing resource type names.
      */
     public List<String> getAvailableImpor_ExportationNames() {
         List<String> names = new ArrayList<>();
@@ -117,9 +116,9 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns a list of available industry changer names as Strings.
+     * Retrieves the names of all available industry changers.
      *
-     * @return List of industry changer names.
+     * @return List of Strings representing industry changer names.
      */
     public List<String> getAvailableIndustryChangerNames() {
         List<String> names = new ArrayList<>();
@@ -130,22 +129,23 @@ public class CreateScenarioController {
     }
 
     /**
-     * Selects a Map from the given list based on the user's choice index.
+     * Selects a Map from a given list by its choice index.
      *
-     * @param maps List of available maps.
-     * @param choice 1-based index of selected map.
+     * @param maps   List of Map objects to choose from.
+     * @param choice 1-based index of the selected map.
      * @return Selected Map object.
      */
     public Map chooseMap(List<Map> maps, int choice){
-        return maps.get(choice-1);
+        Map map = maps.get(choice-1);
+        return map;
     }
 
     /**
-     * Selects multiple LocomotiveTypes from a list based on user choices.
+     * Selects multiple LocomotiveType objects based on a list of choice indices.
      *
-     * @param types List of available LocomotiveTypes.
-     * @param choices List of 1-based indices selected by the user.
-     * @return List of selected LocomotiveTypes.
+     * @param types   List of LocomotiveType objects to choose from.
+     * @param choices List of 1-based indices representing selected locomotive types.
+     * @return List of selected LocomotiveType objects.
      */
     public List<LocomotiveType> chooseLocomotiveTypes(List<LocomotiveType> types, List<Integer> choices) {
         List<LocomotiveType> selected = new ArrayList<>();
@@ -159,26 +159,39 @@ public class CreateScenarioController {
         return selected;
     }
 
-    // Getters for importation, exportation, and changers
-
+    /**
+     * Gets the list of selected resource types for exportation.
+     *
+     * @return List of ResourceType objects for export.
+     */
     public List<ResourceType> getExportation() {
         return exportation;
     }
 
+    /**
+     * Gets the list of selected resource types for importation.
+     *
+     * @return List of ResourceType objects for import.
+     */
     public List<ResourceType> getImportation() {
         return importation;
     }
 
+    /**
+     * Gets the list of selected industry changers.
+     *
+     * @return List of IndustryChanger objects.
+     */
     public List<IndustryChanger> getChangers() {
         return changers;
     }
 
     /**
-     * Selects multiple IndustryTypes from a list based on user choices.
+     * Selects multiple IndustryType objects based on a list of choice indices.
      *
-     * @param types List of available IndustryTypes.
-     * @param choices List of 1-based indices selected by the user.
-     * @return List of selected IndustryTypes.
+     * @param types   List of IndustryType objects to choose from.
+     * @param choices List of 1-based indices representing selected industry types.
+     * @return List of selected IndustryType objects.
      */
     public List<IndustryType> chooseIndustryTypes(List<IndustryType> types, List<Integer> choices) {
         List<IndustryType> selected = new ArrayList<>();
@@ -193,11 +206,11 @@ public class CreateScenarioController {
     }
 
     /**
-     * Selects multiple IndustryChangers from a list based on user choices.
+     * Selects multiple IndustryChanger objects based on a list of choice indices.
      *
-     * @param types List of available IndustryChangers.
-     * @param choices List of 1-based indices selected by the user.
-     * @return List of selected IndustryChangers.
+     * @param types   List of IndustryChanger objects to choose from.
+     * @param choices List of 1-based indices representing selected changers.
+     * @return List of selected IndustryChanger objects.
      */
     public List<IndustryChanger> chooseIndustryChanger(List<IndustryChanger> types, List<Integer> choices) {
         List<IndustryChanger> selected = new ArrayList<>();
@@ -212,11 +225,11 @@ public class CreateScenarioController {
     }
 
     /**
-     * Selects multiple ResourceTypes for importation from a list based on user choices.
+     * Selects multiple ResourceType objects for importation based on choice indices.
      *
-     * @param types List of available ResourceTypes.
-     * @param choices List of 1-based indices selected by the user.
-     * @return List of selected ResourceTypes for importation.
+     * @param types   List of ResourceType objects to choose from.
+     * @param choices List of 1-based indices representing selected resources.
+     * @return List of selected ResourceType objects for import.
      */
     public List<ResourceType> chooseImportation(List<ResourceType> types, List<Integer> choices) {
         List<ResourceType> selected = new ArrayList<>();
@@ -231,11 +244,11 @@ public class CreateScenarioController {
     }
 
     /**
-     * Selects multiple ResourceTypes for exportation from a list based on user choices.
+     * Selects multiple ResourceType objects for exportation based on choice indices.
      *
-     * @param types List of available ResourceTypes.
-     * @param choices List of 1-based indices selected by the user.
-     * @return List of selected ResourceTypes for exportation.
+     * @param types   List of ResourceType objects to choose from.
+     * @param choices List of 1-based indices representing selected resources.
+     * @return List of selected ResourceType objects for export.
      */
     public List<ResourceType> chooseExportation(List<ResourceType> types, List<Integer> choices) {
         List<ResourceType> selected = new ArrayList<>();
@@ -250,25 +263,25 @@ public class CreateScenarioController {
     }
 
     /**
-     * Sets the selected map for the scenario.
+     * Sets the currently selected map.
      *
-     * @param map The Map object to set.
+     * @param map Map object to be selected.
      */
     public void setMap(Map map) {
         this.selectedMap = map;
     }
 
     /**
-     * Sets the selected year for the scenario.
+     * Sets the year for the scenario.
      *
-     * @param year The year to set.
+     * @param year Integer representing the selected year.
      */
     public void setYear(int year) {
         this.selectedYear = year;
     }
 
     /**
-     * Returns the list of locomotive types for the scenario.
+     * Retrieves all available locomotive types.
      *
      * @return List of LocomotiveType objects.
      */
@@ -277,7 +290,7 @@ public class CreateScenarioController {
     }
 
     /**
-     * Returns the list of available industry changers.
+     * Retrieves all available industry changers.
      *
      * @return List of IndustryChanger objects.
      */
@@ -285,7 +298,78 @@ public class CreateScenarioController {
         return Repositories.getInstance().getIndustryChangerRepository().getAvailableIndustryChanger();
     }
 
-/**
- * Sets the list of resource types for importation.
- *
- * @param importation List of ResourceType objects to import
+    /**
+     * Sets the resource types selected for importation.
+     *
+     * @param importation List of ResourceType objects for import.
+     */
+    public void setImportation(List<ResourceType> importation) {
+        this.importation = importation;
+    }
+
+    /**
+     * Sets the resource types selected for exportation.
+     *
+     * @param exportation List of ResourceType objects for export.
+     */
+    public void setExportation(List<ResourceType> exportation) {
+        this.exportation = exportation;
+    }
+
+    /**
+     * Sets the list of industry changers.
+     *
+     * @param changers List of IndustryChanger objects.
+     */
+    public void setChangers(List<IndustryChanger> changers) {
+        this.changers = changers;
+    }
+
+    /**
+     * Sets the list of locomotive types for the scenario.
+     *
+     * @param locomotiveTypes List of LocomotiveType objects.
+     */
+    public void setLocomotiveTypes(List<LocomotiveType> locomotiveTypes) {
+        this.locomotiveTypes = locomotiveTypes;
+    }
+
+    /**
+     * Sets the list of industry types for the scenario.
+     *
+     * @param industryTypes List of IndustryType objects, or empty list if null.
+     */
+    public void setIndustryTypes(List<IndustryType> industryTypes) {
+        this.industryTypes = industryTypes != null ? industryTypes : new ArrayList<>();
+    }
+
+    /**
+     * Reads a list of integer selections from user input, separated by whitespace.
+     * Invalid inputs are ignored with an error message.
+     *
+     * @param prompt String prompt message shown to the user.
+     * @return List of integers parsed from user input.
+     */
+    public List<Integer> readIntegerSelections(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(prompt);
+        String input = scanner.nextLine();
+        List<Integer> selections = new ArrayList<>();
+        for (String s : input.trim().split("\\s+")) {
+            try {
+                selections.add(Integer.parseInt(s));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: " + s);
+            }
+        }
+        return selections;
+    }
+
+    /**
+     * Creates a new Scenario using the selected parameters and adds it to the scenario repository.
+     */
+    public void createScenario() {
+        Scenario scenario = new  Scenario(selectedMap, selectedYear, locomotiveTypes, industryTypes, changers, exportation, importation);
+        Repositories.getInstance().getScenarioRepository().add(scenario);
+    }
+}

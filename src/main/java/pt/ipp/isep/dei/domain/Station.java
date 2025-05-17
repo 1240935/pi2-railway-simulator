@@ -1,5 +1,8 @@
 package pt.ipp.isep.dei.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Station within the railway system.
  * <p>
@@ -14,9 +17,9 @@ public class Station {
 
     private StationType type;
 
-    private BuildingType buildingType;
+    private BuildingType buildingtype;
 
-    private Cargo cargo;
+    private List<Cargo> cargoes = new ArrayList<>();
 
     /**
      * Constructs a Station with a name, position, center, and type.
@@ -26,11 +29,13 @@ public class Station {
      * @param center The center of the station (e.g., geometric or compass center).
      * @param type The type of the station.
      */
-    public Station(String name, Position position, StationCenter center, StationType type){
+    public Station(String name, Position position, StationCenter center, StationType type, BuildingType buildingtype, List<Cargo> cargoes){
         this.name = name;
         this.center = center;
         this.position = position;
         this.type = type;
+        this.buildingtype = buildingtype;
+        this.cargoes = cargoes;
     }
 
     /**
@@ -123,7 +128,7 @@ public class Station {
      * @return Building type, or null if not set.
      */
     public BuildingType getBuildingType() {
-        return buildingType;
+        return buildingtype;
     }
 
     /**
@@ -132,7 +137,7 @@ public class Station {
      * @param buildingType New building type.
      */
     public void setBuildingType(BuildingType buildingType) {
-        this.buildingType = buildingType;
+        this.buildingtype = buildingType;
     }
 
     /**
@@ -140,16 +145,16 @@ public class Station {
      *
      * @return Cargo object, or null if not set.
      */
-    public Cargo getCargo() {
-        return cargo;
+
+    public List<Cargo> getCargoes() {
+        return cargoes;
     }
 
-    /**
-     * Sets the cargo associated with this station.
-     *
-     * @param cargo New cargo.
-     */
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
+    public void addCargo(Cargo cargo) {
+        cargoes.add(cargo);
+    }
+
+    public void setCargoes(List<Cargo> cargoes) {
+        this.cargoes = cargoes;
     }
 }

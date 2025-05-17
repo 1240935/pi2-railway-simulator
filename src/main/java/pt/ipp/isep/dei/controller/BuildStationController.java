@@ -25,6 +25,10 @@ public class BuildStationController {
 
     private Position position;
 
+    private BuildingType buildingtype;
+
+    private List<Cargo> cargoes;
+
     /**
      * Default constructor.
      */
@@ -267,7 +271,7 @@ public class BuildStationController {
     public void createStation(int x, int y) {
         Position pos = new Position(x, y);
 
-        Station station = new Station(name, pos, center, selectedType);
+        Station station = new Station(name, pos, center, selectedType, buildingtype, cargoes);
         Repositories.getInstance().getStationRepository().addStation(station);
     }
 }

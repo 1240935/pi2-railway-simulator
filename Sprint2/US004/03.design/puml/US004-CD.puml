@@ -59,8 +59,8 @@
        -year: int
        -locomotiveTypes: List<LocomotiveType>
        -industryTypes: List<IndustryType>
-       -importation: boolean
-       -exportation: boolean
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
        -changers: List<IndustryChanger>
        +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
      }
@@ -81,8 +81,8 @@
             Transforming
             Mixed
             --
-            importation: boolean
-            exportation: boolean
+            importation: ResourceType
+            exportation: ResourceType
         }
      
         enum IndustryChanger{

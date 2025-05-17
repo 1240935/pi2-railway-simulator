@@ -21,6 +21,7 @@ public class Repositories {
     private IndustryTypeRepository industryTypeRepository;
     private LocomotiveRepository locomotiveRepository;
     private LocomotiveTypeRepository locomotiveTypeRepository;
+    private ResourceTypeRepository resourceTypeRepository;
 
     // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
@@ -34,6 +35,7 @@ public class Repositories {
         industryTypeRepository = new IndustryTypeRepository();
         locomotiveRepository = new LocomotiveRepository();
         locomotiveTypeRepository = new LocomotiveTypeRepository();
+        resourceTypeRepository = new ResourceTypeRepository();
 
     }
 
@@ -43,6 +45,10 @@ public class Repositories {
             instance = new Repositories();
         }
         return instance;
+    }
+
+    public ResourceTypeRepository getResourceTypeRepository() {
+        return resourceTypeRepository;
     }
 
     private Repositories(String stationFile, String lineFile) {

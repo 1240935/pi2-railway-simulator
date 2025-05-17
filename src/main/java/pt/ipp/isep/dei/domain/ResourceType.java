@@ -42,4 +42,5 @@ public enum ResourceType {
 
     ResourceType(){
     }
+
 }

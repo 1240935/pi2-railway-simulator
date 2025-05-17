@@ -24,8 +24,8 @@ public class MenuUI {
     public void start() {
         while (true) {
             System.out.println("=== Login Menu ===");
-            System.out.println("1. Login as Player");
-            System.out.println("2. Login as Editor");
+            System.out.println("1. Login as Editor");
+            System.out.println("2. Login as Player");
             System.out.println("0. Exit");
 
             int option = scanner.nextInt();
@@ -33,12 +33,12 @@ public class MenuUI {
 
             switch (option) {
                 case 1 -> {
-                    Player player = loginAsPlayer();
-                    if (player != null) showPlayerMenu(player);
-                }
-                case 2 -> {
                     Editor editor = loginAsEditor();
                     if (editor != null) showEditorMenu(editor);
+                }
+                case 2 -> {
+                    Player player = loginAsPlayer();
+                    if (player != null) showPlayerMenu(player);
                 }
                 case 0 -> {
                     System.out.println("Exiting...");

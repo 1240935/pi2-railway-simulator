@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.repository;
 
+import pt.ipp.isep.dei.domain.Cargo;
 import pt.ipp.isep.dei.domain.Industry;
 import pt.ipp.isep.dei.domain.Map;
 import pt.ipp.isep.dei.domain.Station;
@@ -24,6 +25,7 @@ public class Repositories {
     private ResourceTypeRepository resourceTypeRepository;
     private CityRepository cityRepository;
     private LocomotiveModelRepository locomotiveModelRepository;
+    private CargoRepository cargoRepository;
 
     // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
@@ -40,6 +42,7 @@ public class Repositories {
         cityRepository = new CityRepository();
         resourceTypeRepository = new ResourceTypeRepository();
         locomotiveModelRepository = new LocomotiveModelRepository();
+        cargoRepository = new CargoRepository();
 
     }
 
@@ -117,5 +120,7 @@ public class Repositories {
     public CityRepository getCityRepository(){ return cityRepository; }
 
     public  LocomotiveModelRepository getLocomotiveModelRepository(){return locomotiveModelRepository;}
+
+    public CargoRepository getCargoRepository(){ return cargoRepository;}
 
 }

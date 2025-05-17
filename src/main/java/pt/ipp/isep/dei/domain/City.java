@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class City {
@@ -21,5 +22,13 @@ public class City {
     }
     public List<CityBlock> getBlocks() {
         return blocks;
+    }
+
+    public List<ResourceType> getSuppliedCargoes() {
+        return Arrays.asList(ResourceType.PASSENGERS, ResourceType.MAIL);
+    }
+
+    public List<ResourceType> getDemandedCargoes() {
+        return Arrays.asList(ResourceType.PASSENGERS, ResourceType.MAIL, ResourceType.GOODS, ResourceType.FOOD);
     }
 }

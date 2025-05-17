@@ -1,61 +1,95 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.ViewStationController;
-import pt.ipp.isep.dei.domain.*;
 
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Console-based user interface for displaying station details within scenarios.
+ *
+ * <p>This class interacts with the user via the console to:
+ * <ul>
+ *   <li>List available scenarios for selection.</li>
+ *   <li>List stations within the selected scenario.</li>
+ *   <li>Display detailed information about the selected station, including building and cargo data.</li>
+ * </ul>
+ *
+ * <p>It relies on the {@link ViewStationController} to retrieve and manage data.
+ */
 public class ViewStationDetailsUI {
+
+    private final ViewStationController controller = new ViewStationController();
+
+    /**
+     * Starts the UI interaction process.
+     *
+     * <p>The method follows these steps:
+     * <ol>
+     *   <li>Displays all available scenarios and prompts the user to select one.</li>
+     *   <li>Displays stations for the selected scenario and prompts the user to select one.</li>
+     *   <li>Retrieves and prints the building details and cargo information for the selected station.</li>
+     * </ol>
+     *
+     * <p>If no scenarios or stations are available, or if invalid selections are made,
+     * appropriate error messages are shown and the method exits.
+     */
     public void start() {
-        ViewStationController controller = new ViewStationController();
-        List<Station> stations = controller.getAvailableStations();
-
-        if (stations.isEmpty()) {
-            System.out.println("There are no stations available.");
-            return;
-        }
-
-        System.out.println("\nAvailable Stations:");
-        for (int i = 0; i < stations.size(); i++) {
-            System.out.printf("%d - %s%n", i, stations.get(i).getName());
-        }
-
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nSelect a station by number: ");
-        int choice;
 
-        try {
-            choice = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+        // Step 1: Select Scenario
+        List<String> scenarioDescriptions = controller.getAvailableScenarioDescriptions();
+        if (scenarioDescriptions.isEmpty()) {
+            System.out.println("No scenarios available.");
             return;
         }
 
-        if (choice < 0 || choice >= stations.size()) {
-            System.out.println("Invalid station number.");
+        System.out.println("Available Scenarios:");
+        for (int i = 0; i < scenarioDescriptions.size(); i++) {
+            System.out.println((i + 1) + ". " + scenarioDescriptions.get(i));
+        }
+
+        System.out.print("Select scenario by number: ");
+        int scenarioIndex = scanner.nextInt() - 1;
+        scanner.nextLine();
+
+        if (scenarioIndex < 0 || scenarioIndex >= scenarioDescriptions.size()) {
+            System.out.println("Invalid scenario selection.");
             return;
         }
 
-        Station selectedStation = stations.get(choice);
-        System.out.println("\n--- Station Details ---");
-        System.out.println("Name: " + selectedStation.getName());
+        controller.setScenario(scenarioIndex);
 
-        BuildingType buildingType = controller.getBuildingType(selectedStation);
-        System.out.println("Building Type: " + (buildingType != null ? buildingType : "None"));
-
-        List<Cargo> cargoes = controller.getCargoes(selectedStation);
-        if (cargoes == null || cargoes.isEmpty()) {
-            System.out.println("No cargoes available.");
-        } else {
-            System.out.println("Cargoes:");
-            for (Cargo cargo : cargoes) {
-                String type = cargo.getType().toString();
-                int quantity = cargo.getQuantity();
-                String status = cargo.isSupply() ? "Supply" : "Demand";
-                System.out.printf(" - %s | Quantity: %d | %s%n", type, quantity, status);
-            }
+        // Step 2: List Stations
+        List<String> stationNames = controller.getAvailableStationNames();
+        if (stationNames.isEmpty()) {
+            System.out.println("No stations available.");
+            return;
         }
+
+        System.out.println("Stations:");
+        for (int i = 0; i < stationNames.size(); i++) {
+            System.out.println((i + 1) + ". " + stationNames.get(i));
+        }
+
+        System.out.print("Select station by number: ");
+        int stationIndex = scanner.nextInt() - 1;
+        scanner.nextLine();
+
+        if (stationIndex < 0 || stationIndex >= stationNames.size()) {
+            System.out.println("Invalid station selection.");
+            return;
+        }
+
+
+        // Step 3: Show details as strings
+        String buildingDetails = controller.getBuildingDetailsString(stationIndex);
+        String cargoInfo = controller.getCargoInfoString(stationIndex);
+
+        System.out.println("\nBuilding Details:");
+        System.out.println(buildingDetails);
+
+        System.out.println("\nCargo Information:");
+        System.out.println(cargoInfo);
     }
 }
-

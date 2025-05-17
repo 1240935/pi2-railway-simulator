@@ -9,19 +9,20 @@ public class Industry {
         this.position = position;
     }
 
-    public IndustryType getIndustryType() {
+    public IndustryType getType() {
         return industryType;
     }
 
-    public void setIndustryType(IndustryType industryType) {
+    public void setType(IndustryType industryType) {
         this.industryType = industryType;
     }
 
-    public Position getIndustryPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setIndustryPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
+
 }

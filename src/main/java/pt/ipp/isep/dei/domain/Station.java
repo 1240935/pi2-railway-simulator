@@ -6,7 +6,9 @@ import java.util.List;
 /**
  * Represents a Station within the railway system.
  * <p>
- * A station has a name, position, center, type, building type, and cargo information.
+ * A station is characterized by its name, geographical position, center position, type,
+ * building type, and cargo demands and supplies.
+ * It can provide cargo status based on nearby industries and cities within its influence radius.
  */
 public class Station {
     private String name;
@@ -19,35 +21,53 @@ public class Station {
 
     private Building building;
 
-    private List<Cargo> cargoes = new ArrayList<>();
+    private List<Cargo> demands;
+
+    private List<Cargo> supplies;
 
     /**
-     * Constructs a Station with a name, position, center, and type.
+     * Creates a Station with specified name, center, position, type, demands, and supplies.
      *
-     * @param name The name of the station.
-     * @param position The position of the station on the map.
-     * @param center The center of the station (e.g., geometric or compass center).
-     * @param type The type of the station.
+     * @param name     Name of the station.
+     * @param center   The center position of the station.
+     * @param position The geographical position of the station on the map.
+     * @param type     The type/category of the station.
+     * @param demands  List of cargo demands of the station.
+     * @param supplies List of cargo supplies of the station.
      */
-    public Station(String name, Position position, StationCenter center, StationType type){
+    public Station(String name, StationCenter center, Position position, StationType type, List<Cargo> demands, List<Cargo> supplies) {
         this.name = name;
         this.center = center;
         this.position = position;
         this.type = type;
+        this.demands = demands;
+        this.supplies = supplies;
     }
 
-    public Station(String name, Position position, StationCenter center, StationType type, Building building, List<Cargo> cargoes){
+    /**
+     * Creates a Station including a building type along with other attributes.
+     *
+     * @param name     Name of the station.
+     * @param position Geographical position of the station.
+     * @param center   The center position of the station.
+     * @param type     Station type.
+     * @param building Building associated with the station.
+     * @param demands  Cargo demands list.
+     * @param supplies Cargo supplies list.
+     */
+    public Station(String name, Position position, StationCenter center, StationType type, Building building, List<Cargo> demands, List<Cargo> supplies) {
         this.name = name;
         this.center = center;
         this.position = position;
         this.type = type;
         this.building = building;
-        this.cargoes = cargoes;
+        this.demands = demands;
+        this.supplies = supplies;
     }
 
     /**
-     * Constructs a Station with only a name and type.
-     * Useful when position and center are not yet defined.
+     * Constructs a Station with only name and type.
+     * Useful when position, center, and building details are not yet defined.
      *
      * @param name The name of the station.
      * @param type The type of the station.
@@ -60,14 +80,14 @@ public class Station {
     /**
      * Sets the name of the station.
      *
-     * @param name New name to set.
+     * @param name New name for the station.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Sets the center of the station.
+     * Sets the center position of the station.
      *
      * @param center New center position.
      */
@@ -85,9 +105,9 @@ public class Station {
     }
 
     /**
-     * Returns the station's name.
+     * Returns the name of the station.
      *
-     * @return Name of the station.
+     * @return Station's name.
      */
     public String getName() {
         return name;
@@ -112,56 +132,81 @@ public class Station {
     }
 
     /**
-     * Returns the position of the station on the map.
+     * Returns the geographical position of the station on the map.
      *
-     * @return Position object.
+     * @return Position object representing the station location.
      */
     public Position getPosition() {
         return position;
     }
 
     /**
-     * Sets the position of the station on the map.
+     * Sets the geographical position of the station.
      *
-     * @param position New position.
+     * @param position New position of the station.
      */
     public void setPosition(Position position) {
         this.position = position;
     }
 
     /**
-     * Returns the building type associated with this station.
+     * Returns the building associated with this station.
      *
-     * @return Building type, or null if not set.
+     * @return Building object, or null if none is set.
      */
     public Building getBuilding() {
         return building;
     }
 
     /**
-     * Sets the building type associated with this station.
+     * Sets the building associated with this station.
      *
-     * @param building New building type.
+     * @param building Building to associate.
      */
     public void setBuilding(Building building) {
         this.building = building;
     }
 
     /**
-     * Returns the cargo associated with this station.
+     * Computes the cargo status (supplied and demanded cargo) for the station
+     * based on the industries and cities within the station's influence radius.
      *
-     * @return Cargo object, or null if not set.
+     * <p>Industries and cities are considered if their positions are within the station's
+     * radius (defined by the station type) from the station center.
+     * Supplied and demanded cargoes from these industries and cities are aggregated
+     * and returned in a {@link CargoStatus} object.
+     *
+     * @param industries List of all industries to consider.
+     * @param cities     List of all cities to consider.
+     * @return A CargoStatus containing supplied and demanded cargo lists.
      */
+    public CargoStatus getCargoes(List<Industry> industries, List<City> cities) {
+        int radius = type.getRadius();
+        List<Cargo> supplied = new ArrayList<>();
+        List<Cargo> demanded = new ArrayList<>();
 
-    public List<Cargo> getCargoes() {
-        return cargoes;
-    }
+        for (Industry industry : industries) {
+            if (center.getPosition().euclideanDistance(industry.getPosition()) <= radius) {
+                for (ResourceType resourceType : industry.getType().getExportation()) {
+                    supplied.add(new Cargo(resourceType, 0));  // quantity 0 (default or placeholder)
+                }
+                for (ResourceType resourceType : industry.getType().getImportation()) {
+                    demanded.add(new Cargo(resourceType, 0));
+                }
+            }
+        }
 
-    public void addCargo(Cargo cargo) {
-        cargoes.add(cargo);
-    }
+        for (City city : cities) {
+            if (center.getPosition().euclideanDistance(city.getPosition()) <= radius) {
+                for (ResourceType resourceType : city.getSuppliedCargoes()) {
+                    supplied.add(new Cargo(resourceType, 0));
+                }
+                for (ResourceType resourceType : city.getDemandedCargoes()) {
+                    demanded.add(new Cargo(resourceType, 0));
+                }
+            }
+        }
 
-    public void setCargoes(List<Cargo> cargoes) {
-        this.cargoes = cargoes;
+        return new CargoStatus(supplied, demanded);
     }
 }

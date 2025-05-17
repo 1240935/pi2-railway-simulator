@@ -38,7 +38,7 @@ public class CreateIndustryUI {
 
         System.out.println("Available maps:");
         List<String> mapNames = controller.getAvailableMapNames();
-        for (int i = 0; i < mapNames.size(); i++) {
+        for (int i = 1; i < mapNames.size(); i++) {
             System.out.println(i + ": " + mapNames.get(i));
         }
 

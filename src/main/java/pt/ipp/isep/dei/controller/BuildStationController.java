@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.repository.CargoRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ import java.util.List;
  * and creation of stations, abstracting domain logic from the UI layer.
  */
 public class BuildStationController {
+    /**
+     * List of all available scenarios from the repository.
+     */
     private final List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
 
     private Scenario selectedScenario;
@@ -27,7 +31,9 @@ public class BuildStationController {
 
     private BuildingType buildingtype;
 
-    private List<Cargo> cargoes;
+    private List<Cargo> demandedCargoes;
+
+    private List<Cargo> suppliedCargoes;
 
     private Player player;
 
@@ -39,7 +45,7 @@ public class BuildStationController {
     /**
      * Returns the list of available scenarios.
      *
-     * @return List of scenarios.
+     * @return List of Scenario objects available.
      */
     public List<Scenario> getAvailableScenarios() {
         return scenarios;
@@ -60,10 +66,10 @@ public class BuildStationController {
     }
 
     /**
-     * Sets the selected scenario by its index in the list.
+     * Sets the selected scenario by its index in the list of available scenarios.
      *
-     * @param index Index of the scenario in the available scenarios list.
-     * @return true if the index is valid and a scenario is set; false otherwise.
+     * @param index Index of the scenario in the scenarios list.
+     * @return true if the index is valid and a scenario was selected; false otherwise.
      */
     public boolean setScenario(int index) {
         List<Scenario> scenarios = getAvailableScenarios();
@@ -75,32 +81,32 @@ public class BuildStationController {
     }
 
     /**
-     * Creates a Position object representing coordinates (x, y).
+     * Creates a new Position object with the given coordinates.
      *
      * @param x X coordinate.
      * @param y Y coordinate.
-     * @return New Position instance.
+     * @return New Position instance representing the coordinates.
      */
     public Position createPosition(int x, int y) {
         return new Position(x, y);
     }
 
     /**
-     * Returns the map associated with the given scenario.
+     * Returns the map associated with the provided scenario.
      *
-     * @param selectedScenario Scenario to get the map from.
-     * @return The Map of the scenario.
+     * @param selectedScenario Scenario to retrieve the map from.
+     * @return Map object from the scenario.
      */
     public Map getMap(Scenario selectedScenario){
         return selectedScenario.getMap();
     }
 
     /**
-     * Checks if the given coordinates (x, y) are valid within the currently selected scenario's map.
+     * Validates whether the given coordinates are valid within the currently selected scenario's map.
      *
-     * @param x X coordinate.
-     * @param y Y coordinate.
-     * @return true if coordinates are valid; false otherwise.
+     * @param x X coordinate to check.
+     * @param y Y coordinate to check.
+     * @return true if the coordinates are within the map boundaries; false otherwise.
      */
     public boolean checkCoordinates(int x, int y) {
         if (getMap(selectedScenario) == null) return false;
@@ -110,8 +116,8 @@ public class BuildStationController {
     /**
      * Finds the closest city to the given position.
      *
-     * @param pos Position to compare to.
-     * @return Closest City instance, or null if no cities are available.
+     * @param pos Position to find the nearest city to.
+     * @return Closest City instance or null if no cities exist.
      */
     public City getClosestCity(Position pos) {
         List<City> cities = Repositories.getInstance().getCityRepository().getCities();
@@ -130,11 +136,11 @@ public class BuildStationController {
     }
 
     /**
-     * Generates a recommended station name based on the closest city and the selected station type.
+     * Generates a recommended station name based on the closest city and selected station type.
      *
      * @param x X coordinate of the station position.
      * @param y Y coordinate of the station position.
-     * @return Recommended station name, or an empty string if prerequisites are missing.
+     * @return Recommended station name or an empty string if prerequisites are not met.
      */
     public String getRecommendedName(int x, int y) {
         if (selectedType == null || selectedScenario == null) return "";
@@ -161,10 +167,10 @@ public class BuildStationController {
     }
 
     /**
-     * Sets the selected station type by index.
+     * Sets the selected station type by its index in the StationType enum.
      *
-     * @param index Index of the station type in StationType enum.
-     * @return true if index is valid and type is set; false otherwise.
+     * @param index Index of the station type.
+     * @return true if the index is valid and the type was set; false otherwise.
      */
     public boolean setType(int index) {
         StationType[] types = StationType.values();
@@ -186,7 +192,7 @@ public class BuildStationController {
     }
 
     /**
-     * Gets the name of a city.
+     * Retrieves the name of a given city.
      *
      * @param city City instance.
      * @return Name of the city.
@@ -198,21 +204,71 @@ public class BuildStationController {
     /**
      * Sets the name of the new station.
      *
-     * @param name Name to assign.
+     * @param name Name string to assign to the station.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Sets the center position of the station based on a compass coordinate relative to (x, y).
-     * This method applies only if the selected type is Station.
+     * Determines the demanded and supplied cargoes for the station based on its position
+     * and the selected station type's radius.
      *
-     * @param compassCoord Compass direction ("NE", "SE", "NW", "SW").
-     * @param x X coordinate of station position.
-     * @param y Y coordinate of station position.
-     * @throws IllegalStateException if station type or position are invalid.
-     * @throws IllegalArgumentException if compassCoord is invalid.
+     * This method queries all industries within the radius and converts their imported
+     * and exported ResourceTypes to Cargo objects using the CargoRepository.
+     *
+     * @param x x coordinate of the station.
+     * @param y y coordinate of the station.
+     * @throws IllegalStateException if station type or scenario are not selected.
+     */
+    public void determineStationCargoes(int x, int y) {
+        Position pos = new Position(x, y);
+        demandedCargoes = new ArrayList<>();
+        suppliedCargoes = new ArrayList<>();
+
+        if (selectedType == null) {
+            throw new IllegalStateException("Station type must be selected before determining cargoes.");
+        }
+
+        if (selectedScenario == null) {
+            throw new IllegalStateException("Scenario must be selected before determining cargoes.");
+        }
+
+        int radius = selectedType.getRadius();
+        List<Industry> industries = Repositories.getInstance().getIndustryRepository().getIndustries();
+        CargoRepository cargoRepo = Repositories.getInstance().getCargoRepository();
+
+        for (Industry industry : industries) {
+            if (industry.getPosition().euclideanDistance(pos) <= radius) {
+
+                // Convert demanded ResourceTypes to Cargo
+                for (ResourceType r : industry.getType().getImportation()) {
+                    Cargo c = cargoRepo.getCargoForResourceType(r);
+                    if (c != null && !demandedCargoes.contains(c)) {
+                        demandedCargoes.add(c);
+                    }
+                }
+
+                // Convert supplied ResourceTypes to Cargo
+                for (ResourceType r : industry.getType().getExportation()) {
+                    Cargo c = cargoRepo.getCargoForResourceType(r);
+                    if (c != null && !suppliedCargoes.contains(c)) {
+                        suppliedCargoes.add(c);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets the center position of the station relative to (x, y) using compass coordinates.
+     * This method is applicable only if the selected station type is Station.
+     *
+     * @param compassCoord Compass direction ("NE", "SE", "NW", or "SW").
+     * @param x            X coordinate of the station base position.
+     * @param y            Y coordinate of the station base position.
+     * @throws IllegalStateException    if the station type or position is not properly set.
+     * @throws IllegalArgumentException if the compass coordinate is invalid.
      */
     public void setCompassCenter(String compassCoord, int x, int y) {
         if (selectedType == null || x == 0 || y == 0) {
@@ -223,7 +279,7 @@ public class BuildStationController {
             throw new IllegalStateException("Compass center is only used for Station type.");
         }
 
-        int radius = selectedType.getRadius(); // radius must be accessible in StationType
+        int radius = selectedType.getRadius();
 
         int centerX, centerY;
 
@@ -253,7 +309,7 @@ public class BuildStationController {
     }
 
     /**
-     * Sets the geometric center of the station to the same position as the station itself.
+     * Sets the geometric center of the station equal to its position.
      *
      * @throws IllegalStateException if the station position is not set.
      */
@@ -264,27 +320,50 @@ public class BuildStationController {
         this.center = new StationCenter(position);
     }
 
+    /**
+     * Sets the position of the station.
+     *
+     * @param x X coordinate of the station.
+     * @param y Y coordinate of the station.
+     */
     public void setPosition(int x, int y) {
         this.position = new Position(x, y);
     }
 
+    /**
+     * Returns the current player associated with the build station operation.
+     *
+     * @return Player instance.
+     */
     public Player getPlayer(){
         return player;
     }
 
+    /**
+     * Sets the player who is building the station.
+     *
+     * @param player Player instance.
+     */
     public void setPlayer(Player player){
         this.player = player;
     }
 
+    /**
+     * Returns the currently selected station type.
+     *
+     * @return Selected StationType.
+     */
     public StationType getSelectedType() {
         return selectedType;
     }
 
     /**
-     * Creates and adds a new Station instance with the current properties.
+     * Creates and adds a new Station instance with the current attributes.
+     * Deducts the station cost from the player's budget if affordable.
      *
-     * @param x X coordinate for the station position.
-     * @param y Y coordinate for the station position.
+     * @param x X coordinate for the station.
+     * @param y Y coordinate for the station.
+     * @return true if the station was created successfully; false if player cannot afford it.
      */
     public boolean createStation(int x, int y) {
         Position pos = new Position(x, y);
@@ -292,7 +371,7 @@ public class BuildStationController {
             return false;
         }
         player.deductBudget(selectedType.getCost());
-        Station station = new Station(name, pos, center, selectedType, buildingtype, cargoes);
+        Station station = new Station(name, center, pos, selectedType, demandedCargoes, suppliedCargoes);
         Repositories.getInstance().getStationRepository().addStation(station);
         return true;
     }

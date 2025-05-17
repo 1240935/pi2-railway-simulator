@@ -8,10 +8,6 @@ import java.util.List;
 public class IndustryRepository {
     private final ArrayList<Industry> industries = new ArrayList<>();
 
-    public ArrayList<Industry> getAll() {
-        return new ArrayList<>(industries);
-    }
-
     public void addIndustry(Industry industry) {
         industries.add(industry);
     }

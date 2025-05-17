@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.ipp.isep.dei.domain.City;
 import pt.ipp.isep.dei.domain.Station;
 import pt.ipp.isep.dei.domain.StationType;
 
@@ -72,4 +73,9 @@ public class StationRepository {
     public List<Station> getStations() {
         return stations;
     }
+
+    public void addStation(Station station) {
+        stations.add(station);
+    }
+
 }

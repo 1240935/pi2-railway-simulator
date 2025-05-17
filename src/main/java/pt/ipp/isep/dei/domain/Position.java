@@ -24,4 +24,15 @@ public class Position {
     public void setyCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
+
+    /**
+     * Calculates the Euclidean distance between this position and another position.
+     * @param other The other position
+     * @return The Euclidean distance as a double
+     */
+    public double euclideanDistance(Position other) {
+        int dx = this.xCoordinate - other.xCoordinate;
+        int dy = this.yCoordinate - other.yCoordinate;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 }

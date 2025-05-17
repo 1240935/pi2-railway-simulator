@@ -1,9 +1,18 @@
 package pt.ipp.isep.dei.domain;
 
-
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Represents various types of industries in the system.
+ * <p>
+ * Each industry type may have associated import resource types (inputs)
+ * and export resource types (outputs).
+ * <p>
+ * Some industries import multiple resources and export one,
+ * others import one and export one,
+ * and some have no imports but export resources.
+ * The PORT industry type is special and defers to scenario-specific imports/exports.
+ */
 public enum IndustryType {
 
     ALUMINUM_MILL(ResourceType.BAUXITE, ResourceType.ALUMINUM),
@@ -45,51 +54,103 @@ public enum IndustryType {
     WEAPONS_FACTORY(List.of(ResourceType.RUBBER, ResourceType.STEEL, ResourceType.ALUMINUM), ResourceType.WEAPONS),
     PORT();
 
+    /**
+     * List of resource types this industry imports (inputs).
+     * Can be null if industry has no imports.
+     */
     private List<ResourceType> importation;
+
+    /**
+     * List of resource types this industry exports (outputs).
+     */
     private List<ResourceType> exportation;
 
-    // Multiple imports, one export
+    /**
+     * Constructor for industries with multiple imports and one export.
+     *
+     * @param importation List of resource types imported.
+     * @param exportation Single resource type exported.
+     */
     IndustryType(List<ResourceType> importation, ResourceType exportation) {
         this.importation = importation;
         this.exportation = List.of(exportation);
     }
 
-    // Single import, single export
+    /**
+     * Constructor for industries with a single import and single export.
+     *
+     * @param importation Single resource type imported.
+     * @param exportation Single resource type exported.
+     */
     IndustryType(ResourceType importation, ResourceType exportation) {
         this(List.of(importation), exportation);
     }
 
-    // No import, single export
+    /**
+     * Constructor for industries with no imports and a single export.
+     *
+     * @param exportation Single resource type exported.
+     */
     IndustryType(ResourceType exportation) {
         this.importation = null;
         this.exportation = List.of(exportation);
     }
 
-    //No import, multiple exports
+    /**
+     * Constructor for industries with no imports and multiple exports.
+     *
+     * @param exportation List of resource types exported.
+     */
     IndustryType(List<ResourceType> exportation) {
         this.importation = null;
         this.exportation = exportation;
     }
 
-    IndustryType(){
+    /**
+     * Default constructor for industries with no imports or exports defined (e.g., PORT).
+     */
+    IndustryType() {
     }
 
-
+    /**
+     * Returns the list of resource types this industry imports.
+     *
+     * @return List of import resource types, or null if none.
+     */
     public List<ResourceType> getImportation() {
         return importation;
     }
 
+    /**
+     * Returns the list of resource types this industry exports.
+     *
+     * @return List of export resource types.
+     */
     public List<ResourceType> getExportation() {
         return exportation;
     }
 
-   public List<ResourceType> getImportation(Scenario scenario) {
+    /**
+     * Returns the list of resource types this industry imports, considering the scenario context.
+     * For the PORT industry, the scenario import list is used.
+     *
+     * @param scenario The scenario context.
+     * @return List of resource types imported.
+     */
+    public List<ResourceType> getImportation(Scenario scenario) {
         if (this != PORT) {
             return this.importation;
         }
         return scenario.getImportation();
     }
 
+    /**
+     * Returns the list of resource types this industry exports, considering the scenario context.
+     * For the PORT industry, the scenario export list is used.
+     *
+     * @param scenario The scenario context.
+     * @return List of resource types exported.
+     */
     public List<ResourceType> getExportation(Scenario scenario) {
         if (this != PORT) {
             return this.exportation;
@@ -97,4 +158,3 @@ public enum IndustryType {
         return scenario.getExportation();
     }
 }
-

@@ -26,7 +26,15 @@ public class Scenario {
         return importation;
     }
 
-    public List<ResourceType> getExportation() {
+    public List<ResourceType>   getExportation() {
        return exportation;
+    }
+
+    public Map getMap() {
+       return map;
+    }
+
+    public int getYear() {
+       return year;
     }
 }

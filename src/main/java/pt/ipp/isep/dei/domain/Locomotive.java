@@ -5,10 +5,12 @@ public class Locomotive {
     private final int id;
     private final LocomotiveModel locomotiveModel;
 
-    Locomotive(int id, LocomotiveModel locomotiveModel){
+    public Locomotive(int id, LocomotiveModel locomotiveModel){
         this.id = id;
         this.locomotiveModel = locomotiveModel;
     }
 
-
+    public int getId() {
+        return id;
+    }
 }

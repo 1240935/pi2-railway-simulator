@@ -29,6 +29,8 @@ public class BuildStationController {
 
     private List<Cargo> cargoes;
 
+    private Player player;
+
     /**
      * Default constructor.
      */
@@ -262,16 +264,36 @@ public class BuildStationController {
         this.center = new StationCenter(position);
     }
 
+    public void setPosition(int x, int y) {
+        this.position = new Position(x, y);
+    }
+
+    public Player getPlayer(){
+        return player;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+
+    public StationType getSelectedType() {
+        return selectedType;
+    }
+
     /**
      * Creates and adds a new Station instance with the current properties.
      *
      * @param x X coordinate for the station position.
      * @param y Y coordinate for the station position.
      */
-    public void createStation(int x, int y) {
+    public boolean createStation(int x, int y) {
         Position pos = new Position(x, y);
-
+        if (!player.canAfford(selectedType.getCost())) {
+            return false;
+        }
+        player.deductBudget(selectedType.getCost());
         Station station = new Station(name, pos, center, selectedType, buildingtype, cargoes);
         Repositories.getInstance().getStationRepository().addStation(station);
+        return true;
     }
 }

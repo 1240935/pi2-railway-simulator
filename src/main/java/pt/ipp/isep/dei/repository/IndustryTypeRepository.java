@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class IndustryTypeRepository {
-    public ArrayList<IndustryType> getAvailableIndustryTypes() {
+    public ArrayList<IndustryType> getIndustryTypes() {
         return new ArrayList<>(Arrays.asList(IndustryType.values()));
     }
+
 }

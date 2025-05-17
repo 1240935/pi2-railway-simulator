@@ -66,7 +66,7 @@ public class MenuUI {
         }
 
         System.out.print("Enter budget: ");
-        double budget = scanner.nextDouble();
+        int budget = scanner.nextInt();
         scanner.nextLine();
 
         return new Player(username, password, budget);
@@ -112,10 +112,10 @@ public class MenuUI {
             String input = scanner.nextLine();
 
             switch (input) {
-                case "5" -> new BuildStationUI().start();
+                case "5" -> new BuildStationUI().start(player);
                 case "6" -> new UpgradeStationUI().start();
                 case "7" -> new ViewStationDetailsUI().start();
-                case "9" -> new BuyLocomotiveUI().start();
+                case "9" -> new BuyLocomotiveUI().start(player);
                 case "10" -> new SelectRouteUI().start();
                 case "12" -> new SimulatorUI().start();
                 case "13" -> new VerifyTrainTravelUI().start();

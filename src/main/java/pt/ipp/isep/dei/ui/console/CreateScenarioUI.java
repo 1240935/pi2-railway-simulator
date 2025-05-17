@@ -15,7 +15,6 @@ public class CreateScenarioUI {
     }
 
     public void start() {
-        System.out.println("==== Create Scenario ====");
         List<String> names = controller.getAvailableMapNames();
         System.out.println("Available maps:");
         for (int i = 0; i < names.size(); i++) {
@@ -85,7 +84,7 @@ public class CreateScenarioUI {
         List<Integer> selections5 = controller.readIntegerSelections("Enter changer types numbers (separated by space): ");
         controller.setChangers(controller.chooseIndustryChanger(controller.getAvailableIndustryChangers(), selections5));
 
-        // FALTA O SHOW INFORMATION SÓ ISSO !!! acho
         controller.createScenario();
+        System.out.println("Scenario created successfully.");
     }
 }

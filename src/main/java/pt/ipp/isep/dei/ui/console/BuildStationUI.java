@@ -1,51 +1,41 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.BuildStationController;
+import pt.ipp.isep.dei.domain.Player;
 
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * Console-based User Interface for building a new station.
- * <p>
- * This class interacts exclusively with the {@link BuildStationController}
- * using only primitive data types and strings to keep UI and domain decoupled.
- * <p>
- * The workflow includes:
- * <ol>
- *   <li>Selecting a scenario from available options</li>
- *   <li>Entering X and Y coordinates for the station location</li>
- *   <li>Selecting the type of station to build (Depot, Terminal, or Station)</li>
- *   <li>Specifying the center position if the type is Station (compass direction)</li>
- *   <li>Displaying a recommended station name based on location and type</li>
- *   <li>Allowing the user to accept the proposed name or enter a custom name</li>
- *   <li>Creating the station and confirming creation</li>
- * </ol>
+ * Console-based User Interface for building a station in the game.
+ * Guides the player through scenario selection, coordinate input, station type selection,
+ * naming, confirmation, and final creation of the station.
  */
 public class BuildStationUI {
+
     private final BuildStationController controller = new BuildStationController();
 
     /**
-     * Starts the interactive process for building a station.
-     * <p>
-     * This method guides the user step-by-step through scenario selection,
-     * coordinate input, station type selection, center positioning,
-     * naming, and station creation.
+     * Starts the build station process for the given player.
+     * It interacts via the console, collecting inputs step by step,
+     * showing options and validating user choices.
+     *
+     * @param player The player who wants to build a station; player's budget is used for purchase validation.
      */
-    public void start() {
+    public void start(Player player) {
         Scanner scanner = new Scanner(System.in);
+        controller.setPlayer(player);
 
         // Step 1: Select Scenario
-        System.out.println("Available scenarios:");
-        List<String> scenarioNames = controller.getAvailableScenarioDescriptions();
-        for (int i = 0; i < scenarioNames.size(); i++) {
-            System.out.println(i + ": " + scenarioNames.get(i));
-        }
-        System.out.print("Select scenario by number: ");
-        int scenarioIndex = scanner.nextInt();
-        if (!controller.setScenario(scenarioIndex)) {
-            System.out.println("Invalid scenario index. Exiting.");
+        List<String> scenarios = controller.getAvailableScenarioDescriptions();
+        if (scenarios.isEmpty()) {
+            System.out.println("No scenarios available.");
             return;
+        }
+
+        System.out.println("Available Scenarios:");
+        for (int i = 0; i < scenarios.size(); i++) {
+            System.out.println((i + 1) + ". " + scenarios.get(i));
         }
 
         // Step 2: Input Coordinates
@@ -59,14 +49,17 @@ public class BuildStationUI {
             return;
         }
 
+        controller.setPosition(x, y);
+
         // Step 3: Choose Station Type
         List<String> stationTypeNames = controller.getAvailableStationTypes();
         System.out.println("Available station types:");
         for (int i = 0; i < stationTypeNames.size(); i++) {
-            System.out.println(i + ": " + stationTypeNames.get(i));
+            System.out.println((i + 1) + ": " + stationTypeNames.get(i));
         }
         System.out.print("Select station type by number: ");
-        int typeIndex = scanner.nextInt();
+        int typeIndex = scanner.nextInt() - 1; // Adjust to zero-based index
+        scanner.nextLine(); // consume leftover newline
         if (!controller.setType(typeIndex)) {
             System.out.println("Invalid type. Exiting.");
             return;
@@ -75,7 +68,6 @@ public class BuildStationUI {
         // Step 4: Set Center based on station type
         if (controller.isSelectedTypeStation()) {
             System.out.print("Enter compass direction (NE, SE, NW, SW): ");
-            scanner.nextLine();
             String direction = scanner.nextLine().trim();
             controller.setCompassCenter(direction, x, y);
         } else {
@@ -89,13 +81,29 @@ public class BuildStationUI {
         String response = scanner.next().trim().toLowerCase();
         if (!response.equals("y")) {
             System.out.print("Enter custom name: ");
-            scanner.nextLine();
+            scanner.nextLine(); // consume newline
             proposedName = scanner.nextLine().trim();
         }
         controller.setName(proposedName);
+        scanner.nextLine();
 
-        // Step 6: Create Station
-        controller.createStation(x, y);
-        System.out.println("Station '" + proposedName + "' created successfully.");
+        // Step 6: Confirm purchase with player budget and station cost
+        System.out.println("Player budget: " + player.getBudget());
+        System.out.println("Station cost: " + controller.getSelectedType().getCost());
+        System.out.print("Do you want to proceed with the purchase? (y/n): ");
+
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+        if (!confirmation.equals("y")) {
+            System.out.println("Purchase cancelled.");
+            return;
+        }
+
+        // Step 7: Create Station
+        boolean success = controller.createStation(x, y);
+        if (success) {
+            System.out.println("Station '" + proposedName + "' created successfully.");
+        } else {
+            System.out.println("Not enough budget to buy this station.");
+        }
     }
 }

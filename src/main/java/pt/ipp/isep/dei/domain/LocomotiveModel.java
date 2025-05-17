@@ -1,5 +1,31 @@
 package pt.ipp.isep.dei.domain;
 
+/**
+ * Enum representing different locomotive models with their respective characteristics.
+ * <p>
+ * Each model contains specific data describing its performance, operational year,
+ * costs, and type.
+ * </p>
+ * <p>
+ * Attributes per model:
+ * <ul>
+ *   <li><b>power</b>: Qualitative power rating</li>
+ *   <li><b>acceleration</b>: Qualitative acceleration rating (e.g. "FAST", "VERY_FAST")</li>
+ *   <li><b>topSpeed</b>: Maximum speed achievable by the locomotive</li>
+ *   <li><b>operationStartYear</b>: Year the locomotive model began operation</li>
+ *   <li><b>fuelCost</b>: Annual fuel cost</li>
+ *   <li><b>maintenancePYear</b>: Annual maintenance cost</li>
+ *   <li><b>cost</b>: Initial purchase cost of the locomotive</li>
+ *   <li><b>locomotiveType</b>: Type of locomotive (Steam, Diesel, Electric)</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This enum can be used to retrieve information on locomotive models,
+ * such as for filtering available models by type, cost, or operational year.
+ * </p>
+ */
+
 public enum LocomotiveModel {
 
     TREVITHICK_1("EXTREMELY_POOR", "EXTREMELY_POOR", 10, 1800, 7543, 6000, 10000, LocomotiveType.STEAM),
@@ -71,39 +97,6 @@ public enum LocomotiveModel {
 
     private final String power;
     private final String acceleration;
-
-    public String getPower() {
-        return power;
-    }
-
-    public String getAcceleration() {
-        return acceleration;
-    }
-
-    public int getTopSpeed() {
-        return topSpeed;
-    }
-
-    public int getOperationStartYear() {
-        return operationStartYear;
-    }
-
-    public int getFuelCost() {
-        return fuelCost;
-    }
-
-    public int getMaintenancePYear() {
-        return maintenancePYear;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public LocomotiveType getLocomotiveType() {
-        return locomotiveType;
-    }
-
     private final int topSpeed;
     private final int operationStartYear;
     private final int fuelCost;
@@ -111,7 +104,19 @@ public enum LocomotiveModel {
     private final int cost;
     private final LocomotiveType locomotiveType;
 
-    LocomotiveModel(String power, String acceleration, int topSpeed, int operationStartYear,int fuelCost,
+    /**
+     * Constructs a LocomotiveModel enum constant with specified attributes.
+     *
+     * @param power Qualitative power rating of the locomotive.
+     * @param acceleration Qualitative acceleration rating.
+     * @param topSpeed Maximum speed in km/h.
+     * @param operationStartYear Year the model began operation.
+     * @param fuelCost Fuel cost per usage.
+     * @param maintenancePYear Yearly maintenance cost.
+     * @param cost Purchase price.
+     * @param locomotiveType The type of locomotive (steam, diesel, electric).
+     */
+    LocomotiveModel(String power, String acceleration, int topSpeed, int operationStartYear, int fuelCost,
                     int maintenancePYear, int cost, LocomotiveType locomotiveType){
         this.power = power;
         this.acceleration = acceleration;
@@ -123,5 +128,61 @@ public enum LocomotiveModel {
         this.locomotiveType = locomotiveType;
     }
 
+    /** @return Qualitative power rating of the locomotive */
+    public String getPower() {
+        return power;
+    }
 
+    /** @return Qualitative acceleration rating */
+    public String getAcceleration() {
+        return acceleration;
+    }
+
+    /** @return Maximum speed in km/h */
+    public int getTopSpeed() {
+        return topSpeed;
+    }
+
+    /** @return Year the locomotive model began operation */
+    public int getOperationStartYear() {
+        return operationStartYear;
+    }
+
+    /** @return Fuel cost per usage unit */
+    public int getFuelCost() {
+        return fuelCost;
+    }
+
+    /** @return Yearly maintenance cost */
+    public int getMaintenancePYear() {
+        return maintenancePYear;
+    }
+
+    /** @return Purchase price of the locomotive */
+    public int getCost() {
+        return cost;
+    }
+
+    /**
+     * @return Locomotive type (e.g., STEAM, DIESEL, ELECTRIC)
+     */
+    public LocomotiveType getLocomotiveType() {
+        return locomotiveType;
+    }
+
+    /**
+     * Alias for getLocomotiveType().
+     * @return Locomotive type.
+     */
+    public LocomotiveType getType() {
+        return locomotiveType;
+    }
+
+    /**
+     * Alias for getOperationStartYear().
+     * @return Year the locomotive model began operation.
+     */
+    public int getStartYear() {
+        return operationStartYear;
+    }
 }

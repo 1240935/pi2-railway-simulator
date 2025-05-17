@@ -17,7 +17,7 @@ public class Station {
 
     private StationType type;
 
-    private BuildingType buildingtype;
+    private Building building;
 
     private List<Cargo> cargoes = new ArrayList<>();
 
@@ -29,12 +29,19 @@ public class Station {
      * @param center The center of the station (e.g., geometric or compass center).
      * @param type The type of the station.
      */
-    public Station(String name, Position position, StationCenter center, StationType type, BuildingType buildingtype, List<Cargo> cargoes){
+    public Station(String name, Position position, StationCenter center, StationType type){
         this.name = name;
         this.center = center;
         this.position = position;
         this.type = type;
-        this.buildingtype = buildingtype;
+    }
+
+    public Station(String name, Position position, StationCenter center, StationType type, Building building, List<Cargo> cargoes){
+        this.name = name;
+        this.center = center;
+        this.position = position;
+        this.type = type;
+        this.building = building;
         this.cargoes = cargoes;
     }
 
@@ -127,17 +134,17 @@ public class Station {
      *
      * @return Building type, or null if not set.
      */
-    public BuildingType getBuildingType() {
-        return buildingtype;
+    public Building getBuilding() {
+        return building;
     }
 
     /**
      * Sets the building type associated with this station.
      *
-     * @param buildingType New building type.
+     * @param building New building type.
      */
-    public void setBuildingType(BuildingType buildingType) {
-        this.buildingtype = buildingType;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     /**

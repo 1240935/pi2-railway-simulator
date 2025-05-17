@@ -6,9 +6,9 @@ package pt.ipp.isep.dei.domain;
  */
 public class Player {
 
-    private final String username;
-    private final String password;
-    private final double budget;
+    private String username;
+    private String password;
+    private int budget;
 
     /**
      * Constructs a new {@code Player} with the specified username, password, and budget.
@@ -17,7 +17,7 @@ public class Player {
      * @param password the player's password
      * @param budget the player's budget
      */
-    public Player(String username, String password, double budget) {
+    public Player(String username, String password, int budget) {
         this.username = username;
         this.password = password;
         this.budget = budget;
@@ -26,7 +26,7 @@ public class Player {
     /**
      * Returns the player's username.
      *
-     * @return the username
+     * @return the username of the player
      */
     public String getUsername() {
         return username;
@@ -35,18 +35,40 @@ public class Player {
     /**
      * Returns the player's password.
      *
-     * @return the password
+     * @return the password of the player
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * Returns the player's available budget.
+     * Returns the current available budget of the player.
      *
-     * @return the budget
+     * @return the player's budget
      */
-    public double getBudget() {
+    public int getBudget() {
         return budget;
+    }
+
+    /**
+     * Checks whether the player can afford an item with the specified cost.
+     *
+     * @param cost the cost to check against the player's budget
+     * @return {@code true} if the player has enough budget, {@code false} otherwise
+     */
+    public boolean canAfford(int cost) {
+        return budget >= cost;
+    }
+
+    /**
+     * Deducts a specified amount from the player's budget if affordable.
+     * If the amount is greater than the current budget, no deduction is performed.
+     *
+     * @param amount the amount to deduct from the budget
+     */
+    public void deductBudget(int amount) {
+        if (amount <= budget) {
+            budget -= amount;
+        }
     }
 }

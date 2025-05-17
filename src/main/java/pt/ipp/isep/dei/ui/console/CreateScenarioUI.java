@@ -14,7 +14,7 @@ public class CreateScenarioUI {
         scanner = new Scanner(System.in);
     }
 
-    public void run() {
+    public void start() {
         System.out.println("==== Create Scenario ====");
         List<String> names = controller.getAvailableMapNames();
         System.out.println("Available maps:");

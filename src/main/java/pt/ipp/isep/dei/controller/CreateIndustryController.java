@@ -7,39 +7,41 @@ import pt.ipp.isep.dei.domain.*;
 import pt.ipp.isep.dei.repository.Repositories;
 
 /**
- * Controller responsible for managing the logic of creating an industry on a map.
+ * Controller responsible for managing the process of creating industries on a map.
  * <p>
- * Interacts with the domain layer and repositories to:
+ * It provides UI-independent methods to:
  * <ul>
- *     <li>Access available maps</li>
- *     <li>Select a map and industry type</li>
+ *     <li>Retrieve and select available maps</li>
+ *     <li>Retrieve and select available industry types</li>
  *     <li>Validate coordinates</li>
- *     <li>Create and persist industry instances</li>
+ *     <li>Create and persist new industry instances</li>
  * </ul>
  */
 public class CreateIndustryController {
+
+    private final List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
     private Map selectedMap;
     private IndustryType selectedType;
 
     /**
-     * Creates an empty instance of the controller.
+     * Constructs an empty instance of the controller.
      */
     public CreateIndustryController() {}
 
     /**
-     * Retrieves the list of all maps from the repository.
+     * Returns the list of all maps retrieved from the map repository.
      *
-     * @return list of {@link Map} objects
+     * @return a list of {@link Map} objects
      */
     public List<Map> getAvailableMaps() {
-        return Repositories.getInstance().getMapRepository().getMaps();
+        return maps;
     }
 
     /**
-     * Retrieves the names of all available maps.
-     * Useful for displaying in a UI without exposing full map objects.
+     * Returns the names of all available maps.
+     * Useful for UI display without exposing map objects.
      *
-     * @return list of map names
+     * @return a list of map names
      */
     public List<String> getAvailableMapNames() {
         List<String> names = new ArrayList<>();
@@ -50,13 +52,12 @@ public class CreateIndustryController {
     }
 
     /**
-     * Sets the selected map by its index from the available list.
+     * Selects a map from the available maps using its index.
      *
-     * @param index index of the selected map
-     * @throws IllegalArgumentException if the index is out of bounds
+     * @param index the index of the selected map
+     * @throws IllegalArgumentException if the index is invalid
      */
     public void setMapByIndex(int index) {
-        List<Map> maps = getAvailableMaps();
         if (index >= 0 && index < maps.size()) {
             this.selectedMap = maps.get(index);
         } else {
@@ -65,9 +66,9 @@ public class CreateIndustryController {
     }
 
     /**
-     * Retrieves a list of available industry type names.
+     * Returns the names of all defined industry types.
      *
-     * @return list of industry type names as strings
+     * @return a list of industry type names
      */
     public List<String> getAvailableIndustryTypeNames() {
         List<String> names = new ArrayList<>();
@@ -78,10 +79,10 @@ public class CreateIndustryController {
     }
 
     /**
-     * Sets the selected industry type by index.
+     * Selects an industry type using its index from the {@link IndustryType} enum.
      *
-     * @param index index of the selected industry type
-     * @throws IllegalArgumentException if the index is invalid
+     * @param index the index of the industry type
+     * @throws IllegalArgumentException if the index is out of bounds
      */
     public void setIndustryTypeByIndex(int index) {
         IndustryType[] types = IndustryType.values();
@@ -93,11 +94,11 @@ public class CreateIndustryController {
     }
 
     /**
-     * Checks if a pair of coordinates is valid within the selected map.
+     * Checks if the given coordinates are valid within the selected map.
      *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return true if coordinates are within bounds, false otherwise
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @return true if the coordinates are valid, false otherwise
      */
     public boolean checkCoordinates(int x, int y) {
         if (selectedMap == null) return false;
@@ -105,86 +106,39 @@ public class CreateIndustryController {
     }
 
     /**
-     * Creates and registers an industry using the current selected type and position.
+     * Returns all available industry types as enum constants.
+     * Primarily used by legacy UIs.
      *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return description of the created industry
-     * @throws IllegalStateException if map or industry type has not been selected
-     */
-    public String createIndustry(int x, int y) {
-        if (selectedMap == null || selectedType == null) {
-            throw new IllegalStateException("Map or IndustryType not set.");
-        }
-        Position position = new Position(x, y);
-        Industry industry = new Industry(selectedType, position);
-        Repositories.getInstance().getIndustryRepository().add(industry);
-        return industry.toString();
-    }
-
-    /**
-     * Creates a {@link Position} object after validating its bounds against the selected map.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return new Position object
-     * @deprecated Use {@link #checkCoordinates(int, int)} and {@link #createIndustry(int, int)} instead
-     */
-    public Position createPosition(int x, int y) {
-        int size = selectedMap.getSize();
-        if (x >= size || y >= size || x < 0 || y < 0) {
-            System.out.println("Invalid position: coordinates exceed map bounds.");
-            System.exit(1);
-        }
-        return new Position(x, y);
-    }
-
-    /**
-     * Validates if a {@link Position} is inside the selected map bounds.
-     *
-     * @param position position to check
-     * @return true if valid, false otherwise
-     */
-    public boolean checkCoordinates(Position position) {
-        return selectedMap != null && selectedMap.checkCoordinates(position);
-    }
-
-    /**
-     * Returns the available industry types as enum values.
-     * Used in older UIs.
-     *
-     * @return array of {@link IndustryType}
+     * @return an array of {@link IndustryType} values
      */
     public IndustryType[] getAvailableIndustriesTypes() {
         return IndustryType.values();
     }
 
     /**
-     * Sets the selected industry type directly.
+     * Directly sets the selected industry type.
      *
-     * @param type the industry type to select
+     * @param type the industry type to set
      */
     public void setType(IndustryType type) {
         this.selectedType = type;
     }
 
     /**
-     * Returns available resource types (not currently used in this controller).
+     * Creates and persists a new industry at the specified coordinates,
+     * if they are valid within the selected map.
      *
-     * @return array of {@link ResourceType}
+     * @param x the X coordinate for the new industry
+     * @param y the Y coordinate for the new industry
      */
-    public ResourceType[] getAvailableResourceTypes() {
-        return ResourceType.values();
-    }
-
-    /**
-     * Creates an industry directly from a given position.
-     * Used by legacy UI.
-     *
-     * @param pos position for the industry
-     * @return new {@link Industry} object
-     */
-    public Industry createIndustry(Position pos) {
-        return new Industry(selectedType, pos);
+    public void createIndustry(int x, int y) {
+        int size = selectedMap.getSize();
+        if (x >= size || y >= size || x < 0 || y < 0) {
+            System.out.println("Invalid position: coordinates exceed map bounds.");
+            return;
+        }
+        Position position = new Position(x, y);
+        Industry industry = new Industry(selectedType, position);
+        Repositories.getInstance().getIndustryRepository().addIndustry(industry);
     }
 }

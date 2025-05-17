@@ -16,31 +16,39 @@ public class MenuUI {
      * Starts the main system menu, prompting the user to log in as a Player or Editor.
      * Redirects to the appropriate role-specific menu upon successful login.
      */
+    /**
+     * Starts the main system menu, prompting the user to log in as a Player or Editor.
+     * Redirects to the appropriate role-specific menu upon successful login.
+     * Repeats until the user chooses to exit.
+     */
     public void start() {
-        System.out.println("=== Railway System Menu ===");
-        System.out.println("1. Login as Player");
-        System.out.println("2. Login as Editor");
-        System.out.println("0. Exit");
+        while (true) {
+            System.out.println("=== Login Menu ===");
+            System.out.println("1. Login as Player");
+            System.out.println("2. Login as Editor");
+            System.out.println("0. Exit");
 
-        int option = scanner.nextInt();
-        scanner.nextLine();
+            int option = scanner.nextInt();
+            scanner.nextLine();
 
-        switch (option) {
-            case 1 -> {
-                Player player = loginAsPlayer();
-                if (player != null) showPlayerMenu(player);
-            }
-            case 2 -> {
-                Editor editor = loginAsEditor();
-                if (editor != null) showEditorMenu(editor);
-            }
-            case 0 -> System.out.println("Exiting...");
-            default -> {
-                System.out.println("Invalid option.");
-                start();
+            switch (option) {
+                case 1 -> {
+                    Player player = loginAsPlayer();
+                    if (player != null) showPlayerMenu(player);
+                }
+                case 2 -> {
+                    Editor editor = loginAsEditor();
+                    if (editor != null) showEditorMenu(editor);
+                }
+                case 0 -> {
+                    System.out.println("Exiting...");
+                    return;
+                }
+                default -> System.out.println("Invalid option.");
             }
         }
     }
+
 
     /**
      * Prompts the user for player credentials and budget, validates the password,
@@ -114,6 +122,7 @@ public class MenuUI {
                 case "14" -> new RailwayMaintenanceUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
+                    System.out.println();
                     return;
                 }
                 default -> System.out.println("Invalid option. Try again.");
@@ -146,6 +155,7 @@ public class MenuUI {
                 case "4" -> new CreateScenarioUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
+                    System.out.println();
                     return;
                 }
                 default -> System.out.println("Invalid option. Try again.");
@@ -174,14 +184,27 @@ public class MenuUI {
     }
 
     /**
-     * Validates the password format.
-     * Current placeholder logic accepts only letters and spaces (not correct for spec).
+     * Validates whether a given password meets the following constraints:
+     * <ul>
+     *     <li>Exactly 7 characters long</li>
+     *     <li>At least 3 uppercase letters</li>
+     *     <li>At least 2 digits</li>
+     *     <li>All characters must be alphanumeric (letters or digits only)</li>
+     * </ul>
      *
-     * @param password the password to validate
-     * @return {@code true} if password matches required format, {@code false} otherwise
+     * @param password the password string to validate
+     * @return {@code true} if the password meets all the constraints, {@code false} otherwise
      */
     private boolean isValidPassword(String password) {
-        // Placeholder logic: update as per your real password rules
-        return password.matches("^[a-zA-Z\\s]+$");
+        if (password.length() != 7) return false;
+
+        int upper = 0, digits = 0;
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) upper++;
+            else if (Character.isDigit(c)) digits++;
+            else if (!Character.isLetterOrDigit(c)) return false;
+        }
+
+        return upper >= 3 && digits >= 2;
     }
 }

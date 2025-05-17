@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
+import java.util.List;
+
 public class Scenario {
     private Map map;
     private int year;
@@ -7,12 +9,13 @@ public class Scenario {
     private IndustryType industryType;
     private ResourceType resourceType;
     private IndustryChanger industryChanger;
-    private ResourceType importation;
-    private ResourceType exportation;
+    private List<ResourceType> importation;
+    private List<ResourceType> exportation;
 
    Scenario(Map map, int year, LocomotiveType locomotiveType, IndustryType industryType, ResourceType
-           resourceType, IndustryChanger industryChanger, ResourceType importation, ResourceType exportation){
+           resourceType, IndustryChanger industryChanger, List<ResourceType> importation, List<ResourceType> exportation){
        this.map = map;
+       this.year = year;
        this.locomotiveType = locomotiveType;
        this.industryType = industryType;
        this.resourceType = resourceType;
@@ -21,11 +24,11 @@ public class Scenario {
        this.exportation = exportation;
    }
 
-    public ResourceType getImportation() {
+    public List<ResourceType> getImportation() {
         return importation;
     }
 
-    public ResourceType getExportation() {
+    public List<ResourceType> getExportation() {
        return exportation;
     }
 }

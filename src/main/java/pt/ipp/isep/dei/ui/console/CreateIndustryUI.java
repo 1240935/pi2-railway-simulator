@@ -8,28 +8,29 @@ import java.util.Scanner;
 /**
  * Console-based UI for creating a new industry on a selected map.
  * <p>
- * This interface guides the user through:
+ * This interface guides the user through the following steps:
  * <ul>
- *     <li>Choosing a map</li>
- *     <li>Entering coordinates for the new industry</li>
- *     <li>Selecting an industry type</li>
- *     <li>Creating and displaying the resulting industry</li>
+ *     <li>Display available maps and prompt the user to select one</li>
+ *     <li>Request valid coordinates for the industry location</li>
+ *     <li>Display available industry types and prompt selection</li>
+ *     <li>Create the industry and show a confirmation message</li>
  * </ul>
- *
- * It uses {@link CreateIndustryController} to handle business logic.
+ * <p>
+ * Relies on {@link CreateIndustryController} for handling domain logic and data access.
  */
 public class CreateIndustryUI {
 
-    /** Controller that manages the industry creation logic. */
+    /** Controller responsible for managing industry creation logic. */
     private final CreateIndustryController controller = new CreateIndustryController();
 
     /**
-     * Starts the industry creation workflow:
+     * Starts the interactive process for industry creation.
      * <ol>
-     *     <li>Displays available maps and prompts user to select one</li>
-     *     <li>Prompts for valid coordinates within the selected map</li>
-     *     <li>Displays available industry types and prompts user to select one</li>
-     *     <li>Creates the industry and displays confirmation</li>
+     *     <li>Shows the list of maps and gets user selection</li>
+     *     <li>Prompts the user for X and Y coordinates</li>
+     *     <li>Validates coordinates with the controller</li>
+     *     <li>Shows available industry types and gets selection</li>
+     *     <li>Delegates industry creation to the controller</li>
      * </ol>
      */
     public void start() {
@@ -65,8 +66,7 @@ public class CreateIndustryUI {
         int industryTypeIndex = scanner.nextInt();
         controller.setIndustryTypeByIndex(industryTypeIndex);
 
-        String industryDescription = controller.createIndustry(x, y);
+        controller.createIndustry(x, y);
         System.out.println("Industry created successfully!");
-        System.out.println(industryDescription);
     }
 }

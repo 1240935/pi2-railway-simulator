@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.repository;
 import pt.ipp.isep.dei.domain.Map;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapRepository {
     // Cria o repositório como arrayList de mapas
@@ -16,6 +17,10 @@ public class MapRepository {
     // Getter do repositório
     public ArrayList<Map> getMaps() {
         return maps;
+    }
+
+    public void addMap(Map map) {
+        maps.add(map);
     }
 }
 

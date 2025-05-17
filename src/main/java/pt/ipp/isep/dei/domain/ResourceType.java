@@ -10,6 +10,7 @@ public enum ResourceType {
     COAL,
     COFFEE,
     COTTON,
+    DAIRY,
     DIESEL,
     FERTILIZER,
     FOOD,
@@ -40,6 +41,5 @@ public enum ResourceType {
     ;
 
     ResourceType(){
-
     }
 }

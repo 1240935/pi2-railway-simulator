@@ -1,7 +1,10 @@
 package pt.ipp.isep.dei.repository;
 
+import pt.ipp.isep.dei.domain.Industry;
+import pt.ipp.isep.dei.domain.Map;
 import pt.ipp.isep.dei.domain.Station;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repositories {
@@ -100,7 +103,5 @@ public class Repositories {
     public ScenarioRepository getScenarioRepo() {
         return scenarioRepo;
     }
-
-
 
 }

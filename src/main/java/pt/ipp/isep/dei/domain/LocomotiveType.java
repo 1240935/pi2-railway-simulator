@@ -7,6 +7,5 @@ public enum LocomotiveType {
     ELECTRIC();
 
     LocomotiveType(){
-
     }
 }

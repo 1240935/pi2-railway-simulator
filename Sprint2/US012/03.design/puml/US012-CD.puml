@@ -9,6 +9,7 @@ class SimulatorUI{
 }
 
 class SimulatorController {
+  + SimulatorController()
   + setPlayer(player)
   + startSimulation()
   + getAvailableRouteDescriptions()

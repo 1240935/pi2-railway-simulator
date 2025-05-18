@@ -1,120 +1,125 @@
 @startuml
-'skinparam monochrome true
-skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam linetype polyline
-'skinparam linetype orto
 
-skinparam classAttributeIconSize 0
 
-'left to right direction
-
-class AssignRouteUI {
-
+class AssignRouteUI{
 }
 
 class AssignRouteController {
-      +AssignRouteController()
-      +getAvailableScenarios()
-      +setScenario(scenario)
-      +getAvailableLocomotives()
-      +setLocomotive(locomotive)
-      +getAvailableStations()
-      +addStation(station)
-      +areConnected(previousStation, station)
-      +checkCargo(station)
-      +setCargo(cargo)
-      +createRoute(locomotive, stations, cargo)
+    +AssignRouteController()
+  +getAvailableLocomotives()
+  +getAvailableLocomotivesNames()
+  +getAvailableScenarios()
+  +getAvailableScenarioNames()
+  +getAvailableStations()
+  +getAvailableStationNames()
+  +chooseScenario(List<Scenario>)
+  +chooseLocomotive(List<Locomotive>)
+  +chooseStation(List<Station>)
+  +addStation(Station)
+  +setFirstStation(Station)
+  +setLastStation(Station)
+  +getSupply()
+  +getSupplyDisplayList()
+  +selectCargoByIndex(index)
+  +setSelectedLocomotive(Locomotive)
+  +setSelectedScenario(Scenario)
+  +createRoute()
+  +createRoute2()
+}
+
+class Scenario {
+  -map: Map
+           -year: int
+           -locomotiveTypes: List<LocomotiveType>
+           -industryTypes: List<IndustryType>
+           -importation: List<ResourceType>
+           -exportation: List<ResourceType>
+           -changers: List<IndustryChanger>
+  +getLocomotives()
+  +getStations()
+  +addRoute(Route)
+}
+
+class Route {
+  - startingStation: Station
+    - endingStation: Station
+    - stops: List<Station>
+    - locomotive: Locomotive
+    - cargos: List <Cargos>
+  +setStops(List<Station>)
+  +createRoute(
+}
+
+class Station {
+  - name: String
+    - center: StationCenter
+    - position: Position
+    - type: StationType
+    - building: BuildingType
+    - demands: List<Cargo>
+    - supplies: List<Cargo>
+  +getSuppliesOnly(List<Industry>, List<City>)
+  +toString()
+}
+
+class Locomotive {
+    - iD: int
+    - model: LocomotiveModel
+  +toString()
+}
+
+class Cargo {
+  - type: ResourceType
+  - quantity : int
+  +getType()
+}
+
+class Map {
+  - size : int
+  - name : String
+  - industries : List<Industry>
+  - cities : List<City>
+  +getIndustries()
+  +getCities()
 }
 
 class Repositories {
   +getInstance()
   +getScenarioRepository()
-  +getStationRepository()
-  +getLocomotiveRepository()
+  +getRouteRepository()
 }
 
 class ScenarioRepository {
-  +getAvailableScenarios()
+  +getScenarios()
 }
 
-class StationRepository {
-  +getAvailableStations()
+class RouteRepository {
+  +addRoute(Route)
 }
-
-class LocomotiveRepository {
-  +getAvailableLocomotives()
-}
-
-class Scenario {
-       -map: Map
-       -year: int
-       -locomotiveTypes: List<LocomotiveType>
-       -industryTypes: List<IndustryType>
-       -importation: List<ResourceTypes>
-       -exportation: List<ResourceTypes>
-       -changers: List<IndustryChanger>
-}
-
-class Station {
-  -name : String
-  -position : Position
-  -type : StationType
-  -center : Position
-  +checkCargo(station)
-}
-
-class Route {
-  +Route(locomotive, stations, cargo)
-  -beginningStation: Station
-  -endingStation: Station
-  -stops: List <Station>
-  -locomotive: Locomotive
-  -cargo: Cargo
-}
-
-class Locomotive {
-  -iD: int
-  -model: LocomotiveModel
-}
-
-class Cargo {
-  -quantity: int
-  -status: boolean
-  -type: CargoType
-}
-
-class Railway{
-   -start: Station
-   -end: Station
-   -stops: List <Station>
-   -type: RailwayType
-   +areConnected(previousStation, station)
-}
-
 
 AssignRouteUI ..> AssignRouteController
 
-AssignRouteController ..> Repositories
-AssignRouteController ..> Route
 AssignRouteController ..> Scenario
+AssignRouteController ..> Station
+AssignRouteController ..> Route
 AssignRouteController ..> Locomotive
 AssignRouteController ..> Cargo
+AssignRouteController ..> Repositories
+
+Scenario --> "1..*" Map: map
+Scenario --> "1..*" Locomotive: locomotive
+Scenario --> "1..*" Station: station
+Scenario --> "1..*" Route: route
+
+Cargo --> "1" CargoType: cargo type
 
 Repositories -> "1" Repositories : instance
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" StationRepository : station repository
-Repositories --> "1" LocomotiveRepository : locomotive repository
+Repositories --> ScenarioRepository: scenario repository
+Repositories --> RouteRepository: route repository
 
-StationRepository --> "*" Station : station
-LocomotiveRepository --> "*" Locomotive: locomotive
 ScenarioRepository --> "*" Scenario: scenario
-
-Scenario --> "*" Station : station
-Scenario --> "*" Railway: railway
-
-Route --> "1" Locomotive : locomotive
-Route --> "2..*" Station : station
-Route --> "1..*" Cargo : cargo
-Route --> "1..*" Railway: railway
+RouteRepository --> "*" Route: route
 @enduml

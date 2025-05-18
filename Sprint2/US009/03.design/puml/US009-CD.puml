@@ -55,6 +55,7 @@ class Scenario {
        -importation: List<ResourceType>
        -exportation: List<ResourceType>
        -changers: List<IndustryChanger>
+       +addLocomotive(locomotive)
  }
 
 enum LocomotiveModel{

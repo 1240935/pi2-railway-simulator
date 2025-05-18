@@ -23,7 +23,7 @@ activate PLAYER
     PLAYER -> UI : asks to see stations
     activate UI
         UI --> CTRL** : create()
-        UI -> CTRL : getAvailableScenarios()
+        UI -> CTRL : getAvailableScenarioDescriptions()
             activate CTRL
             CTRL -> REPOS : getInstance()
                 activate REPOS
@@ -41,13 +41,13 @@ activate PLAYER
 
     PLAYER -> UI : selects a scenario
     activate UI
-        UI -> CTRL : setScenario(scenarioId)
+        UI -> CTRL : setScenario(Index)
         activate CTRL
         CTRL -> MAP_REPOS : getMapRepository()
             activate MAP_REPOS
             MAP_REPOS --> CTRL : mapRepository
             deactivate MAP_REPOS
-        CTRL -> MAP : getStations()
+        CTRL -> MAP : getAvailableStationNames()
             activate MAP
             MAP --> CTRL : stations
             deactivate MAP
@@ -66,8 +66,8 @@ activate PLAYER
             deactivate MAP
         CTRL -> STATION : getDetails()
         activate STATION
-        STATION -> BUILDING : getBuildings()
-        STATION -> CARGOINFO : getCargoInfo()
+        STATION -> BUILDING : getBuildingDetailsString(index)
+        STATION -> CARGOINFO : getCargoInfo(index)
         activate CARGOINFO
         CARGOINFO -> CARGO : getDemand()
         CARGOINFO -> CARGO : getSupply()

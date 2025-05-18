@@ -16,10 +16,15 @@ class ViewStationUI {
 class ViewStationController {
   +ViewStationController()
   +getAvailableScenarios()
-  +setScenario(scenario)
+  +getAvailableScenarioDescriptions()
+  +setScenario(index)
   +getAvailableStations()
+  +getAvailableStationNames()
+  +getStationByIndex(index)
   +getBuilding(station)
-  +getCargo(station)
+  +getBuildingDetails(index)
+  +getBuildingDetailsString(index)
+  +getCargoInfo(index)
 }
 
 class Repositories {
@@ -42,8 +47,8 @@ class Scenario {
     -year: int
     -locomotiveTypes: List<LocomotiveType>
     -industryTypes: List<IndustryType>
-    -importation: boolean
-    -exportation: boolean
+    -importation: List<ResourceType>
+    -exportation: List<ResourceType>
     -changers: List<IndustryChanger>
 }
 
@@ -52,9 +57,10 @@ class Station{
     -name : String
     -position : Position
     -type : StationType
-    -center : Position
+    -center : StationCenter
     -building: Building
-    -cargo: Cargo
+    -supply: List<Cargo>
+    -demand: List<Cargo>
     +getBuilding(station)
     +getCargo(station)
 }
@@ -66,7 +72,6 @@ class Building {
 class Cargo {
   -type: CargoType
   -quantity: int
-  -status: boolean;
 }
 
 

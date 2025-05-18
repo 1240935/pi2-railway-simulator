@@ -83,4 +83,11 @@ public class Scenario {
     public List<LocomotiveType> getLocomotiveTypes() {
         return locomotiveType;
     }
+
+    @Override
+    public String toString() {
+        return map.getName() + " (" + year + ")";
+    }
+
+
 }

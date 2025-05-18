@@ -209,4 +209,9 @@ public class Station {
 
         return new CargoStatus(supplied, demanded);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

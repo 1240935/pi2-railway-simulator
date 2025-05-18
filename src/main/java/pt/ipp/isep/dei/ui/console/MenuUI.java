@@ -113,7 +113,7 @@ public class MenuUI {
 
             switch (input) {
                 case "5" -> new BuildStationUI().start(player);
-                case "6" -> new UpgradeStationUI().start();
+                case "6" -> new UpgradeStationUI().start(player);
                 case "7" -> new ViewStationDetailsUI().start();
                 case "9" -> new BuyLocomotiveUI().start(player);
                 case "10" -> new SelectRouteUI().start();

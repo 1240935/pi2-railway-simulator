@@ -89,6 +89,13 @@ class Scenario{
     exportation
 }
 
+class CargoStatus{
+    supply
+    demand
+}
+
+
+
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
@@ -120,6 +127,7 @@ Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
 Cargo "1" -- "1" CargoType: has >
+Cargo "1" -- "1" CargoStatus: has >
 
 Train "1" -- "1" Locomotive: is part of <
 Train "1" -- "*" Carriage: is part of <

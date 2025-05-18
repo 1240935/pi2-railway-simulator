@@ -22,8 +22,8 @@ class Editor {
 }
 
 class Map {
-    name
     size
+    name
 }
 
 class Position{
@@ -59,6 +59,7 @@ class IndustryType{
 }
 
 class ResourceType{
+    value
 }
 
 class Scenario {
@@ -68,8 +69,8 @@ class Scenario {
 
 class City {
     name
-    people
-    mail
+    supply
+    demand
 }
 
 class CityBlock{
@@ -87,11 +88,6 @@ class RailwayType{
 
 class Cargo {
     quantity
-    status
-}
-
-class CargoType{
-    value
 }
 
 class Locomotive {
@@ -116,6 +112,9 @@ class Route {
 
 class Simulator{
     status
+    totalGenerated
+    totalSupplied
+    totalDelivered
 }
 
 class Train {
@@ -138,6 +137,11 @@ class IndustryChanger{
     effect
 }
 
+class CargoStatus{
+    supply
+    demand
+}
+
 
 Editor "1" -- "*" Map : creates >
 Editor "1" -- "*" Scenario : creates >
@@ -151,6 +155,8 @@ Player "1" -- "1..*" Locomotive : buys >
 Player "1" -- "1" Simulator: controls >
 
 Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "1..*" Route: has >
+Simulator "1" -- "1" Scenario: has >
 
 Map "1" -- "*" Station : contains >
 Map "1" -- "*" Industry : contains >
@@ -176,6 +182,10 @@ Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
 Scenario "1" -- "*" IndustryType: affects >
+Scenario "1" -- "*" Station: has >
+Scenario "1" -- "*" Route: has >
+Scenario "1" -- "*"Locomotive: has >
+
 
 HistoricalRestriction "1" -- "*" IndustryChanger: has >
 IndustryChanger "1" -- "*" Industry: affects >
@@ -208,7 +218,8 @@ Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
-Cargo "1" -- "1" CargoType: has >
+Cargo "1" -- "1" ResourceType: has >
+Cargo "1" -- "1" CargoStatus: has >
 
 
 

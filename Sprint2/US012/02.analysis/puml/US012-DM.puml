@@ -32,6 +32,11 @@ class Cargo {
     status
 }
 
+class Scenario {
+    importation
+    exportation
+}
+
 
 class Simulator{
     status
@@ -41,7 +46,10 @@ Player "1" -- "1" Simulator: controls >
 Simulator "1" -- "*" Cargo: generates >
 
 Station "1" -- "1" StationType: has >
-Station "1" -- "*" Cargo : stores >
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "1..*" Route: has >
+Simulator "1" -- "1" Scenario: has >
+Station "2..*" -- "*" Route: has <
 
 
 @enduml

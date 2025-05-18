@@ -53,7 +53,6 @@ Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
 TimeRestriction "1" -- "*" LocomotiveModel: affects >
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
-Locomotive "*" -- "1" LocomotiveModel: has >
 LocomotiveModel "*" -- "1" LocomotiveType: has >
 
 

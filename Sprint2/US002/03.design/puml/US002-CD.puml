@@ -92,6 +92,10 @@ skinparam classAttributeIconSize 0
     munitions factory
     weapons factory
     port
+    --
+    importation: ResourceType
+    exportation: ResourceType
+
   }
 
 

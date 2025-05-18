@@ -15,6 +15,23 @@
     class CreateScenarioController {
         +CreateScenarioController()
         +getAvailableMaps()
+        +getAvailableResourceType()
+        +getAvailableIndustryTypes()
+        +getAvailableLocomotiveTypes()
+        +getAvailableLocomotiveTypeNames()
+        +getAvailableMapNames()
+        +getAvailableIndustryTypeNames()
+        +getAvailableImpor_ExportationNames()
+        +getAvailableIndustryChangerNames()
+        +chooseMap(maps,choice)
+        +chooseLocomotiveTypes
+        +getExportation()
+        +getImportation()
+        +getChangers()
+        +chooseIndustryTypes(types,choices)
+        +chooseIndustryChanger(types,choices)
+        +chooseImportation(types,choices)
+        +chooseExportation(types,choices)
         +setMap(Map)
         +setYear(year)
         +getLocomotiveTypes()
@@ -23,9 +40,9 @@
         +setIndustryTypes(types)
         +setImportation(importation)
         +setExportation(exportation)
-        +getAvailableIndustryChangers()
-        +setIndustryChangers(changers)
-        +createScenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
+        +setChangers(changers)
+        +readIntegerSelections(prompt)
+        +createScenario()
 
     }
 
@@ -68,6 +85,8 @@
         class Map{
         - size : int
         - name : String
+        - industries : List<Industry>
+        - cities : List<City>
         }
 
         enum LocomotiveType{
@@ -77,9 +96,44 @@
         }
 
         enum IndustryType{
-            Primary Sector
-            Transforming
-            Mixed
+            aluminum mill
+                auto plant
+                bakery
+                bauxit mine
+                cannery
+                cattle yard
+                chemical plant
+                cement plant
+                coal mine
+                coffee farm
+                cotton farm
+                dairy farm
+                dairy processor
+                electric plant
+                fertilizer plant
+                grain silo
+                gravel pit
+                iron mine
+                landfill
+                logging camp
+                lumber mill
+                meat packing plant
+                nuclear plant
+                oil refinery
+                oil well
+                paper mill
+                produce orchard
+                rubber farm
+                steel mill
+                textile mill
+                tire factory
+                tool and die factory
+                uranium mine
+                geocore plant
+                distillery
+                munitions factory
+                weapons factory
+                port
             --
             importation: ResourceType
             exportation: ResourceType

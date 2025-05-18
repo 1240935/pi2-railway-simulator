@@ -10,7 +10,7 @@ As an Editor, I want to create a scenario for a selected map.
 
 **From the specifications document:**
 
-> As a user with the Editor role, I should be able to create a scenario for a certain map. Within the scenario creation, a name should be given, followed by a description. There are also restrictions integrated in this scenario, such as time, technological and historical ones.
+> As a user with the Editor role, I should be able to create a scenario for a certain map. Within the scenario creation, a name should be given. There are also restrictions integrated in this scenario, such as time, technological and historical ones.
 
 **From the client clarifications:** 
 
@@ -46,6 +46,7 @@ As an Editor, I want to create a scenario for a selected map.
 * List of available maps
 * List of locomotive types
 * List of industry types
+* List of resource types
 * List of industry changers
 * Data for confirmation
 * (In) Success of the operation

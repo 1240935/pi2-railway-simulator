@@ -38,12 +38,12 @@ public class CreateIndustryUI {
 
         System.out.println("Available maps:");
         List<String> mapNames = controller.getAvailableMapNames();
-        for (int i = 1; i < mapNames.size(); i++) {
-            System.out.println(i + ": " + mapNames.get(i));
+        for (int i = 0; i < mapNames.size(); i++) {
+            System.out.println((i +1) + ": " + mapNames.get(i));
         }
 
         System.out.print("Select map by number: ");
-        int mapIndex = scanner.nextInt();
+        int mapIndex = scanner.nextInt() - 1;
         controller.setMapByIndex(mapIndex);
 
         System.out.print("Enter X coordinate: ");

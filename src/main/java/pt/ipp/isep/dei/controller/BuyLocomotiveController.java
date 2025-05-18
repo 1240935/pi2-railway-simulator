@@ -172,6 +172,7 @@ public class BuyLocomotiveController {
         int id = Repositories.getInstance().getLocomotiveRepository().nextID();
         Locomotive loco = new Locomotive(id, selectedModel);
         player.deductBudget(model.getCost());
+        scenario.addLocomotive(loco);
         Repositories.getInstance().getLocomotiveRepository().addLocomotive(loco);
         return true;
     }

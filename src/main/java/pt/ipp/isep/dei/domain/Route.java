@@ -16,18 +16,51 @@ public class Route {
         this.endingStation = endingStation;
         this.locomotive = locomotive;
         this.cargo = cargo;
+        this.stops = new ArrayList<>();
     }
 
-    public Route(Station startingStation, Station endingStation, List<Station> stops, Locomotive locomotive, List<Cargo> cargo){
+    public Route(){
+    }
+
+    public Station getStartingStation() {
+        return startingStation;
+    }
+
+    public void setStartingStation(Station startingStation) {
         this.startingStation = startingStation;
+    }
+
+    public Station getEndingStation() {
+        return endingStation;
+    }
+
+    public void setEndingStation(Station endingStation) {
         this.endingStation = endingStation;
+    }
+
+    public List<Station> getStops() {
+        return stops;
+    }
+
+    public void setStops(List<Station> stops) {
         this.stops = stops;
-        this.cargo = cargo;
+    }
+
+    public Locomotive getLocomotive() {
+        return locomotive;
+    }
+
+    public void setLocomotive(Locomotive locomotive) {
         this.locomotive = locomotive;
     }
 
+    public List<Cargo> getCargo() {
+        return cargo;
+    }
 
-
+    public void setCargo(List<Cargo> cargo) {
+        this.cargo = cargo;
+    }
 
     /**
      * Finds possible starting stations for a maintenance route (Eulerian path)

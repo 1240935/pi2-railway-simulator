@@ -42,10 +42,8 @@ public class Building {
     /**
      * Returns a string representation of the building.
      *
-     * @return string in the format "Building[type=buildingType]"
+     * @return a string in the format: Building : 'type'
      */
     @Override
-    public String toString() {
-        return "Building[type=" + buildingType + "]";
-    }
+    public String toString() { return "Building : '" + buildingType + "'"; }
 }

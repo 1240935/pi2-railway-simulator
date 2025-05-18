@@ -31,7 +31,7 @@ public class UpgradeStationController {
     }
 
     public List<Station> getAvailableStations() {
-        return Repositories.getInstance().getStationRepository().getStations();
+        return selectedScenario.getStations();
     }
 
     public void setStation(Station station) {
@@ -147,6 +147,7 @@ public class UpgradeStationController {
         player.deductBudget(selectedBuildingType.getCost());
         this.selectedBuilding = new Building(selectedBuildingType);
         setBuilding(selectedBuilding);
+        selectedStation.setBuilding(selectedBuilding);
         Repositories.getInstance().getBuildingRepository().addBuilding(selectedBuilding);
         return true;
     }

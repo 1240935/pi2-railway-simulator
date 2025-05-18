@@ -185,7 +185,6 @@ public class Station {
         return supplies;
     }
 
-
     /**
      * Computes the cargo status (supplied and demanded cargo) for the station
      * based on the industries and cities within the station's influence radius.
@@ -228,6 +227,30 @@ public class Station {
 
         return new CargoStatus(supplied, demanded);
     }
+
+    public List<Cargo> getSuppliesOnly(List<Industry> industries, List<City> cities) {
+        int radius = type.getRadius();
+        List<Cargo> supplied = new ArrayList<>();
+
+        for (Industry industry : industries) {
+            if (center.getPosition().euclideanDistance(industry.getPosition()) <= radius) {
+                for (ResourceType resourceType : industry.getType().getExportation()) {
+                    supplied.add(new Cargo(resourceType, 0));
+                }
+            }
+        }
+
+        for (City city : cities) {
+            if (center.getPosition().euclideanDistance(city.getPosition()) <= radius) {
+                for (ResourceType resourceType : city.getSuppliedCargoes()) {
+                    supplied.add(new Cargo(resourceType, 0));
+                }
+            }
+        }
+
+        return supplied;
+    }
+
 
     @Override
     public String toString() {

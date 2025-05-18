@@ -209,6 +209,7 @@ public class AddCityController {
         }
 
         City city = new City(selectedName, center, selectedBlocks);
+        selectedMap.addCity(city);
         Repositories.getInstance().getCityRepository().addCity(city);
     }
 }

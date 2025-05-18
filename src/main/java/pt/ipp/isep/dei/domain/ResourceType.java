@@ -69,8 +69,8 @@ public enum ResourceType {
     public int getValue() {
         return value;
     }
+
     public String getName() {
-        // Capitalize only the first letter, lower the rest
         String lower = name().toLowerCase();
         return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
     }

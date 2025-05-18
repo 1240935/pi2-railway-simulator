@@ -154,7 +154,7 @@ public class ViewStationController {
      * @return A list of all stations.
      */
     public List<Station> getAvailableStations() {
-        return Repositories.getInstance().getStationRepository().getStations();
+        return selectedScenario.getStations();
     }
 
     /**
@@ -168,8 +168,8 @@ public class ViewStationController {
         if (selectedScenario == null) {
             throw new IllegalStateException("Scenario not set");
         }
-        List<Industry> industries = Repositories.getInstance().getIndustryRepository().getIndustries();
-        List<City> cities = Repositories.getInstance().getCityRepository().getCities();
+        List<Industry> industries = selectedScenario.getMap().getIndustries();
+        List<City> cities = selectedScenario.getMap().getCities();
         return station.getCargoes(industries, cities);
     }
 }

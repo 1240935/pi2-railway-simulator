@@ -19,7 +19,6 @@ import pt.ipp.isep.dei.repository.Repositories;
  */
 public class CreateIndustryController {
 
-    private final List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
     private Map selectedMap;
     private IndustryType selectedType;
 
@@ -28,13 +27,9 @@ public class CreateIndustryController {
      */
     public CreateIndustryController() {}
 
-    /**
-     * Returns the list of all maps retrieved from the map repository.
-     *
-     * @return a list of {@link Map} objects
-     */
+
     public List<Map> getAvailableMaps() {
-        return maps;
+        return Repositories.getInstance().getMapRepository().getMaps();
     }
 
     /**
@@ -58,12 +53,14 @@ public class CreateIndustryController {
      * @throws IllegalArgumentException if the index is invalid
      */
     public void setMapByIndex(int index) {
+        List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         if (index >= 0 && index < maps.size()) {
             this.selectedMap = maps.get(index);
         } else {
             throw new IllegalArgumentException("Invalid map index");
         }
     }
+
 
     /**
      * Returns the names of all defined industry types.
@@ -140,5 +137,6 @@ public class CreateIndustryController {
         Position position = new Position(x, y);
         Industry industry = new Industry(selectedType, position);
         Repositories.getInstance().getIndustryRepository().addIndustry(industry);
+        selectedMap.addIndustry(industry);
     }
 }

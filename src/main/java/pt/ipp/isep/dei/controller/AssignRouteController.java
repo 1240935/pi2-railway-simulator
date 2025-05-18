@@ -1,10 +1,15 @@
 package pt.ipp.isep.dei.controller;
+
 import pt.ipp.isep.dei.domain.*;
 import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller responsible for assigning routes between stations,
+ * managing locomotives, cargo, and scenarios.
+ */
 public class AssignRouteController {
 
     private Scenario selectedScenario;
@@ -14,21 +19,18 @@ public class AssignRouteController {
     private Route selectedRoute;
     private Locomotive selectedLocomotive;
     private List<Cargo> selectedCargo;
+    private List<Cargo> supplies;
 
-    public AssignRouteController(){
-
-    }
-
-    public List<Cargo> addAllCargo(List<Cargo> supplies, List<Cargo> demands) {
-        List<Cargo> allCargo = new ArrayList<>();
-        allCargo.addAll(supplies);
-        allCargo.addAll(demands);
-        return allCargo;
+    /**
+     * Constructs a new {@code AssignRouteController} with empty cargo and stop lists.
+     */
+    public AssignRouteController() {
+        this.stops = new ArrayList<>();
+        this.selectedCargo = new ArrayList<>();
     }
 
     public List<Locomotive> getAvailableLocomotives() {
-        // return available scenarios
-        return Repositories.getInstance().getLocomotiveRepository().getAll();
+        return selectedScenario.getLocomotives();
     }
 
     public List<String> getAvailableLocomotivesNames() {
@@ -39,9 +41,8 @@ public class AssignRouteController {
         return names;
     }
 
-        public List<Scenario> getAvailableScenarios() {
-            // return available scenarios
-            return Repositories.getInstance().getScenarioRepository().getScenarios();
+    public List<Scenario> getAvailableScenarios() {
+        return Repositories.getInstance().getScenarioRepository().getScenarios();
     }
 
     public List<String> getAvailableScenarioNames() {
@@ -52,13 +53,8 @@ public class AssignRouteController {
         return names;
     }
 
-    public void addCargo(Cargo cargo){
-        selectedCargo.add(cargo);
-    }
-
     public List<Station> getAvailableStations() {
-        // return available scenarios
-        return Repositories.getInstance().getStationRepository().getStations();
+        return selectedScenario.getStations();
     }
 
     public List<String> getAvailableStationNames() {
@@ -69,22 +65,19 @@ public class AssignRouteController {
         return names;
     }
 
-    public Scenario chooseScenario(List<Scenario> scenarios, int choice){
-        Scenario scenario = scenarios.get(choice-1);
-        return scenario;
+    public Scenario chooseScenario(List<Scenario> scenarios, int choice) {
+        return scenarios.get(choice - 1);
     }
 
-    public Locomotive chooseLocomotive(List<Locomotive> locomotives, int choice){
-        Locomotive locomotive = locomotives.get(choice-1);
-        return locomotive;
+    public Locomotive chooseLocomotive(List<Locomotive> locomotives, int choice) {
+        return locomotives.get(choice - 1);
     }
 
-    public Station chooseStation(List<Station> stations, int choice){
-        Station station = stations.get(choice-1);
-        return station;
+    public Station chooseStation(List<Station> stations, int choice) {
+        return stations.get(choice - 1);
     }
 
-    public void addStation(Station station){
+    public void addStation(Station station) {
         stops.add(station);
     }
 
@@ -96,47 +89,55 @@ public class AssignRouteController {
         this.lastStation = lastStation;
     }
 
-    public  List<Cargo> getSupply(){
-            List<Cargo> supplyCargoes = new ArrayList<>();
+    public List<Cargo> getSupply() {
+        List<Industry> industries = selectedScenario.getMap().getIndustries();
+        List<City> cities = selectedScenario.getMap().getCities();
 
+        List<Cargo> supplies = new ArrayList<>();
+
+        if (stops != null) {
             for (Station stop : stops) {
-                supplyCargoes.addAll(stop.getSupplies());
-            }
-            supplyCargoes.addAll(firstStation.getSupplies());
-            supplyCargoes.addAll(lastStation.getSupplies());
-            return supplyCargoes;
-    }
-
-    public  List<Cargo> getDemand(){
-        List<Cargo> demandCargoes = new ArrayList<>();
-
-        for (Station stop : stops) {
-            demandCargoes.addAll(stop.getDemands());
-        }
-        demandCargoes.addAll(firstStation.getDemands());
-        demandCargoes.addAll(lastStation.getDemands());
-        return demandCargoes;
-    }
-
-    public void printCargoes(List<Cargo> suppliesList, List<Cargo> demandsList) {
-        System.out.println("=== Supply Cargoes ===");
-        int counter= 0;
-        for (Cargo cargo : suppliesList) {
-            System.out.printf("%d. [Supply]| Type: %s | Quantity: %d%n",
-                    counter,
-                    cargo.getType().getName(),
-                    cargo.getQuantity());
-            counter++;
-        }
-
-        System.out.println("\n=== Demand Cargoes ===");
-        for (Cargo cargo : demandsList) {
-                System.out.printf("Type: %s | Quantity: %d%n",
-                        cargo.getType().getName(),
-                        cargo.getQuantity());
+                supplies.addAll(stop.getSuppliesOnly(industries, cities));
             }
         }
 
+        if (firstStation != null) {
+            supplies.addAll(firstStation.getSuppliesOnly(industries, cities));
+        }
+
+        if (lastStation != null) {
+            supplies.addAll(lastStation.getSuppliesOnly(industries, cities));
+        }
+
+        return supplies;
+    }
+
+    public List<String> getSupplyDisplayList() {
+        List<Cargo> supplies = getSupply();
+        List<String> displayList = new ArrayList<>();
+        int counter = 1;
+
+        for (Cargo cargo : supplies) {
+            if (cargo != null && cargo.getType() != null) {
+                displayList.add(counter++ + ". Type: " + cargo.getType().getName());
+            }
+        }
+        return displayList;
+    }
+
+
+
+    public boolean selectCargoByIndex(int index) {
+        List<Cargo> supply = getSupply();
+        if (index < 1 || index > supply.size()) {
+            return false;
+        }
+        Cargo selected = supply.get(index - 1);
+        if (!selectedCargo.contains(selected)) {
+            selectedCargo.add(selected);
+        }
+        return true;
+    }
 
     public void setSelectedLocomotive(Locomotive selectedLocomotive) {
         this.selectedLocomotive = selectedLocomotive;
@@ -146,10 +147,22 @@ public class AssignRouteController {
         this.selectedScenario = selectedScenario;
     }
 
-    public void createRoute(){
-       selectedRoute = new Route(firstStation,lastStation,selectedLocomotive,selectedCargo);
+    /**
+     * Creates a route with just first and last stations, the selected locomotive, and cargo.
+     */
+    public void createRoute() {
+        selectedRoute = new Route(firstStation, lastStation, selectedLocomotive, selectedCargo);
+        selectedScenario.addRoute(selectedRoute);
+        Repositories.getInstance().getRouteRepository().addRoute(selectedRoute);
     }
-    public void createRoute2(){
-        selectedRoute = new Route(firstStation,lastStation,stops, selectedLocomotive,selectedCargo);
+
+    /**
+     * Creates a full route including intermediate stops.
+     */
+    public void createRoute2() {
+        selectedRoute = new Route(firstStation, lastStation, selectedLocomotive, selectedCargo);
+        selectedRoute.setStops(stops);
+        selectedScenario.addRoute(selectedRoute);
+        Repositories.getInstance().getRouteRepository().addRoute(selectedRoute);
     }
 }

@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,32 +13,38 @@ import java.util.List;
 public class Scenario {
     private Map map;
     private int year;
-    private List<LocomotiveType> locomotiveType;
-    private List<IndustryType> industryType;
-    private List<IndustryChanger> industryChanger;
+    private List<LocomotiveType> locomotiveTypes;
+    private List<IndustryType> industryTypes;
+    private List<IndustryChanger> industryChangers;
     private List<ResourceType> importation;
     private List<ResourceType> exportation;
+    private List<Station> stations;
+    private List<Locomotive> locomotives;
+    private List<Route> routes;
 
     /**
      * Constructs a new {@code Scenario} with the specified parameters.
      *
      * @param map the map associated with the scenario
      * @param year the year in which the scenario takes place
-     * @param locomotiveType the list of locomotive types allowed in the scenario
-     * @param industryType the list of industry types included in the scenario
-     * @param industryChanger the list of industry changers in the scenario
+     * @param locomotiveTypes the list of locomotive types allowed in the scenario
+     * @param industryTypes the list of industry types included in the scenario
+     * @param industryChangers the list of industry changers in the scenario
      * @param importation the list of resource types imported in the scenario
      * @param exportation the list of resource types exported in the scenario
      */
-    public Scenario(Map map, int year, List<LocomotiveType> locomotiveType, List<IndustryType> industryType,
-                    List<IndustryChanger> industryChanger, List<ResourceType> importation, List<ResourceType> exportation) {
+    public Scenario(Map map, int year, List<LocomotiveType> locomotiveTypes, List<IndustryType> industryTypes,
+                    List<IndustryChanger> industryChangers, List<ResourceType> importation, List<ResourceType> exportation) {
         this.map = map;
         this.year = year;
-        this.locomotiveType = locomotiveType;
-        this.industryType = industryType;
-        this.industryChanger = industryChanger;
+        this.locomotiveTypes = locomotiveTypes;
+        this.industryTypes = industryTypes;
+        this.industryChangers = industryChangers;
         this.importation = importation;
         this.exportation = exportation;
+        this.stations = new ArrayList<>();
+        this.locomotives = new ArrayList<>();
+        this.routes = new ArrayList<>();
     }
 
     /**
@@ -81,7 +89,31 @@ public class Scenario {
      * @return the list of allowed locomotive types
      */
     public List<LocomotiveType> getLocomotiveTypes() {
-        return locomotiveType;
+        return locomotiveTypes;
+    }
+
+    public void addStation(Station station) {
+        stations.add(station);
+    }
+
+    public List<Station> getStations() {
+        return new ArrayList<>(stations);
+    }
+
+    public void addLocomotive(Locomotive locomotive){
+        locomotives.add(locomotive);
+    }
+
+    public List<Locomotive> getLocomotives(){
+        return new ArrayList<>(locomotives);
+    }
+
+    public List<Route> getRoutes(){
+        return new ArrayList<>(routes);
+    }
+
+    public void addRoute(Route route){
+        routes.add(route);
     }
 
     @Override

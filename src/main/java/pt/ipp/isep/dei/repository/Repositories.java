@@ -24,6 +24,7 @@ public class Repositories {
     private LocomotiveModelRepository locomotiveModelRepository;
     private CargoRepository cargoRepository;
     private BuildingRepository buildingRepository;
+    private RouteRepository routeRepository;
 
     // Inicialisa os Repositories, nada fora desta classe pode instanciar repositórios
     private Repositories() {
@@ -42,6 +43,7 @@ public class Repositories {
         locomotiveModelRepository = new LocomotiveModelRepository();
         cargoRepository = new CargoRepository();
         buildingRepository = new BuildingRepository();
+        routeRepository = new RouteRepository();
 
     }
 
@@ -122,6 +124,8 @@ public class Repositories {
 
     public CargoRepository getCargoRepository(){ return cargoRepository;}
 
-    public BuildingRepository getBuildingRepository(){ return  buildingRepository;}
+    public BuildingRepository getBuildingRepository(){ return buildingRepository;}
+
+    public RouteRepository getRouteRepository(){ return routeRepository; }
 
 }

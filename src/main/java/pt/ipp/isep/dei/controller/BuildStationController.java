@@ -120,7 +120,7 @@ public class BuildStationController {
      * @return Closest City instance or null if no cities exist.
      */
     public City getClosestCity(Position pos) {
-        List<City> cities = Repositories.getInstance().getCityRepository().getCities();
+        List<City> cities = selectedScenario.getMap().getCities();
         City closest = null;
         double minDistance = Double.MAX_VALUE;
 
@@ -235,7 +235,7 @@ public class BuildStationController {
         }
 
         int radius = selectedType.getRadius();
-        List<Industry> industries = Repositories.getInstance().getIndustryRepository().getIndustries();
+        List<Industry> industries = selectedScenario.getMap().getIndustries();
         CargoRepository cargoRepo = Repositories.getInstance().getCargoRepository();
 
         for (Industry industry : industries) {
@@ -372,6 +372,7 @@ public class BuildStationController {
         }
         player.deductBudget(selectedType.getCost());
         Station station = new Station(name, center, pos, selectedType, demandedCargoes, suppliedCargoes);
+        selectedScenario.addStation(station);
         Repositories.getInstance().getStationRepository().addStation(station);
         return true;
     }

@@ -85,10 +85,11 @@ public class CreateMapController {
     public void createMap(int size, String name) {
         if (!checkName(name)) {
             System.out.println("Invalid Map name!");
-            System.exit(1);
+            return;
         }
 
         Map map = new Map(name, size);
         Repositories.getInstance().getMapRepository().addMap(map);
     }
+
 }

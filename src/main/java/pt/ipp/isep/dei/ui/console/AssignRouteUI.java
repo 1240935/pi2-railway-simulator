@@ -1,7 +1,6 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.AssignRouteController;
-import pt.ipp.isep.dei.controller.UpgradeStationController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +14,23 @@ public class AssignRouteUI {
         controller = new AssignRouteController();
         scanner = new Scanner(System.in);
     }
+
     public void start() {
-        System.out.println("==== Assign Route ====");
         List<String> scenarioNames = controller.getAvailableScenarioNames();
         System.out.println("Available Scenarios:");
         for (int i = 0; i < scenarioNames.size(); i++) {
             System.out.println((i + 1) + ": " + scenarioNames.get(i));
         }
-        System.out.println("Enter the scenario's number:");
+        System.out.print("Enter the scenario's number: ");
         int choice = scanner.nextInt();
         controller.setSelectedScenario(controller.chooseScenario(controller.getAvailableScenarios(), choice));
 
         List<String> locomotiveNames = controller.getAvailableLocomotivesNames();
         System.out.println("Available Locomotives:");
-        for (int i = 0; i < locomotiveNames.size(); i++) {
-            System.out.println((i + 1) + ": " + locomotiveNames.get(i));
+        for (String locomotiveName : locomotiveNames) {
+            System.out.println(locomotiveName);
         }
-        System.out.println("Enter the locomotive's number:");
+        System.out.print("Enter the locomotive's number: ");
         int choice2 = scanner.nextInt();
         controller.setSelectedLocomotive(controller.chooseLocomotive(controller.getAvailableLocomotives(), choice2));
 
@@ -42,25 +41,30 @@ public class AssignRouteUI {
         }
 
         List<Integer> chosenStops = new ArrayList<>();
-        System.out.println("Which will be the starting station:");
+
+        System.out.print("Select the starting station: ");
         int choice3 = scanner.nextInt();
         controller.setFirstStation(controller.chooseStation(controller.getAvailableStations(), choice3));
         chosenStops.add(choice3);
-        System.out.println("Which will be the ending station:");
+
+        System.out.print("Select the ending station: ");
         int choice4 = scanner.nextInt();
         controller.setLastStation(controller.chooseStation(controller.getAvailableStations(), choice4));
         chosenStops.add(choice4);
+
+        scanner.nextLine();
+
         System.out.print("Would you like to add stops to the route? (yes/no): ");
         String stopResponse = scanner.nextLine().trim().toLowerCase();
-        boolean stops = false;
+        boolean hasStops = false;
 
         if (stopResponse.equals("yes") || stopResponse.equals("y")) {
-            stops = true;
+            hasStops = true;
 
             while (true) {
                 System.out.println("Available stations to add as stops:");
                 for (int i = 0; i < stationNames.size(); i++) {
-                    if (!chosenStops.contains(i + 1)) { // display only unselected
+                    if (!chosenStops.contains(i + 1)) {
                         System.out.printf("%d. %s%n", i + 1, stationNames.get(i));
                     }
                 }
@@ -68,10 +72,10 @@ public class AssignRouteUI {
                 System.out.print("Enter the number of a station to add as a stop (or 0 to finish): ");
                 while (!scanner.hasNextInt()) {
                     System.out.print("Invalid input. Please enter a number: ");
-                    scanner.next(); // discard non-integer input
+                    scanner.next();
                 }
                 int selection = scanner.nextInt();
-                scanner.nextLine(); // consume newline
+                scanner.nextLine();
 
                 if (selection == 0) break;
 
@@ -81,45 +85,46 @@ public class AssignRouteUI {
                     System.out.println("This station has already been selected. Choose a different one.");
                 } else {
                     chosenStops.add(selection);
+                    controller.addStation(controller.chooseStation(controller.getAvailableStations(), selection));
                     System.out.println("Station added.");
-                    controller.addStation(controller.chooseStation(controller.getAvailableStations(),selection));
                 }
             }
         }
-        List<Integer> selectedIndexes = new ArrayList<>();
-        controller.printCargoes(controller.getSupply(),controller.getDemand());
 
-        System.out.print("Enter the numbers of the cargo you want to select (separated by space): ");
-        String input = scanner.nextLine();
-        String[] parts = input.trim().split("\\s+");
+        List<String> supplyCargoDisplay = controller.getSupplyDisplayList();
 
-        for (String part : parts) {
-            try {
-                int index = Integer.parseInt(part);
+        System.out.println();
+        System.out.println("Supplied Cargo Available:");
+        if (supplyCargoDisplay.isEmpty()) {
+            System.out.println("No supplied cargo available at selected stations.");
+        } else {
+            for (String cargoStr : supplyCargoDisplay) {
+                System.out.println(cargoStr);
+            }
 
-                if (index < 1 || index > controller.addAllCargo(controller.getSupply(),controller.getDemand()).size()) {
-                    System.out.println("Invalid index: " + index);
-                    continue;
+            System.out.print("Enter the numbers of the cargo you want to select (separated by space): ");
+            String input = scanner.nextLine();
+            String[] parts = input.trim().split("\\s+");
+
+            for (String part : parts) {
+                try {
+                    int idx = Integer.parseInt(part);
+                    boolean success = controller.selectCargoByIndex(idx);
+                    if (!success) {
+                        System.out.println("Invalid cargo index: " + idx);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input: " + part);
                 }
-
-                if (selectedIndexes.contains(index)) {
-                    System.out.println("Cargo already selected: " + index);
-                    continue;
-                }
-
-                controller.addCargo(controller.addAllCargo(controller.getSupply(),controller.getDemand()).get(index - 1)); // Adjust for 0-based index
-                selectedIndexes.add(index);
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input: " + part);
             }
         }
-        if(stops){
+
+        if (hasStops) {
+            controller.createRoute2();
+        } else {
             controller.createRoute();
         }
-        else {
-            controller.createRoute2();
-        }
+
         System.out.println("Route Created!");
     }
 }

@@ -24,14 +24,16 @@ public class CreateIndustryUI {
     private final CreateIndustryController controller = new CreateIndustryController();
 
     /**
-     * Starts the interactive process for industry creation.
+     * Starts the interactive process for industry creation via console input.
      * <ol>
-     *     <li>Shows the list of maps and gets user selection</li>
-     *     <li>Prompts the user for X and Y coordinates</li>
-     *     <li>Validates coordinates with the controller</li>
-     *     <li>Shows available industry types and gets selection</li>
-     *     <li>Delegates industry creation to the controller</li>
+     *     <li>Displays a list of available maps and lets the user choose one</li>
+     *     <li>Prompts the user to input X and Y coordinates for the industry</li>
+     *     <li>Validates the coordinates with the selected map</li>
+     *     <li>Displays a list of industry types and lets the user choose one</li>
+     *     <li>Creates the industry and confirms its creation</li>
      * </ol>
+     * <p>
+     * If invalid coordinates are entered, the process is terminated with a warning.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -39,7 +41,7 @@ public class CreateIndustryUI {
         System.out.println("Available maps:");
         List<String> mapNames = controller.getAvailableMapNames();
         for (int i = 0; i < mapNames.size(); i++) {
-            System.out.println((i +1) + ": " + mapNames.get(i));
+            System.out.println((i + 1) + ": " + mapNames.get(i));
         }
 
         System.out.print("Select map by number: ");
@@ -54,6 +56,8 @@ public class CreateIndustryUI {
         if (!controller.checkCoordinates(x, y)) {
             System.out.println("Invalid coordinates. Exiting.");
             return;
+        } else {
+            controller.createPosition(x, y);
         }
 
         System.out.println("Available industry types:");

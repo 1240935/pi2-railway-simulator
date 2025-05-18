@@ -16,15 +16,20 @@ class AddCityUI {
 class AddCityController {
   +AddCityController()
   +setMap(map)
+  +getAvailableMapNames()
+  +chooseMap(List<Map>, choice)
+  +getAvailableMaps()
   +checkName(name)
-  +setName(name)
+  +setSelectedName(name)
   +createPosition(xCoordinate, yCoordinate)
   +checkCoordinates(position)
-  +setNumber(number)
-  +getClosestPosition(position)
-  +setPosition(position)
-  +createBlock(position)
-  +createCity(name, position, blocks)
+  +createBlocks(List<position>, cityblocks)
+  +createCity()
+  +getSelectedPositions()
+  +setSelectedBlocks(List<CityBlock>)
+  +setCenter(position)
+  +addSelectedPositions(xCoordinate,yCoordinate)
+  +generateBlocks(position,number, randomize)
 }
 
 class MapRepository {
@@ -47,6 +52,8 @@ class City {
   - position: Position
   - name: String
   - blocks: List <CityBlocks>
+  - supply : ResourceType
+  - demand : ResourceType
   + City(position, name, blocks)
 }
 

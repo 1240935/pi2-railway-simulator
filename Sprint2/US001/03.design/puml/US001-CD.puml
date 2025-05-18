@@ -16,9 +16,10 @@ class CreateMapUI {
 
 class CreateMapController {
   +CreateMapController()
-  +getMap()
+  +getMap(name)
   +checkName(name)
-  +createMap(size, name)
+  +checkSize(size)
+  +createMap(name, size)
 }
 
 class MapRepository {
@@ -34,7 +35,9 @@ class Repositories {
 class Map {
   - size : int
   - name : String
-  + Map(size, name)
+  - industries : List<Industry>
+  - cities : List<City>
+  + Map(name, size)
 
 }
 

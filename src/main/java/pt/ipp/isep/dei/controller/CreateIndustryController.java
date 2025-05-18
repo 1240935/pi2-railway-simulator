@@ -21,13 +21,39 @@ public class CreateIndustryController {
 
     private Map selectedMap;
     private IndustryType selectedType;
+    private Position selectedPosition;
 
     /**
      * Constructs an empty instance of the controller.
      */
     public CreateIndustryController() {}
 
+    /**
+     * Sets the selected position for the industry.
+     *
+     * @param selectedPosition the position to be selected
+     */
+    public void setSelectedPosition(Position selectedPosition) {
+        this.selectedPosition = selectedPosition;
+    }
 
+    /**
+     * Creates a new {@link Position} instance with the specified coordinates.
+     *
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @return a new Position object
+     */
+    public Position createPosition(int x, int y){
+        Position pos = new Position(x, y);
+        return pos;
+    }
+
+    /**
+     * Retrieves all available maps from the repository.
+     *
+     * @return a list of {@link Map} objects
+     */
     public List<Map> getAvailableMaps() {
         return Repositories.getInstance().getMapRepository().getMaps();
     }
@@ -60,7 +86,6 @@ public class CreateIndustryController {
             throw new IllegalArgumentException("Invalid map index");
         }
     }
-
 
     /**
      * Returns the names of all defined industry types.
@@ -100,16 +125,6 @@ public class CreateIndustryController {
     public boolean checkCoordinates(int x, int y) {
         if (selectedMap == null) return false;
         return selectedMap.checkCoordinates(new Position(x, y));
-    }
-
-    /**
-     * Returns all available industry types as enum constants.
-     * Primarily used by legacy UIs.
-     *
-     * @return an array of {@link IndustryType} values
-     */
-    public IndustryType[] getAvailableIndustriesTypes() {
-        return IndustryType.values();
     }
 
     /**

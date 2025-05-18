@@ -4,41 +4,48 @@ import pt.ipp.isep.dei.controller.CreateMapController;
 import java.util.Scanner;
 
 /**
- * User interface class for creating a new map.
+ * Provides a console-based user interface for creating a new map.
  * <p>
- * This class interacts with the user through the console to collect map name and size,
- * and delegates the creation to {@link CreateMapController}.
+ * This class handles user input to gather map configuration such as size and name,
+ * and delegates the creation logic to the {@link CreateMapController}.
+ * </p>
  */
 public class CreateMapUI {
+
     /**
      * Controller responsible for handling the business logic of map creation.
      */
     private CreateMapController controller;
 
     /**
-     * Constructs a new {@code CreateMapUI} and initializes the associated controller.
+     * Constructs a new instance of {@code CreateMapUI}, initializing the controller.
      */
     public CreateMapUI() {
         controller = new CreateMapController();
     }
 
     /**
-     * Starts the map creation process by asking the user for the map name and size,
-     * then delegates to the controller to create the map.
-     * Displays a success message if the creation completes.
+     * Starts the interactive process of creating a new map.
+     * <p>
+     * Prompts the user to enter the map size and name. The input is validated and passed
+     * to the controller. If the map is successfully created, a success message is displayed.
+     * </p>
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter map name: ");
-        String name = scanner.nextLine();
-
         System.out.print("Enter map size: ");
         String sizeInput = scanner.nextLine();
 
-        int size = controller.checkSize(sizeInput);
+        System.out.print("Enter map name: ");
+        String name = scanner.nextLine();
 
-        controller.createMap(size, name);
+        int size = controller.checkSize(sizeInput);
+        controller.setSelectedSize(size);
+        controller.checkName(name);
+        controller.setSelectedName(name);
+
+        controller.createMap();
         System.out.println("Map created successfully.");
     }
 }

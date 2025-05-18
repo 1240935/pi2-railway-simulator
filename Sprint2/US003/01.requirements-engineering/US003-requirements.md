@@ -49,6 +49,7 @@ As an Editor, I want to add a city in a position XY of the selected map, with a 
     * a city name
     * XY city coordinates
     * a positive number of blocks
+    * choice of block placement
     * XY block coordinates
   
 * Selected data:

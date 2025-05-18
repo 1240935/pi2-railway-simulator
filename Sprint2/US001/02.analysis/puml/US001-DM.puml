@@ -22,6 +22,8 @@ class Editor {
 class Map {
     size
     name
+    industries
+    cities
 }
 
 

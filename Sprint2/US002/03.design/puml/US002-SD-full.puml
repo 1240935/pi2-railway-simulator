@@ -23,7 +23,7 @@ activate EDITOR
 
     UI --> CTRL** : create()
 
-    UI -> CTRL : getAvailableMaps()
+    UI -> CTRL : getAvailableMapNames()
     activate CTRL
 
     CTRL -> REPOS : getInstance()
@@ -50,7 +50,7 @@ activate EDITOR
 
     activate UI
 
-    UI -> CTRL : setMap(map)
+    UI -> CTRL : setMapByIndex(index)
     activate CTRL
 
     CTRL --> UI : selected map
@@ -71,11 +71,11 @@ activate EDITOR
     CTRL -> UI : position
     deactivate CTRL
 
-    UI -> CTRL: checkCoordinates(position)
+    UI -> CTRL: checkCoordinates(xCoordinate, yCoordinate)
     activate CTRL
 
 
-    CTRL -> MAP : checkCoordinates(position)
+    CTRL -> MAP : checkCoordinates(xCoordinate, yCoordinate)
     activate MAP
 
     MAP --> CTRL : valid coordinates
@@ -84,10 +84,10 @@ activate EDITOR
     CTRL --> UI : valid coordinates
     deactivate CTRL
 
-    UI -> CTRL : getAvailableIndustriesTypes()
+    UI -> CTRL : getAvailableIndustriesTypeNames()
     activate CTRL
 
-    CTRL -> TYPE : getAvailableIndustriesTypes()
+    CTRL -> TYPE : getAvailableIndustriesTypeNames()
     activate TYPE
 
     TYPE --> CTRL: list of industries
@@ -105,7 +105,7 @@ activate EDITOR
     EDITOR -> UI :selects one type to build
     activate UI
 
-    UI -> CTRL : setType(Type)
+    UI -> CTRL : setMapByIndex(index)
     activate CTRL
 
     CTRL -> UI : selected type
@@ -122,7 +122,7 @@ activate EDITOR
     UI -> CTRL : createIndustry(type, position)
     activate CTRL
 
-    CTRL -> INDUSTRY** : create(position, type)
+    CTRL -> INDUSTRY** : create(xCoordinate, yCoordinate)
     
 
     CTRL --> UI : industry

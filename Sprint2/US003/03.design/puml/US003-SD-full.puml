@@ -20,7 +20,7 @@ activate EDITOR
     EDITOR -> UI : asks to add a city
     activate UI
         UI --> CTRL** : create()
-        UI -> CTRL : getAvailableMaps()
+        UI -> CTRL : getAvailableMapNames()
             activate CTRL
             CTRL -> REPOS : getInstance()
                 activate REPOS
@@ -53,7 +53,7 @@ activate EDITOR
     activate CTRL
     CTRL --> UI : valid name
     deactivate CTRL
-    UI -> CTRL: setName(name)
+    UI -> CTRL: setSelectedName(name)
     activate CTRL
     CTRL --> UI: name
     deactivate CTRL
@@ -75,6 +75,10 @@ activate EDITOR
             deactivate MAP
 
             CTRL --> UI : valid coordinates
+
+            UI -> CTRL: setCenter(position)
+
+            CTRL --> UI : center set
             deactivate CTRL
 
         UI --> EDITOR : asks for number of city blocks
@@ -94,18 +98,9 @@ activate EDITOR
         activate UI
 
         loop block positioning
-            UI -> CTRL: getClosestPosition(position)
+            UI -> CTRL: setSelectedBlocks(generateCityBlocks(position))
             activate CTRL
-            CTRL --> UI: closest position
-            deactivate CTRL
-            UI -> CTRL: setPosition(position)
-            activate CTRL
-            CTRL --> UI: closest position
-            deactivate CTRL
-            UI -> CTRL: createBlock(position)
-            activate CTRL
-            CTRL -> BLOCK** : create(position)
-            CTRL --> UI: block
+            CTRL --> UI: blocks set
             deactivate CTRL
         end loop
 
@@ -120,18 +115,17 @@ activate EDITOR
             EDITOR -> UI : types block position
         UI -> CTRL : createPosition (xCoordinate, yCoordinate)
         activate CTRL
-        CTRL -> PSTN** : create(xCoordinate, yCoordinate)
-        CTRL --> UI : position
+        CTRL -> PSTN** : addSelectedPosition(create(xCoordinate, yCoordinate))
+        CTRL --> UI : position added
         deactivate CTRL
-         UI -> CTRL: createBlock(position)
-                    activate CTRL
-                    CTRL -> BLOCK** : create(position)
-                    CTRL --> UI: block
-                    deactivate CTRL
-
-        UI --> EDITOR : block placed at position
 
         end loop
+
+        UI -> CTRL : setSelectedBlocks(createBlocks(addSelectedPosition))
+        activate CTRL
+
+        CTRL --> UI : blocks set
+        deactivate CTRL
 
     end alt
 
@@ -142,9 +136,9 @@ activate EDITOR
     EDITOR -> UI : confirms data
     activate UI
 
-        UI -> CTRL : createCity(name, position, blocks)
+        UI -> CTRL : createCity()
         activate CTRL
-        CTRL -> CITY** : create(name, position, blocks)
+        CTRL -> CITY** : create(selectedName, selectedCenter,SelectedBlocks)
         CTRL --> UI: city
         deactivate CTRL
 

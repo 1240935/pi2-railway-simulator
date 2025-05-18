@@ -12,11 +12,17 @@ hide methods
 class Map {
     name
     size
+    industries
+    cities
 }
 
 class Scenario {
     importation
     exportation
+    year
+    stations
+    locomotives
+    routes
 }
 
 class Editor {
@@ -24,26 +30,47 @@ class Editor {
     password
 }
 
-class HistoricalRestriction{
-}
-
-class TimeRestriction{
-    year
-}
-
-class TechnologicalRestriction{
+class LocomotiveTypes{
 }
 
 class IndustryChanger{
     effect
 }
 
+class ResourceType{
+    value
+}
+
+class Station{
+    name
+    Position
+    StationCenter
+    StationType
+    List<Cargo>
+}
+
+class Locomotive{
+    id
+    LocomotiveModel
+}
+
+class Route{
+    Station
+    List<Station>
+    List<Cargo>
+    Locomotive
+}
+
+
 Editor "1" - "*" Map : creates >
 Editor "1" - "*" Scenario : creates >
 Scenario "*" -- "1" Map : uses >
-Scenario "1" -- "*" HistoricalRestriction: includes >
-Scenario "1" -- "*" TechnologicalRestriction: includes >
-Scenario "1" -- "*" TimeRestriction: includes >
-HistoricalRestriction "1" -- "*" IndustryChanger: has >
-
+Scenario "*" -- "1..*" IndustryChanger : has >
+Scenario "*" -- "1..*" LocomotiveTypes : has >
+Scenario "*" -- "1..*" ResourceType : has >
+Scenario "*" -- "*" Station : has >
+Scenario "*" -- "*" Locomotive : has >
+Scenario "*" -- "*" Route : has >
+Route "1" -- "2..*" Station : has >
+Route "1" -- "1" Locomotive : has >
 @enduml

@@ -18,12 +18,16 @@ class Editor {
 class Map {
     size
     name
+    industries
+    cities
 }
 
 class Industry {
 }
 
 class IndustryType{
+    importation
+    exportation
 }
 
 class Position{
@@ -31,9 +35,14 @@ class Position{
     yCoordinate
 }
 
+class ResourceType{
+
+}
+
 Editor "1" -- "*" Map: creates >
 Map "1" -- "*" Industry: contains >
 Position "1" -- "1" Industry: has <
 Industry "1" -- "1" IndustryType: has >
+IndustryType "1" -- "2" ResourceType : has >
 
 @enduml

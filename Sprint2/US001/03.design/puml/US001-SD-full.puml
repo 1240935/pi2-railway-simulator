@@ -38,6 +38,11 @@ autonumber
 
         EDITOR -> UI :  types a size and a name
         activate UI
+
+            UI -> CTRL: checkSize(size)
+            activate CTRL
+                CTRL --> UI : valid size
+                deactivate CTRL
             UI -> CTRL: setSize(size)
             activate CTRL
                 CTRL --> UI : size

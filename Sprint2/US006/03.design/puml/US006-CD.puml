@@ -18,10 +18,19 @@ class UpgradeStationController {
     + setScenario(scenario)
     + getAvailableStations()
     + setStation(station)
+    + getAvailableScenarioNames()
+    + getAvailableStationNames()
+    + getAvailableBuildingNames()
     + getAvailableBuildingTypes()
     + setType(type)
-    + createBuilding(type)
+    + setScenarioByIndex(index)
+    + setStationByIndex(index)
+    + setBuildingTypeByIndex(index)
+    + getSelectedBuildingCost()
+    + getPlayer()
+    + setPlayer(player)
     + setBuilding(building)
+    + createAndSetBuilding()
 }
 
 class ScenarioRepository {
@@ -68,9 +77,10 @@ class Station{
     -name : String
     -position : Position
     -type : StationType
-    -center : Position
+    -center : StationCenter
     -building: Building
-    -cargo: Cargo
+    -supply: List<Cargo>
+    -demand: List<Cargo>
     +setBuilding(building)
 }
 
@@ -79,8 +89,8 @@ class Scenario {
     -year: int
     -locomotiveTypes: List<LocomotiveType>
     -industryTypes: List<IndustryType>
-    -importation: boolean
-    -exportation: boolean
+    -importation: List<ResourceType>
+    -exportation: List<ResourceType>
     -changers: List<IndustryChanger>
 }
 

@@ -25,7 +25,6 @@ public class IndustryRepositoryTest {
         assertEquals(1, industries.size());
         assertEquals(IndustryType.CEMENT_PLANT, industries.get(0).getType());
 
-        // Corrigido: comparar os valores x e y da posição
         assertEquals(5, industries.get(0).getPosition().getxCoordinate());
         assertEquals(10, industries.get(0).getPosition().getyCoordinate());
     }

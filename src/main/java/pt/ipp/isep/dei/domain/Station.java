@@ -228,6 +228,19 @@ public class Station {
         return new CargoStatus(supplied, demanded);
     }
 
+    /**
+     * Computes the cargo supplies for the station
+     * based on the industries and cities within the station's influence radius.
+     *
+     * <p>Industries and cities are considered if their positions are within the station's
+     * radius (defined by the station type) from the station center.
+     * Supplied cargoes from these industries and cities are aggregated
+     * and returned as a list of Cargo objects.
+     *
+     * @param industries List of all industries to consider.
+     * @param cities     List of all cities to consider.
+     * @return A list of Cargo objects representing the supplies.
+     */
     public List<Cargo> getSuppliesOnly(List<Industry> industries, List<City> cities) {
         int radius = type.getRadius();
         List<Cargo> supplied = new ArrayList<>();
@@ -251,7 +264,11 @@ public class Station {
         return supplied;
     }
 
-
+    /**
+     * Returns the name of the station.
+     *
+     * @return Station name.
+     */
     @Override
     public String toString() {
         return name;

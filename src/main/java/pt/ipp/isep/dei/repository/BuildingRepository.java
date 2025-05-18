@@ -5,9 +5,18 @@ import pt.ipp.isep.dei.domain.Building;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class to manage Building objects.
+ */
 public class BuildingRepository {
     private final ArrayList<Building> buildings = new ArrayList<>();
 
+    /**
+     * Adds a Building to the repository.
+     *
+     * @param building the Building to add
+     * @throws NullPointerException if the building is null
+     */
     public void addBuilding(Building building) {
         if (building == null) {
             throw new NullPointerException("Building cannot be null");
@@ -15,6 +24,11 @@ public class BuildingRepository {
         buildings.add(building);
     }
 
+    /**
+     * Returns the list of Buildings in the repository.
+     *
+     * @return list of Building objects
+     */
     public List<Building> getBuildings() {
         return buildings;
     }

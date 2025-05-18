@@ -43,14 +43,10 @@ class RepositoriesTest {
 
     @Test
     void testGetInstance_withFiles_returnsSingleton() {
-        // Usar arquivos que não existem para não carregar dados reais (ou mocks)
         String fakeStationFile = "fakeStations.csv";
         String fakeLineFile = "fakeLines.csv";
-
         Repositories instanceWithFiles = Repositories.getInstance(fakeStationFile, fakeLineFile);
         assertNotNull(instanceWithFiles);
-
-        // Mesmo que chame o getInstance() sem args, retorna a mesma instância
         Repositories instanceDefault = Repositories.getInstance();
 
         assertSame(instanceWithFiles, instanceDefault);

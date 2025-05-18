@@ -9,16 +9,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class responsible for loading and managing {@link Line} objects.
+ * Provides functionality to load lines from a CSV file, retrieve all lines,
+ * and filter electrified lines.
+ */
 public class LineRepository {
 
+    /** Internal list that stores the loaded lines. */
     private final List<Line> lines = new ArrayList<>();
 
     /**
-     * Loads lines from the given file and links them to the station objects from the provided list.
+     * Loads railway lines from a CSV file and associates them with station objects.
+     * Each line in the file must contain: start station name, end station name,
+     * electrification status (1 for electrified, else non-electrified), and distance.
      *
-     * @param linesFile     Path to the CSV file with line data.
-     * @param stationList   List of station objects previously created.
-     * @return The loaded list of Line objects.
+     * @param linesFile   the path to the CSV file containing line data
+     * @param stationList the list of pre-loaded stations to associate with lines
+     * @return the list of loaded {@link Line} objects
      */
     public List<Line> loadLines(String linesFile, List<Station> stationList) {
         lines.clear();
@@ -51,7 +59,11 @@ public class LineRepository {
     }
 
     /**
-     * Finds a station object in the list based on its name.
+     * Searches for a station in a list by its name, ignoring case.
+     *
+     * @param stations the list of stations to search
+     * @param name     the name of the station to find
+     * @return the {@link Station} if found; otherwise, {@code null}
      */
     private Station findStationByName(List<Station> stations, String name) {
         for (Station s : stations) {
@@ -63,10 +75,10 @@ public class LineRepository {
     }
 
     /**
-     * Returns only the electrified lines from the given list.
+     * Filters and returns only the electrified lines from a given list.
      *
-     * @param allLines List of all lines
-     * @return List of electrified lines
+     * @param allLines the list of lines to filter
+     * @return a list containing only electrified {@link Line} objects
      */
     public List<Line> getElectrifiedLines(List<Line> allLines) {
         List<Line> electrified = new ArrayList<>();
@@ -78,6 +90,11 @@ public class LineRepository {
         return electrified;
     }
 
+    /**
+     * Returns the internal list of loaded lines.
+     *
+     * @return the list of {@link Line} objects stored in the repository
+     */
     public List<Line> getLines() {
         return lines;
     }

@@ -42,8 +42,6 @@ class MapRepositoryTest {
 
         ArrayList<Map> maps = repository.getMaps();
         maps.clear();
-
-        // Depois de limpar a lista retornada, o repositório deve ficar vazio
         assertTrue(repository.getMaps().isEmpty());
     }
 }

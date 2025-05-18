@@ -12,13 +12,8 @@ class ResourceTypeRepositoryTest {
     @Test
     void getAvailableResourceTypes_returnsAllResourceTypes() {
         ResourceTypeRepository repository = new ResourceTypeRepository();
-
         ArrayList<ResourceType> resourceTypes = repository.getAvailableResourceTypes();
-
-        // Verifica se o tamanho da lista é igual ao número de enum constants
         assertEquals(ResourceType.values().length, resourceTypes.size());
-
-        // Verifica se todos os ResourceType estão na lista
         for (ResourceType type : ResourceType.values()) {
             assertTrue(resourceTypes.contains(type));
         }

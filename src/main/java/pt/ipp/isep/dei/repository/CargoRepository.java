@@ -6,14 +6,17 @@ import pt.ipp.isep.dei.domain.ResourceType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class for managing Cargo objects.
+ */
 public class CargoRepository {
 
     private final List<Cargo> cargoes = new ArrayList<>();
 
     /**
-     * Adds a Cargo to the repository.
+     * Adds a Cargo to the repository if it is not null and not already present.
      *
-     * @param cargo The Cargo to add.
+     * @param cargo the Cargo object to add
      */
     public void addCargo(Cargo cargo) {
         if (cargo != null && !cargoes.contains(cargo)) {
@@ -22,19 +25,20 @@ public class CargoRepository {
     }
 
     /**
-     * Retrieves all Cargoes in the repository.
+     * Returns a list of all Cargo objects currently stored.
+     * A defensive copy is returned to prevent external modifications.
      *
-     * @return List of all Cargo objects.
+     * @return a new list containing all Cargo objects
      */
     public List<Cargo> getCargoes() {
-        return new ArrayList<>(cargoes); // Defensive copy
+        return new ArrayList<>(cargoes);
     }
 
     /**
-     * Finds a Cargo corresponding to a given ResourceType.
+     * Finds and returns the Cargo associated with the specified ResourceType.
      *
-     * @param resourceType The ResourceType to look for.
-     * @return Corresponding Cargo if found; null otherwise.
+     * @param resourceType the ResourceType to find the Cargo for
+     * @return the corresponding Cargo if found; null otherwise
      */
     public Cargo getCargoForResourceType(ResourceType resourceType) {
         for (Cargo cargo : cargoes) {
@@ -45,4 +49,3 @@ public class CargoRepository {
         return null;
     }
 }
-

@@ -24,7 +24,6 @@ class StationRepositoryTest {
 
     @Test
     void testLoadStations_validFile_success() throws IOException {
-        // Cria um arquivo temporário com conteúdo válido
         Path tempFile = Files.createTempFile("stations", ".csv");
         Files.writeString(tempFile, "DDepot1;SStation2;TTerminal3");
 

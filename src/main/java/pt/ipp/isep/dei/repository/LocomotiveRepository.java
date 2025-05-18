@@ -4,15 +4,40 @@ import pt.ipp.isep.dei.domain.Locomotive;
 
 import java.util.ArrayList;
 
+/**
+ * Repository class responsible for storing and managing {@link Locomotive} objects.
+ * Provides methods to add locomotives, retrieve all locomotives, and generate the next unique ID.
+ */
 public class LocomotiveRepository {
+
+    /** Internal list that holds the stored locomotives. */
     private final ArrayList<Locomotive> locomotives = new ArrayList<>();
 
-    public void addLocomotive(Locomotive locomotive) { locomotives.add(locomotive); }
+    /**
+     * Adds a {@link Locomotive} to the repository.
+     *
+     * @param locomotive the {@link Locomotive} to be added
+     */
+    public void addLocomotive(Locomotive locomotive) {
+        locomotives.add(locomotive);
+    }
 
+    /**
+     * Returns a new list containing all locomotives stored in the repository.
+     * Changes to the returned list do not affect the internal storage.
+     *
+     * @return a new {@link ArrayList} containing all locomotives
+     */
     public ArrayList<Locomotive> getAll() {
         return new ArrayList<>(locomotives);
     }
 
+    /**
+     * Calculates and returns the next available unique ID for a new locomotive.
+     * IDs start at 1 and increment based on the highest existing ID.
+     *
+     * @return the next unique locomotive ID
+     */
     public int nextID() {
         if (locomotives.isEmpty()) {
             return 1;
@@ -26,4 +51,3 @@ public class LocomotiveRepository {
         return maxId + 1;
     }
 }
-

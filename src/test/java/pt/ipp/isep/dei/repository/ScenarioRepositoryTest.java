@@ -53,7 +53,7 @@ class ScenarioRepositoryTest {
         Scenario scenario = createScenario("Mapa B", 2030);
 
         repository.add(scenario);
-        repository.add(scenario); // tenta adicionar duplicado
+        repository.add(scenario);
 
         List<Scenario> scenarios = repository.getScenarios();
         assertEquals(1, scenarios.size(), "Não deve adicionar cenários duplicados.");
@@ -68,13 +68,9 @@ class ScenarioRepositoryTest {
         repository.add(scenario2);
 
         ArrayList<Scenario> allScenarios = repository.getAll();
-
-        // Deve conter os dois cenários
         assertEquals(2, allScenarios.size());
         assertTrue(allScenarios.contains(scenario1));
         assertTrue(allScenarios.contains(scenario2));
-
-        // Modificar a lista retornada não deve afetar o repositório original
         allScenarios.remove(scenario1);
         assertEquals(2, repository.getScenarios().size(), "Remover de getAll() não deve alterar o repositório interno.");
     }

@@ -19,10 +19,6 @@ public class LocomotiveTest {
     public void testLocomotiveModelAssignment() {
         LocomotiveModel model = LocomotiveModel.GG1;
         Locomotive locomotive = new Locomotive(1, model);
-
-        // Como a classe Locomotive não tem getter para o modelo,
-        // aqui apenas testamos a criação sem exceção.
-        // Se quiser, podemos adicionar o getter na classe Locomotive.
         assertNotNull(locomotive, "Locomotive deve ser criada com modelo válido");
     }
 }

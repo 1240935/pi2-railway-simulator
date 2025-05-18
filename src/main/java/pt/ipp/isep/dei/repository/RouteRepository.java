@@ -1,17 +1,33 @@
 package pt.ipp.isep.dei.repository;
 
 import pt.ipp.isep.dei.domain.Route;
-
 import java.util.ArrayList;
 
+/**
+ * Repository class responsible for storing and managing {@link Route} objects.
+ * Provides methods to add routes and retrieve the list of stored routes.
+ */
 public class RouteRepository {
 
+    /** Internal list that holds the stored routes. */
     private ArrayList<Route> routes = new ArrayList<>();
 
+    /**
+     * Returns the list of all routes stored in the repository.
+     * Note that this returns a direct reference to the internal list,
+     * so external modifications will affect the repository's state.
+     *
+     * @return the list of {@link Route} objects
+     */
     public ArrayList<Route> getRoutes() {
         return routes;
     }
 
+    /**
+     * Adds a {@link Route} to the repository.
+     *
+     * @param route the {@link Route} to be added
+     */
     public void addRoute(Route route) {
         routes.add(route);
     }

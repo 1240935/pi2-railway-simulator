@@ -72,6 +72,11 @@ public class Player {
         }
     }
 
+    /**
+     * Adds a specified amount to the player's budget.
+     *
+     * @param amount the amount to add to the budget
+     */
     public void addBudget(int amount) {
         budget = budget + amount;
     }

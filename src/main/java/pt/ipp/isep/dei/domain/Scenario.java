@@ -1,7 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,34 +91,67 @@ public class Scenario {
         return locomotiveTypes;
     }
 
+    /**
+     * Adds a station to the scenario.
+     *
+     * @param station the station to add
+     */
     public void addStation(Station station) {
         stations.add(station);
     }
 
+    /**
+     * Returns an unmodifiable list of stations in the scenario.
+     *
+     * @return a list of stations
+     */
     public List<Station> getStations() {
         return new ArrayList<>(stations);
     }
 
-    public void addLocomotive(Locomotive locomotive){
+    /**
+     * Adds a locomotive to the scenario.
+     *
+     * @param locomotive the locomotive to add
+     */
+    public void addLocomotive(Locomotive locomotive) {
         locomotives.add(locomotive);
     }
 
-    public List<Locomotive> getLocomotives(){
+    /**
+     * Returns an unmodifiable list of locomotives in the scenario.
+     *
+     * @return a list of locomotives
+     */
+    public List<Locomotive> getLocomotives() {
         return new ArrayList<>(locomotives);
     }
 
-    public List<Route> getRoutes(){
+    /**
+     * Returns an unmodifiable list of routes in the scenario.
+     *
+     * @return a list of routes
+     */
+    public List<Route> getRoutes() {
         return new ArrayList<>(routes);
     }
 
-    public void addRoute(Route route){
+    /**
+     * Adds a route to the scenario.
+     *
+     * @param route the route to add
+     */
+    public void addRoute(Route route) {
         routes.add(route);
     }
 
+    /**
+     * Returns a string representation of the scenario.
+     *
+     * @return the scenario's map name and year as a formatted string
+     */
     @Override
     public String toString() {
         return map.getName() + " (" + year + ")";
     }
-
-
 }

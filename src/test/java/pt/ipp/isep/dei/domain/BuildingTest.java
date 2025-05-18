@@ -11,7 +11,7 @@ class BuildingTest {
 
     @Test
     void getBuildingType() {
-        BuildingType buildingType = new BuildingType("200");
+        BuildingType buildingType = BuildingType.SMALL_CAFE;
         Building building = new Building(buildingType);
 
         assertEquals(buildingType, building.getBuildingType());
@@ -19,8 +19,8 @@ class BuildingTest {
 
     @Test
     void setBuildingType() {
-        BuildingType initialType = new BuildingType("Residential");
-        BuildingType newType = new BuildingType("Commercial");
+        BuildingType initialType = BuildingType.SMALL_CAFE;
+        BuildingType newType = BuildingType.LARGE_CAFE;
 
         Building building = new Building(initialType);
         building.setBuildingType(newType);

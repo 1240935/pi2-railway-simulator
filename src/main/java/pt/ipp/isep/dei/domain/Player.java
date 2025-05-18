@@ -71,4 +71,8 @@ public class Player {
             budget -= amount;
         }
     }
+
+    public void addBudget(int amount) {
+        budget = budget + amount;
+    }
 }

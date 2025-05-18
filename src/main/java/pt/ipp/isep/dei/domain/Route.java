@@ -62,6 +62,35 @@ public class Route {
         this.cargo = cargo;
     }
 
+    public List<Station> getRouteStations() {
+        List<Station> stations = new ArrayList<>();
+        stations.add(startingStation);
+        if (stops != null) {
+            stations.addAll(stops);
+        }
+        stations.add(endingStation);
+        return stations;
+    }
+
+    @Override
+    public String toString() {
+        if (stops!= null) {
+            return "Route:" +
+                    "\n  Starting Station: " + startingStation +
+                    "\n  Ending Station: " + endingStation +
+                    "\n  Stops Stations: " + stops +
+                    "\n  Locomotive: " + locomotive +
+                    "\n  Cargo: " + cargo;
+        } else {
+            return "Route:" +
+                    "\n  Starting Station: " + startingStation +
+                    "\n  Ending Station: " + endingStation +
+                    "\n  Locomotive: " + locomotive +
+                    "\n  Cargo: " + cargo;
+        }
+    }
+
+
     /**
      * Finds possible starting stations for a maintenance route (Eulerian path)
      * based on the current railway graph.
@@ -86,8 +115,7 @@ public class Route {
             int degree = 0;
 
             // Count lines connected to the current station
-            for (int j = 0; j < lines.size(); j++) {
-                Line line = lines.get(j);
+            for (Line line : lines) {
                 if (line.getStart().equals(current) || line.getEnd().equals(current)) {
                     degree++;
                 }

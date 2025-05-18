@@ -39,12 +39,13 @@ activate PLAYER
             deactivate SREPOS
             CTRL --> UI : list of scenarios
             deactivate CTRL
+              UI --> PLAYER : shows the list of scenarios
 
             deactivate UI
 
-            UI --> PLAYER : shows the list of scenarios
-    activate UI
 
+            PLAYER -> UI: selects a scenario
+            activate UI
         UI -> CTRL : setScenario(scenario)
         activate CTRL
 

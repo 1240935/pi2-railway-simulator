@@ -4,7 +4,7 @@
 
 ### 1.1. User Story Description
 
-As a Product Owner, I want to create a simulator that generates
+As a Player, I want to create a simulator that generates
 cargoes at current stations, automatically, considering the cities and
 industries that the railway network serves.
 

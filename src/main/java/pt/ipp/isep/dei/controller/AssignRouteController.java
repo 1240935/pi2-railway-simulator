@@ -125,8 +125,6 @@ public class AssignRouteController {
         return displayList;
     }
 
-
-
     public boolean selectCargoByIndex(int index) {
         List<Cargo> supply = getSupply();
         if (index < 1 || index > supply.size()) {

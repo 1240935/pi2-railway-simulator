@@ -84,7 +84,7 @@ public class ViewStationDetailsUI {
 
         // Step 3: Show details as strings
         String buildingDetails = controller.getBuildingDetailsString(stationIndex);
-        String cargoInfo = controller.getCargoInfoString(stationIndex);
+        String cargoInfo = controller.getCargoInfo(stationIndex);
 
         System.out.println("\nBuilding Details:");
         System.out.println(buildingDetails);

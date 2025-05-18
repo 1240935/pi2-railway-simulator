@@ -127,7 +127,7 @@ public class ViewStationController {
      * @param index Index of the station.
      * @return Description of cargo or a default message if not available.
      */
-    public String getCargoInfoString(int index) {
+    public String getCargoInfo(int index) {
         Station station = getStationByIndex(index);
         if (station != null) {
             CargoStatus cargoStatus = getCargoInfo(station);

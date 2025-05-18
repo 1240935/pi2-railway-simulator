@@ -38,7 +38,7 @@ activate Player
 
     else Station
 
-        System --> Player: asks for the center compass coordinate \n as the geometric one
+        System --> Player: determines cargo demands and supplies and asks for the center\n compass coordinate as the geometric one
 
     end alt
 

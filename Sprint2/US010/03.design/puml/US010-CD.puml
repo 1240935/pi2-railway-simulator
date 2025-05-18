@@ -39,7 +39,7 @@ class ScenarioRepository {
 }
 
 class StationRepository {
-  +getAvailableLocomotives()
+  +getAvailableStations()
 }
 
 class LocomotiveRepository {
@@ -51,8 +51,8 @@ class Scenario {
        -year: int
        -locomotiveTypes: List<LocomotiveType>
        -industryTypes: List<IndustryType>
-       -importation: boolean
-       -exportation; boolean
+       -importation: List<ResourceTypes>
+       -exportation: List<ResourceTypes>
        -changers: List<IndustryChanger>
 }
 

@@ -116,7 +116,7 @@ public class MenuUI {
                 case "6" -> new UpgradeStationUI().start(player);
                 case "7" -> new ViewStationDetailsUI().start();
                 case "9" -> new BuyLocomotiveUI().start(player);
-                case "10" -> new SelectRouteUI().start();
+                case "10" -> new AssignRouteUI().start();
                 case "12" -> new SimulatorUI().start();
                 case "13" -> new VerifyTrainTravelUI().start();
                 case "14" -> new RailwayMaintenanceUI().start();

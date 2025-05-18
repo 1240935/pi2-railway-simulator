@@ -5,6 +5,29 @@ import java.util.List;
 
 public class Route {
 
+    private Station startingStation;
+    private Station endingStation;
+    private List<Station> stops;
+    private Locomotive locomotive;
+    private List<Cargo> cargo;
+
+    public Route(Station startingStation, Station endingStation, Locomotive locomotive, List<Cargo> cargo){
+        this.startingStation = startingStation;
+        this.endingStation = endingStation;
+        this.locomotive = locomotive;
+        this.cargo = cargo;
+    }
+
+    public Route(Station startingStation, Station endingStation, List<Station> stops, Locomotive locomotive, List<Cargo> cargo){
+        this.startingStation = startingStation;
+        this.endingStation = endingStation;
+        this.stops = stops;
+        this.cargo = cargo;
+        this.locomotive = locomotive;
+    }
+
+
+
 
     /**
      * Finds possible starting stations for a maintenance route (Eulerian path)

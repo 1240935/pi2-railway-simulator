@@ -168,6 +168,25 @@ public class Station {
     }
 
     /**
+     * Returns the list of cargo demands at this station.
+     *
+     * @return a list of Cargo objects representing what is demanded
+     */
+    public List<Cargo> getDemands() {
+        return demands;
+    }
+
+    /**
+     * Returns the list of cargo supplies available at this station.
+     *
+     * @return a list of Cargo objects representing what is supplied
+     */
+    public List<Cargo> getSupplies() {
+        return supplies;
+    }
+
+
+    /**
      * Computes the cargo status (supplied and demanded cargo) for the station
      * based on the industries and cities within the station's influence radius.
      *

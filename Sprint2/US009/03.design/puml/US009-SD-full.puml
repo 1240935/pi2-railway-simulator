@@ -22,7 +22,7 @@ activate PLAYER
     activate UI
         UI --> CTRL** : create()
 
-        UI -> CTRL : getAvailableScenarios()
+        UI -> CTRL : getAvailableScenarioDescriptions()
         activate CTRL
             CTRL -> REPOS : getInstance()
             activate REPOS
@@ -42,12 +42,12 @@ activate PLAYER
 
 PLAYER -> UI : selects scenario
 activate UI
-    UI -> CTRL : setScenario(scenario)
+    UI -> CTRL : chooseScenarioByIndex(index)
     activate CTRL
         CTRL --> UI : scenario selected
     deactivate CTRL
 
-    UI -> CTRL : getAvailableLocomotiveModels()
+    UI -> CTRL : getAvailableLocomotiveModelDescriptions()
     activate CTRL
         CTRL -> REPOS : getInstance()
         activate REPOS
@@ -67,7 +67,7 @@ deactivate UI
 
 PLAYER -> UI : selects locomotive model
 activate UI
-    UI -> CTRL : setModel(model)
+    UI -> CTRL : chooseModelByIndex(index)
     activate CTRL
     CTRL --> UI: selected model
     deactivate CTRL
@@ -78,7 +78,7 @@ activate UI
     PLAYER -> UI: confirms all data
     activate UI
 
-    UI -> CTRL : createLocomotive(model, iD)
+    UI -> CTRL : createLocomotive()
     activate CTRL
     CTRL -> REPOS : getInstance()
             activate REPOS

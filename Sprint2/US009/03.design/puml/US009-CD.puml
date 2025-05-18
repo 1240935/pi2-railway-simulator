@@ -16,9 +16,16 @@ class BuyLocomotiveController {
   + BuyLocomotiveController()
   + getAvailableScenarios()
   + setScenario(scenario)
+  + getAvailableScenarioDescriptions()
+  + chooseScenarioByIndex(index)
+  + getSelectedModel()
+  + chooseModelByIndex(index)
+  + getPlayer()
+  + setPlayer(player)
+  + getAvailableModelDescriptions()
   + getAvailableLocomotiveModels()
   + setModel(model)
-  + createLocomotive(model, iD)
+  + createLocomotive()
 }
 
 class Repositories {
@@ -45,8 +52,8 @@ class Scenario {
        -year: int
        -locomotiveTypes: List<LocomotiveType>
        -industryTypes: List<IndustryType>
-       -importation: boolean
-       -exportation: boolean
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
        -changers: List<IndustryChanger>
  }
 

@@ -9,6 +9,9 @@ public class BuildingRepository {
     private final ArrayList<Building> buildings = new ArrayList<>();
 
     public void addBuilding(Building building) {
+        if (building == null) {
+            throw new NullPointerException("Building cannot be null");
+        }
         buildings.add(building);
     }
 

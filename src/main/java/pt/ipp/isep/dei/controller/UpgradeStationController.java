@@ -47,14 +47,6 @@ public class UpgradeStationController {
     }
 
     /**
-     * Performs the upgrade operation by setting the selected building
-     * on the currently selected station.
-     */
-    public void upgradeStation() {
-        selectedStation.setBuilding(selectedBuilding);
-    }
-
-    /**
      * Retrieves the list of all available scenarios from the repository.
      *
      * @return list of scenarios

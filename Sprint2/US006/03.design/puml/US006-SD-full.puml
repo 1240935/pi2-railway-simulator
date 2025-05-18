@@ -22,7 +22,7 @@ autonumber
 
     UI --> CTRL** : create()
 
-    UI -> CTRL : getAvailableScenarios()
+    UI -> CTRL : getAvailableScenarioNames()
     activate CTRL
 
     CTRL -> REPOS : getInstance()
@@ -47,7 +47,7 @@ autonumber
     PLAYER -> UI : selects a scenario
     activate UI
 
-    UI -> CTRL :setScenario(scenario)
+    UI -> CTRL :setScenarioByIndex(index)
 
     activate CTRL
 
@@ -56,7 +56,7 @@ autonumber
     deactivate CTRL
 
 
-        UI -> CTRL : getAvailableStations()
+        UI -> CTRL : getAvailableStationNames()
         activate CTRL
 
         CTRL -> REPOS : getInstance()
@@ -81,7 +81,7 @@ autonumber
         PLAYER -> UI : selects a station
         activate UI
 
-        UI -> CTRL :setStation(station)
+        UI -> CTRL :setStationByIndex(index)
 
         activate CTRL
 
@@ -89,7 +89,7 @@ autonumber
 
         deactivate CTRL
 
-        UI -> CTRL : getAvailableBuildingTypes()
+        UI -> CTRL : getAvailableBuildingNames()
 
 
                 activate CTRL
@@ -116,7 +116,7 @@ autonumber
                 PLAYER -> UI : selects a building type
                 activate UI
 
-                UI -> CTRL :setType(type)
+                UI -> CTRL :setBuildingTypeByIndex(index)
 
                 activate CTRL
 
@@ -130,23 +130,12 @@ autonumber
     PLAYER --> UI: confirms data
     activate UI
 
-    UI -> CTRL : createBuilding(type)
+    UI -> CTRL : createAndSetBuilding()
     activate CTRL
 
-    CTRL -> BUILDING** : create(type)
+    CTRL -> BUILDING** : create()
 
     CTRL --> UI : building
-    deactivate CTRL
-
-    UI -> CTRL: setBuilding(building)
-    activate CTRL
-
-    CTRL -> STATION : setBuilding(building)
-    activate STATION
-
-    STATION --> CTRL: building set
-    deactivate STATION
-    CTRL --> UI: building set
     deactivate CTRL
 
     UI --> PLAYER : displays operation success

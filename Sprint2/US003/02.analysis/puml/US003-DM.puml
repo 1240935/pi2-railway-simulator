@@ -16,8 +16,6 @@ left to right direction
 class Map {
     name
     size
-    cities
-    industries
 }
 
 class City {
@@ -27,6 +25,7 @@ class City {
 }
 
 class ResourceType{
+    value
 }
 
 class CityBlock{

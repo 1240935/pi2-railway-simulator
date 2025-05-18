@@ -16,10 +16,15 @@ class Player {
     budget
 }
 
+class Map {
+    size
+    name
+}
+
 class Station {
     name
     capacity
-    center
+    centre
 }
 
 class StationType{
@@ -47,11 +52,15 @@ class Position{
 
 class Cargo {
     quantity
-    status
 }
 
-class CargoType{
-    cost
+class CargoStatus{
+    supply
+    demand
+}
+
+class ResourceType{
+    value
 }
 
 class TimeRestriction{
@@ -60,12 +69,16 @@ class TimeRestriction{
 
 Player "1" -- "*" Station: builds >
 Player "*" -- "1" Scenario : selects >
+Map "1" -- "*" Station : contains >
+Map "1" -- "*" Building: contains >
+Scenario "*" -- "1" Map : uses >
 Station "*" -- "1 "Building:  upgrades with  >
 Station "1" -- "1" StationType: has >
 Building "1" -- "1" BuildingType : has >
 Position "1" -- "1" Station: has <
 Station "1" -- "*" Cargo : stores >
-Cargo "1" -- "1" CargoType: has >
+Cargo "1" -- "1" ResourceType: has >
+Cargo "1" -- "1" CargoStatus: has >
 Scenario "1" -- "*" TimeRestriction: includes >
 TimeRestriction "1" -- "*" BuildingType: affects >
 

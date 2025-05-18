@@ -38,6 +38,11 @@ class BuildingType {
 class Scenario {
     importation
     exportation
+ }
+
+class Map {
+    size
+    name
 }
 
 class Position{
@@ -56,6 +61,9 @@ Station "*" -- "1 "Building:  upgrades with  >
 Station "1" -- "1" StationType: has >
 Building "1" -- "1" BuildingType : has >
 Position "1" -- "1" Station: has <
+Scenario "*" -- "1" Map : uses >
+Map "1" -- "*" Building: contains >
+Map "1" -- "*" Station : contains >
 Scenario "1" -- "*" TimeRestriction: includes >
 TimeRestriction "1" -- "*" BuildingType: affects >
 

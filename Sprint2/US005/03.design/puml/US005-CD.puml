@@ -15,17 +15,26 @@ class BuildStationUI {
 class BuildStationController {
   +BuildStationController()
   +getAvailableScenarios()
+  +getAvailableScenariosDescriptions()
   +setScenario(scenario)
   +createPosition(xCoordinate, yCoordinate)
-  +checkPosition(position)
+  +getMap(Scenario)
+  +checkCoordinates(xCoordinate, yCoordinate)
   +getClosestCity(position)
+  +getRecommendedName(xCoordinate, yCoordinate)
   +getAvailableStationTypes()
   +setType(type)
-  +setGeometricCenter(position)
-  +setCompassCenter(compassCoord)
+  +isSelectedTypeStation()
   +getName(city)
   +setName(name)
-  +createStation(position, name, type, center)
+  +determineStationCargoes(xCoordinate, yCoordinate)
+  +setGeometricCenter()
+  +setCompassCenter(compassCoord)
+  +setPosition(xCoordinate, yCoordinate)
+  +getPlayer()
+  +setPlayer(player)
+  +getSelectedType()
+  +createStation(xCoordinate, yCoordinate)
 }
 
 class Repositories {
@@ -47,8 +56,8 @@ class Scenario {
        -year: int
        -locomotiveTypes: List<LocomotiveType>
        -industryTypes: List<IndustryType>
-       -importation: boolean
-       -exportation; boolean
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
        -changers: List<IndustryChanger>
 }
 
@@ -76,9 +85,10 @@ class Station{
     -name : String
     -position : Position
     -type : StationType
-    -center : Position
+    -center : StationCenter
     -building: Building
-    -cargo: Cargo
+    -demands: List<Cargo>
+    -supplies: List<Cargo>
     +Station(name,position,type,center)
 }
 

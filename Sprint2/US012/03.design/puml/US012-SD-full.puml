@@ -12,169 +12,121 @@ participant "Repositories" as REPOS
 participant "ScenarioRepository" as SREPOS
 participant "StationRepository" as STREPOS
 participant "Station" as STATION
-participant "Simulator" as SIMULATOR
+participant "Simulator" as SIM
 
 activate PLAYER
 
-    PLAYER -> UI : requests to start the cargo generation simulator
-    activate UI
+     PLAYER -> UI : asks to enter simulator
+            activate UI
 
-        UI --> CTRL** : create()
+                UI --> CTRL** : create()
+                UI -> CTRL : getListOfAvailableScenarios()
+                activate CTRL
 
-            UI -> CTRL : getAvailableScenarios()
-            activate CTRL
+                    CTRL -> REPOS : getInstance()
+                    activate REPOS
 
-            CTRL -> REPOS : getInstance()
-            activate REPOS
+                        REPOS --> CTRL : repositories
+                    deactivate REPOS
 
-            REPOS --> CTRL: repositories
+                    CTRL -> SREPOS : getListOfAvailableScenarios()
+                    activate SREPOS
 
-            deactivate REPOS
+                        SREPOS --> CTRL : list of available scenarios
+                    deactivate SREPOS
 
-            CTRL -> SREPOS : getAvailableScenarios()
-            activate SREPOS
+                    CTRL --> UI : list of available scenarios
+                deactivate CTRL
 
-            SREPOS --> CTRL : list of scenarios
-
-            deactivate SREPOS
-            CTRL --> UI : list of scenarios
-            deactivate CTRL
-              UI --> PLAYER : shows the list of scenarios
-
+            UI --> PLAYER : shows the list of available scenarios
             deactivate UI
 
-
-            PLAYER -> UI: selects a scenario
+            PLAYER -> UI : selects a scenario
             activate UI
-        UI -> CTRL : setScenario(scenario)
-        activate CTRL
 
-        CTRL --> UI : scenario selected
-        deactivate CTRL
-        UI -> CTRL : getAvailableStations()
-        activate CTRL
+                UI -> CTRL : setScenario(scenario)
+                activate CTRL
 
-        CTRL -> REPOS : getInstance()
-          activate REPOS
+                    CTRL --> UI : scenario selected
+                deactivate CTRL
 
-        REPOS --> CTRL: repositories
+                UI -> CTRL : getListOfAvailableRoutes()
+                activate CTRL
 
-        deactivate REPOS
+                    CTRL -> SREPOS : getListOfAvailableRoutes()
+                    activate SREPOS
 
-        CTRL -> STREPOS : getAvailableStations()
-        activate STREPOS
+                        SREPOS --> CTRL : list of available routes
+                    deactivate SREPOS
 
-        STREPOS --> CTRL : list of available stations
-        deactivate STREPOS
+                    CTRL --> UI : list of available routes
+                deactivate CTRL
 
-        CTRL --> UI: list of available stations
-        deactivate CTRL
+            UI --> PLAYER : shows list of available routes
+            deactivate UI
 
-        UI -> CTRL: getCargo(simulator)
+            PLAYER -> UI : selects routes
+            activate UI
 
-        activate CTRL
+            UI --> PLAYER : asks for the days of the simulation
+            deactivate UI
+    PLAYER -> UI : types the days of the simulation
+            activate UI
 
-        CTRL -> STATION: getCargo(simulator)
+                UI -> CTRL : setDays(days)
+                activate CTRL
 
-        activate STATION
+                    CTRL --> UI : days selected
+                deactivate CTRL
 
-        STATION --> CTRL: cargo
+    loop number of days
 
-        deactivate STATION
+                UI -> CTRL : simulateDay(day)
+                activate CTRL
 
-        CTRL --> UI: cargo
-        deactivate CTRL
+                    CTRL -> SIM : simulateDay(day)
+                    activate SIM
 
-        UI -> CTRL: createSimulator(status, stations, cargo)
+                        SIM -> SIM : addCargoToStation(station, route)
 
-        activate CTRL
+                        SIM -> SIM : deliverCargoToStation(station)
 
-        CTRL -> SIMULATOR** : create(status, stations, cargo)
-
-        CTRL --> UI : simulator
-
-        deactivate CTRL
-
-        UI -> CTRL: setStatus(simulator)
-
-       activate CTRL
-
-       CTRL--> UI: status
-       deactivate CTRL
-
-       loop until cargo quantity reaches 24
-
-       UI -> CTRL: addQuantity(cargo)
-
-       activate CTRL
-
-       CTRL --> UI: quantity
-       deactivate CTRL
-       end loop
+                        SIM -> SIM : pickupCargoFromStation(route, station)
 
 
-        UI --> PLAYER : starts cargo generation
-        deactivate UI
+                    SIM --> CTRL : finish simulation
+                    deactivate SIM
 
-    alt simulator pause
+                    CTRL --> UI : finish simulation
+                deactivate CTRL
 
-        PLAYER -> UI : requests to pause the simulator
-        activate UI
-            UI -> CTRL : changeStatus(status)
+                UI --> PLAYER : asks if the player wants to continue
+            deactivate UI
 
-            activate CTRL
-
-            CTRL --> UI : pause
-            deactivate CTRL
-        UI --> PLAYER : simulator paused and awaiting update
-        deactivate UI
-
-        PLAYER -> UI : requests to restart the simulator
-        activate UI
-
-            UI -> CTRL : changeStatus(status)
-            activate CTRL
-
-            CTRL --> UI : play
-            deactivate CTRL
-
-             loop until cargo quantity reaches 24
-
-                   UI -> CTRL: addQuantity(cargo)
-
-                   activate CTRL
-
-                   CTRL --> UI: quantity
-                   deactivate CTRL
-                   end loop
-            deactivate CTRL
-        UI --> PLAYER : simulator resumed
+    alt continue
+            PLAYER -> UI : continue simulation
+            activate UI
+    end alt
+    end loop
+    alt stop
+            PLAYER -> UI : stop simulaton
 
     end alt
+                UI -> CTRL : getSimulationSummary(player)
+                activate CTRL
 
-    UI -> CTRL: getCargo(stations)
+                    CTRL -> SIM : getSimulationSummary(player)
+                    activate SIM
 
-            activate CTRL
+                    SIM --> CTRL : summary data
+                    deactivate SIM
 
-            CTRL -> STATION: getCargo(stations)
+                    CTRL --> UI : simulation summary
+                deactivate CTRL
 
-            activate STATION
+            UI --> PLAYER : shows the simulation summary
+            deactivate UI
 
-            STATION --> CTRL: cargo
+    deactivate PLAYER
 
-            deactivate STATION
-
-            CTRL --> UI: cargo
-            deactivate CTRL
-
-    UI --> PLAYER : shows final generated cargo
-    deactivate UI
-
-    PLAYER -> UI : confirms the generation data
-    activate UI
-
-    UI --> PLAYER : displays operation success
-    deactivate UI
-
-deactivate PLAYER
 @enduml

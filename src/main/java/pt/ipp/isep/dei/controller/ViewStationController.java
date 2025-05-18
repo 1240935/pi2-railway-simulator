@@ -138,16 +138,6 @@ public class ViewStationController {
         return "No cargo information available.";
     }
 
-
-    /**
-     * Sets the selected scenario directly.
-     *
-     * @param scenario Scenario to set as selected.
-     */
-    public void setScenario(Scenario scenario) {
-        this.selectedScenario = scenario;
-    }
-
     /**
      * Retrieves all available stations from the repository.
      *

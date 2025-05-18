@@ -6,8 +6,6 @@ _Specifies functionalities that:
 &nbsp; &nbsp; (i) are common across several US/UC;  
 &nbsp; &nbsp; (ii) are not related to US/UC, namely: Audit, Reporting and Security._
 
-**Validation: Business rules validation is a must when recording and updating data;**
-
 **Authentication: Those who wish to use the application must be authenticated with a password. This password consists of seven alphanumeric characters, including three capital letters and two digits.**
 
 ## Usability
@@ -16,13 +14,13 @@ _Evaluates the user interface. It has several subcategories,
 among them: error prevention; interface aesthetics and design; help and
 documentation; consistency and standards._
 
-**Error Prevention: Provide clear validation for user input (for example, no special characters or digits in city names).**
-
 **Help and Documentation: Documentation should be in English, with clear guidelines for using the system and understanding each feature.**
 
 ## Reliability
 
 _Refers to the integrity, compliance and interoperability of the software. The requirements to be considered are: frequency and severity of failure, possibility of recovery, possibility of prediction, accuracy, average time between failures._
+
+**Error Prevention: Provide clear validation for user input (for example, no special characters or digits in city names).**
 
 **The application ought to employ object serialization to guarantee the
 persistence of the data in two successive runs.**
@@ -48,6 +46,8 @@ configurability, installability, scalability and more._
 ### Design Constraints
 
 _Specifies or constraints the system design process. Examples may include: programming languages, software process, mandatory standards/patterns, use of development tools, class library, etc._
+
+**Business rules validation is a must when recording and updating data;**
 
 **All the images/figures produced during the software development process should be recorded in SVG format.**
 

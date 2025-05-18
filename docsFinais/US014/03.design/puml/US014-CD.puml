@@ -1,0 +1,85 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+class RailwayMaintenanceUI {
+
+}
+
+class RailwayMaintenanceController {
+  +RailwayMaintenanceController()
+  +setStationFile(file)
+  +setLineFile(file)
+  +setMaintenanceType(type)
+  +setStartStation(station)
+}
+
+class Repositories {
+  +getInstance()
+  +getStationRepository()
+  +getLineRepository()
+}
+
+class StationRepository {
+  +loadStations(file)
+}
+
+class LineRepository {
+  +loadLines(file)
+  +getElectrifiedLines(lines)
+}
+
+class Graph {
+  +buildGraph(stations, lines)
+  }
+
+class Route {
+  +findEulerianPath(graph)
+}
+
+class Station {
+  -name : String
+  -position : Position
+  -type : StationType
+  -center : Position
+}
+
+class Line {
+  -start: Station
+  -end: Station
+  -isElectrified: boolean
+}
+
+enum MaintenanceType {
+  Full
+  Electrified
+}
+
+RailwayMaintenanceUI ..> RailwayMaintenanceController
+RailwayMaintenanceController ..> StationRepository
+RailwayMaintenanceController ..> LineRepository
+RailwayMaintenanceController ..> Graph
+RailwayMaintenanceController ..> Route
+RailwayMaintenanceController ..> MaintenanceType
+RailwayMaintenanceController ..> Repositories
+RailwayMaintenanceController ..> Station
+RailwayMaintenanceController ..> Line
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" StationRepository : station repository
+Repositories --> "1" LineRepository : line repository
+
+StationRepository --> "1..*" Station : station
+LineRepository --> "1..*" Line : line
+Graph --> "1..*" Station : station
+Graph --> "2..*" Line : line
+Route --> "1" Graph : graph
+Route --> "1" MaintenanceType : maintenance type
+@enduml

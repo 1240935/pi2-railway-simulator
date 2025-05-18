@@ -20,12 +20,15 @@ class Map {
 
 class City {
     name
-    positionXY
-    houseBlocks
-    blocksXYPosition
-    people
-    mail
-    finalProduct
+    supply
+    demand
+}
+
+class ResourceType{
+    value
+}
+
+class CityBlock{
 }
 
 class Editor {
@@ -33,7 +36,19 @@ class Editor {
     password
 }
 
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+
+
 Map "1" -- "*" City : contains >
 Editor "1" -- "*" Map : creates >
+City "1" -- "1..*" CityBlock: contains >
+Position "1" -- "1" City: has <
+Position "1" -- "1" CityBlock: has <
+City "1" -- "2" ResourceType: has >
+
 
 @enduml

@@ -10,13 +10,14 @@ To identify domain conceptual classes, start by making a list of candidate conce
 
 **Business Transactions**
 
-* Route
+* Scenario
 * Simulator
 
 ---
 
 **Transaction Line Items**
 
+* Route
 * Cargo
 * Building
 
@@ -59,12 +60,7 @@ To identify domain conceptual classes, start by making a list of candidate conce
 
 **Physical Objects**
 
-* Locomotive
-* Railway
-* Station
-* City
-* Building
-* City
+* None
 
 ---
 
@@ -94,7 +90,7 @@ To identify domain conceptual classes, start by making a list of candidate conce
 **Elements of Containers**
 
 * Industry
-* City 
+* City
 * Station
 * Building
 * Railway

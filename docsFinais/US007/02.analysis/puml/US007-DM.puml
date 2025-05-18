@@ -10,36 +10,77 @@ hide methods
 
 left to right direction
 
-class Station {
-    type
-    positionXY
-    centre
-    name
-    cost
-    capacity
-    radius
-}
-
-class Building {
-    type
-    cost
-    upgrade
-}
-
-class Cargo {
-    type
-    quantity
-    status
-}
-
 class Player {
-    username
+    name
     password
     budget
 }
 
-Station "1" -- "*" Building : upgrades with >
+class Map {
+    size
+    name
+}
+
+class Station {
+    name
+    capacity
+    centre
+}
+
+class StationType{
+    radius
+    cost
+}
+
+class Building {
+}
+
+class BuildingType {
+    upgrade
+    cost
+}
+
+class Scenario {
+    importation
+    exportation
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+class Cargo {
+    quantity
+}
+
+class CargoStatus{
+    supply
+    demand
+}
+
+class ResourceType{
+    value
+}
+
+class TimeRestriction{
+    year
+}
+
+Player "1" -- "*" Station: builds >
+Player "*" -- "1" Scenario : selects >
+Map "1" -- "*" Station : contains >
+Map "1" -- "*" Building: contains >
+Scenario "*" -- "1" Map : uses >
+Station "*" -- "1 "Building:  upgrades with  >
+Station "1" -- "1" StationType: has >
+Building "1" -- "1" BuildingType : has >
+Position "1" -- "1" Station: has <
 Station "1" -- "*" Cargo : stores >
-Player "1" -- "*" Station : builds >
+Cargo "1" -- "1" ResourceType: has >
+Cargo "1" -- "1" CargoStatus: has >
+Scenario "1" -- "*" TimeRestriction: includes >
+TimeRestriction "1" -- "*" BuildingType: affects >
+
 
 @enduml

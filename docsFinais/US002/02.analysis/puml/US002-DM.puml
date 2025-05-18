@@ -18,8 +18,6 @@ class Editor {
 class Map {
     size
     name
-    industries
-    cities
 }
 
 class Industry {
@@ -36,7 +34,7 @@ class Position{
 }
 
 class ResourceType{
-
+    value
 }
 
 Editor "1" -- "*" Map: creates >

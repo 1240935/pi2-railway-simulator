@@ -5,31 +5,45 @@ skinparam shadowing false
 
 autonumber
 
-actor "Product Owner" as Employee
+actor "Player" as Employee
 participant "System" as System
 
 activate Employee
 
     Employee -> System : requests to start the cargo generation simulator
-        activate System
+    activate System
 
-            System --> Employee : confirms simulator has started
-            System --> System : gathers existing stations and \n collects data from  cities and industries
-            System --> Employee : starts cargo generation based on \n supply and demand
-        deactivate System
+    System --> Employee : shows the list of available scenarios
+    deactivate System
 
-        Employee -> System : requests to pause the simulator
-        activate System
+    Employee -> System : selects a scenario
+    activate System
 
-            System --> Employee : confirms simulator is paused and waits for play
+    System --> Employee : starts cargo generation
+    deactivate System
 
-        deactivate System
-        Employee -> System : requests to start the simulator again
-        activate System
+    alt simulator pause
 
-            System --> System: confirms simulator started again and continues \n cargo generation from where it stopped
-            System --> Employee: finishes generation when the maximum is reached,\n  displays the generated cargo and displays success
+    Employee -> System : requests to pause the simulator
+    activate System
 
+    System --> Employee : pauses simulator and waits for status update
+    deactivate System
+
+    Employee -> System : requests to restart the simulator
+    activate System
+
+    System --> Employee : restarts the simulator from where it paused
+
+    end alt
+
+    System --> Employee: stops generation when the maximum is reached,\n and displays the generated cargo
+    deactivate System
+
+    Employee -> System: confirms the generation data
+    activate System
+
+    System --> Employee: displays operation success
 
 
 

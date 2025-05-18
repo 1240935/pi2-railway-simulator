@@ -14,7 +14,7 @@ As a Player, I want to buy a locomotive.
 
 **From the client clarifications:**
 
-> **Question**: "I have verified that in the US in reference there is a dependency referring to a list of locomotives available for the current scenario and date. However, I haven't found any specific User Story that deals with the construction or display of this list. Will this listing functionality be detailed in a future US?"
+> **Question**: "I have verified that in the US in reference, there is a dependency referring to a list of locomotives available for the current scenario and date. However, I haven't found any specific User Story that deals with the construction or display of this list. Will this list functionality be detailed in a future US?"
 >
 > **Answer**: "The locomotives that will be presented in the selection list are restricted to the current date and any restrictions that may have been defined in the scenario.
 The presentation of the list of locomotives is part of US009."
@@ -55,15 +55,18 @@ The presentation of the list of locomotives is part of US009."
 ### 1.5 Input and Output Data
 
 **Input Data:**
+
 * Typed data:
     * the request
 
 * Selected data:
-    * locomotive to be bought
+    * a scenario  
+    * a locomotive
 
 **Output Data:**
 
-* List of locomotives available to buy
+* List of available scenarios
+* List of available locomotives
 * Data for confirmation
 * (In)Success of the operation
 

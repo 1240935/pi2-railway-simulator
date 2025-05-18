@@ -30,11 +30,11 @@ In the station, there should be a list of cargoes to be picked up by the train.
 
 ### 1.3. Acceptance Criteria
 
-* There's no Acceptance Criteria
+* If the selected route isn't connected by railways, it can't be created.
 
 ### 1.4. Found out Dependencies
 
-* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least 2 stations, railways and 
+* There is an inherent dependency in US001, US005, US008 and US009 as this one needs a map, at least two stations, railways and 
  a train to exist so that it can be run.
 
 ### 1.5 Input and Output Data
@@ -45,14 +45,17 @@ In the station, there should be a list of cargoes to be picked up by the train.
     * the request         
 	
 * Selected data:
-    * a beginning and ending station
+    * a scenario
     * a locomotive
-    * stops
-    * list of cargoes
+    * stations
+    * cargo
 
 **Output Data:**
 
-* Available stations, locomotives and cargo
+* List of available scenarios
+* List of available locomotives
+* List of existing stations
+* List of available cargo
 * Data for confirmation
 * (In)Success of the operation
 

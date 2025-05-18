@@ -11,7 +11,10 @@ hide methods
 left to right direction
 
 class Locomotive {
-    locomotion
+    iD
+}
+
+class LocomotiveModel{
     power
     acceleration
     topSpeed
@@ -19,7 +22,9 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    iD
+}
+
+class LocomotiveType{
 }
 
 class Player {
@@ -30,17 +35,27 @@ class Player {
 
 
 class Scenario {
-    timeRestriction
-    portsCargoes
-    portsBehaviour
-    locomotiveTypes
-    industriesTypes
-    locomotionTypes
-    industryChangers
+    importation
+    exportation
 }
 
-Scenario "1" - "*" Locomotive: conditions >
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+Player "*" -- "1" Scenario : selects >
 Player "1" -- "1..*" Locomotive: buys  >
+Locomotive "1" -- "1" LocomotiveType: has >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+LocomotiveModel "*" -- "1" LocomotiveType: has >
+
+
 
 
 @enduml

@@ -1,47 +1,38 @@
-# US006 - Create a Task
+# US003 - Add a City
 
 ## 3. Design
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...        | Answer                 | Justification (with patterns)                                                                                                       |
-|:---------------|:---------------------------------------------------|:-----------------------|:------------------------------------------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                    | CreateTaskUI           | Pure Fabrication: there is no reason to assign this responsibility to any existing class in the Domain Model.                       |
-|                | ... coordinating the US?                           | CreateTaskController   | Controller                                                                                                                          |
-|                | ... knowing the user using the system?             | UserSession            | IE: cf. A&A component documentation.                                                                                                |
-|                |                                                    | Organization           | IE: knows/has its own Employees                                                                                                     |
-|                |                                                    | Employee               | IE: knows its own data (e.g. email)                                                                                                 |
-| Step 2         | ... knowing all existing task categories to show?  | Repositories           | IE: Repositories maintains Task Categories.                                                                                         |
-|                |                                                    | TaskCategoryRepository | By applying High Cohesion (HC) + Low Coupling (LC) on class Repositories, it delegates the responsibility on TaskCategoryContainer. |
-| Step 3         | ... saving the selected category?                  | CreateTaskUI           | IE: is responsible for keeping the selected category.                                                                               |
-| Step 4         | ... requesting data?                               | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           |
-| Step 5         | ... saving the inputted data?                      | CreateTaskUI           | IE: is responsible for keeping the inputted data.                                                                                   |
-| Step 6         | ... showing all data and requesting confirmation?  | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           |              
-| Step 7         | ... instantiating a new Task?                      | Organization           | Creator (Rule 1): in the DM Organization has a Task.                                                                                |
-|                | ... validating all data (local validation)?        | Task                   | IE: owns its data.                                                                                                                  | 
-|                | ... validating all data (global validation)?       | Organization           | IE: knows all its tasks.                                                                                                            | 
-|                | ... saving the created task?                       | Organization           | IE: owns all its tasks.                                                                                                             | 
-| Step 8         | ... informing operation success?                   | CreateTaskUI           | IE: is responsible for user interactions.                                                                                           | 
+| Interaction ID | Question: Which class is responsible for...       | Answer            | Justification (with patterns)                                                                          |
+|:---------------|:--------------------------------------------------|:------------------|:-------------------------------------------------------------------------------------------------------|
+| Step 1         | ... interacting with the actor?                   | AddCityUI         | Pure Fabrication: handles UI responsibilities; not part of Domain Model but supports user interaction. |
+|                | ... coordinating the US?                          | AddCityController | Controller: mediates between UI and domain logic.                                                      |
+|                | ... knowing the user using the system?            | Editor            | IE: knows its own data (e.g. username, password).                                                      |
+| Step 2         | ... knowing all existing maps to show?            | MapRepositories   | IE: Access point to all maps.                                                                          |
+| Step 3         | ... saving the selected map?                      | AddCityUI         | IE: Holds working data like selected map.                                                              |
+| Step 4         | ... requesting data?                              | AddCityUI         | IE: user interaction is handled at the UI level.                                                       |
+| Step 5         | ... instantiating individual city blocks?         | CityBlock         | IE: each block knows its own data and construction logic.                                              |
+| Step 6         | ... showing all data and requesting confirmation? | AddCityUI         | IE: user interaction responsibility.                                                                   |
+| Step 7         | ... showing all data and requesting confirmation? | AddCityUI         | IE: user interaction responsibility.                                                                   |
+| Step 8         | ... instantiating a new City?                     | AddCityController | Creator: already has name, position, blocks — best suited to create a city.                            |
+| Step 9         | ... informing operation success?                  | AddCityUI         | IE: UI is responsible for displaying messages to the user.                                             |
 
 ### Systematization ##
 
 According to the taken rationale, the conceptual classes promoted to software classes are: 
 
-* Organization
-* Task
-* TaskCategory
-* Employee
+* Map
+* City
+* CityBlock
+* Position
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
-* CreateTaskUI  
-* CreateTaskController
+* AddCityUI
+* AddCityController
 * Repositories
-* TaskCategoryRepository
-* OrganizationRepository
-* ApplicationSession
-* UserSession
-
+* MapRepository
 
 ## 3.2. Sequence Diagram (SD)
 
@@ -50,30 +41,6 @@ Other software classes (i.e. Pure Fabrication) identified:
 This diagram shows the full sequence of interactions between the classes involved in the realization of this user story.
 
 ![Sequence Diagram - Full](svg/US003-SD-full.svg)
-
-### Split Diagrams
-
-The following diagram shows the same sequence of interactions between the classes involved in the realization of this user story, but it is split in partial diagrams to better illustrate the interactions between the classes.
-
-It uses Interaction Occurrence (a.k.a. Interaction Use).
-
-![Sequence Diagram - split](svg/US003-SD-split.svg)
-
-**Get Task Category List Partial SD**
-
-![Sequence Diagram - Partial - Get Task Category List](svg/US003-SD-partial-get-task-category-list.svg)
-
-**Get Task Category Object**
-
-![Sequence Diagram - Partial - Get Task Category Object](svg/US003-SD-partial-get-task-category.svg)
-
-**Get Employee**
-
-![Sequence Diagram - Partial - Get Employee](svg/US003-SD-partial-get-employee.svg)
-
-**Create Task**
-
-![Sequence Diagram - Partial - Create Task](svg/US003-SD-partial-create-task.svg)
 
 ## 3.3. Class Diagram (CD)
 

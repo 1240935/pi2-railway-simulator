@@ -1,0 +1,112 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+'hide footbox
+
+actor "Player" as PLAYER
+participant ":VerifyTrainTravelUI" as UI
+participant ":VerifyTrainTravelController" as CTRL
+participant "Repositories" as REPOS
+participant "StationRepository" as STREPO
+participant "LineRepository" as LINEREPO
+participant "LocomotiveType <<enumeration>>" as LOCTYPE
+participant "StationType <<enumeration>>" as STTYPE
+participant "Graph" as GRAPH
+participant "PathVerifier" as PATH
+
+autonumber
+
+activate PLAYER
+
+PLAYER -> UI : asks to verify if a type of locomotive is able to travel \n between two stations of the same type
+activate UI
+
+       UI --> CTRL** : create()
+
+UI --> PLAYER : asks for a scenario file with the stations
+deactivate UI
+PLAYER -> UI : types the file path
+activate UI
+
+UI -> CTRL : setStationFile(file)
+activate CTRL
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
+
+CTRL -> STREPO : loadStations(file)
+activate STREPO
+STREPO --> CTRL : list of stations
+deactivate STREPO
+
+CTRL --> UI : list of stations
+deactivate CTRL
+UI --> PLAYER :asks for a scenario file with the lines
+deactivate UI
+PLAYER -> UI :  types the file path
+activate UI
+UI -> CTRL : setLineFile(file)
+activate CTRL
+
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
+
+CTRL -> LINEREPO : loadLines(file)
+activate LINEREPO
+LINEREPO --> CTRL : list of lines
+deactivate LINEREPO
+
+CTRL -> LOCTYPE : getAvailableLocomotiveTypes()
+activate LOCTYPE
+LOCTYPE --> CTRL : list of available locomotive types
+deactivate LOCTYPE
+CTRL --> UI : list of available locomotive types
+deactivate CTRL
+
+UI --> PLAYER : shows the list of available locomotive types
+deactivate UI
+PLAYER -> UI : selects a locomotive type
+activate UI
+UI -> CTRL : setType(type)
+activate CTRL
+CTRL --> UI : type
+
+CTRL -> STTYPE : getAvailableStationTypes()
+activate STTYPE
+STTYPE --> CTRL : list of available station types
+deactivate STTYPE
+CTRL --> UI : list of available station types
+deactivate CTRL
+
+UI --> PLAYER : shows the list of available station types
+deactivate UI
+PLAYER -> UI : select station type
+activate UI
+UI -> CTRL : setStationType(type)
+activate CTRL
+CTRL --> UI : type
+
+CTRL -> GRAPH : buildGraph(stations, lines)
+activate GRAPH
+GRAPH --> CTRL : graph
+deactivate GRAPH
+CTRL --> UI : graph
+
+CTRL -> PATH : verifyPath(graph, trainType, stationType)
+activate PATH
+PATH --> CTRL : verification
+deactivate PATH
+
+CTRL --> UI : verified graph
+deactivate CTRL
+UI --> PLAYER : completes verification, displays a graphical visualization of the stations \n and lines connecting them and displays success
+deactivate UI
+
+@enduml

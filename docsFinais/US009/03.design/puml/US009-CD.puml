@@ -9,118 +9,147 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class ApplicationSession
-{
-    - ApplicationSession()
-    + {static} getInstance()
-    + getCurrentSession()
+class BuyLocomotiveUI{
 }
 
-class UserSession
-{
-    + getUserEmail()
-}
-
-class Employee {
-    - name : String
-    - email : String
-    - position : String
-    - phone : String
-}
-
-class Task {
-    - reference :String
-    - description : String
-    - informalDescription : String
-    - technicalDescription : String
-    - duration : int
-    - cost : double
-
-    + Task(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, createdBy)
-}
-
-class TaskCategory {
-    - description : String
-}
-
-class Organization {
-    - name : String
-    - vatNumber : String
-    - website : String
-    - phone : String
-    - email : String
-
-    + Organization(name, vatNumber, webSite, phone, email, postalAddress, manager)
-    + anyEmployeeHasEmail(email)
-    + getEmployeeByEmail(email)
-    + createTask(reference, description, informalDesccription, technicalDescription, \nduration, cost, taskCategory, employee)
-    - addTask(task)
-    - validateTask(task)
-}
-
-class TaskCategoryRepository {
-    + getTaskCategories()
-    + getTaskCategoryByDescription(taskCategoryDescription)
-}
-
-class OrganizationRepository {
-    + getOrganizationByEmployeeEmail(email)
+class BuyLocomotiveController {
+  + BuyLocomotiveController()
+  + getAvailableScenarios()
+  + setScenario(scenario)
+  + getAvailableScenarioDescriptions()
+  + chooseScenarioByIndex(index)
+  + getSelectedModel()
+  + chooseModelByIndex(index)
+  + getPlayer()
+  + setPlayer(player)
+  + getAvailableModelDescriptions()
+  + getAvailableLocomotiveModels()
+  + setModel(model)
+  + createLocomotive()
 }
 
 class Repositories {
-    - Repositories()
-    + {static} getInstance()
-    + getTaskCategoryRepository()
-    + getOrganizationRepository()
+  + getInstance()
+  + getScenarios()
+  + getLocomotiveModels()
+  + getLocomotives()
 }
 
-class CreateTaskController {
-    + CreateTaskController()
-    + getTaskCategories()
-    + createTask(reference, description, informalDescription, \n   technicalDescription, duration, cost, taskCategoryDescription)
-    - getTaskCategoryByDescription(taskCategoryDescription)
-    - getEmployeeFromSession()
+class ScenarioRepository {
+  + getScenarios()
 }
 
-note right of CreateTaskController
-    categoryDescription is retrieved
-    from selected data
-end note
-
-note bottom of TaskCategoryRepository
-    - used for displaying
-    the task category list
-end note
-
-class CreateTaskUI {
+class LocomotiveModelRepository {
+  + getLocomotiveModels()
 }
 
-CreateTaskUI .> CreateTaskController
+class LocomotiveRepository {
+  + nextID()
+}
 
-CreateTaskController ..> ApplicationSession
-CreateTaskController ..> UserSession
-CreateTaskController ..> TaskCategory
-CreateTaskController ..> TaskCategoryRepository
-CreateTaskController ..> Organization
-CreateTaskController ..> OrganizationRepository
-CreateTaskController .> Repositories
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
+       -changers: List<IndustryChanger>
+       +addLocomotive(locomotive)
+ }
+
+enum LocomotiveModel{
+    TREVITHICK_1
+    STEPHENSON_ROCKET
+    JOHN_BULL
+    DEWITT_CLINTON
+    PRUSSIAN
+    AMERICAN_C
+    IRON_DUKE
+    A3
+    EIGHT_WHEELER
+    VULCAN
+    CONSOLIDATION
+    TRUCK_SHAY
+    MASTODON
+    TEN_WHEELER
+    MOGUL
+    BOBO
+    ATLANTIC
+    CAMELBACK
+    PACIFIC
+    CLASS_G10
+    PRAIRIE
+    D16SB
+    CLASS_13H
+    USRA
+    MIKADO
+    BE_II
+    CLASS_B12
+    EE
+    CLASS_1045
+    USRA_II
+    CLASS_A4_MALLARD
+    GG1
+    CLASS_E18
+    HUDSON
+    DAYLIGHT
+    J3A_STREAMLINER
+    AE
+    CLASS_1020
+    BIG_BOY
+    T1
+    F3AB
+    ALCO_PA1
+    F9
+    GP9
+    E69
+    TGVX_TSC
+    GP18
+    V200
+    PENN_E44
+    CLASS_55_DELTIC
+    SHINKANSEN_BULLET
+    FP45
+    SD45
+    SDP40
+    E60CP
+    TGV_TSC
+    CLASS_E111
+    E656_FS
+    DASH_9
+    AMD_103
+    THALYS_BULLET
+    EUROSTAR_TSC
+    CLASS_232
+    DB18_201_TSC
+    BRENNER_TSC
+    MAG_LEV_TBX_1
+
+}
+
+class Locomotive {
+  - iD: int
+  - model: LocomotiveModel
+  + Locomotive(model, iD)
+}
+
+BuyLocomotiveUI ..> BuyLocomotiveController
+BuyLocomotiveController ..> Scenario
+BuyLocomotiveController ..> LocomotiveModel
+BuyLocomotiveController ..> Locomotive
+BuyLocomotiveController ..> Repositories
 
 Repositories -> "1" Repositories : instance
-Repositories --> "1" OrganizationRepository : organizationRepository
-Repositories -> "1" TaskCategoryRepository : taskCategoryRepository
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories --> "1" LocomotiveModelRepository : locomotive model repository
+Repositories --> "1" LocomotiveRepository : locomotive repository
+ScenarioRepository --> Scenario : scenario
 
-ApplicationSession -> "1" ApplicationSession : instance
-ApplicationSession ..> UserSession
-
-TaskCategoryRepository --> "*" TaskCategory : taskCategories
-
-OrganizationRepository --> "*" Organization : organizations
-
-Organization --> "*" Task : tasks
-Organization --> "*" Employee : employees
-
-Task --> "1" TaskCategory : taskCategory
-Task --> "1" Employee : createdBy
+Scenario --> "*" Locomotive: locomotive
+LocomotiveModelRepository --> "*" LocomotiveModel : locomotive model
+LocomotiveRepository --> "*" Locomotive: locomotive
+Locomotive --> "1" LocomotiveModel: model
 
 
 @enduml

@@ -4,7 +4,7 @@
 
 ### 1.1. User Story Description
 
-As a Product Owner, I want to create a simulator that generates
+As a Player, I want to create a simulator that generates
 cargoes at current stations, automatically, considering the cities and
 industries that the railway network serves.
 
@@ -12,7 +12,7 @@ industries that the railway network serves.
 
 **From the specifications document:**
 
->As a user with the Product Owner role, I should be able to start a simulation of cargo. This simulation consists in gathering information, such as the cities and industries available for cargo generation covered by the railway and the stations where the cargo should appear, and simulate at user command with the start and pause input.
+>As a user with the Player role, I should be able to start a simulation of cargo. This simulation consists in gathering information, such as the cities and industries available for cargo generation covered by the railway and the stations where the cargo should appear, and simulate at user command with the start and pause input.
  
 
 **From the client clarifications:**
@@ -53,7 +53,7 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US00 US005 as at least one station must exist to generate cargo.
+* There is a dependency on US005 as at least one station must exist to generate cargo.
 
 ### 1.5 Input and Output Data
 
@@ -61,14 +61,16 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 **Input Data:**
 
 * Typed data:
-  * the request
-  * a start command
-  * a pause command
+    * the request
+    * a start command
+    * a pause command
 	
 * Selected data:
+    * a scenario 
 
 **Output Data:**
 
+* List of available scenarios
 * Simulation status (running/paused)
 * Generated cargo 
 * (In)Success of the operation

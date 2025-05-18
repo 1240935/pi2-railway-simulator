@@ -16,17 +16,40 @@ class Player {
     budget
 }
 
+class Map {
+    size
+    name
+}
 
 class Station {
-    type
-    positionXY
-    centre
     name
-    cost
     capacity
+    centre
+}
+
+class StationType{
     radius
+    cost
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+class Scenario {
+    importation
+    exportation
 }
 
 
+
+Scenario "*" -- "1" Map : uses >
+Map "1" -- "*" Station : contains >
+Station "1" -- "1" StationType: has >
 Player "1" -- "*" Station: builds >
+Player "*" -- "1" Scenario : selects >
+Position "1" -- "1" Station: has <
+
+
 @enduml

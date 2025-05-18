@@ -9,118 +9,101 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class ApplicationSession
-{
-    - ApplicationSession()
-    + {static} getInstance()
-    + getCurrentSession()
+class BuildStationUI {
 }
 
-class UserSession
-{
-    + getUserEmail()
-}
-
-class Employee {
-    - name : String
-    - email : String
-    - position : String
-    - phone : String
-}
-
-class Task {
-    - reference :String
-    - description : String
-    - informalDescription : String
-    - technicalDescription : String
-    - duration : int
-    - cost : double
-
-    + Task(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, createdBy)
-}
-
-class TaskCategory {
-    - description : String
-}
-
-class Organization {
-    - name : String
-    - vatNumber : String
-    - website : String
-    - phone : String
-    - email : String
-
-    + Organization(name, vatNumber, webSite, phone, email, postalAddress, manager)
-    + anyEmployeeHasEmail(email)
-    + getEmployeeByEmail(email)
-    + createTask(reference, description, informalDesccription, technicalDescription, \nduration, cost, taskCategory, employee)
-    - addTask(task)
-    - validateTask(task)
-}
-
-class TaskCategoryRepository {
-    + getTaskCategories()
-    + getTaskCategoryByDescription(taskCategoryDescription)
-}
-
-class OrganizationRepository {
-    + getOrganizationByEmployeeEmail(email)
+class BuildStationController {
+  +BuildStationController()
+  +getAvailableScenarios()
+  +getAvailableScenariosDescriptions()
+  +setScenario(scenario)
+  +createPosition(xCoordinate, yCoordinate)
+  +getMap(Scenario)
+  +checkCoordinates(xCoordinate, yCoordinate)
+  +getClosestCity(position)
+  +getRecommendedName(xCoordinate, yCoordinate)
+  +getAvailableStationTypes()
+  +setType(type)
+  +isSelectedTypeStation()
+  +getName(city)
+  +setName(name)
+  +determineStationCargoes(xCoordinate, yCoordinate)
+  +setGeometricCenter()
+  +setCompassCenter(compassCoord)
+  +setPosition(xCoordinate, yCoordinate)
+  +getPlayer()
+  +setPlayer(player)
+  +getSelectedType()
+  +createStation(xCoordinate, yCoordinate)
 }
 
 class Repositories {
-    - Repositories()
-    + {static} getInstance()
-    + getTaskCategoryRepository()
-    + getOrganizationRepository()
+      - Repositories()
+      + getInstance()
+      + getScenarioRepository()
+ }
+
+class City {
+  - position: Position
+  - name: String
+  - blocks: List <CityBlocks>
+  +getName()
+  +getPosition()
 }
 
-class CreateTaskController {
-    + CreateTaskController()
-    + getTaskCategories()
-    + createTask(reference, description, informalDescription, \n   technicalDescription, duration, cost, taskCategoryDescription)
-    - getTaskCategoryByDescription(taskCategoryDescription)
-    - getEmployeeFromSession()
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
+       -changers: List<IndustryChanger>
 }
 
-note right of CreateTaskController
-    categoryDescription is retrieved
-    from selected data
-end note
-
-note bottom of TaskCategoryRepository
-    - used for displaying
-    the task category list
-end note
-
-class CreateTaskUI {
+class Position {
+  -xCoordinate : int
+  -yCoordinate : int
+  +Position(xCoordinate, yCoordinate)
 }
 
-CreateTaskUI .> CreateTaskController
+enum StationType {
+  Depot
+  Terminal
+  Station
+  --
+  radius : int
+  cost : int
+}
 
-CreateTaskController ..> ApplicationSession
-CreateTaskController ..> UserSession
-CreateTaskController ..> TaskCategory
-CreateTaskController ..> TaskCategoryRepository
-CreateTaskController ..> Organization
-CreateTaskController ..> OrganizationRepository
-CreateTaskController .> Repositories
+class ScenarioRepository {
+  +getScenarioRepository()
+  +getScenario(scenario)
+}
 
+class Station{
+    -name : String
+    -position : Position
+    -type : StationType
+    -center : StationCenter
+    -building: Building
+    -demands: List<Cargo>
+    -supplies: List<Cargo>
+    +Station(name,position,type,center)
+}
+
+BuildStationUI ..> BuildStationController
+BuildStationController ..> ScenarioRepository
+BuildStationController ..> Scenario
+BuildStationController ..> StationType
+BuildStationController ..> Repositories
+Repositories --> "1" ScenarioRepository : scenario repository
 Repositories -> "1" Repositories : instance
-Repositories --> "1" OrganizationRepository : organizationRepository
-Repositories -> "1" TaskCategoryRepository : taskCategoryRepository
-
-ApplicationSession -> "1" ApplicationSession : instance
-ApplicationSession ..> UserSession
-
-TaskCategoryRepository --> "*" TaskCategory : taskCategories
-
-OrganizationRepository --> "*" Organization : organizations
-
-Organization --> "*" Task : tasks
-Organization --> "*" Employee : employees
-
-Task --> "1" TaskCategory : taskCategory
-Task --> "1" Employee : createdBy
-
+ScenarioRepository --> "1..*" Scenario  : scenario
+Scenario --> "1..*" City : city
+Scenario --> "*" Station : station
+City --> "1" Position : position
+Station --> "1" Position : position
+Station --> "1" StationType : station type
 
 @enduml

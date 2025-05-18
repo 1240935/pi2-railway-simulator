@@ -5,153 +5,128 @@ skinparam shadowing false
 
 autonumber
 
-'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
+actor "Player" as PLAYER
+participant ":CargoSimulatorUI" as UI
+participant ":CargoSimulatorController" as CTRL
 participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+participant "ScenarioRepository" as SREPOS
+participant "StationRepository" as STREPOS
+participant "Station" as STATION
+participant "Simulator" as SIM
 
-activate ORG_EMPLOYEE
+activate PLAYER
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+     PLAYER -> UI : asks to enter simulator
+            activate UI
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+                UI --> CTRL** : create()
+                UI -> CTRL : getListOfAvailableScenarios()
+                activate CTRL
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
+                    CTRL -> REPOS : getInstance()
+                    activate REPOS
 
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
+                        REPOS --> CTRL : repositories
+                    deactivate REPOS
 
-                CTRL --> UI : taskCategoryList
-            deactivate CTRL
+                    CTRL -> SREPOS : getListOfAvailableScenarios()
+                    activate SREPOS
 
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
-        deactivate UI
+                        SREPOS --> CTRL : list of available scenarios
+                    deactivate SREPOS
 
-    ORG_EMPLOYEE -> UI : selects a task category
-    activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+                    CTRL --> UI : list of available scenarios
+                deactivate CTRL
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
+            UI --> PLAYER : shows the list of available scenarios
+            deactivate UI
 
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
-        activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+            PLAYER -> UI : selects a scenario
+            activate UI
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+                UI -> CTRL : setScenario(scenario)
+                activate CTRL
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+                    CTRL --> UI : scenario selected
+                deactivate CTRL
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
+                UI -> CTRL : getListOfAvailableRoutes()
+                activate CTRL
 
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
+                    CTRL -> SREPOS : getListOfAvailableRoutes()
+                    activate SREPOS
 
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
+                        SREPOS --> CTRL : list of available routes
+                    deactivate SREPOS
 
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+                    CTRL --> UI : list of available routes
+                deactivate CTRL
 
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
+            UI --> PLAYER : shows list of available routes
+            deactivate UI
 
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
+            PLAYER -> UI : selects routes
+            activate UI
 
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
+            UI --> PLAYER : asks for the days of the simulation
+            deactivate UI
+    PLAYER -> UI : types the days of the simulation
+            activate UI
 
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
+                UI -> CTRL : setDays(days)
+                activate CTRL
 
-                CTRL --> CTRL : employee
-            deactivate CTRL
+                    CTRL --> UI : days selected
+                deactivate CTRL
 
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
+    loop number of days
 
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
+                UI -> CTRL : simulateDay(day)
+                activate CTRL
 
-                    ORG --> ORG : true
-                deactivate ORG
+                    CTRL -> SIM : simulateDay(day)
+                    activate SIM
 
-                ORG --> CTRL : task
-            deactivate ORG
+                        SIM -> SIM : addCargoToStation(station, route)
 
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
-    deactivate UI
+                        SIM -> SIM : deliverCargoToStation(station)
 
-deactivate ORG_EMPLOYEE
+                        SIM -> SIM : pickupCargoFromStation(route, station)
+
+
+                    SIM --> CTRL : finish simulation
+                    deactivate SIM
+
+                    CTRL --> UI : finish simulation
+                deactivate CTRL
+
+                UI --> PLAYER : asks if the player wants to continue
+            deactivate UI
+
+    alt continue
+            PLAYER -> UI : continue simulation
+            activate UI
+    end alt
+    end loop
+    alt stop
+            PLAYER -> UI : stop simulaton
+
+    end alt
+                UI -> CTRL : getSimulationSummary(player)
+                activate CTRL
+
+                    CTRL -> SIM : getSimulationSummary(player)
+                    activate SIM
+
+                    SIM --> CTRL : summary data
+                    deactivate SIM
+
+                    CTRL --> UI : simulation summary
+                deactivate CTRL
+
+            UI --> PLAYER : shows the simulation summary
+            deactivate UI
+
+    deactivate PLAYER
 
 @enduml

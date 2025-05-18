@@ -5,153 +5,207 @@ skinparam shadowing false
 
 autonumber
 
-'hide footbox
-actor "Organization Employee" as ORG_EMPLOYEE
-participant ":CreateTaskUI" as UI
-participant ":CreateTaskController" as CTRL
+actor "Player" as PLAYER
+participant ":BuildStationUI" as UI
+participant ":BuildStationController" as CTRL
 participant "Repositories" as REPOS
-participant "repositories\n:Repositories" as REPOS_SINGLETON
-participant "taskCategoryRepository\n:TaskCategoryRepository" as TASK_CAT_REPO
-participant "ApplicationSession" as APP_SESSION
-participant "appSession\n:ApplicationSession" as APP_SESSION_SINGLETON
-participant "currentSession\n:UserSession" as CURRENT_SESSION
-participant "organizationRepository\n:OrganizationRepository" as ORG_REPO
-participant "organization\n:Organization" as ORG
-participant "task\n:Task" as TASK
+participant ":ScenarioRepository" as SCEN_REPO
+participant "Scenario" as SCENARIO
+participant ":CityRepository" as CITY_REPO
+participant "City" as CITY
+participant "StationType <<enumeration>>" as TYPE
+participant "Position" as POSITION
+participant "Station" as STATION
 
-activate ORG_EMPLOYEE
 
-        ORG_EMPLOYEE -> UI : asks to create a new task
-        activate UI
-            UI --> CTRL** : create()
+activate PLAYER
 
-            UI -> CTRL : getTaskCategories()
-            activate CTRL
+    PLAYER -> UI : asks to build a station
+    activate UI
+
+       UI --> CTRL** : create()
+
+        UI -> CTRL : getAvailableScenarioDescriptions()
+        activate CTRL
+
                 CTRL -> REPOS : getInstance()
                 activate REPOS
-                    REPOS --> CTRL: repositories
+
+                REPOS --> CTRL: repositories
+
                 deactivate REPOS
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: taskCategoryRepository
-                deactivate REPOS_SINGLETON
+            CTRL -> SCEN_REPO : getScenarioRepository()
+            activate SCEN_REPO
 
-                CTRL -> TASK_CAT_REPO : getTaskCategories()
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategoryList
-                deactivate TASK_CAT_REPO
+            SCEN_REPO --> CTRL : list of scenarios
 
-                CTRL --> UI : taskCategoryList
+            deactivate SCEN_REPO
+        CTRL --> UI : list of scenarios
+        deactivate CTRL
+
+        UI --> PLAYER : shows the list of scenarios
+    deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+
+        UI -> CTRL :setScenario(index)
+
+        activate CTRL
+
+        CTRL --> UI : scenario selected
+
+        deactivate CTRL
+
+         UI --> PLAYER :  asks for the XY coordinates
+    deactivate UI
+
+
+    PLAYER -> UI : types the XY coordinates
+    activate UI
+
+        UI -> CTRL : createPosition(xCoordinate, yCoordinate)
+        activate CTRL
+        CTRL -> POSITION **: createPosition(xCoordinate, yCoordinate)
+
+        CTRL --> UI : position
+        deactivate CTRL
+
+        UI -> CTRL : checkCoordinates(xCoordinate, yCoordinate)
+
+        activate CTRL
+
+            CTRL -> SCENARIO : checkCoordinates(xCoordinate, yCoordinate)
+
+            activate SCENARIO
+
+            SCENARIO --> CTRL : valid coordinates
+
+            deactivate SCENARIO
+
+            CTRL --> UI: valid coordinates
             deactivate CTRL
+            UI -> CTRL: getAvailableStationTypes()
+            activate CTRL
 
-            UI --> ORG_EMPLOYEE : shows task category list and asks to select one
+            CTRL -> REPOS : getInstance()
+                            activate REPOS
+
+                            REPOS --> CTRL: repositories
+
+                            deactivate REPOS
+
+            CTRL -> TYPE : getAvailableStationTypes()
+            activate TYPE
+                TYPE --> CTRL : list of available station types
+            deactivate TYPE
+            CTRL --> UI : list of available station types
+    deactivate CTRL
+
+
+
+    UI --> PLAYER : shows list of station types
+
+    deactivate UI
+
+    PLAYER -> UI : selects a type from the available ones
+
+    activate UI
+        UI -> CTRL : setType(index)
+
+        activate CTRL
+
+        CTRL --> UI : selected type
+
+        deactivate CTRL
+
+        UI -> CTRL: determineStationCargoes(xCoordinate, yCoordinate)
+        activate CTRL
+
+        CTRL --> UI: list of cargo
+        deactivate CTRL
+
+    alt Depot or Terminal
+        UI -> CTRL : setGeometricCenter()
+        activate CTRL
+        CTRL --> UI : center selected
+        deactivate CTRL
+    else Station
+        UI --> PLAYER : asks for compass coordinate
+        deactivate   UI
+
+        PLAYER -> UI : types compass coordinate
+        activate UI
+        UI -> CTRL : setCompassCenter(compassCoord, xCoordinate, yCoordinate)
+
+        activate CTRL
+
+        CTRL --> UI : center
+
+
+        deactivate CTRL
+
+        end alt
+        UI -> CTRL: getClosestCity(position)
+        activate CTRL
+        CTRL -> SCENARIO : getClosestCity(position)
+                    activate SCENARIO
+                    SCENARIO --> CTRL : city
+
+                    deactivate SCENARIO
+                    CTRL --> UI: city
+                    deactivate CTRL
+        UI -> CTRL: getName(city)
+        activate CTRL
+
+
+                                CTRL -> CITY : getName(city)
+
+                                activate CITY
+
+                                CITY --> CTRL : name
+
+                                deactivate CITY
+
+                                CTRL --> UI : name
+                deactivate CTRL
+
+
+        UI --> PLAYER : recommends a name based on the closest city
         deactivate UI
 
-    ORG_EMPLOYEE -> UI : selects a task category
-    activate UI
-        UI --> ORG_EMPLOYEE : requests data (reference, description, \ninformal description, technical description,\nduration, cost)
-    deactivate UI
+        alt recommended name
+            PLAYER -> UI : selects recommended name
+            activate UI
+            UI -> CTRL : setName(name)
+            activate CTRL
+            CTRL --> UI : selected name
+            deactivate CTRL
+        else typed name
+            PLAYER -> UI : types a different name
 
-    ORG_EMPLOYEE -> UI : types requested data
-    activate UI
-        UI --> ORG_EMPLOYEE : shows all data and requests confirmation
-    deactivate UI
+        UI -> CTRL : setName(name)
 
-    ORG_EMPLOYEE -> UI : confirms data
-    activate UI
-        UI -> CTRL : createTask(reference,\ndescription,\ninformalDescription,\ntechnicalDescription,\nduration, cost,\ntaskCategoryDescription)
         activate CTRL
-            CTRL -> CTRL : getTaskCategoryByDescription(taskCategoryDescription)
-            activate CTRL
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
+        CTRL --> UI : typed name
+        deactivate CTRL
 
-                CTRL -> REPOS_SINGLETON : getTaskCategoryRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON -> CTRL : taskCategoryRepository
-                deactivate REPOS_SINGLETON
+       end alt
+    UI --> PLAYER : shows all data for confirmation
+    deactivate UI
+    PLAYER -> UI : confirms data
+    activate UI
 
-                CTRL -> TASK_CAT_REPO : getTaskCategoryByDescription(taskCategoryDescription)
-                activate TASK_CAT_REPO
-                    TASK_CAT_REPO --> CTRL : taskCategory
-                deactivate TASK_CAT_REPO
-                    CTRL --> CTRL : taskCategory
-            deactivate CTRL
+        UI -> CTRL : createStation(xCoordinate, yCoordinate)
+        activate CTRL
+            CTRL -> STATION **: create(position, name, type, center)
 
-            |||
-            CTRL -> CTRL : getEmployeeFromSession()
-            activate CTRL
-                CTRL -> APP_SESSION: getInstance()
-                activate APP_SESSION
-                    APP_SESSION -> CTRL: appSession
-                deactivate APP_SESSION
+        CTRL --> UI : station
+        deactivate CTRL
 
-                CTRL -> APP_SESSION_SINGLETON: getCurrentSession()
-                activate APP_SESSION_SINGLETON
-                    APP_SESSION_SINGLETON --> CTRL: currentSession
-                deactivate APP_SESSION_SINGLETON
-
-                CTRL -> CURRENT_SESSION: getUserEmail()
-                activate CURRENT_SESSION
-                    CURRENT_SESSION --> CTRL: email
-                deactivate CURRENT_SESSION
-
-                CTRL -> REPOS : getInstance()
-                activate REPOS
-                    REPOS --> CTRL: repositories
-                deactivate REPOS
-
-                CTRL -> REPOS_SINGLETON: getOrganizationRepository()
-                activate REPOS_SINGLETON
-                    REPOS_SINGLETON --> CTRL: organizationRepository
-                deactivate REPOS_SINGLETON
-
-                CTRL -> ORG_REPO: getOrganizationByEmployeeEmail(email)
-                activate ORG_REPO
-
-                    loop [for each organization
-                        ORG_REPO -> ORG : anyEmployeeHasEmail(email)
-                        activate ORG
-                             ORG --> ORG_REPO : true/false
-                        deactivate ORG
-                    end
-                    ORG_REPO --> CTRL : organization
-                deactivate ORG_REPO
-
-                CTRL -> ORG: getEmployeeByEmail(email)
-                activate ORG
-                    ORG --> CTRL : employee
-                deactivate ORG
-
-                CTRL --> CTRL : employee
-            deactivate CTRL
-
-            |||
-            CTRL -> ORG: createTask(reference, description,\ninformalDescription, technicalDescription,\nduration, cost, taskCategory, employee)
-            activate ORG
-                ORG --> TASK**: create(reference, description, informalDescription, \ntechnicalDescription, duration, cost, taskCategory, employee)
-
-                ORG -> ORG: addTask (task)
-                activate ORG
-                    ORG -> ORG: validateTask(task)
-                    activate ORG
-                        ORG --> ORG : true
-                    deactivate ORG
-
-                    ORG --> ORG : true
-                deactivate ORG
-
-                ORG --> CTRL : task
-            deactivate ORG
-
-            CTRL --> UI: task
-            deactivate CTRL
-            UI --> ORG_EMPLOYEE: displays operation success
+    UI --> PLAYER : displays success
     deactivate UI
 
-deactivate ORG_EMPLOYEE
-
+deactivate PLAYER
 @enduml

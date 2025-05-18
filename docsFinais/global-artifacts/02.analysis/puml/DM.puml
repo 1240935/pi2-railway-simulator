@@ -22,74 +22,79 @@ class Editor {
 }
 
 class Map {
-    name
     size
+    name
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
 }
 
 class Station {
-    type
-    positionXY
-    centre
     name
-    cost
     capacity
+    centre
+}
+
+class StationType{
     radius
+    cost
 }
 
 class Building {
-    type
+}
+
+class BuildingType {
     cost
     upgrade
 }
 
-class Cargo {
-    type
-    quantity
-    availability
+class Industry {
 }
 
-class Industry {
-    type
-    positionXY
-    resourceType
-    resourceGeneration
+class IndustryType{
+    importation
+    exportation
+}
+
+class ResourceType{
+    value
 }
 
 class Scenario {
-    timeRestriction
-    portsCargoes
-    portsBehaviour
-    locomotiveTypes
-    industriesTypes
-    locomotionTypes
-    industryChangers
+    importation
+    exportation
 }
 
 class City {
     name
-    positionXY
-    houseBlocks
-    blocksXYPosition
-    people
-    mail
-    finalProduct
+    supply
+    demand
+}
+
+class CityBlock{
 }
 
 class Railway{
-    length
-    size
+    start
+    end
+}
+
+class RailwayType{
     cost
-    type
+    electrification
 }
 
 class Cargo {
-    type
     quantity
-    status
 }
 
 class Locomotive {
-    locomotion
+    iD
+}
+
+class LocomotiveModel{
     power
     acceleration
     topSpeed
@@ -97,53 +102,124 @@ class Locomotive {
     fuelCost
     maintenancePYear
     cost
-    iD
+}
+
+class LocomotiveType{
 }
 
 class Route {
-    beginningStation
-    stops
-    finishStation
 }
 
 class Simulator{
     status
+    totalGenerated
+    totalSupplied
+    totalDelivered
 }
 
-class ProductOwner {
-    username
-    password
+class Train {
 }
+
+class Carriage{
+}
+
+class HistoricalRestriction{
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class IndustryChanger{
+    effect
+}
+
+class CargoStatus{
+    supply
+    demand
+}
+
 
 Editor "1" -- "*" Map : creates >
-Editor "1" -- "1" Scenario : creates >
-Player "1" -- "1" Scenario : selects >
+Editor "1" -- "*" Scenario : creates >
+
+Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
 Player "1" -- "*" Route : creates >
+Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
 Player "1" -- "1..*" Locomotive : buys >
-ProductOwner "1" -- "1" Simulator: controls >
+Player "1" -- "1" Simulator: controls >
+
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "1..*" Route: has >
+Simulator "1" -- "1" Scenario: has >
+
 Map "1" -- "*" Station : contains >
 Map "1" -- "*" Industry : contains >
 Map "1" -- "*" City : contains >
 Map "1" -- "*" Railway: contains >
 Map "1" -- "*" Building: contains >
+
+Position "1" -- "1" City: has <
+Position "1" -- "1" Industry: has <
+Position "1" -- "1" Station: has <
+Position "1" -- "1" Railway: has <
+Position "1" -- "1" CityBlock: has <
+
+City "1" -- "1..*" CityBlock: contains >
+City "1" -- "*" Cargo: consumes >
+
+Industry "1" -- "1" IndustryType: has >
+Industry "1" -- "1" ResourceType: has >
+Industry "1" -- "*" Cargo: produces >
+
 Scenario "*" -- "1" Map : uses >
-Scenario "*" -- "1" Industry: conditions >
-Scenario "*" -- "1" Building: conditions >
-Scenario "1" -- "*" Locomotive: conditions >
-Simulator "1" -- "*" Cargo: generates >
-Simulator "1" -- "*" City: considers >
-Simulator "1" -- "*" Industry: considers >
-Simulator "1" -- "*" Station: considers >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" IndustryType: affects >
+Scenario "1" -- "*" Station: has >
+Scenario "1" -- "*" Route: has >
+Scenario "1" -- "*"Locomotive: has >
+
+
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
+IndustryChanger "1" -- "*" Industry: affects >
+
+TimeRestriction "1" -- "*" BuildingType: affects >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
+
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+TechnologicalRestriction "1" -- "*" IndustryType: affects >
+
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
-Locomotive "1..*" -- "*" Route : assigned to >
-Locomotive "1..*" -- "1..*" Cargo : transports >
+Station "2..*" -- "*" Route: has <
+Station "1" -- "1" StationType: has >
+
+Building "1" -- "1" BuildingType : has >
+
+Train "1" -- "1" Locomotive: is part of <
+Train "1" -- "*" Carriage: is part of <
+Train "1..*" -- "*" Route : assigned to >
+Train "1..*" -- "1..*" Railway: runs on >
+
+Locomotive "*" -- "1" LocomotiveModel: has >
+LocomotiveModel "1..*" -- "1" LocomotiveType: has >
+
+Carriage "1..*" -- "*" Cargo: transports >
+
 Railway "1" -- "1..*" Route: requires <
-Railway "1..*" -- "2..*" City : connects >
 Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
+Railway "1" -- "1" RailwayType: has >
+
+Cargo "1" -- "1" ResourceType: has >
+Cargo "1" -- "1" CargoStatus: has >
 
 
 

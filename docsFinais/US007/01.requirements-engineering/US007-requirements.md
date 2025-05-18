@@ -38,8 +38,9 @@ There's no Acceptance Criteria for this US.
 
 **Output Data:**
 
-* List of stations
-* Details of the pretended station
+* List of available scenarios
+* List of existing stations
+* Details of the selected station
 * (In)Success of the operation
 
 ### 1.6. System Sequence Diagram (SSD)

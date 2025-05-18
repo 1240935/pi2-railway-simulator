@@ -6,9 +6,9 @@
 
 As a Player, I want to upgrade a selected station with a building.
 Each type of station improvement has a date from which it is available.
-Some equipments are mutually exclusive (e.g., small and grand hotel) and some equipments/buildings replace others (the telegraph was initially used to facilitate the operation of trains at stations, and was later
-replaced by the telephone, so after the advent of telephone, telegraph
-is no more available).
+Some equipments are mutually exclusive (e.g., small and grand hotel), and some equipments/buildings
+replace others (the telegraph was initially used to facilitate the operation of trains at stations, and was later
+replaced by the telephone, so after the advent of telephone, telegraph is no more available).
 
 ### 1.2. Customer Specifications and Clarifications 
 
@@ -25,16 +25,19 @@ If there is, does it vary according to the type of station (Depot, Station or Te
 Are all combinations of buildings allowed? For example, is the player free to choose to have the upgrades: customs + silo + telegraph in the same station?"
 > 
 >  **Answer**: "There are buildings that can no longer be built when they come into existence, for example, the telegraph has been replaced by the telephone. Stations that have a telegraph continue to operate with the telegraph until a telephone is built to replace the telegraph. Once there is a telephone, it is no longer possible to build a telegraph.
-There can't be multiple identical buildings (for example, I can't have 3 grain silos).
+There can't be multiple identical buildings (for example, I can't have three grain silos).
 Combinations, as long as they respect the above restrictions, are all possible."
 
 ### 1.3. Acceptance Criteria
 
-* There is no Acceptance Criteria for this US.
+* **AC1:** There are buildings that can no longer be built when they come into existence. You can't have two of the same type of upgrade from different
+technological ages, for example, when you have a telephone upgrade, you cannot buy the telegraph upgrade.
+* **AC2:** There cannot be two of the same of upgrade.
+* **AC3:** There are mutually exclusive upgrades, for example, the big and the small hotel.
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on US005 as there must be at least one station to upgrade.
+* There is a dependency on US001 as there needs to be a map already created, US004 because the scenario restrictions define which buildings are available and US005 as there must be at least one station to upgrade.
 
 ### 1.5 Input and Output Data
 
@@ -44,13 +47,15 @@ Combinations, as long as they respect the above restrictions, are all possible."
     * the request 
 	
 * Selected data:
-    * a station
-    * a building
+    * a scenario
+    * a station 
+    * a building type
 
 **Output Data:**
 
+* List of available scenarios
 * List of existing stations
-* List of available buildings
+* List of available buildings types
 * Data for confirmation
 * (In)Success of the operation
 

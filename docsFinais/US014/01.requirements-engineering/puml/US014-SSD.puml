@@ -1,0 +1,99 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to do a railway line maintenance
+    activate System
+
+         System --> Employee : asks for a scenario file with the stations
+            deactivate System
+
+            Employee -> System : types the file path
+            activate System
+
+            System --> Employee : asks for a scenario file with the lines
+                deactivate System
+
+            Employee -> System : types the file path
+                activate System
+
+
+        System --> Employee : asks if the maintenance should be of all tracks \n or only the electrified one's
+    deactivate System
+
+    alt full maintenance
+    Employee -> System : chooses the full maintenance
+        activate System
+
+        alt possible route
+
+                    System --> Employee : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+                    deactivate System
+
+                Employee -> System : selects an available station
+                activate System
+
+                     System --> Employee : shows all data and requests confirmation
+                    deactivate System
+
+                Employee -> System : confirms all data
+                activate System
+
+                    System --> Employee: displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+                    deactivate System
+
+                end alt
+
+                alt impossible route
+
+                activate System
+
+                     System --> Employee : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
+                     deactivate System
+
+                end alt
+
+         end alt
+
+    alt electrified maintenance
+
+        Employee -> System : chooses the electrified maintenance
+        activate System
+
+        alt possible route
+
+            System --> Employee : finds a route that passes once and only once by only electrified \n railway lines and displays the stations where the route can start
+            deactivate System
+
+        Employee -> System : selects an available station
+        activate System
+
+             System --> Employee : shows all data and requests confirmation
+            deactivate System
+
+        Employee -> System : confirms all data
+        activate System
+
+            System --> Employee: displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+            deactivate System
+
+        end alt
+
+        alt impossible route
+
+             System --> Employee : does not find a route that passes once and only once \n by only electrified railway lines and displays a warning message \n
+
+        end alt
+
+
+    end alt
+
+@enduml

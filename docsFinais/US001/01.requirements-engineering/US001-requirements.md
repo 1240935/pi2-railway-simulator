@@ -42,6 +42,8 @@ For example, an entire map of Europe."
 
 * AC1: The maps dimensions are positive integers
 * AC2: Map name should be a valid file name
+* AC3: Map name should be unique
+
 
 ### 1.4. Found out Dependencies
 

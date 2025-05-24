@@ -19,14 +19,20 @@ activate Editor
     Editor -> System : types a size
     activate System
 
-        System --> Editor : receives the size and asks for a name, \n displays the data and asks for confirmation
+        System --> Editor : receives the size and asks for a name
     deactivate System
 
     Editor -> System : types a name
     activate System
 
-    System --> Editor : receives the name and displays the data for confirmation
+    System --> Editor : receives the name and asks for a scale
             deactivate System
+
+    Editor -> System : types a scale
+             activate System
+
+    System --> Editor : receives the scale and displays the data for confirmation
+             deactivate System
 
     Editor -> System : confirms data
 

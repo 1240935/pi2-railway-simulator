@@ -16,11 +16,6 @@ class Player {
     budget
 }
 
-class Map {
-    size
-    name
-}
-
 class Station {
     name
     capacity
@@ -38,14 +33,9 @@ class Position{
 }
 
 class Scenario {
-    importation
-    exportation
 }
 
-
-
-Scenario "*" -- "1" Map : uses >
-Map "1" -- "*" Station : contains >
+Scenario "1" -- "*" Station : contains >
 Station "1" -- "1" StationType: has >
 Player "1" -- "*" Station: builds >
 Player "*" -- "1" Scenario : selects >

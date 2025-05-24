@@ -18,8 +18,12 @@ class CreateMapController {
   +CreateMapController()
   +getMap(name)
   +checkName(name)
+  +setName(name)
   +checkSize(size)
-  +createMap(name, size)
+  +setSize(size)
+  +checkScale(scale)
+  +setScale(scale)
+  +createMap(name, size, scale)
 }
 
 class MapRepository {
@@ -35,9 +39,10 @@ class Repositories {
 class Map {
   - size : int
   - name : String
+  - scale : int
   - industries : List<Industry>
   - cities : List<City>
-  + Map(name, size)
+  + Map(name, size, scale)
 
 }
 

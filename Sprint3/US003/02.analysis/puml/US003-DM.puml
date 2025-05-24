@@ -16,16 +16,13 @@ left to right direction
 class Map {
     name
     size
+    scale
 }
 
 class City {
     name
     supply
     demand
-}
-
-class ResourceType{
-    value
 }
 
 class CityBlock{
@@ -45,10 +42,10 @@ class Position{
 
 Map "1" -- "*" City : contains >
 Editor "1" -- "*" Map : creates >
+Editor "1" -- "*" City: adds >
 City "1" -- "1..*" CityBlock: contains >
-Position "1" -- "1" City: has <
-Position "1" -- "1" CityBlock: has <
-City "1" -- "2" ResourceType: has >
+City "*" -- "1" Position: has >
+CityBlock "*" -- "1" Position: has >
 
 
 @enduml

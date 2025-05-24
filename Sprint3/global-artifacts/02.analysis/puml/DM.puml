@@ -64,8 +64,6 @@ class ResourceType{
 }
 
 class Scenario {
-    importation
-    exportation
 }
 
 class City {
@@ -143,17 +141,25 @@ class CargoStatus{
     demand
 }
 
-class PointofRoute{
+class PointOfRoute{
     quantity
     mode
 }
 
+class PortsBehaviour{
+    importation
+    exportation
+}
+
 
 Editor "1" -- "*" Map : creates >
+Editor "1" -- "*" Industry: places >
+Editor "1" -- "*" City: adds >
 Editor "1" -- "*" Scenario : creates >
 
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
+Player "1" -- "*" Building: builds >
 Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
@@ -185,13 +191,16 @@ Scenario "*" -- "1" Map : uses >
 Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-Scenario "1" -- "*" Station: has >
-Scenario "1" -- "*" Building: has >
-Scenario "1" -- "*" Route: has >
-Scenario "1" -- "*" Locomotive: has >
+Scenario "1" -- "1" PortsBehaviour: includes >
+Scenario "1" -- "*" Station: contains >
+Scenario "1" -- "*" Building: contains >
+Scenario "1" -- "*" Route: contains >
+Scenario "1" -- "*" Locomotive: contains >
 
 HistoricalRestriction "1" -- "*" IndustryChanger: has >
 IndustryChanger "1" -- "*" Industry: affects >
+PortsBehaviour "1" -- "2..*" ResourceType: has >
+PortsBehaviour "1" -- "*" IndustryType: affects >
 
 TimeRestriction "1" -- "*" BuildingType: affects >
 TimeRestriction "1" -- "*" LocomotiveModel: affects >
@@ -202,7 +211,7 @@ TechnologicalRestriction "1" -- "*" IndustryType: affects >
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" PointofRoute: includes <
+Station "1" -- "1" PointOfRoute: includes <
 
 Building "1" -- "1" BuildingType : has >
 
@@ -217,7 +226,7 @@ LocomotiveModel "1..*" -- "1" LocomotiveType: has >
 Carriage "1..*" -- "*" Cargo: transports >
 
 Route "*" -- "1..*" Railway: requires >
-Route "1" -- "2..*" PointofRoute: has >
+Route "1" -- "2..*" PointOfRoute: has >
 
 Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
@@ -225,7 +234,7 @@ Railway "1" -- "1" RailwayType: has >
 
 Cargo "1" -- "1" ResourceType: has >
 Cargo "1" -- "1" CargoStatus: has >
-Cargo "1" -- "1" PointofRoute: includes <
+Cargo "1" -- "1" PointOfRoute: includes <
 
 
 

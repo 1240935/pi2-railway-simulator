@@ -4,8 +4,9 @@
 
 ### 1.1. User Story Description
 
-As a Player, I want to assign a selected train to a route with a
-valid station and the respective list of cargoes to be picked up
+As a Player, I want to assign a selected train to a route. A
+route is a list of Points-of-Route, each Point-of-Route is defined by: a
+station, a list of cargoes to be picked up.
 
 ### 1.2. Customer Specifications and Clarifications 
 
@@ -30,7 +31,11 @@ In the station, there should be a list of cargoes to be picked up by the train.
 
 ### 1.3. Acceptance Criteria
 
-* If the selected route isn't connected by railways, it can't be created.
+* AC01: If the selected route isn't connected by railways, it can't be created.
+* AC02: For each Point-of-Route I want to assign a cargo mode, that
+  can be: FULL (the train only departs when full loaded); HALF (the
+  train departs as soon it haves half of carriages loaded); AVAILABLE
+  (the train departs with available cargoes in the station)
 
 ### 1.4. Found out Dependencies
 
@@ -47,8 +52,11 @@ In the station, there should be a list of cargoes to be picked up by the train.
 * Selected data:
     * a scenario
     * a locomotive
-    * stations
+    * a beginning station
+    * an ending station
+    * stops
     * cargo
+    * a mode
 
 **Output Data:**
 

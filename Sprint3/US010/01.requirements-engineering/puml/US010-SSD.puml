@@ -25,7 +25,7 @@ activate Employee
     Employee -> System : selects a locomotive
     activate System
 
-    loop selecting the route's stations
+    loop for each PointOfRoute
 
     System --> Employee : shows existing stations
     deactivate System

@@ -18,6 +18,7 @@ class Editor {
 class Map {
     size
     name
+    scale
 }
 
 class Industry {
@@ -38,8 +39,9 @@ class ResourceType{
 }
 
 Editor "1" -- "*" Map: creates >
+Editor "1" -- "*" Industry: places >
 Map "1" -- "*" Industry: contains >
-Position "1" -- "1" Industry: has <
+Industry "*" -- "1" Position: has >
 Industry "1" -- "1" IndustryType: has >
 IndustryType "1" -- "2" ResourceType : has >
 

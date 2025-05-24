@@ -1,0 +1,42 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to upgrade a station
+    activate System
+
+    System --> Employee: shows the list of available scenarios
+    deactivate
+
+    Employee -> System: selects a scenario
+    activate System
+
+        System --> Employee : shows available stations
+    deactivate System
+
+    Employee -> System : selects a station
+    activate System
+
+        System --> Employee :shows the available buildings types \n and their respective upgrade
+    deactivate System
+
+    Employee -> System : chooses the building type
+    activate System
+
+        System --> Employee : shows all data and asks for confirmation
+    deactivate System
+
+    Employee -> System : confirms data
+    activate System
+
+        System --> Employee : builds the building and displays operation success
+    deactivate System
+@enduml

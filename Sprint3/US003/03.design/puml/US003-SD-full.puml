@@ -1,0 +1,149 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as EDITOR
+participant ":AddCityUI" as UI
+participant ":AddCityController" as CTRL
+participant "Repositories" as REPOS
+participant ":MapRepository" as MAP_REPOS
+participant "Position" as PSTN
+participant "Map" as MAP
+participant "CityBlock" as BLOCK
+participant "City" as CITY
+
+activate EDITOR
+
+    EDITOR -> UI : asks to add a city
+    activate UI
+        UI --> CTRL** : create()
+        UI -> CTRL : getAvailableMapNames()
+            activate CTRL
+            CTRL -> REPOS : getInstance()
+                activate REPOS
+                REPOS --> CTRL : repositories
+                deactivate REPOS
+            CTRL -> MAP_REPOS : getMapRepository()
+                activate MAP_REPOS
+                MAP_REPOS --> CTRL : mapRepository
+                deactivate MAP_REPOS
+             CTRL --> UI : availableMaps
+            deactivate CTRL
+
+
+
+        UI --> EDITOR : displays list of available maps
+    deactivate UI
+
+    EDITOR -> UI : selects a map
+    activate UI
+    UI -> CTRL : setMap(map)
+        activate CTRL
+        CTRL --> UI : selected map
+        deactivate CTRL
+        UI --> EDITOR : asks for city name
+    deactivate UI
+
+    EDITOR -> UI : types the city name
+    activate UI
+    UI -> CTRL : checkName(name)
+    activate CTRL
+    CTRL --> UI : valid name
+    deactivate CTRL
+    UI -> CTRL: setSelectedName(name)
+    activate CTRL
+    CTRL --> UI: name
+    deactivate CTRL
+        UI --> EDITOR : asks for XY coordinates
+    deactivate UI
+
+    EDITOR -> UI : types XY coordinates
+    activate UI
+        UI -> CTRL : createPosition(xCoordinate, yCoordinate)
+        activate CTRL
+        CTRL -> PSTN** : create(xCoordinate, yCoordinate)
+        CTRL --> UI : position
+         UI -> CTRL: checkCoordinates(position)
+
+            CTRL -> MAP : checkCoordinates(position)
+            activate MAP
+
+            MAP --> CTRL : valid coordinates
+            deactivate MAP
+
+            CTRL --> UI : valid coordinates
+
+            UI -> CTRL: setCenter(position)
+
+            CTRL --> UI : center set
+            deactivate CTRL
+
+        UI --> EDITOR : asks for number of city blocks
+    deactivate UI
+
+    EDITOR -> UI : types number of city blocks
+    activate UI
+        UI -> CTRL : setNumber(number)
+        activate CTRL
+        CTRL --> UI : number
+        deactivate CTRL
+        UI --> EDITOR : asks for automatic or manual block placement
+    deactivate UI
+
+    alt automatic block placement
+        EDITOR -> UI : selects automatic placement
+        activate UI
+
+        loop block positioning
+            UI -> CTRL: setSelectedBlocks(generateCityBlocks(position))
+            activate CTRL
+            CTRL --> UI: blocks set
+            deactivate CTRL
+        end loop
+
+            UI --> EDITOR : blocks placed automatically
+        deactivate UI
+    else alt Manual placement
+        EDITOR -> UI : selects manual placement
+        activate UI
+
+        loop block positioning
+            UI --> EDITOR : asks for block position
+            EDITOR -> UI : types block position
+        UI -> CTRL : createPosition (xCoordinate, yCoordinate)
+        activate CTRL
+        CTRL -> PSTN** : addSelectedPosition(create(xCoordinate, yCoordinate))
+        CTRL --> UI : position added
+        deactivate CTRL
+
+        end loop
+
+        UI -> CTRL : setSelectedBlocks(createBlocks(addSelectedPosition))
+        activate CTRL
+
+        CTRL --> UI : blocks set
+        deactivate CTRL
+
+    end alt
+
+    UI --> EDITOR : shows all data for confirmation
+
+    deactivate UI
+
+    EDITOR -> UI : confirms data
+    activate UI
+
+        UI -> CTRL : createCity()
+        activate CTRL
+        CTRL -> CITY** : create(selectedName, selectedCenter,SelectedBlocks)
+        CTRL --> UI: city
+        deactivate CTRL
+
+        UI --> EDITOR : displays operation success
+    deactivate UI
+
+deactivate EDITOR
+@enduml

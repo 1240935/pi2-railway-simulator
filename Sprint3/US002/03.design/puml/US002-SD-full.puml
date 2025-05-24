@@ -1,0 +1,134 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+ actor "Editor" as EDITOR
+    participant ":CreateIndustryUI" as UI
+    participant ":CreateIndustryController" as CTRL
+    participant "Repositories" as REPOS
+    participant "MapRepository" as MREPOS
+    participant "Map" as MAP
+    participant "Position" as POS
+    participant "IndustryType <<enumeration>>" as TYPE
+    participant "Industry" as INDUSTRY
+
+
+activate EDITOR
+
+    EDITOR -> UI : asks to add a new industry on the map
+    activate UI
+
+    UI --> CTRL** : create()
+
+    UI -> CTRL : getAvailableMapNames()
+    activate CTRL
+
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+    REPOS --> CTRL: repositories
+    deactivate REPOS
+
+    CTRL -> MREPOS : getMapRepository()
+    activate MREPOS
+
+    MREPOS --> CTRL : list of maps
+
+    deactivate MREPOS
+
+    CTRL --> UI : list of available maps
+    deactivate CTRL
+
+    UI --> EDITOR : displays the list of available maps
+
+    deactivate UI
+
+    EDITOR -> UI : selects a map
+
+    activate UI
+
+    UI -> CTRL : setMapByIndex(index)
+    activate CTRL
+
+    CTRL --> UI : selected map
+    deactivate CTRL
+
+    UI --> EDITOR : asks for coordinates
+    deactivate UI
+
+    EDITOR -> UI : types coordinates
+    activate UI
+
+    UI -> CTRL : createPosition(xCoordinate, yCoordinate)
+    activate CTRL
+
+    CTRL ->POS** : createPosition(xCoordinate, yCoordinate)
+
+
+    CTRL -> UI : position
+    deactivate CTRL
+
+    UI -> CTRL: checkCoordinates(xCoordinate, yCoordinate)
+    activate CTRL
+
+
+    CTRL -> MAP : checkCoordinates(xCoordinate, yCoordinate)
+    activate MAP
+
+    MAP --> CTRL : valid coordinates
+    deactivate MAP
+
+    CTRL --> UI : valid coordinates
+    deactivate CTRL
+
+    UI -> CTRL : getAvailableIndustriesTypeNames()
+    activate CTRL
+
+    CTRL -> TYPE : getAvailableIndustriesTypeNames()
+    activate TYPE
+
+    TYPE --> CTRL: list of industries
+    deactivate TYPE
+
+
+    CTRL --> UI : list of available industries
+
+    deactivate CTRL
+
+    UI --> EDITOR :shows the available industries types
+
+    deactivate UI
+
+    EDITOR -> UI :selects one type to build
+    activate UI
+
+    UI -> CTRL : setMapByIndex(index)
+    activate CTRL
+
+    CTRL -> UI : selected type
+    deactivate CTRL
+
+
+
+    UI --> EDITOR: shows all data and requests \n for confirmation
+    deactivate  UI
+
+    EDITOR --> UI: confirms data
+    activate UI
+
+    UI -> CTRL : createIndustry(type, position)
+    activate CTRL
+
+    CTRL -> INDUSTRY** : create(xCoordinate, yCoordinate)
+    
+
+    CTRL --> UI : industry
+    deactivate CTRL
+
+    UI --> EDITOR : displays operation success
+    deactivate UI
+    deactivate EDITOR
+@enduml

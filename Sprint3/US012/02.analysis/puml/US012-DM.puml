@@ -1,0 +1,55 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Player {
+    username
+    password
+    budget
+}
+class Station {
+    name
+    capacity
+    center
+}
+
+class StationType{
+    radius
+    cost
+}
+
+class Cargo {
+    type
+    quantity
+    status
+}
+
+class Scenario {
+    importation
+    exportation
+}
+
+
+class Simulator{
+    status
+}
+
+Player "1" -- "1" Simulator: controls >
+Simulator "1" -- "*" Cargo: generates >
+
+Station "1" -- "1" StationType: has >
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "1..*" Route: has >
+Simulator "1" -- "1" Scenario: has >
+Station "2..*" -- "*" Route: has <
+
+
+@enduml

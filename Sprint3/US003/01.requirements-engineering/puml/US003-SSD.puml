@@ -1,0 +1,78 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to add a city to the map
+    activate System
+
+        System --> Employee : displays the list of available maps
+            deactivate System
+
+    Employee -> System : selects a map
+    activate System
+
+        System --> Employee : asks for the city name
+    deactivate
+
+     Employee -> System : types the city name
+        activate System
+
+    System --> Employee : receives the name and asks for the XY coordinates
+    deactivate System
+
+    Employee -> System: types the XY coordinates
+    activate System
+
+    System --> Employee : receives the XY coordinates and asks \n for the number of city blocks
+    deactivate System
+
+    Employee -> System : types the number of city blocks
+    activate System
+
+    System --> Employee : receives the number of city blocks \n and asks if the blocks' position should be \n automatically assigned or typed manually
+    deactivate System
+
+    alt automatic block placement
+
+    Employee -> System : selects automatic block placement
+    activate System
+
+    System --> Employee : places the blocks automatically around the city
+    deactivate System
+
+    else alt manual block placement
+
+    Employee -> System : selects manual block placement
+    activate System
+
+    loop block positioning
+
+    System --> Employee: asks for block position
+    deactivate System
+
+    Employee -> System : types block position
+    activate System
+
+    System --> Employee : places the block in the typed position
+    deactivate System
+
+    end loop
+
+    end alt
+
+    System --> Employee : shows all data for confirmation
+
+    Employee -> System : confirms data
+    activate System
+
+        System --> Employee : adds the city to the map and \n displays operation success
+    deactivate System
+@enduml

@@ -1,0 +1,88 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+class AddCityUI {
+
+}
+
+class AddCityController {
+  +AddCityController()
+  +setMap(map)
+  +getAvailableMapNames()
+  +chooseMap(List<Map>, choice)
+  +getAvailableMaps()
+  +checkName(name)
+  +setSelectedName(name)
+  +createPosition(xCoordinate, yCoordinate)
+  +checkCoordinates(position)
+  +createBlocks(List<position>, cityblocks)
+  +createCity()
+  +getSelectedPositions()
+  +setSelectedBlocks(List<CityBlock>)
+  +setCenter(position)
+  +addSelectedPositions(xCoordinate,yCoordinate)
+  +generateBlocks(position,number, randomize)
+}
+
+class MapRepository {
+     +getMap()
+}
+
+class Repositories {
+    - Repositories()
+    + getInstance()
+    + getMapRepository()
+}
+
+class Map {
+  - size : int
+  - name : String
+  +checkCoordinates(position)
+}
+
+class City {
+  - position: Position
+  - name: String
+  - blocks: List <CityBlocks>
+  - supply : ResourceType
+  - demand : ResourceType
+  + City(position, name, blocks)
+}
+
+class Position {
+ - xCoordinate: int
+ - yCoordinate: int
+ +Position(xCoordinate, yCoordinate)
+}
+
+class CityBlock{
+   - position: Position
+   +CityBlock(position)
+}
+
+AddCityUI ..> AddCityController
+AddCityController ..> Repositories
+AddCityController ..> MapRepository
+AddCityController ..> City
+AddCityController ..> Map
+
+MapRepository --> "1..*" Map : map
+
+Map --> "*" City : city
+
+Repositories --> "1" MapRepository : mapRepository
+Repositories --> "1" Repositories : instance
+
+City --> "1" Position : position
+City --> "1..*" CityBlock : city block
+CityBlock --> "1" Position : position
+
+@enduml

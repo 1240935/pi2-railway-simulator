@@ -1,0 +1,93 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+class VerifyTrainTravelUI {
+}
+
+class VerifyTrainTravelController {
+  +VerifyTrainTravelController()
+  +setStationFile(file)
+  +setLineFile(file)
+  +setType(type)
+  +setStationType(type)
+  +verify(graph)
+}
+
+class Station {
+  -name : String
+  -type : StationType
+  -center : Position
+}
+
+class Line {
+  -start: Station
+  -end: Station
+  -isElectrified: boolean
+}
+
+enum LocomotiveType {
+  Steam
+  Diesel
+  Electric
+}
+
+enum StationType {
+  Depot
+  Station
+  Terminal
+}
+
+class Graph {
+  +buildGraph(stations, lines)
+}
+
+class PathVerifier {
+  +verifyPath(graph, type, stationType)
+}
+
+class Repositories {
+  +getInstance()
+  +getStationRepository()
+  +getLineRepository()
+}
+
+class StationRepository {
+  +loadStations(file)
+}
+
+class LineRepository {
+  +loadLines(file)
+}
+
+VerifyTrainTravelUI ..> VerifyTrainTravelController
+
+VerifyTrainTravelController ..> StationRepository
+VerifyTrainTravelController ..> LineRepository
+VerifyTrainTravelController ..> Graph
+VerifyTrainTravelController ..> PathVerifier
+VerifyTrainTravelController ..> LocomotiveType
+VerifyTrainTravelController ..> StationType
+VerifyTrainTravelController ..> Repositories
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" StationRepository : station repository
+Repositories --> "1" LineRepository : line repository
+
+StationRepository --> "1..*" Station : station
+LineRepository --> "1..*" Line : line
+Graph --> "2..*" Station : station
+Graph --> "1..*" Line : line
+PathVerifier --> "1" Graph :graph
+PathVerifier --> "1" LocomotiveType : locomotive type
+PathVerifier --> "1" StationType : station type
+Station --> "1" StationType : station type
+
+@enduml

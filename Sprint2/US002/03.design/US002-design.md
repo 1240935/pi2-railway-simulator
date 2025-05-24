@@ -21,7 +21,7 @@
 | Step 11        | ... showing all data and requesting confirmation? | CreateIndustryUI         | IE: Responsible for interacting with the actor.                                                      |
 | Step 12        | ... instantiating a new Industry?                 | Industry                 | Creator: Industry class is the best candidate to create its instances.                               |
 |                | ... saving the created industry?                  | Map                      | IE: Map aggregates Industries and is responsible for managing them.                                  |
-| Step 13        | ... informing operation success?                  | CreateIndustryUI         | IE: Responsible for feedback to the user.                                                            |
+|                | ... informing operation success?                  | CreateIndustryUI         | IE: Responsible for feedback to the user.                                                            |
 
 ### Systematization ##
 

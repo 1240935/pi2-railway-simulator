@@ -369,7 +369,7 @@ public class CreateScenarioController {
      * Creates a new Scenario using the selected parameters and adds it to the scenario repository.
      */
     public void createScenario() {
-        Scenario scenario = new  Scenario(selectedMap, selectedYear, locomotiveTypes, industryTypes, changers, exportation, importation);
+        Scenario scenario = new Scenario(selectedMap, selectedYear, locomotiveTypes, industryTypes, changers, exportation, importation);
         Repositories.getInstance().getScenarioRepository().add(scenario);
     }
 }

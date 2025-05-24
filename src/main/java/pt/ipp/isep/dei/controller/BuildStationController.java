@@ -108,9 +108,38 @@ public class BuildStationController {
      * @param y Y coordinate to check.
      * @return true if the coordinates are within the map boundaries; false otherwise.
      */
-    public boolean checkCoordinates(int x, int y) {
-        if (getMap(selectedScenario) == null) return false;
-        return getMap(selectedScenario).checkCoordinates(new Position(x, y));
+
+    public boolean checkOverbuilding(int x, int y) {
+        if (selectedScenario == null || getMap(selectedScenario) == null) {
+            return false;
+        }
+
+        Map map = getMap(selectedScenario);
+        Position pos = new Position(x, y);
+
+        if (!map.checkCoordinates(pos)) {
+            return false;
+        }
+
+        for (City city : map.getCities()) {
+            if (city.getPosition().equals(pos)) {
+                return false;
+            }
+        }
+
+        for (Industry industry : map.getIndustries()) {
+            if (industry.getPosition().equals(pos)) {
+                return false;
+            }
+        }
+
+        for (Station station : selectedScenario.getStations()) {
+            if (station.getPosition().equals(pos)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -144,11 +173,11 @@ public class BuildStationController {
      */
     public String getRecommendedName(int x, int y) {
         if (selectedType == null || selectedScenario == null) return "";
-
+        int radius = selectedType.getRadius();
         Position position = new Position(x, y);
         City closestCity = getClosestCity(position);
 
-        if (closestCity == null) return selectedType.name(); // fallback
+        if (closestCity == null || closestCity.getPosition().euclideanDistance(position) <= radius) return selectedType.name(); // fallback
 
         return closestCity.getName() + " " + selectedType.name();
     }

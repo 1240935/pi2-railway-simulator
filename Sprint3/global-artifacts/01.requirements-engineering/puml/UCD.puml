@@ -1,0 +1,39 @@
+@startuml
+
+left to right direction
+
+actor Editor
+actor Player
+
+usecase "US001 - Create a Map" as US001
+usecase "US002 -Place an Industry" as US002
+usecase "US003- Add a City" as US003
+usecase "US004 - Create a Scenario" as US004
+usecase "US005 - Build a Station" as US005
+usecase "US006 - Upgrade a Station" as US006
+usecase "US007 - View Station Details" as US007
+usecase "US008 - Build a Railway" as US008
+usecase "US009 - Buy a Locomotive" as US009
+usecase "US010 - Route Selection" as US010
+usecase "US011 - List all Trains" as US011
+usecase "US012 - Simulate Cargo Generation" as US012
+usecase "US013 - Train Travel Verification" as US013
+usecase "US014 - Railway Lines Maintenance" as US014
+
+Editor -- US004
+Editor -- US003
+Editor -- US002
+Editor -- US001
+
+Player -- US011
+Player -- US010
+Player -- US009
+Player -- US008
+Player -- US007
+Player -- US006
+Player -- US005
+Player -- US012
+Player -- US013
+Player -- US014
+
+@enduml

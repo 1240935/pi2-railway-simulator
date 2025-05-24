@@ -1,0 +1,132 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as PLAYER
+participant ":CargoSimulatorUI" as UI
+participant ":CargoSimulatorController" as CTRL
+participant "Repositories" as REPOS
+participant "ScenarioRepository" as SREPOS
+participant "StationRepository" as STREPOS
+participant "Station" as STATION
+participant "Simulator" as SIM
+
+activate PLAYER
+
+     PLAYER -> UI : asks to enter simulator
+            activate UI
+
+                UI --> CTRL** : create()
+                UI -> CTRL : getListOfAvailableScenarios()
+                activate CTRL
+
+                    CTRL -> REPOS : getInstance()
+                    activate REPOS
+
+                        REPOS --> CTRL : repositories
+                    deactivate REPOS
+
+                    CTRL -> SREPOS : getListOfAvailableScenarios()
+                    activate SREPOS
+
+                        SREPOS --> CTRL : list of available scenarios
+                    deactivate SREPOS
+
+                    CTRL --> UI : list of available scenarios
+                deactivate CTRL
+
+            UI --> PLAYER : shows the list of available scenarios
+            deactivate UI
+
+            PLAYER -> UI : selects a scenario
+            activate UI
+
+                UI -> CTRL : setScenario(scenario)
+                activate CTRL
+
+                    CTRL --> UI : scenario selected
+                deactivate CTRL
+
+                UI -> CTRL : getListOfAvailableRoutes()
+                activate CTRL
+
+                    CTRL -> SREPOS : getListOfAvailableRoutes()
+                    activate SREPOS
+
+                        SREPOS --> CTRL : list of available routes
+                    deactivate SREPOS
+
+                    CTRL --> UI : list of available routes
+                deactivate CTRL
+
+            UI --> PLAYER : shows list of available routes
+            deactivate UI
+
+            PLAYER -> UI : selects routes
+            activate UI
+
+            UI --> PLAYER : asks for the days of the simulation
+            deactivate UI
+    PLAYER -> UI : types the days of the simulation
+            activate UI
+
+                UI -> CTRL : setDays(days)
+                activate CTRL
+
+                    CTRL --> UI : days selected
+                deactivate CTRL
+
+    loop number of days
+
+                UI -> CTRL : simulateDay(day)
+                activate CTRL
+
+                    CTRL -> SIM : simulateDay(day)
+                    activate SIM
+
+                        SIM -> SIM : addCargoToStation(station, route)
+
+                        SIM -> SIM : deliverCargoToStation(station)
+
+                        SIM -> SIM : pickupCargoFromStation(route, station)
+
+
+                    SIM --> CTRL : finish simulation
+                    deactivate SIM
+
+                    CTRL --> UI : finish simulation
+                deactivate CTRL
+
+                UI --> PLAYER : asks if the player wants to continue
+            deactivate UI
+
+    alt continue
+            PLAYER -> UI : continue simulation
+            activate UI
+    end alt
+    end loop
+    alt stop
+            PLAYER -> UI : stop simulaton
+
+    end alt
+                UI -> CTRL : getSimulationSummary(player)
+                activate CTRL
+
+                    CTRL -> SIM : getSimulationSummary(player)
+                    activate SIM
+
+                    SIM --> CTRL : summary data
+                    deactivate SIM
+
+                    CTRL --> UI : simulation summary
+                deactivate CTRL
+
+            UI --> PLAYER : shows the simulation summary
+            deactivate UI
+
+    deactivate PLAYER
+
+@enduml

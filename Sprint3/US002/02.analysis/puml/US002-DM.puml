@@ -1,0 +1,46 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Editor {
+    name
+    password
+}
+
+class Map {
+    size
+    name
+}
+
+class Industry {
+}
+
+class IndustryType{
+    importation
+    exportation
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+class ResourceType{
+    value
+}
+
+Editor "1" -- "*" Map: creates >
+Map "1" -- "*" Industry: contains >
+Position "1" -- "1" Industry: has <
+Industry "1" -- "1" IndustryType: has >
+IndustryType "1" -- "2" ResourceType : has >
+
+@enduml

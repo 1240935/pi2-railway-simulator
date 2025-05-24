@@ -1,0 +1,54 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+hide circle
+hide methods
+
+left to right direction
+
+class Map {
+    name
+    size
+}
+
+class City {
+    name
+    supply
+    demand
+}
+
+class ResourceType{
+    value
+}
+
+class CityBlock{
+}
+
+class Editor {
+    username
+    password
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+
+
+Map "1" -- "*" City : contains >
+Editor "1" -- "*" Map : creates >
+City "1" -- "1..*" CityBlock: contains >
+Position "1" -- "1" City: has <
+Position "1" -- "1" CityBlock: has <
+City "1" -- "2" ResourceType: has >
+
+
+@enduml

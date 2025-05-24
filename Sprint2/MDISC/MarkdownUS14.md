@@ -79,17 +79,17 @@ for (Station current : stations) {
 - If the degree is odd, the station is added to the `oddDegreeStations` list.
 
 ```
-for station in graph.stations:
-    degree = count of lines connected to station
-    if degree is odd:
-        oddStations.add(station)
-
-if oddStations.size == 0:
-    return all stations  // Eulerian circuit
-elif oddStations.size == 2:
-    return oddStations   // Eulerian path
-else:
-    return null          // Not possible
+// Determine possible starting stations based on the number of odd-degree nodes
+if (oddDegreeStations.isEmpty()) {
+// Eulerian circuit: any station can be a start
+     return stations;
+} else if (oddDegreeStations.size() == 2) {
+  // Eulerian path: must start at one of the odd-degree stations
+    return oddDegreeStations;
+} else {
+  // No Eulerian path is possible
+    return null;
+}
 ```
 
 This determines the correct set of starting stations (or null) based on the number of stations with odd degrees.

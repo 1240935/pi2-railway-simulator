@@ -9,13 +9,13 @@
 | Step 1         | ... interacting with the actor?                       | CreateMapUI         | Pure Fabrication: no existing domain class is responsible for interaction; UI class handles user-facing interactions. |
 |                | ... coordinating the US?                              | CreateMapController | Controller : Coordinates the use case by delegating responsibilities to domain or fabricated classes.                 |
 |                | ... knowing the user using the system?                | Editor              | IE: knows its own data (e.g. username, password)                                                                      |
-| Step 2         | ... requesting the map name and size?                 | CreateMapUI         | IE: responsible for managing the user input flow.                                                                     |
+|                | ... requesting the map name and size?                 | CreateMapUI         | IE: responsible for managing the user input flow.                                                                     |
 | Step 3         | ... saving the inputted map data (name and size)?     | CreateMapUI         | IE: responsible for temporarily storing data until confirmation.                                                      |
 | Step 4         | ... confirming user input and submitting the request? | CreateMapUI         | IE: is responsible for user interactions.                                                                             |
-| Step 5         | ... checking if a map name already exists?            | MapRepository       | IE: responsible for managing persistence and access to stored Maps.                                                   |
-| Step 6         | ... creating a new Map?                               | Map                 | Creator: the Map class is the one whose instances are being created.                                                  |              
-| Step 7         | ... saving the newly created Map?                     | MapRepository       | IE: responsible for persisting domain entities.                                                                       |
-| Step 8         | ... informing operation success?                      | CreateMapUI         | IE: responsible for output to the actor (Editor).                                                                     | 
+|                | ... checking if a map name already exists?            | MapRepository       | IE: responsible for managing persistence and access to stored Maps.                                                   |
+| Step 5         | ... creating a new Map?                               | Map                 | Creator: the Map class is the one whose instances are being created.                                                  |              
+|                | ... saving the newly created Map?                     | MapRepository       | IE: responsible for persisting domain entities.                                                                       |
+| Step 6         | ... informing operation success?                      | CreateMapUI         | IE: responsible for output to the actor (Editor).                                                                     | 
 
 ### Systematization ##
 
@@ -27,6 +27,8 @@ Other software classes (i.e. Pure Fabrication) identified:
 
 * CreateMapUI
 * CreateMapController
+* Repositories
+* MapRepository
 
 
 ## 3.2. Sequence Diagram (SD)

@@ -1,0 +1,101 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+
+class SimulatorUI{
+}
+
+class SimulatorController {
+  + SimulatorController()
+  + setPlayer(player)
+  + startSimulation()
+  + getAvailableRouteDescriptions()
+  + getAvailableScenarios()
+  + getAvailableScenarioDescriptions()
+  + setScenario(index)
+  + selectRoutesByIndexes(indexes)
+  + simulateDay(day)
+  + addCargoToStation(station, route)
+    + deliverCargoToStation(station)
+    + pickupCargoFromStation(route, station)
+  + getSimulationSummary()
+}
+
+class Simulator {
+  - routes : List<Route>
+  - player : Player
+  - scenario : Scenario
+  + Simulator(routes, player, scenario)
+  + simulateDay(day)
+  + addCargoToStation(station, route)
+  + deliverCargoToStation(station)
+  + pickupCargoFromStation(route, station)
+  + getSimulationSummary(player)
+}
+
+class Scenario {
+  -map: Map
+         -year: int
+         -locomotiveTypes: List<LocomotiveType>
+         -industryTypes: List<IndustryType>
+         -importation: List<ResourceType>
+         -exportation: List<ResourceType>
+         -changers: List<IndustryChanger>
+  + getRoutes()
+}
+
+class Route {
+  - startingStation: Station
+  - endingStation: Station
+  - stops: List<Station>
+  - locomotive: Locomotive
+  - cargos: List <Cargos>
+  + getRouteStations()
+  + toString()
+}
+
+class Station {
+  - name: String
+  - center: StationCenter
+  - position: Position
+  - type: StationType
+  - building: BuildingType
+  - demands: List<Cargo>
+  - supplies: List<Cargo>
+  + getSupplies()
+  + getDemands()
+}
+
+class Cargo {
+  - type: ResourceType
+  - quantity : int
+  + setQuantity(quantity)
+}
+
+class Repositories {
+  + getInstance()
+  + getScenarioRepository()
+}
+
+class ScenarioRepository {
+  + getScenarios()
+}
+
+SimulatorUI ..> SimulatorController
+
+SimulatorController ..> Simulator
+SimulatorController ..> Scenario
+SimulatorController ..> Route
+SimulatorController ..> Repositories
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" ScenarioRepository : scenario repository
+ScenarioRepository --> "*" Scenario : scenarios
+Scenario --> "*" Route : routes
+Route --> "*" Station : stations
+Station --> "*" Cargo : cargos
+
+@enduml

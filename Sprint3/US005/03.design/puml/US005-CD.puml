@@ -1,0 +1,109 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+class BuildStationUI {
+}
+
+class BuildStationController {
+  +BuildStationController()
+  +getAvailableScenarios()
+  +getAvailableScenariosDescriptions()
+  +setScenario(scenario)
+  +createPosition(xCoordinate, yCoordinate)
+  +getMap(Scenario)
+  +checkCoordinates(xCoordinate, yCoordinate)
+  +getClosestCity(position)
+  +getRecommendedName(xCoordinate, yCoordinate)
+  +getAvailableStationTypes()
+  +setType(type)
+  +isSelectedTypeStation()
+  +getName(city)
+  +setName(name)
+  +determineStationCargoes(xCoordinate, yCoordinate)
+  +setGeometricCenter()
+  +setCompassCenter(compassCoord)
+  +setPosition(xCoordinate, yCoordinate)
+  +getPlayer()
+  +setPlayer(player)
+  +getSelectedType()
+  +createStation(xCoordinate, yCoordinate)
+}
+
+class Repositories {
+      - Repositories()
+      + getInstance()
+      + getScenarioRepository()
+ }
+
+class City {
+  - position: Position
+  - name: String
+  - blocks: List <CityBlocks>
+  +getName()
+  +getPosition()
+}
+
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
+       -changers: List<IndustryChanger>
+}
+
+class Position {
+  -xCoordinate : int
+  -yCoordinate : int
+  +Position(xCoordinate, yCoordinate)
+}
+
+enum StationType {
+  Depot
+  Terminal
+  Station
+  --
+  radius : int
+  cost : int
+}
+
+class ScenarioRepository {
+  +getScenarioRepository()
+  +getScenario(scenario)
+}
+
+class Station{
+    -name : String
+    -position : Position
+    -type : StationType
+    -center : StationCenter
+    -building: Building
+    -demands: List<Cargo>
+    -supplies: List<Cargo>
+    +Station(name,position,type,center)
+}
+
+BuildStationUI ..> BuildStationController
+BuildStationController ..> ScenarioRepository
+BuildStationController ..> Scenario
+BuildStationController ..> StationType
+BuildStationController ..> Repositories
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories -> "1" Repositories : instance
+ScenarioRepository --> "1..*" Scenario  : scenario
+Scenario --> "1..*" City : city
+Scenario --> "*" Station : station
+City --> "1" Position : position
+Station --> "1" Position : position
+Station --> "1" StationType : station type
+
+@enduml

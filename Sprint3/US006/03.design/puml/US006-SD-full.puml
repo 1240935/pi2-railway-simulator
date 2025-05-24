@@ -1,0 +1,144 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+ actor "Player" as PLAYER
+    participant ":UpgradeStationUI" as UI
+    participant ":UpgradeStationController" as CTRL
+    participant "Repositories" as REPOS
+    participant "ScenarioRepository" as SREPOS
+    participant "StationRepository" as STREPOS
+    participant "BuildingTypeRepository" as BTYPEREPOS
+    participant "Building" as BUILDING
+    participant "Station" as STATION
+
+    activate PLAYER
+
+    PLAYER -> UI : asks to upgrade a station
+    activate UI
+
+    UI --> CTRL** : create()
+
+    UI -> CTRL : getAvailableScenarioNames()
+    activate CTRL
+
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+    REPOS --> CTRL: repositories
+
+    deactivate REPOS
+
+    CTRL -> SREPOS : getScenarios()
+    activate SREPOS
+
+    SREPOS --> CTRL : list of scenarios
+
+    deactivate SREPOS
+    CTRL --> UI : list of scenarios
+    deactivate CTRL
+
+    UI --> PLAYER : shows the list of scenarios
+    deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+
+    UI -> CTRL :setScenarioByIndex(index)
+
+    activate CTRL
+
+    CTRL --> UI : scenario selected
+
+    deactivate CTRL
+
+
+        UI -> CTRL : getAvailableStationNames()
+        activate CTRL
+
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+
+        deactivate REPOS
+
+        CTRL -> STREPOS : getStations()
+        activate STREPOS
+
+        STREPOS --> CTRL : list of stations
+
+        deactivate STREPOS
+        CTRL --> UI : list of stations
+        deactivate CTRL
+
+        UI --> PLAYER : shows the list of stations
+        deactivate UI
+
+        PLAYER -> UI : selects a station
+        activate UI
+
+        UI -> CTRL :setStationByIndex(index)
+
+        activate CTRL
+
+        CTRL --> UI : station selected
+
+        deactivate CTRL
+
+        UI -> CTRL : getAvailableBuildingNames()
+
+
+                activate CTRL
+
+                        CTRL -> REPOS : getInstance()
+                        activate REPOS
+
+                        REPOS --> CTRL: repositories
+
+                        deactivate REPOS
+
+                CTRL -> BTYPEREPOS : getAvailableBuildingTypes()
+                activate BTYPEREPOS
+
+                BTYPEREPOS --> CTRL : list of building types
+
+                deactivate BTYPEREPOS
+                CTRL --> UI : list of building types
+                deactivate CTRL
+
+                UI --> PLAYER : shows the list of building types
+                deactivate UI
+
+                PLAYER -> UI : selects a building type
+                activate UI
+
+                UI -> CTRL :setBuildingTypeByIndex(index)
+
+                activate CTRL
+
+                CTRL --> UI : type selected
+
+                deactivate CTRL
+
+    UI --> PLAYER: shows all data and requests \n for confirmation
+    deactivate UI
+
+    PLAYER --> UI: confirms data
+    activate UI
+
+    UI -> CTRL : createAndSetBuilding()
+    activate CTRL
+
+    CTRL -> BUILDING** : create()
+
+    CTRL --> UI : building
+    deactivate CTRL
+
+    UI --> PLAYER : displays operation success
+    deactivate UI
+    deactivate PLAYER
+@enduml

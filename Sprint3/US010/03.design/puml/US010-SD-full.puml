@@ -1,0 +1,139 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+autonumber
+
+actor "Player" as PLAYER
+participant ":AssignRouteUI" as UI
+participant ":AssignRouteController" as CTRL
+participant "Repositories" as REPOS
+participant "ScenarioRepository" as SREPOS
+participant "Scenario" as SCENARIO
+participant "Station" as STATION
+participant "Route" as ROUTE
+
+activate PLAYER
+
+PLAYER -> UI : asks to assign a train to a route
+activate UI
+
+UI -> CTRL** : create()
+
+UI -> CTRL : getAvailableScenarios()
+activate CTRL
+
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
+
+CTRL -> SREPOS : getScenarios()
+activate SREPOS
+SREPOS --> CTRL : list of scenarios
+deactivate SREPOS
+
+CTRL -> SCENARIO : getAvailableScenarioNames()
+activate SCENARIO
+
+SCENARIO --> CTRL: scenario names
+deactivate SCENARIO
+CTRL --> UI : list of scenario names
+deactivate CTRL
+
+UI --> PLAYER : shows list of scenarios
+deactivate UI
+
+PLAYER -> UI : selects a scenario
+activate UI
+UI -> CTRL : setSelectedScenario(scenario)
+activate CTRL
+CTRL --> UI : scenario selected
+deactivate CTRL
+
+UI -> CTRL : getAvailableLocomotives()
+activate CTRL
+CTRL -> SCENARIO : getLocomotives()
+activate SCENARIO
+
+SCENARIO --> CTRL: list of locomotive
+deactivate SCENARIO
+CTRL --> UI : list of locomotives
+deactivate CTRL
+
+UI --> PLAYER : shows list of locomotives
+deactivate UI
+
+PLAYER -> UI : selects a locomotive
+activate UI
+UI -> CTRL : setSelectedLocomotive(locomotive)
+activate CTRL
+CTRL --> UI : locomotive selected
+deactivate CTRL
+
+UI -> CTRL : getAvailableStations()
+activate CTRL
+
+CTRL -> SCENARIO : getStations()
+
+activate SCENARIO
+
+SCENARIO --> CTRL: list of stations
+deactivate SCENARIO
+
+loop Selecting stations
+    UI --> PLAYER : shows list of stations
+    deactivate UI
+
+    PLAYER -> UI : selects a station
+    activate UI
+
+    UI -> CTRL : addStation(station)
+
+    CTRL --> UI : station added
+end loop
+
+UI -> CTRL : getSupply()
+
+CTRL -> SCENARIO : getStations()
+
+activate SCENARIO
+
+SCENARIO --> CTRL: list of stations
+deactivate SCENARIO
+CTRL -> STATION: getSupply()
+
+activate STATION
+
+STATION --> CTRL: list of supplies
+deactivate STATION
+CTRL --> UI: list of supplies
+deactivate CTRL
+UI --> PLAYER : shows available cargo
+
+deactivate UI
+
+PLAYER -> UI : selects cargo
+activate UI
+
+UI -> CTRL : selectCargoByIndex(index)
+activate CTRL
+
+CTRL --> UI : cargo selected
+deactivate CTRL
+
+UI --> PLAYER: shows all data and requests confirmation
+deactivate UI
+
+PLAYER -> UI: confirms data
+activate UI
+
+UI -> CTRL : createRoute(firstStation, lastStation, selectedLocomotive, selectedCargo)
+activate CTRL
+CTRL -> ROUTE** : create(firstStation, lastStation, selectedLocomotive, selectedCargo)
+CTRL --> UI : route created
+deactivate CTRL
+
+UI --> PLAYER : displays operation success
+deactivate UI
+deactivate PLAYER
+@enduml

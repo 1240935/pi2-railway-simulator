@@ -1,0 +1,85 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as PLAYER
+participant ":StationListUI" as UI
+participant ":StationListController" as CTRL
+participant "Repositories" as REPOS
+participant ":ScenarioRepository" as SCEN_REPOS
+participant ":MapRepository" as MAP_REPOS
+participant "Map" as MAP
+participant "Station" as STATION
+participant "StationDetails" as DETAILS
+participant "Building" as BUILDING
+participant "CargoInfo" as CARGOINFO
+participant "Cargo" as CARGO
+
+activate PLAYER
+
+    PLAYER -> UI : asks to see stations
+    activate UI
+        UI --> CTRL** : create()
+        UI -> CTRL : getAvailableScenarioDescriptions()
+            activate CTRL
+            CTRL -> REPOS : getInstance()
+                activate REPOS
+                REPOS --> CTRL : repositories
+                deactivate REPOS
+            CTRL -> SCEN_REPOS : getScenarioList()
+                activate SCEN_REPOS
+                SCEN_REPOS --> CTRL : list of scenarios
+                deactivate SCEN_REPOS
+            CTRL --> UI : availableScenarios
+            deactivate CTRL
+
+        UI --> PLAYER : shows available scenarios
+    deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+        UI -> CTRL : setScenario(Index)
+        activate CTRL
+        CTRL -> MAP_REPOS : getMapRepository()
+            activate MAP_REPOS
+            MAP_REPOS --> CTRL : mapRepository
+            deactivate MAP_REPOS
+        CTRL -> MAP : getAvailableStationNames()
+            activate MAP
+            MAP --> CTRL : stations
+            deactivate MAP
+        CTRL --> UI : list of stations
+        deactivate CTRL
+        UI --> PLAYER : shows list of stations
+    deactivate UI
+
+    PLAYER -> UI : selects a station
+    activate UI
+        UI -> CTRL : setStation(stationId)
+        activate CTRL
+        CTRL -> MAP : getStations()
+            activate MAP
+            MAP --> CTRL : stations
+            deactivate MAP
+        CTRL -> STATION : getDetails()
+        activate STATION
+        STATION -> BUILDING : getBuildingDetailsString(index)
+        STATION -> CARGOINFO : getCargoInfo(index)
+        activate CARGOINFO
+        CARGOINFO -> CARGO : getDemand()
+        CARGOINFO -> CARGO : getSupply()
+        deactivate CARGOINFO
+        STATION --> CTRL : station details
+        deactivate STATION
+        CTRL -> DETAILS** : create(station)
+        CTRL --> UI : station details
+        deactivate CTRL
+
+        UI --> PLAYER : shows station details and success
+    deactivate UI
+
+deactivate PLAYER
+@enduml

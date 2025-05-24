@@ -1,0 +1,61 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Locomotive {
+    iD
+}
+
+class LocomotiveModel{
+    power
+    acceleration
+    topSpeed
+    operationStartYear
+    fuelCost
+    maintenancePYear
+    cost
+}
+
+class LocomotiveType{
+}
+
+class Player {
+    name
+    password
+    budget
+}
+
+
+class Scenario {
+    importation
+    exportation
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+Player "*" -- "1" Scenario : selects >
+Player "1" -- "1..*" Locomotive: buys  >
+Locomotive "1" -- "1" LocomotiveType: has >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+LocomotiveModel "*" -- "1" LocomotiveType: has >
+
+
+
+
+@enduml

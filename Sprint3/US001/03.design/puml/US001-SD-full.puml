@@ -1,0 +1,76 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+'hide footbox
+
+    actor "Editor" as EDITOR
+    participant ":CreateMapUI" as UI
+    participant ":CreateMapController" as CTRL
+    participant "Repositories" as REPOS
+    participant ":MapRepository" as MAP_REPO
+    participant "Map" as MAP
+
+    activate EDITOR
+
+        EDITOR -> UI : asks to create a map
+        activate UI
+            UI --> CTRL** : create()
+
+            UI -> CTRL : getMap()
+            activate CTRL
+              CTRL -> REPOS : getInstance()
+              activate REPOS
+                REPOS --> CTRL: repositories
+              deactivate REPOS
+                CTRL -> MAP_REPO : getMapRepository()
+              activate MAP_REPO
+                MAP_REPO --> CTRL: mapRepository
+              deactivate MAP_REPO
+                CTRL --> UI : mapRepository
+            deactivate CTRL
+
+            UI --> EDITOR : asks for a size and a name
+        deactivate UI
+
+        EDITOR -> UI :  types a size and a name
+        activate UI
+
+            UI -> CTRL: checkSize(size)
+            activate CTRL
+                CTRL --> UI : valid size
+                deactivate CTRL
+            UI -> CTRL: setSize(size)
+            activate CTRL
+                CTRL --> UI : size
+            deactivate CTRL
+            UI -> CTRL: checkName(name)
+            activate CTRL
+                CTRL --> UI : valid name
+            deactivate CTRL
+            UI -> CTRL: setName(name)
+            activate CTRL
+            CTRL --> UI: name
+            deactivate CTRL
+
+            UI --> EDITOR : displays the data and asks for confirmation
+
+        deactivate UI
+
+        EDITOR -> UI : confirms data
+        activate UI
+
+            UI -> CTRL : createMap(size, name)
+            activate CTRL
+                CTRL -> MAP**: create(size, name)
+
+                CTRL --> UI : map
+                deactivate CTRL
+            UI --> EDITOR : displays operation success
+        deactivate UI
+
+    deactivate EDITOR
+    @enduml

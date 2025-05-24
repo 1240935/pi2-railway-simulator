@@ -1,0 +1,176 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+'hide footbox
+
+actor "Editor" as EDITOR
+participant ":CreateScenarioUI" as UI
+participant ":CreateScenarioController" as CTRL
+participant "Repositories" as REPOS
+participant ":MapRepository" as MAP_REPO
+participant "LocomotiveTypeRepository" as LOCO_REPO
+participant "IndustryTypeRepository" as IND_REPO
+participant "IndustryChangerRepository" as CHANGER_REPO
+participant "Scenario" as SCENARIO
+participant "ResourceTypeRepository" as RES_REPO
+
+
+activate EDITOR
+
+    EDITOR -> UI : asks to create a scenario
+    activate UI
+        UI --> CTRL** : create()
+
+
+        UI -> CTRL : getAvailableMapNames()
+        activate CTRL
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+            REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> MAP_REPO : getAvailableMaps()
+            activate MAP_REPO
+            MAP_REPO --> CTRL : list of maps
+            deactivate MAP_REPO
+
+        CTRL --> UI : list of maps
+        deactivate CTRL
+
+    UI --> EDITOR : shows the list of maps
+    deactivate UI
+
+    EDITOR -> UI : selects a map
+    activate UI
+    UI -> CTRL : setMap(chooseMap(maps, choice)
+    activate CTRL
+    CTRL --> UI : map selected
+    deactivate CTRL
+
+    UI --> EDITOR : asks for a year
+    deactivate UI
+
+    EDITOR -> UI : types a year
+    activate UI
+    UI -> CTRL : setYear(year)
+    activate CTRL
+    CTRL --> UI : year set
+    deactivate CTRL
+
+    UI -> CTRL : getAvailableLocomotiveTypeNames()
+    activate CTRL
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+    REPOS --> CTRL : repositories
+    deactivate REPOS
+    CTRL -> LOCO_REPO : getLocomotiveTypes()
+    activate LOCO_REPO
+    LOCO_REPO --> CTRL : list of types
+    deactivate LOCO_REPO
+    CTRL --> UI : list of locomotive types
+    deactivate CTRL
+    UI --> EDITOR : shows locomotive types
+    deactivate UI
+
+    EDITOR -> UI : selects types
+    activate UI
+    UI -> CTRL : setLocomotiveTypes(chooseLocomotiveTypes(types, choice))
+    activate CTRL
+    CTRL --> UI : types selected
+    deactivate CTRL
+
+    UI -> CTRL : getAvailableIndustryTypeNames()
+    activate CTRL
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+    REPOS --> CTRL : repositories
+    deactivate REPOS
+    CTRL -> IND_REPO : getIndustryTypes()
+    activate IND_REPO
+    IND_REPO --> CTRL : list of types
+    deactivate IND_REPO
+    CTRL --> UI : list of industry types
+    deactivate CTRL
+    UI --> EDITOR : shows industry types
+    deactivate UI
+
+    EDITOR -> UI : selects types
+    activate UI
+    UI -> CTRL : setIndustryTypes(chooseIndustryTypes(types,choice))
+    activate CTRL
+    CTRL --> UI : types selected
+    deactivate CTRL
+
+    UI -> CTRL : getAvailableImpor_ExportationNames()
+        activate CTRL
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+        REPOS --> CTRL : repositories
+        deactivate REPOS
+        CTRL -> RES_REPO : getResourceTypes()
+        activate RES_REPO
+        RES_REPO --> CTRL : list of types
+            deactivate RES_REPO
+            CTRL --> UI : list of resource types
+            deactivate CTRL
+            UI --> EDITOR : shows resource types and asks to choose \n importation
+            deactivate UI
+
+    EDITOR -> UI : types importation availability and resources
+    activate UI
+    UI -> CTRL : setImportation(chooseImportation(types,choice)
+    activate CTRL
+    CTRL --> UI : importation
+    deactivate CTRL
+
+    UI --> EDITOR : asks for exportation availability and resources
+        deactivate UI
+        EDITOR -> UI : types exportation availability and resources
+        activate UI
+        UI -> CTRL : setExportation(chooseExportation(types,choice)
+        activate CTRL
+        CTRL --> UI : exportation
+        deactivate CTRL
+
+    UI -> CTRL : getAvailableIndustryChangerNames()
+    activate CTRL
+    CTRL -> REPOS : getInstance()
+                            activate REPOS
+                            REPOS --> CTRL : repositories
+                            deactivate REPOS
+    CTRL -> CHANGER_REPO : getIndustryChangers()
+    activate CHANGER_REPO
+    CHANGER_REPO --> CTRL : list of changers
+    deactivate CHANGER_REPO
+    CTRL --> UI : list of changers
+    deactivate CTRL
+    UI --> EDITOR : shows industry changers
+    deactivate UI
+
+    EDITOR -> UI : selects changers
+    activate UI
+    UI -> CTRL : setIndustryChangers(chooseChangers(changers, choice))
+    activate CTRL
+    CTRL --> UI : changers selected
+    deactivate CTRL
+
+    UI --> EDITOR : shows all data and asks for confirmation
+    deactivate UI
+    EDITOR -> UI : confirms all data
+    activate UI
+
+    UI -> CTRL : createScenario()
+    activate CTRL
+    CTRL -> SCENARIO ** : create(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
+    CTRL --> UI : scenario
+    deactivate CTRL
+
+    UI --> EDITOR : displays success
+    deactivate UI
+deactivate EDITOR
+@enduml

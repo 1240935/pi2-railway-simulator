@@ -75,7 +75,7 @@ public class BuildStationUI {
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
 
-        if (!controller.checkCoordinates(x, y)) {
+        if (!controller.checkOverbuilding(x, y)) {
             System.out.println("Invalid position for current map. Exiting.");
             return;
         }

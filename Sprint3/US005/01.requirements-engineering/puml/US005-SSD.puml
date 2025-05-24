@@ -1,0 +1,71 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Player
+participant "System" as System
+
+activate Player
+
+    Player -> System : asks to build a station
+    activate System
+
+    System --> Player : shows the list of available scenarios
+    deactivate System
+
+    Player -> System : selects a scenario
+    activate System
+
+    System --> Player : asks for the XY coordinates
+    deactivate System
+
+    Player -> System : types the XY coordinates
+    activate System
+
+    System --> Player : checks if the coordinates selected are occupied \n and recommends a name based on the closest city
+    deactivate System
+
+    System --> Player: shows the list of available types
+    deactivate System
+
+    Player -> System : selects a type from the available ones
+    activate System
+
+    alt Depot or Terminal
+
+    else Station
+
+        System --> Player: determines cargo demands and supplies and asks for the center\n compass coordinate as the geometric one
+
+    end alt
+
+
+     System --> Player: recommends a name based on the closest city
+
+     deactivate System
+
+    alt recommended name
+
+        Player -> System : selects the recommended name
+        activate System
+
+        else typed name
+
+        Player -> System : types a different name
+
+        end alt
+
+        System --> Player : shows all data for confirmation
+        deactivate System
+
+        Player -> System : confirms data
+        activate System
+
+        System --> Player : builds the station and displays success
+        deactivate System
+
+
+@enduml

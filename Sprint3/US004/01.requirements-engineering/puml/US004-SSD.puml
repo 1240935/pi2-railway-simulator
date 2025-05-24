@@ -1,0 +1,66 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Editor" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to create a scenario for a map
+    activate System
+
+        System --> Employee : shows the list of available maps
+    deactivate System
+
+    Employee -> System : selects a map
+    activate System
+
+    System --> Employee : asks for a year for the scenario to take place
+    deactivate System
+
+    Employee -> System : types a year
+    activate System
+
+    System --> Employee : shows the list of locomotive types and asks to \n choose the ones that will be available in the scenario
+    deactivate System
+
+    Employee -> System : selects the wanted locomotive types
+    activate System
+
+    System --> Employee : shows the list of industry types and asks to \n choose the ones that will be available in the scenario
+    deactivate System
+
+    Employee -> System : selects the wanted industry types
+    activate System
+
+    System --> Employee : shows list of resources and asks for \nimportation availability in ports
+    deactivate System
+
+    Employee -> System :  types importation availability and resources to import
+    activate System
+
+    System --> Employee : shows list of resources and asks for \nexportation availability in ports
+        deactivate System
+
+        Employee -> System : types exportation availability and resources to export
+        activate System
+
+    System --> Employee : shows the list of industry changers and asks to \n choose the ones that will affect the scenario
+    deactivate System
+
+    Employee -> System : selects the wanted industry changers
+    activate System
+
+    System --> Employee : shows all data and asks for confirmation
+    deactivate System
+
+    Employee -> System : confirms all data
+    activate System
+
+    System --> Employee : creates the scenario and displays success
+    deactivate System
+@enduml

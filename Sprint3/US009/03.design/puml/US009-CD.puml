@@ -1,0 +1,155 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
+
+skinparam classAttributeIconSize 0
+
+'left to right direction
+
+class BuyLocomotiveUI{
+}
+
+class BuyLocomotiveController {
+  + BuyLocomotiveController()
+  + getAvailableScenarios()
+  + setScenario(scenario)
+  + getAvailableScenarioDescriptions()
+  + chooseScenarioByIndex(index)
+  + getSelectedModel()
+  + chooseModelByIndex(index)
+  + getPlayer()
+  + setPlayer(player)
+  + getAvailableModelDescriptions()
+  + getAvailableLocomotiveModels()
+  + setModel(model)
+  + createLocomotive()
+}
+
+class Repositories {
+  + getInstance()
+  + getScenarios()
+  + getLocomotiveModels()
+  + getLocomotives()
+}
+
+class ScenarioRepository {
+  + getScenarios()
+}
+
+class LocomotiveModelRepository {
+  + getLocomotiveModels()
+}
+
+class LocomotiveRepository {
+  + nextID()
+}
+
+class Scenario {
+       -map: Map
+       -year: int
+       -locomotiveTypes: List<LocomotiveType>
+       -industryTypes: List<IndustryType>
+       -importation: List<ResourceType>
+       -exportation: List<ResourceType>
+       -changers: List<IndustryChanger>
+       +addLocomotive(locomotive)
+ }
+
+enum LocomotiveModel{
+    TREVITHICK_1
+    STEPHENSON_ROCKET
+    JOHN_BULL
+    DEWITT_CLINTON
+    PRUSSIAN
+    AMERICAN_C
+    IRON_DUKE
+    A3
+    EIGHT_WHEELER
+    VULCAN
+    CONSOLIDATION
+    TRUCK_SHAY
+    MASTODON
+    TEN_WHEELER
+    MOGUL
+    BOBO
+    ATLANTIC
+    CAMELBACK
+    PACIFIC
+    CLASS_G10
+    PRAIRIE
+    D16SB
+    CLASS_13H
+    USRA
+    MIKADO
+    BE_II
+    CLASS_B12
+    EE
+    CLASS_1045
+    USRA_II
+    CLASS_A4_MALLARD
+    GG1
+    CLASS_E18
+    HUDSON
+    DAYLIGHT
+    J3A_STREAMLINER
+    AE
+    CLASS_1020
+    BIG_BOY
+    T1
+    F3AB
+    ALCO_PA1
+    F9
+    GP9
+    E69
+    TGVX_TSC
+    GP18
+    V200
+    PENN_E44
+    CLASS_55_DELTIC
+    SHINKANSEN_BULLET
+    FP45
+    SD45
+    SDP40
+    E60CP
+    TGV_TSC
+    CLASS_E111
+    E656_FS
+    DASH_9
+    AMD_103
+    THALYS_BULLET
+    EUROSTAR_TSC
+    CLASS_232
+    DB18_201_TSC
+    BRENNER_TSC
+    MAG_LEV_TBX_1
+
+}
+
+class Locomotive {
+  - iD: int
+  - model: LocomotiveModel
+  + Locomotive(model, iD)
+}
+
+BuyLocomotiveUI ..> BuyLocomotiveController
+BuyLocomotiveController ..> Scenario
+BuyLocomotiveController ..> LocomotiveModel
+BuyLocomotiveController ..> Locomotive
+BuyLocomotiveController ..> Repositories
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" ScenarioRepository : scenario repository
+Repositories --> "1" LocomotiveModelRepository : locomotive model repository
+Repositories --> "1" LocomotiveRepository : locomotive repository
+ScenarioRepository --> Scenario : scenario
+
+Scenario --> "*" Locomotive: locomotive
+LocomotiveModelRepository --> "*" LocomotiveModel : locomotive model
+LocomotiveRepository --> "*" Locomotive: locomotive
+Locomotive --> "1" LocomotiveModel: model
+
+
+@enduml

@@ -1,0 +1,232 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Player {
+    username
+    password
+    budget
+}
+
+class Editor {
+    username
+    password
+}
+
+class Map {
+    size
+    name
+    scale
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+class Station {
+    name
+    capacity
+    centre
+}
+
+class StationType{
+    radius
+    cost
+}
+
+class Building {
+}
+
+class BuildingType {
+    cost
+    upgrade
+}
+
+class Industry {
+}
+
+class IndustryType{
+    importation
+    exportation
+}
+
+class ResourceType{
+    value
+}
+
+class Scenario {
+    importation
+    exportation
+}
+
+class City {
+    name
+    supply
+    demand
+}
+
+class CityBlock{
+}
+
+class Railway{
+    start
+    end
+}
+
+class RailwayType{
+    cost
+    electrification
+}
+
+class Cargo {
+    quantity
+}
+
+class Locomotive {
+    iD
+}
+
+class LocomotiveModel{
+    power
+    acceleration
+    topSpeed
+    operationStartYear
+    fuelCost
+    maintenancePYear
+    cost
+}
+
+class LocomotiveType{
+}
+
+class Route {
+}
+
+class Simulator{
+    status
+    totalGenerated
+    totalSupplied
+    totalDelivered
+}
+
+class Train {
+}
+
+class Carriage{
+}
+
+class HistoricalRestriction{
+}
+
+class TimeRestriction{
+    year
+}
+
+class TechnologicalRestriction{
+}
+
+class IndustryChanger{
+    effect
+}
+
+class CargoStatus{
+    supply
+    demand
+}
+
+class PointofRoute{
+    quantity
+    mode
+}
+
+
+Editor "1" -- "*" Map : creates >
+Editor "1" -- "*" Scenario : creates >
+
+Player "*" -- "1" Scenario : selects >
+Player "1" -- "*" Station : builds >
+Player "1" -- "*" Route : creates >
+Player "1" -- "*" Railway : builds >
+Player "1" -- "*"  Cargo : selects >
+Player "1" -- "1..*" Locomotive : buys >
+Player "1" -- "1" Simulator: controls >
+
+Simulator "1" -- "*" Cargo: generates >
+Simulator "1" -- "1..*" Route: has >
+Simulator "1" -- "1" Scenario: uses >
+
+Map "1" -- "*" Industry : contains >
+Map "1" -- "*" City : contains >
+
+Position "1" -- "1" City: has <
+Position "1" -- "1" Industry: has <
+Position "1" -- "1" Station: has <
+Position "1" -- "1" Railway: has <
+Position "1" -- "1" CityBlock: has <
+
+City "1" -- "1..*" CityBlock: contains >
+
+CityBlock "1" -- "*" Cargo: consumes >
+
+Industry "1" -- "1" IndustryType: has >
+Industry "1" -- "1" ResourceType: has >
+Industry "1" -- "*" Cargo: produces >
+
+Scenario "*" -- "1" Map : uses >
+Scenario "1" -- "*" HistoricalRestriction: includes >
+Scenario "1" -- "*" TechnologicalRestriction: includes >
+Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" Station: has >
+Scenario "1" -- "*" Building: has >
+Scenario "1" -- "*" Route: has >
+Scenario "1" -- "*" Locomotive: has >
+
+HistoricalRestriction "1" -- "*" IndustryChanger: has >
+IndustryChanger "1" -- "*" Industry: affects >
+
+TimeRestriction "1" -- "*" BuildingType: affects >
+TimeRestriction "1" -- "*" LocomotiveModel: affects >
+
+TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
+TechnologicalRestriction "1" -- "*" IndustryType: affects >
+
+Station "1" -- "*" Building : upgrades with >
+Station "1" -- "*" Cargo : stores >
+Station "1" -- "1" StationType: has >
+Station "1" -- "1" PointofRoute: includes <
+
+Building "1" -- "1" BuildingType : has >
+
+Train "1" -- "1" Locomotive: is part of <
+Train "1" -- "*" Carriage: is part of <
+Train "1..*" -- "*" Route : assigned to >
+Train "1..*" -- "1..*" Railway: runs on >
+
+Locomotive "*" -- "1" LocomotiveModel: has >
+LocomotiveModel "1..*" -- "1" LocomotiveType: has >
+
+Carriage "1..*" -- "*" Cargo: transports >
+
+Route "*" -- "1..*" Railway: requires >
+Route "1" -- "2..*" PointofRoute: has >
+
+Railway "1..*" -- "2..*" Industry : connects >
+Railway "1..*" -- "2..*" Station : connects >
+Railway "1" -- "1" RailwayType: has >
+
+Cargo "1" -- "1" ResourceType: has >
+Cargo "1" -- "1" CargoStatus: has >
+Cargo "1" -- "1" PointofRoute: includes <
+
+
+
+@enduml

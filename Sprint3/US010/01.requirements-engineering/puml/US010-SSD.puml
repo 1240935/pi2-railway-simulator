@@ -1,0 +1,52 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to assign a train to a route
+    activate System
+
+    System --> Employee : shows the list of available scenarios
+    deactivate
+
+    Employee -> System : selects a scenario
+    activate System
+
+        System --> Employee : shows available locomotives for the assignment
+    deactivate System
+
+    Employee -> System : selects a locomotive
+    activate System
+
+    loop selecting the route's stations
+
+    System --> Employee : shows existing stations
+    deactivate System
+
+    Employee -> System : selects a station to add to the route
+    activate System
+
+    end loop
+
+    System --> Employee: checks if there are railways between all selected stations \n and shows the available cargo to be picked up
+    deactivate System
+
+    Employee -> System: selects the wanted cargo to be picked up
+    activate System
+
+    System --> Employee: shows all data for confirmation
+    deactivate System
+
+    Employee -> System : confirms all data
+    activate System
+
+    System --> Employee : creates the route and displays success
+    deactivate System
+@enduml

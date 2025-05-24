@@ -1,0 +1,42 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : asks to verify if a type of locomotive is able to travel \n between two stations of the same type
+    activate System
+
+        System --> Employee : asks for a scenario file with the stations
+    deactivate System
+
+    Employee -> System : types the file path
+    activate System
+
+    System --> Employee : asks for a scenario file with the lines
+        deactivate System
+
+    Employee -> System : types the file path
+        activate System
+
+       System --> Employee : shows the list of available locomotive types
+           deactivate System
+
+           Employee -> System : selects a locomotive type
+           activate System
+
+               System --> Employee : shows the list of available station types
+           deactivate System
+
+           Employee -> System : selects a station type
+           activate System
+
+        System --> Employee : completes verification, displays a graphical visualization of the stations \n and lines connecting them and displays success
+    deactivate System
+@enduml

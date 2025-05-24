@@ -1,0 +1,50 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Player" as Employee
+participant "System" as System
+
+activate Employee
+
+    Employee -> System : requests to start the cargo generation simulator
+    activate System
+
+    System --> Employee : shows the list of available scenarios
+    deactivate System
+
+    Employee -> System : selects a scenario
+    activate System
+
+    System --> Employee : starts cargo generation
+    deactivate System
+
+    alt simulator pause
+
+    Employee -> System : requests to pause the simulator
+    activate System
+
+    System --> Employee : pauses simulator and waits for status update
+    deactivate System
+
+    Employee -> System : requests to restart the simulator
+    activate System
+
+    System --> Employee : restarts the simulator from where it paused
+
+    end alt
+
+    System --> Employee: stops generation when the maximum is reached,\n and displays the generated cargo
+    deactivate System
+
+    Employee -> System: confirms the generation data
+    activate System
+
+    System --> Employee: displays operation success
+
+
+
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+'skinparam linetype ortho
+'left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+left to right direction
+
+class Player {
+    name
+    password
+    budget
+}
+
+class Route {
+}
+
+class Station {
+    name
+    capacity
+    center
+}
+
+class StationType{
+    radius
+    cost
+}
+
+class Railway{
+    length
+    electrification
+    cost
+}
+
+class RailwayType{
+}
+
+class Position{
+    xCoordinate
+    yCoordinate
+}
+
+
+Player "1" -- "*" Station : builds >
+Player "1" -- "*" Route : creates >
+Player "1" -- "*" Railway : builds >
+
+Position "1" -- "1" Station: has <
+Position "1" -- "1" Railway: has <
+
+Station "2..*" -- "*" Route: has <
+Station "1" -- "1" StationType: has >
+
+Railway "1" -- "1..*" Route: requires <
+Railway "1..*" -- "2..*" Station : connects >
+Railway "1" -- "1" RailwayType: has >
+
+
+@enduml

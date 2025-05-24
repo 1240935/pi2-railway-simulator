@@ -1,0 +1,194 @@
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+'hide footbox
+actor "Player" as PLAYER
+participant ":RailwayMaintenanceUI" as UI
+participant ":RailwayMaintenanceController" as CTRL
+participant "Repositories" as REPOS
+participant "StationRepository" as STREPO
+participant "LineRepository" as LINEREPO
+participant "Graph" as GRAPH
+participant "Route" as ROUTE
+participant "LocomotiveRepository" as LOCREPO
+
+autonumber
+
+activate PLAYER
+
+PLAYER -> UI : asks to do a railway line maintenance
+activate UI
+UI --> CTRL** : create()
+UI --> PLAYER : asks for a scenario file with the stations
+deactivate UI
+PLAYER -> UI :  types the file path
+activate UI
+
+UI -> CTRL : setStationFile(file)
+activate CTRL
+
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
+
+CTRL -> STREPO : loadStations(file)
+activate STREPO
+STREPO --> CTRL : list of stations
+deactivate STREPO
+CTRL --> UI : list of stations
+deactivate CTRL
+
+UI --> PLAYER : asks for a scenario file with the lines
+deactivate UI
+PLAYER -> UI : types the file path
+activate UI
+UI -> CTRL : setLineFile(file)
+activate CTRL
+CTRL -> REPOS : getInstance()
+activate REPOS
+REPOS --> CTRL : repositories
+deactivate REPOS
+CTRL -> LINEREPO : loadLines(file)
+activate LINEREPO
+LINEREPO --> CTRL : list of lines
+deactivate LINEREPO
+CTRL --> UI : list of lines
+deactivate CTRL
+
+UI --> PLAYER : asks if maintenance is full or electrified
+deactivate UI
+
+alt full maintenance
+PLAYER -> UI : chooses full maintenance
+activate UI
+UI -> CTRL : setMaintenanceType(full)
+activate CTRL
+
+CTRL -> GRAPH : buildGraph(lines)
+activate GRAPH
+GRAPH --> CTRL : graph
+deactivate GRAPH
+
+CTRL -> ROUTE : findEulerianPath(graph)
+activate ROUTE
+alt possible route
+ROUTE --> CTRL : list of start stations
+deactivate ROUTE
+CTRL --> UI : list of possible start stations
+deactivate CTRL
+
+UI --> PLAYER : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+deactivate UI
+PLAYER -> UI : selects an available station
+activate UI
+
+UI -> CTRL : setStartStation(station)
+activate CTRL
+
+CTRL --> UI : station
+deactivate CTRL
+
+UI --> PLAYER : shows all data and requests confirmation
+deactivate UI
+PLAYER -> UI : confirms all data
+activate UI
+
+UI -> CTRL : buildGraph(stations, lines)
+activate CTRL
+
+CTRL -> GRAPH : buildGraph(stations, lines)
+activate GRAPH
+
+           GRAPH --> CTRL : graph
+            deactivate GRAPH
+            CTRL --> UI : graph
+            deactivate CTRL
+
+UI --> PLAYER :displays a graphical visualization of the stations and lines \n
+deactivate CTRL
+deactivate UI
+
+
+else impossible route
+
+activate ROUTE
+ROUTE --> CTRL : no path
+deactivate ROUTE
+activate CTRL
+CTRL --> UI : show warning message
+deactivate CTRL
+activate UI
+UI --> PLAYER : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
+deactivate UI
+end alt
+
+else electrified maintenance
+PLAYER -> UI : chooses electrified maintenance
+activate UI
+UI -> CTRL : setMaintenanceType(electrified)
+activate CTRL
+
+CTRL -> LINEREPO : getElectrifiedLines(lines)
+activate LINEREPO
+LINEREPO --> CTRL : lines
+deactivate LINEREPO
+CTRL -> GRAPH : buildGraph(lines)
+activate GRAPH
+GRAPH --> CTRL : graph
+deactivate GRAPH
+
+CTRL -> ROUTE : findEulerianPath(graph)
+activate ROUTE
+alt possible route
+ROUTE --> CTRL : list of start stations
+deactivate ROUTE
+CTRL --> UI : list of possible start stations
+deactivate CTRL
+
+UI --> PLAYER : finds a route that passes once and only once by all \n railway lines and displays the stations where the route can start
+deactivate UI
+PLAYER -> UI : selects an available station
+activate UI
+UI -> CTRL : setStartStation(station)
+
+activate CTRL
+CTRL --> UI : station
+deactivate CTRL
+UI --> PLAYER : shows all data and requests confirmation
+deactivate UI
+PLAYER -> UI : confirms all data
+activate UI
+
+UI -> CTRL : buildGraph(stations, lines)
+activate CTRL
+CTRL -> GRAPH : buildGraph(stations, lines)
+activate GRAPH
+           GRAPH --> CTRL : graph
+            deactivate GRAPH
+            CTRL --> UI : graph
+            deactivate CTRL
+
+UI --> PLAYER : displays a graphical visualization of the stations and lines \n connecting them and displays operation success
+deactivate UI
+deactivate CTRL
+
+else impossible route
+activate ROUTE
+ROUTE --> CTRL : no path
+deactivate ROUTE
+activate CTRL
+CTRL --> UI : show warning message
+deactivate CTRL
+activate UI
+UI --> PLAYER : does not find a route that passes once and only once \n by all railway lines and displays a warning message \n
+deactivate UI
+end alt
+end alt
+deactivate UI
+
+@enduml

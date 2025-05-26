@@ -12,7 +12,6 @@ import java.util.Scanner;
  *  - Select a map
  *  - Choose a year for the scenario
  *  - Select locomotive types
- *  - Select industry types
  *  - Select resource importation and exportation types
  *  - Select industry changers
  *
@@ -75,15 +74,6 @@ public class CreateScenarioUI {
         }
         List<Integer> selections = controller.readIntegerSelections("Enter the locomotive's numbers (separated by space): ");
         controller.setLocomotiveTypes(controller.chooseLocomotiveTypes(controller.getAvailableLocomotivesTypes(), selections));
-
-        // Display industry types and select multiple by number
-        List<String> itypes = controller.getAvailableIndustryTypeNames();
-        System.out.println("Available industry types:");
-        for (int i = 0; i < itypes.size(); i++) {
-            System.out.println((i + 1) + ": " + itypes.get(i));
-        }
-        List<Integer> selections2 = controller.readIntegerSelections("Enter industry types numbers (separated by space): ");
-        controller.setIndustryTypes(controller.chooseIndustryTypes(controller.getAvailableIndustryTypes(), selections2));
 
         // Display resource types for importation and select multiple by number
         List<String> impor_exportypes = controller.getAvailableImpor_ExportationNames();

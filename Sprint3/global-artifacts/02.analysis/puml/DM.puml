@@ -176,7 +176,6 @@ Map "1" -- "*" City : contains >
 Position "1" -- "1" City: has <
 Position "1" -- "1" Industry: has <
 Position "1" -- "1" Station: has <
-Position "1" -- "1" Railway: has <
 Position "1" -- "1" CityBlock: has <
 
 City "1" -- "1..*" CityBlock: contains >
@@ -234,7 +233,7 @@ Railway "1" -- "1" RailwayType: has >
 
 Cargo "1" -- "1" ResourceType: has >
 Cargo "1" -- "1" CargoStatus: has >
-Cargo "1" -- "1" PointOfRoute: includes <
+Cargo "*" -- "1" PointOfRoute: includes <
 
 
 

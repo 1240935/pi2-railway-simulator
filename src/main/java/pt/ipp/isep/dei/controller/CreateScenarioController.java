@@ -16,7 +16,6 @@ public class CreateScenarioController {
     private Map selectedMap;
     private int selectedYear;
     private List<LocomotiveType> locomotiveTypes;
-    private List<IndustryType> industryTypes;
     private List<ResourceType> importation;
     private List<ResourceType> exportation;
     private List<IndustryChanger> changers;
@@ -136,8 +135,7 @@ public class CreateScenarioController {
      * @return Selected Map object.
      */
     public Map chooseMap(List<Map> maps, int choice){
-        Map map = maps.get(choice-1);
-        return map;
+        return maps.get(choice-1);
     }
 
     /**
@@ -184,25 +182,6 @@ public class CreateScenarioController {
      */
     public List<IndustryChanger> getChangers() {
         return changers;
-    }
-
-    /**
-     * Selects multiple IndustryType objects based on a list of choice indices.
-     *
-     * @param types   List of IndustryType objects to choose from.
-     * @param choices List of 1-based indices representing selected industry types.
-     * @return List of selected IndustryType objects.
-     */
-    public List<IndustryType> chooseIndustryTypes(List<IndustryType> types, List<Integer> choices) {
-        List<IndustryType> selected = new ArrayList<>();
-        for (int index : choices) {
-            if (index >= 1 && index <= types.size()) {
-                selected.add(types.get(index - 1));
-            } else {
-                System.out.println("Invalid index: " + index);
-            }
-        }
-        return selected;
     }
 
     /**
@@ -335,15 +314,6 @@ public class CreateScenarioController {
     }
 
     /**
-     * Sets the list of industry types for the scenario.
-     *
-     * @param industryTypes List of IndustryType objects, or empty list if null.
-     */
-    public void setIndustryTypes(List<IndustryType> industryTypes) {
-        this.industryTypes = industryTypes != null ? industryTypes : new ArrayList<>();
-    }
-
-    /**
      * Reads a list of integer selections from user input, separated by whitespace.
      * Invalid inputs are ignored with an error message.
      *
@@ -369,7 +339,7 @@ public class CreateScenarioController {
      * Creates a new Scenario using the selected parameters and adds it to the scenario repository.
      */
     public void createScenario() {
-        Scenario scenario = new Scenario(selectedMap, selectedYear, locomotiveTypes, industryTypes, changers, exportation, importation);
+        Scenario scenario = new Scenario(selectedMap, selectedYear, locomotiveTypes, changers, exportation, importation);
         Repositories.getInstance().getScenarioRepository().add(scenario);
     }
 }

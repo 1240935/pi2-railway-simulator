@@ -25,21 +25,39 @@ activate Employee
     Employee -> System : selects a locomotive
     activate System
 
-    loop for each PointOfRoute
+    System --> Employee : shows existing stations
+    deactivate System
+
+    Employee -> System : selects a station to add as the beginning one
+    activate System
 
     System --> Employee : shows existing stations
     deactivate System
 
-    Employee -> System : selects a station to add to the route
+    Employee -> System : selects a station to add as the ending one
     activate System
 
-    end loop
+    loop for each PointOfRoute
 
-    System --> Employee: checks if there are railways between all selected stations \n and shows the available cargo to be picked up
+    System --> Employee : shows remaining existing stations
+    deactivate System
+
+    Employee -> System : selects a station to add as a PointOfRoute to the route
+    activate System
+
+    System --> Employee: shows the available cargo to be picked up
     deactivate System
 
     Employee -> System: selects the wanted cargo to be picked up
     activate System
+
+    System --> Employee: shows the available cargo modes
+    deactivate System
+
+    Employee -> System: selects the wanted cargo mode
+    activate System
+
+    end loop
 
     System --> Employee: shows all data for confirmation
     deactivate System

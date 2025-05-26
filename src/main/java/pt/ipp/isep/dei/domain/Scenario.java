@@ -13,7 +13,6 @@ public class Scenario {
     private Map map;
     private int year;
     private List<LocomotiveType> locomotiveTypes;
-    private List<IndustryType> industryTypes;
     private List<IndustryChanger> industryChangers;
     private List<ResourceType> importation;
     private List<ResourceType> exportation;
@@ -27,17 +26,15 @@ public class Scenario {
      * @param map the map associated with the scenario
      * @param year the year in which the scenario takes place
      * @param locomotiveTypes the list of locomotive types allowed in the scenario
-     * @param industryTypes the list of industry types included in the scenario
      * @param industryChangers the list of industry changers in the scenario
      * @param importation the list of resource types imported in the scenario
      * @param exportation the list of resource types exported in the scenario
      */
-    public Scenario(Map map, int year, List<LocomotiveType> locomotiveTypes, List<IndustryType> industryTypes,
+    public Scenario(Map map, int year, List<LocomotiveType> locomotiveTypes,
                     List<IndustryChanger> industryChangers, List<ResourceType> importation, List<ResourceType> exportation) {
         this.map = map;
         this.year = year;
         this.locomotiveTypes = locomotiveTypes;
-        this.industryTypes = industryTypes;
         this.industryChangers = industryChangers;
         this.importation = importation;
         this.exportation = exportation;

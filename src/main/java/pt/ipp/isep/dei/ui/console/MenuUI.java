@@ -169,7 +169,7 @@ public class MenuUI {
      * @return the username entered by the user
      */
     private String promptUsername() {
-        System.out.print("Username (LETTERS, DIGITS, '.', '-', '_'): ");
+        System.out.print("Username (valid characters only): ");
         return scanner.nextLine();
     }
 
@@ -179,7 +179,7 @@ public class MenuUI {
      * @return the password entered by the user
      */
     private String promptPassword() {
-        System.out.print("Password (7 CHARACTERS (3 UPPERCASE + 2 DIGITS)): ");
+        System.out.print("Password (7 characters, including 3 capital and 2 numbers): ");
         return scanner.nextLine();
     }
 

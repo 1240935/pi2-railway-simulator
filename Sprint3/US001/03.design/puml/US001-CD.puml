@@ -16,18 +16,25 @@ class CreateMapUI {
 
 class CreateMapController {
   +CreateMapController()
-  +getMap(name)
-  +checkName(name)
-  +setName(name)
-  +checkSize(size)
-  +setSize(size)
-  +checkScale(scale)
-  +setScale(scale)
-  +createMap(name, size, scale)
+  +createMap(dto)
+}
+
+class CreateMapDTO {
+    - size : int
+    - name : String
+    - scale : int
+    + getSize()
+    + getName()
+    + getScale()
+}
+
+class CreateMapMapper {
+    + toMap(dto)
 }
 
 class MapRepository {
-   +getMapRepository()
+    + createMap(dto)
+    + addMap(map)
 }
 
 class Repositories {
@@ -42,15 +49,19 @@ class Map {
   - scale : int
   - industries : List<Industry>
   - cities : List<City>
-  + Map(name, size, scale)
-
+  + checkSize(size)
+  + checkName(name)
+  + checkScale(scale)
 }
 
 CreateMapUI ..> CreateMapController
-CreateMapController ..> Repositories
+
 CreateMapController ..> MapRepository
-CreateMapController ..> Map
-MapRepository --> "*" Map : map
+CreateMapController ..> Repositories
+CreateMapMapper --> "1" CreateMapDTO: dto
+CreateMapMapper --> "1" Map : map
+MapRepository --> "1" CreateMapMapper: mapper
+MapRepository --> "*" Map: map
 Repositories --> "1" MapRepository : mapRepository
 Repositories -> "1" Repositories : instance
 

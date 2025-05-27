@@ -19,6 +19,18 @@ activate Employee
     Employee -> System : selects a scenario
     activate System
 
+    System --> Employee : shows the list of available routes
+    deactivate System
+
+    Employee -> System : selects routes
+    activate System
+
+    System --> Employee : asks how many months should be simulated
+    deactivate System
+
+    Employee -> System : types a number of months
+    activate System
+
     System --> Employee : starts cargo generation
     deactivate System
 

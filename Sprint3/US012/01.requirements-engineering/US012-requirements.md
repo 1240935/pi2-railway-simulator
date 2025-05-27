@@ -50,6 +50,24 @@ If it's map by map, how does that work? Does it run on the map the Product Owner
 ### 1.3. Acceptance Criteria
 
 * **AC1:** This simulator should provide options for start/pause.
+* **AC2:** The simulator needs to model train departures. At the time of
+  departure, the time of arrival is calculated. The trains travels at the
+  maximum speed of the locomotive on double track sections and at 80%
+  of the maximum speed of the locomotive on single track sections. Each
+  carriage degrades 5% of the locomotive’s speed up to a maximum of
+  30%.
+* **AC3:** The simulator needs to model train arrivals. On arrival, the
+  amount to be received is calculated according to demand and the distance between the departure and arrival stations. The existing building
+  in the station that affect revenues from passengers need to taken into
+  account.
+* **AC4:** The simulator needs to provide a message alerting when a new
+  locomotive becomes available, accordingly to its start year of service.
+  After that it becomes possible acquire that locomotive model.
+* **AC5:** The simulator needs to generate cargoes in the stations accordingly to the House Blocks and Industry facilities served by each
+  station. The number of cargoes depends in each industry type and in
+  the modification rates defined in the scenario.
+* **AC6:** The simulator needs to update the demand in station every year
+  based in the deliveries.
 
 ### 1.4. Found out Dependencies
 

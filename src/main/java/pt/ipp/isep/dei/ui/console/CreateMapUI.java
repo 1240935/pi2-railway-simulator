@@ -35,17 +35,15 @@ public class CreateMapUI {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter map size: ");
-        String sizeInput = scanner.nextLine();
+        int size = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.print("Enter map name: ");
         String name = scanner.nextLine();
 
-        int size = controller.checkSize(sizeInput);
-        controller.setSelectedSize(size);
-        controller.checkName(name);
-        controller.setSelectedName(name);
+        System.out.print("Enter map scale (kms): ");
+        int scale = scanner.nextInt();
 
-        controller.createMap();
-        System.out.println("Map created successfully.");
+        controller.createMap(size, name, scale);
     }
 }

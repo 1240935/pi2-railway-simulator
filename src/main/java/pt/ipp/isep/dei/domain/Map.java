@@ -20,6 +20,8 @@ public class Map {
      */
     private int size;
 
+    private int scale;
+
     /**
      * The list of industries placed on the map.
      */
@@ -36,11 +38,12 @@ public class Map {
      * @param name the name of the map
      * @param size the size of the map grid
      */
-    public Map(String name, int size) {
+    public Map(int size, String name, int scale) {
+        this.size = size;
         this.name = name;
+        this.scale = scale;
         this.cities = new ArrayList<>();
         this.industries = new ArrayList<>();
-        this.size = size;
     }
 
     /**
@@ -125,6 +128,28 @@ public class Map {
     public List<Industry> getIndustries() {
         return industries;
     }
+
+
+    public boolean checkName(String name) {
+        return name.matches("^[a-zA-Z\\s]+$");
+    }
+
+    public boolean checkSize(int size) {
+        return size > 0;
+    }
+
+    public boolean checkScale(int scale) {
+        return scale > 0;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+
 
     /**
      * Returns a string representation of the map.

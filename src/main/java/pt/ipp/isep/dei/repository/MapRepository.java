@@ -9,7 +9,9 @@ import java.util.ArrayList;
  */
 public class MapRepository {
 
-    /** Internal list that holds the stored maps. */
+    /**
+     * Internal list that holds the stored maps.
+     */
     private ArrayList<Map> maps = new ArrayList<>();
 
     /**
@@ -30,5 +32,16 @@ public class MapRepository {
      */
     public void addMap(Map map) {
         maps.add(map);
+    }
+
+    public static Map createMap(int size, String name, int scale) {
+        Map map = new Map(size, name, scale);
+        if (map.checkName(name) && map.checkSize(size) && map.checkScale(scale)) {
+            System.out.println("Map created successfully!");
+            return map;
+        } else {
+            System.out.println("Invalid map parameters.");
+            return null;
+        }
     }
 }

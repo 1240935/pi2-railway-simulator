@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.repository.IndustryRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 
 /**
@@ -19,23 +20,11 @@ import pt.ipp.isep.dei.repository.Repositories;
  */
 public class CreateIndustryController {
 
-    private Map selectedMap;
-    private IndustryType selectedType;
-    private Position selectedPosition;
 
     /**
      * Constructs an empty instance of the controller.
      */
     public CreateIndustryController() {}
-
-    /**
-     * Sets the selected position for the industry.
-     *
-     * @param selectedPosition the position to be selected
-     */
-    public void setSelectedPosition(Position selectedPosition) {
-        this.selectedPosition = selectedPosition;
-    }
 
     /**
      * Creates a new {@link Position} instance with the specified coordinates.
@@ -45,8 +34,7 @@ public class CreateIndustryController {
      * @return a new Position object
      */
     public Position createPosition(int x, int y){
-        Position pos = new Position(x, y);
-        return pos;
+        return Industry.createPosition(x,y);
     }
 
     /**
@@ -78,10 +66,11 @@ public class CreateIndustryController {
      * @param index the index of the selected map
      * @throws IllegalArgumentException if the index is invalid
      */
-    public void setMapByIndex(int index) {
+    public Map getMapByIndex(int index) {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         if (index >= 0 && index < maps.size()) {
-            this.selectedMap = maps.get(index);
+            Map map = maps.get(index);
+            return map;
         } else {
             throw new IllegalArgumentException("Invalid map index");
         }
@@ -106,52 +95,20 @@ public class CreateIndustryController {
      * @param index the index of the industry type
      * @throws IllegalArgumentException if the index is out of bounds
      */
-    public void setIndustryTypeByIndex(int index) {
+    public IndustryType getIndustryTypeByIndex(int index) {
         IndustryType[] types = IndustryType.values();
         if (index >= 0 && index < types.length) {
-            this.selectedType = types[index];
+             IndustryType industryType = types[index];
+             return industryType;
         } else {
             throw new IllegalArgumentException("Invalid industry type index");
         }
     }
 
-    /**
-     * Checks if the given coordinates are valid within the selected map.
-     *
-     * @param x the X coordinate
-     * @param y the Y coordinate
-     * @return true if the coordinates are valid, false otherwise
-     */
-    public boolean checkCoordinates(int x, int y) {
-        if (selectedMap == null) return false;
-        return selectedMap.checkCoordinates(new Position(x, y));
-    }
 
-    /**
-     * Directly sets the selected industry type.
-     *
-     * @param type the industry type to set
-     */
-    public void setType(IndustryType type) {
-        this.selectedType = type;
-    }
-
-    /**
-     * Creates and persists a new industry at the specified coordinates,
-     * if they are valid within the selected map.
-     *
-     * @param x the X coordinate for the new industry
-     * @param y the Y coordinate for the new industry
-     */
-    public void createIndustry(int x, int y) {
-        int size = selectedMap.getSize();
-        if (x >= size || y >= size || x < 0 || y < 0) {
-            System.out.println("Invalid position: coordinates exceed map bounds.");
-            return;
-        }
-        Position position = new Position(x, y);
-        Industry industry = new Industry(selectedType, position);
+    public void createIndustry(IndustryType industryType, Position position, int mapsize, int mapIndex) {
+        Industry industry = IndustryRepository.createIndustry(industryType,position,mapsize);
         Repositories.getInstance().getIndustryRepository().addIndustry(industry);
-        selectedMap.addIndustry(industry);
+        getMapByIndex(mapIndex).addIndustry(industry);
     }
 }

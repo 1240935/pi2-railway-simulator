@@ -1,6 +1,8 @@
 package pt.ipp.isep.dei.repository;
 
 import pt.ipp.isep.dei.domain.Industry;
+import pt.ipp.isep.dei.domain.IndustryType;
+import pt.ipp.isep.dei.domain.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +30,15 @@ public class IndustryRepository {
     public List<Industry> getIndustries() {
         return industries;
     }
+
+    public static Industry createIndustry(IndustryType industryType, Position position, int size) {
+        if (!position.checkPosition(position, size)) {
+            System.out.println("Invalid position!");
+            System.exit(1);
+        }
+        Industry industry = new Industry(industryType, position);
+        return industry;
+    }
 }
+
+

@@ -18,6 +18,18 @@ public class Position {
         this.yCoordinate = yCoordinate;
     }
 
+    public boolean checkPosition(Position position, int size){
+        int x = position.getxCoordinate();
+        int y = position.getyCoordinate();
+        if (x >= size || y >= size || x < 0 || y < 0) {
+            System.out.println("Invalid position: coordinates exceed map bounds.");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     /**
      * Returns the x coordinate of this position.
      *

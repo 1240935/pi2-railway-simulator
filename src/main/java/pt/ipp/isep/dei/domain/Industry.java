@@ -60,4 +60,9 @@ public class Industry {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    public static Position createPosition(int x, int y){
+        Position position = new Position(x,y);
+        return position;
+    }
 }

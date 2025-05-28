@@ -77,4 +77,8 @@ public class Position {
         int dy = this.yCoordinate - other.yCoordinate;
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    public static Position createPosition(int x, int y){
+        return new Position(x, y);
+    }
 }

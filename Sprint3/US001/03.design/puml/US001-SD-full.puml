@@ -13,8 +13,8 @@ participant ":CreateMapController" as CTRL
 participant "Repositories" as REPOS
 participant "repositories \n :Repositories" as REPO_SINGLETON
 participant "mapRepository \n :MapRepository" as MAP_REPO
-participant ":CreateMapMapper" as MAPPER
-participant ":CreateMapDTO" as DTO
+participant ":MapMapper" as MAPPER
+participant ":MapDTO" as DTO
 participant "map \n :Map" as MAP
 
 activate EDITOR
@@ -75,8 +75,10 @@ activate DTO
 
 DTO --> MAPPER: scale
 deactivate DTO
-MAPPER -> MAP: createMap(size, name, scale)
-deactivate
+MAPPER --> MAP_REPO: size, name, scale
+deactivate MAPPER
+
+MAP_REPO -> MAP: createMap(size, name, scale);
     activate MAP
         MAP -> MAP : checkSize(size)
         activate MAP

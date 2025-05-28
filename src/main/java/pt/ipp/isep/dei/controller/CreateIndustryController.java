@@ -106,8 +106,8 @@ public class CreateIndustryController {
     }
 
 
-    public void createIndustry(IndustryType industryType, Position position, int mapsize, int mapIndex) {
-        Industry industry = IndustryRepository.createIndustry(industryType,position,mapsize);
+    public void createIndustry(IndustryType industryType, Position position, int mapSize, int mapIndex) {
+        Industry industry = IndustryRepository.createIndustry(industryType,position,mapSize);
         Repositories.getInstance().getIndustryRepository().addIndustry(industry);
         getMapByIndex(mapIndex).addIndustry(industry);
     }

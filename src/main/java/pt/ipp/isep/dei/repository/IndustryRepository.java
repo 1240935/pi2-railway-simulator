@@ -32,11 +32,10 @@ public class IndustryRepository {
     }
 
     public static Industry createIndustry(IndustryType industryType, Position position, int size) {
-        if (!position.checkPosition(position, size)) {
-            System.out.println("Invalid position!");
-            System.exit(1);
-        }
         Industry industry = new Industry(industryType, position);
+        if (industry.checkPosition(position, size) && (industryType)) {
+            System.out.println("Invalid position!");
+        }
         return industry;
     }
 }

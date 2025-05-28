@@ -1,7 +1,9 @@
 package pt.ipp.isep.dei.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents a city in the game map.
@@ -88,5 +90,62 @@ public class City {
      */
     public List<ResourceType> getDemandedCargoes() {
         return Arrays.asList(ResourceType.PASSENGERS, ResourceType.MAIL, ResourceType.GOODS, ResourceType.FOOD);
+    }
+
+    /**
+     * Creates a new Position object with given x and y coordinates.
+     *
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return A new Position object.
+     */
+    public Position createPosition(int x, int y) {
+        return Position.create
+    }
+
+    /**
+     * Creates a list of city blocks at specified positions.
+     *
+     * @param positions List of Position objects where blocks should be created.
+     * @param cityblocks Number of city blocks to create.
+     * @return List of CityBlock objects created.
+     */
+    public List<CityBlock> createBlocks(List<Position> positions, int cityblocks){
+        List<CityBlock> blocks = new ArrayList<>();
+        for(int i = 0; i < cityblocks; i++){
+            CityBlock block = new CityBlock(positions.get(i));
+            blocks.add(block);
+        }
+        return blocks;
+    }
+
+    /**
+     * Generates city blocks randomly or fixed around a center position.
+     *
+     * If randomize is true, blocks are placed near the center with some variation.
+     * If false, all blocks are placed at the center.
+     *
+     * @param center The central Position of the city.
+     * @param number The number of blocks to generate.
+     * @param randomize Whether to randomize the block positions around the center.
+     * @return List of generated CityBlock objects.
+     */
+    public List<CityBlock> generateBlocks(Position center, int number, boolean randomize) {
+        List<CityBlock> blocks = new ArrayList<>();
+        Random rand = new Random();
+
+        for (int i = 0; i < number; i++) {
+            Position pos;
+            if (randomize) {
+                int dx = (int) Math.round(rand.nextGaussian() * 2);
+                int dy = (int) Math.round(rand.nextGaussian() * 2);
+                pos = new Position(center.getxCoordinate() + dx, center.getyCoordinate() + dy);
+            } else {
+                pos = center;
+            }
+            blocks.add(new CityBlock(pos));
+        }
+
+        return blocks;
     }
 }

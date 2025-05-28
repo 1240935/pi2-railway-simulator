@@ -19,7 +19,7 @@ class CreateMapController {
   +createMap(dto)
 }
 
-class CreateMapDTO {
+class MapDTO {
     - size : int
     - name : String
     - scale : int
@@ -28,12 +28,13 @@ class CreateMapDTO {
     + getScale()
 }
 
-class CreateMapMapper {
+class MapMapper {
     + toMap(dto)
 }
 
 class MapRepository {
     + createMap(dto)
+    + createMap(size, name, scale)
     + addMap(map)
 }
 
@@ -58,9 +59,8 @@ CreateMapUI ..> CreateMapController
 
 CreateMapController ..> MapRepository
 CreateMapController ..> Repositories
-CreateMapMapper --> "1" CreateMapDTO: dto
-CreateMapMapper --> "1" Map : map
-MapRepository --> "1" CreateMapMapper: mapper
+MapMapper --> "1" MapDTO: dto
+MapRepository --> "1" MapMapper: mapper
 MapRepository --> "*" Map: map
 Repositories --> "1" MapRepository : mapRepository
 Repositories -> "1" Repositories : instance

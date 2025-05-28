@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.repository;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import pt.ipp.isep.dei.domain.Map;
 import java.util.ArrayList;
 
@@ -42,6 +43,30 @@ public class MapRepository {
         } else {
             System.out.println("Invalid map parameters.");
             return null;
+        }
+    }
+
+    public void saveMapToCSV(Map map, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write("MapName;" + map.getName() + "\n");
+            writer.write("MapSize;" + map.getSize() + "\n");
+            writer.write("MapScale;" + map.getScale() + "\n\n");
+
+            writer.write("Cities\n");
+            writer.write("Name;X;Y\n");
+            for (var city : map.getCities()) {
+                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n");
+            }
+
+            writer.write("\nIndustries\n");
+            writer.write("Type;X;Y\n");
+            for (var industry : map.getIndustries()) {
+                writer.write(industry.getType() + ";" + industry.getPosition().getxCoordinate() + ";" + industry.getPosition().getyCoordinate() + "\n");
+            }
+
+            System.out.println("Map saved successfully to " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error saving map: " + e.getMessage());
         }
     }
 }

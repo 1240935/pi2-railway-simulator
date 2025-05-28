@@ -144,6 +144,7 @@ public class MenuUI {
             System.out.println("3. Add City");
             System.out.println("4. Create Scenario");
             System.out.println("5. Save Map");
+            System.out.println("6. Load Map");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");
@@ -155,6 +156,7 @@ public class MenuUI {
                 case "3" -> new AddCityUI().start();
                 case "4" -> new CreateScenarioUI().start();
                 case "5" -> new SaveMapUI().start();
+                case "6" -> new LoadMapUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
                     System.out.println();

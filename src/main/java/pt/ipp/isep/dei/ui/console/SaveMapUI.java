@@ -12,28 +12,28 @@ public class SaveMapUI {
 
         int mapCount = controller.getMapCount();
         if (mapCount == 0) {
-            System.out.println("Não há mapas disponíveis para guardar.");
+            System.out.println("No available maps to save.");
             return;
         }
 
-        System.out.println("Mapas disponíveis:");
+        System.out.println("Available Maps:");
         var mapNames = controller.getMapNames();
         for (int i = 0; i < mapNames.size(); i++) {
             System.out.println((i + 1) + ". " + mapNames.get(i));
         }
 
-        System.out.print("Escolha o número do mapa a guardar: ");
+        System.out.print("Choose the map number to save: ");
         int index = scanner.nextInt() - 1;
         scanner.nextLine(); // consumir newline
 
-        System.out.print("Nome do ficheiro CSV (ex: mapa.csv): ");
+        System.out.print("CSV file name (ex: mapa.csv): ");
         String filename = scanner.nextLine();
 
         boolean success = controller.saveMapByIndex(index, filename);
         if (success) {
-            System.out.println("Mapa guardado com sucesso.");
+            System.out.println("Map saved with success.");
         } else {
-            System.out.println("Índice inválido. Mapa não guardado.");
+            System.out.println("Invalid Index, map not saved.");
         }
     }
 }

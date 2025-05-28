@@ -143,7 +143,7 @@ public class MenuUI {
             System.out.println("2. Create Industry");
             System.out.println("3. Add City");
             System.out.println("4. Create Scenario");
-            System.out.println("5. Save Map"); // <-- nova opção adicionada
+            System.out.println("5. Save Map");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");

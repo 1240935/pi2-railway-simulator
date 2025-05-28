@@ -65,9 +65,7 @@ public class Industry {
         return Position.createPosition(x, y);
     }
 
-    public static boolean checkIndustryType(IndustryType industryType) {
+    public boolean checkIndustryType(IndustryType industryType) {
         return industryType != null;
     }
-
-
 }

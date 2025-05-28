@@ -33,10 +33,13 @@ public class IndustryRepository {
 
     public static Industry createIndustry(IndustryType industryType, Position position, int size) {
         Industry industry = new Industry(industryType, position);
-        if (industry.checkPosition(position, size) && (industryType)) {
-            System.out.println("Invalid position!");
+        if (industry.getPosition().checkPosition(position, size) && industry.checkIndustryType(industryType)) {
+            System.out.println("Industry created successfully!");
+            return industry;
+        } else {
+            System.out.println("Invalid industry parameters.");
+            return null;
         }
-        return industry;
     }
 }
 

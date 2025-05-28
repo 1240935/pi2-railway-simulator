@@ -99,8 +99,8 @@ public class City {
      * @param y The y coordinate.
      * @return A new Position object.
      */
-    public Position createPosition(int x, int y) {
-        return Position.create
+    public static Position createPosition(int x, int y) {
+        return Position.createPosition(x, y);
     }
 
     /**

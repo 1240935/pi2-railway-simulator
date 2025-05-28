@@ -30,11 +30,6 @@ public class CityRepository {
     }
 
     public static City createCity(Position position, String name, List<CityBlock> blocks) {
-        if (!position.checkPosition(position, size)) {
-            System.out.println("Invalid position!");
-            System.exit(1);
-        }
-        Industry industry = new Industry(industryType, position);
-        return industry;
+
     }
 }

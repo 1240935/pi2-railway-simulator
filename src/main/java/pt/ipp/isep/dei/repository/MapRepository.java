@@ -55,7 +55,7 @@ public class MapRepository {
             writer.write("Cities\n");
             writer.write("Name;X;Y\n");
             for (var city : map.getCities()) {
-                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n");
+                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n"); // add cityBlocks mano pauls
             }
 
             writer.write("\nIndustries\n");

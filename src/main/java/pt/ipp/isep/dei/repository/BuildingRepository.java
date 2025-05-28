@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.repository;
 
 import pt.ipp.isep.dei.domain.Building;
+import pt.ipp.isep.dei.domain.BuildingType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,11 @@ public class BuildingRepository {
             throw new NullPointerException("Building cannot be null");
         }
         buildings.add(building);
+    }
+
+    public Building createBuilding(BuildingType buildingType){
+        Building building = new Building(buildingType);
+        return building;
     }
 
     /**

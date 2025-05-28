@@ -2,6 +2,9 @@ package pt.ipp.isep.dei.repository;
 import java.io.FileWriter;
 import java.io.IOException;
 import pt.ipp.isep.dei.domain.Map;
+import pt.ipp.isep.dei.dto.MapDTO;
+import pt.ipp.isep.dei.dto.MapMapper;
+
 import java.util.ArrayList;
 
 /**

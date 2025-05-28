@@ -48,10 +48,9 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        controller.setScenarioByIndex(scenarioChoice - 1);
 
         // 2. Show stations and get player selection
-        List<String> stationNames = controller.getAvailableStationNames();
+        List<String> stationNames = controller.getAvailableStationNames(controller.setScenarioByIndex(scenarioChoice - 1));
         if (stationNames.isEmpty()) {
             System.out.println("No stations available.");
             return;
@@ -70,10 +69,10 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        controller.setStationByIndex(stationChoice - 1);
 
         // 3. Show available building types and get player selection
-        List<String> buildingNames = controller.getAvailableBuildingNames();
+        List<String> buildingNames = controller.getAvailableBuildingNames(controller.setScenarioByIndex(scenarioChoice - 1),
+                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)));
         if (buildingNames.isEmpty()) {
             System.out.println("No valid buildings available for this station.");
             return;
@@ -92,11 +91,11 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        controller.setBuildingTypeByIndex(buildingChoice - 1);
 
         // 4. Display player's budget and building cost, ask for confirmation
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Building cost: " + controller.getSelectedBuildingCost());
+        System.out.println("Building cost: " + controller.getSelectedBuildingCost(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
+                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)))));
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
         if (!confirmation.equals("y")) {
@@ -105,9 +104,13 @@ public class UpgradeStationUI {
         }
 
         // 5. Attempt to upgrade the station
-        boolean success = controller.createAndSetBuilding();
+        boolean success = controller.possibleBuilding(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
+                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1))));
         if (success) {
             System.out.println("Station upgraded successfully.");
+            controller.createBuilding(controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)),
+                    controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
+                    controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1))));
         } else {
             System.out.println("Not enough budget to upgrade this station.");
         }

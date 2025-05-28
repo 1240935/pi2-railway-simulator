@@ -44,6 +44,6 @@ public class CreateMapUI {
         System.out.print("Enter map scale (kms): ");
         int scale = scanner.nextInt();
 
-        controller.createMap(size, name, scale);
+        controller.createMap(controller.createMapDTO(size,name,scale));
     }
 }

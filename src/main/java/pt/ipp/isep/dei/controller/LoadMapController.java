@@ -23,6 +23,12 @@ public class LoadMapController {
             int size = Integer.parseInt(reader.readLine().split(";")[1]);
             int scale = Integer.parseInt(reader.readLine().split(";")[1]);
 
+            // Verificar se já existe mapa com este nome
+            if (mapExists(name)) {
+                System.out.println("A map with the name '" + name + "' already exists.");
+                return false;
+            }
+
             Map map = new Map(size, name, scale);
 
             // Avançar para "Cities"
@@ -71,5 +77,14 @@ public class LoadMapController {
             System.out.println("Failed to load map: " + e.getMessage());
             return false;
         }
+    }
+
+    private boolean mapExists(String name) {
+        for (Map existingMap : Repositories.getInstance().getMapRepository().getMaps()) {
+            if (existingMap.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

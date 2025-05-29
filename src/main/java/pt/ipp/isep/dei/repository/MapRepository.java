@@ -48,20 +48,42 @@ public class MapRepository {
     }
     public void saveMapToCSV(Map map, String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
+            // Metadata
             writer.write("MapName;" + map.getName() + "\n");
             writer.write("MapSize;" + map.getSize() + "\n");
             writer.write("MapScale;" + map.getScale() + "\n\n");
 
+            // Cities
             writer.write("Cities\n");
             writer.write("Name;X;Y\n");
             for (var city : map.getCities()) {
-                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n"); // add cityBlocks mano pauls
+                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n");
             }
 
-            writer.write("\nIndustries\n");
+            writer.write("\n");
+
+            // CityBlocks
+            writer.write("CityBlocks\n");
+            writer.write("CityName;X;Y\n");
+            for (var city : map.getCities()) {
+                if (city.getBlocks() != null) {
+                    for (var block : city.getBlocks()) {
+                        writer.write(city.getName() + ";" +
+                                block.getPosition().getxCoordinate() + ";" +
+                                block.getPosition().getyCoordinate() + "\n");
+                    }
+                }
+            }
+
+            writer.write("\n");
+
+            // Industries
+            writer.write("Industries\n");
             writer.write("Type;X;Y\n");
             for (var industry : map.getIndustries()) {
-                writer.write(industry.getType() + ";" + industry.getPosition().getxCoordinate() + ";" + industry.getPosition().getyCoordinate() + "\n");
+                writer.write(industry.getType() + ";" +
+                        industry.getPosition().getxCoordinate() + ";" +
+                        industry.getPosition().getyCoordinate() + "\n");
             }
 
             System.out.println("Map saved successfully to " + filePath);
@@ -69,4 +91,5 @@ public class MapRepository {
             System.err.println("Error saving map: " + e.getMessage());
         }
     }
+
 }

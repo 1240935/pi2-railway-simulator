@@ -1,11 +1,8 @@
 package pt.ipp.isep.dei.controller;
 
-import pt.ipp.isep.dei.domain.City;
-import pt.ipp.isep.dei.domain.Industry;
-import pt.ipp.isep.dei.domain.Map;
-import pt.ipp.isep.dei.domain.Position;
+import pt.ipp.isep.dei.domain.*;
 import pt.ipp.isep.dei.repository.Repositories;
-import pt.ipp.isep.dei.domain.IndustryType;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,16 +28,16 @@ public class LoadMapController {
 
             Map map = new Map(size, name, scale);
 
-            // Avançar para "Cities"
+            // Avançar até "Cities"
             while ((line = reader.readLine()) != null && !line.equals("Cities")) {
                 // skip
             }
 
-            // Ler header: Name;X;Y
+            // Ler header das Cities
             reader.readLine();
 
-            // Ler cidades
-            while ((line = reader.readLine()) != null && !line.equals("Industries")) {
+            // Ler as cidades
+            while ((line = reader.readLine()) != null && !line.equals("CityBlocks")) {
                 String[] parts = line.split(";");
                 if (parts.length == 3) {
                     String cityName = parts[0];
@@ -51,18 +48,38 @@ public class LoadMapController {
                 }
             }
 
-            // Ler header: Type;X;Y
+            // Ler header dos CityBlocks
             reader.readLine();
 
-            // Ler indústrias
+            // Ler os city blocks
+            while ((line = reader.readLine()) != null && !line.equals("Industries")) {
+                String[] parts = line.split(";");
+                if (parts.length == 3) {
+                    String cityName = parts[0];
+                    int x = Integer.parseInt(parts[1]);
+                    int y = Integer.parseInt(parts[2]);
+
+                    City targetCity = findCityByName(map, cityName);
+                    if (targetCity != null) {
+                        targetCity.getBlocks().add(new CityBlock(new Position(x, y)));
+                    } else {
+                        System.out.println("City block refers to unknown city: " + cityName);
+                    }
+                }
+            }
+
+            // Ler header das Industries
+            reader.readLine();
+
+            // Ler as indústrias
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
                 if (parts.length == 3) {
                     String industryType = parts[0];
-                    IndustryType type = IndustryType.valueOf(industryType.toUpperCase());
                     int x = Integer.parseInt(parts[1]);
                     int y = Integer.parseInt(parts[2]);
 
+                    IndustryType type = IndustryType.valueOf(industryType.toUpperCase());
                     Industry industry = new Industry(type, new Position(x, y));
                     map.addIndustry(industry);
                 }
@@ -73,7 +90,7 @@ public class LoadMapController {
             System.out.println("Map loaded successfully.");
             return true;
 
-        } catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+        } catch (IOException | ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
             System.out.println("Failed to load map: " + e.getMessage());
             return false;
         }
@@ -87,4 +104,14 @@ public class LoadMapController {
         }
         return false;
     }
+
+    private City findCityByName(Map map, String name) {
+        for (City city : map.getCities()) {
+            if (city.getName().equalsIgnoreCase(name)) {
+                return city;
+            }
+        }
+        return null;
+    }
 }
+

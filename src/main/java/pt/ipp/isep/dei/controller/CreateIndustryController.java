@@ -69,8 +69,7 @@ public class CreateIndustryController {
     public Map getMapByIndex(int index) {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         if (index >= 0 && index < maps.size()) {
-            Map map = maps.get(index);
-            return map;
+            return maps.get(index);
         } else {
             throw new IllegalArgumentException("Invalid map index");
         }
@@ -98,8 +97,7 @@ public class CreateIndustryController {
     public IndustryType getIndustryTypeByIndex(int index) {
         IndustryType[] types = IndustryType.values();
         if (index >= 0 && index < types.length) {
-             IndustryType industryType = types[index];
-             return industryType;
+            return types[index];
         } else {
             throw new IllegalArgumentException("Invalid industry type index");
         }

@@ -107,12 +107,12 @@ public class City {
      * Creates a list of city blocks at specified positions.
      *
      * @param positions List of Position objects where blocks should be created.
-     * @param cityblocks Number of city blocks to create.
+     * @param cityBlocks Number of city blocks to create.
      * @return List of CityBlock objects created.
      */
-    public List<CityBlock> createBlocks(List<Position> positions, int cityblocks){
+    public static List<CityBlock> createBlocks(List<Position> positions, int cityBlocks){
         List<CityBlock> blocks = new ArrayList<>();
-        for(int i = 0; i < cityblocks; i++){
+        for(int i = 0; i < cityBlocks; i++){
             CityBlock block = new CityBlock(positions.get(i));
             blocks.add(block);
         }
@@ -125,12 +125,12 @@ public class City {
      * If randomize is true, blocks are placed near the center with some variation.
      * If false, all blocks are placed at the center.
      *
-     * @param center The central Position of the city.
+     * @param position The central Position of the city.
      * @param number The number of blocks to generate.
      * @param randomize Whether to randomize the block positions around the center.
      * @return List of generated CityBlock objects.
      */
-    public List<CityBlock> generateBlocks(Position center, int number, boolean randomize) {
+    public static List<CityBlock> generateBlocks(Position position, int number, boolean randomize) {
         List<CityBlock> blocks = new ArrayList<>();
         Random rand = new Random();
 
@@ -139,13 +139,32 @@ public class City {
             if (randomize) {
                 int dx = (int) Math.round(rand.nextGaussian() * 2);
                 int dy = (int) Math.round(rand.nextGaussian() * 2);
-                pos = new Position(center.getxCoordinate() + dx, center.getyCoordinate() + dy);
+                pos = new Position(position.getxCoordinate() + dx, position.getyCoordinate() + dy);
             } else {
-                pos = center;
+                pos = position;
             }
             blocks.add(new CityBlock(pos));
         }
 
         return blocks;
+    }
+
+    public boolean checkName(String name) {
+        return name.matches("^[a-zA-Z\\s]+$");
+    }
+
+    public boolean checkCityBlocks(List<CityBlock> blocks) {
+        List<Position> seen = new ArrayList<>();
+        for (CityBlock block : blocks) {
+            Position pos = block.getPosition();
+            if (seen.contains(pos)) {
+                return false;
+            }
+            if (pos.equals(this.position)) {
+                return false;
+            }
+            seen.add(pos);
+        }
+        return true;
     }
 }

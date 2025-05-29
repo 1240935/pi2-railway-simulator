@@ -22,6 +22,9 @@ public class AddCityController {
     public AddCityController() {
     }
 
+    private List<Position> positions;
+    private List<CityBlock> blocks;
+
     /**
      * Retrieves a list of all available maps from the repository.
      *
@@ -54,26 +57,38 @@ public class AddCityController {
     public Map getMapByIndex(int index) {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         if (index >= 0 && index < maps.size()) {
-            Map map = maps.get(index);
-            return map;
+            return maps.get(index);
         } else {
             throw new IllegalArgumentException("Invalid map index");
         }
+    }
+
+    public void savePositions(Position position){
+       positions.add(position);
+    }
+
+    public List<Position> getPositions(){
+        return positions;
     }
 
     public Position createPosition(int x, int y){
         return City.createPosition(x, y);
     }
 
-    /**
-     * Creates the city using the selected name, center, and blocks,
-     * and adds it to the city repository.
-     *
-     * Validates city name and coordinates before creation.
-     * Throws IllegalArgumentException on invalid inputs.
-     */
-    public void createCity(Position position, String name, List<CityBlock> blocks, int mapIndex) {
-        City city = CityRepository.createCity(position, name, blocks);
+    public void createBlocksManually(List<Position> positions, int cityBlocks){
+        blocks = City.createBlocks(positions, cityBlocks);
+    }
+
+    public List<CityBlock> getCityBlocks(){
+        return blocks;
+    }
+
+    public void createBlocksAutomatically(Position position, int number, boolean randomize){
+        blocks = City.generateBlocks(position, number, randomize);
+    }
+
+    public void createCity(Position position, String name, List<CityBlock> blocks, int mapSize, int mapIndex) {
+        City city = CityRepository.createCity(position, name, blocks, mapSize);
         Repositories.getInstance().getCityRepository().addCity(city);
         getMapByIndex(mapIndex).addCity(city);
     }

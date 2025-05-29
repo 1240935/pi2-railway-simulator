@@ -29,7 +29,14 @@ public class CityRepository {
         return cities;
     }
 
-    public static City createCity(Position position, String name, List<CityBlock> blocks) {
-
+    public static City createCity(Position position, String name, List<CityBlock> blocks, int size) {
+        City city = new City(name, position, blocks);
+        if (city.getPosition().checkPosition(position, size) && city.checkName(name) && city.checkCityBlocks(blocks)) {
+            System.out.println("City created successfully!");
+            return city;
+        } else {
+            System.out.println("Invalid city parameters.");
+            return null;
+        }
     }
 }

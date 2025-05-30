@@ -1,9 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents a position in a 2D coordinate system with x and y coordinates.
  */
-public class Position {
+public class Position implements Serializable {
+
     private int xCoordinate;
     private int yCoordinate;
 

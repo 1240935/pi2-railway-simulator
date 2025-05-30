@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,7 +9,8 @@ import java.util.ArrayList;
  * <p>
  * The map provides functionality to manage its elements and validate positions within its bounds.
  */
-public class Map {
+public class Map implements Serializable {
+
 
     /**
      * The name of the map.

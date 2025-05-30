@@ -1,6 +1,9 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.SaveMapController;
+import pt.ipp.isep.dei.domain.Map;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SaveMapUI {
@@ -17,7 +20,12 @@ public class SaveMapUI {
         }
 
         System.out.println("Available Maps:");
-        var mapNames = controller.getMapNames();
+        var maps = controller.getMaps();
+        ArrayList<String> mapNames = new ArrayList<>();
+
+        for (Map map : maps) {
+            mapNames.add(map.getName());
+        }
         for (int i = 0; i < mapNames.size(); i++) {
             System.out.println((i + 1) + ". " + mapNames.get(i));
         }
@@ -26,14 +34,15 @@ public class SaveMapUI {
         int index = scanner.nextInt() - 1;
         scanner.nextLine(); // consumir newline
 
-        System.out.print("CSV File name (ex: mapa.csv): ");
+        System.out.print("Serialized File name (ex: mapa.ser): ");
         String filename = scanner.nextLine();
 
-        boolean success = controller.saveMapByIndex(index, filename);
+        // Aqui chama o método de serialização
+        boolean success = controller.saveMapToFile(controller.getMaps().get(index), filename);
         if (success) {
-            System.out.println("Map saved with success.");
+            System.out.println("Map saved successfully.");
         } else {
-            System.out.println("Invalid index, map not saved.");
+            System.out.println("Failed to save map.");
         }
     }
 }

@@ -39,7 +39,7 @@ public class StationRepository {
         try (BufferedReader br = new BufferedReader(new FileReader(stationsFile))) {
             String line = br.readLine();
             if (line != null) {
-                String[] stationNames = line.split(";");
+                String[] stationNames = line.split(";");    
                 for (String name : stationNames) {
                     StationType type = getStationTypeFromName(name);
                     stations.add(new Station(name, type));

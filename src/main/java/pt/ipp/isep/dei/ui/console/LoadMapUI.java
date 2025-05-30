@@ -10,11 +10,13 @@ public class LoadMapUI {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the path of the CSV file to load the map: ");
+        System.out.print("Enter the path of the serialized file to load the map (e.g., mapa.ser): ");
         String filePath = scanner.nextLine();
 
-        boolean success = controller.loadMapFromCSV(filePath);
-        if (!success) {
+        boolean success = controller.loadSerializedMap(filePath);
+        if (success) {
+            System.out.println("Map loaded successfully.");
+        } else {
             System.out.println("Error loading map.");
         }
     }

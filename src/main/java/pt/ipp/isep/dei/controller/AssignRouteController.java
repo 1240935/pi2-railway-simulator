@@ -15,15 +15,9 @@ import java.util.List;
  * </p>
  */
 public class AssignRouteController {
-
-    private Scenario selectedScenario;
-    private Station firstStation;
-    private Station lastStation;
+    
     private List<Station> stops;
-    private Route selectedRoute;
-    private Locomotive selectedLocomotive;
     private List<Cargo> selectedCargo;
-    private List<Cargo> supplies;
 
     /**
      * Constructs a new {@code AssignRouteController} with empty lists
@@ -39,8 +33,8 @@ public class AssignRouteController {
      *
      * @return list of available locomotives
      */
-    public List<Locomotive> getAvailableLocomotives() {
-        return selectedScenario.getLocomotives();
+    public List<Locomotive> getAvailableLocomotives(Scenario scenario) {
+        return scenario.getLocomotives();
     }
 
     /**
@@ -48,9 +42,9 @@ public class AssignRouteController {
      *
      * @return list of locomotive names as strings
      */
-    public List<String> getAvailableLocomotivesNames() {
+    public List<String> getAvailableLocomotivesNames(Scenario scenario) {
         List<String> names = new ArrayList<>();
-        for (Locomotive locomotive : getAvailableLocomotives()) {
+        for (Locomotive locomotive : getAvailableLocomotives(scenario)) {
             names.add(locomotive.toString());
         }
         return names;
@@ -83,8 +77,8 @@ public class AssignRouteController {
      *
      * @return list of available stations
      */
-    public List<Station> getAvailableStations() {
-        return selectedScenario.getStations();
+    public List<Station> getAvailableStations(Scenario scenario) {
+        return scenario.getStations();
     }
 
     /**
@@ -92,9 +86,9 @@ public class AssignRouteController {
      *
      * @return list of station names as strings
      */
-    public List<String> getAvailableStationNames() {
+    public List<String> getAvailableStationNames(Scenario scenario) {
         List<String> names = new ArrayList<>();
-        for (Station station : getAvailableStations()) {
+        for (Station station : getAvailableStations(scenario)) {
             names.add(station.toString());
         }
         return names;
@@ -142,23 +136,6 @@ public class AssignRouteController {
         stops.add(station);
     }
 
-    /**
-     * Sets the first station (start point) of the route.
-     *
-     * @param selectedStation the Station to set as the first station
-     */
-    public void setFirstStation(Station selectedStation) {
-        this.firstStation = selectedStation;
-    }
-
-    /**
-     * Sets the last station (end point) of the route.
-     *
-     * @param lastStation the Station to set as the last station
-     */
-    public void setLastStation(Station lastStation) {
-        this.lastStation = lastStation;
-    }
 
     /**
      * Retrieves a combined list of cargo supplies available at the first station,
@@ -166,9 +143,9 @@ public class AssignRouteController {
      *
      * @return list of available Cargo supplies
      */
-    public List<Cargo> getSupply() {
-        List<Industry> industries = selectedScenario.getMap().getIndustries();
-        List<City> cities = selectedScenario.getMap().getCities();
+    public List<Cargo> getSupply(Scenario scenario, Station firstStation, Station lastStation) {
+        List<Industry> industries = scenario.getMap().getIndustries();
+        List<City> cities = scenario.getMap().getCities();
 
         List<Cargo> supplies = new ArrayList<>();
 
@@ -194,8 +171,8 @@ public class AssignRouteController {
      *
      * @return list of strings describing cargo supply types
      */
-    public List<String> getSupplyDisplayList() {
-        List<Cargo> supplies = getSupply();
+    public List<String> getSupplyDisplayList(Scenario scenario, Station firstStation, Station lastStation) {
+        List<Cargo> supplies = getSupply(scenario,firstStation,lastStation);
         List<String> displayList = new ArrayList<>();
         int counter = 1;
 
@@ -213,8 +190,8 @@ public class AssignRouteController {
      * @param index 1-based index of cargo to select
      * @return true if selection was successful, false if index was invalid
      */
-    public boolean selectCargoByIndex(int index) {
-        List<Cargo> supply = getSupply();
+    public boolean selectCargoByIndex(int index, Scenario scenario, Station firstStation, Station lastStation) {
+        List<Cargo> supply = getSupply(scenario,firstStation,lastStation);
         if (index < 1 || index > supply.size()) {
             return false;
         }
@@ -225,42 +202,27 @@ public class AssignRouteController {
         return true;
     }
 
-    /**
-     * Sets the locomotive selected for the route.
-     *
-     * @param selectedLocomotive the Locomotive to assign
-     */
-    public void setSelectedLocomotive(Locomotive selectedLocomotive) {
-        this.selectedLocomotive = selectedLocomotive;
-    }
 
-    /**
-     * Sets the scenario currently being worked on.
-     *
-     * @param selectedScenario the Scenario to set
-     */
-    public void setSelectedScenario(Scenario selectedScenario) {
-        this.selectedScenario = selectedScenario;
-    }
 
     /**
      * Creates a route with only first and last stations, the selected locomotive, and selected cargo,
      * then adds it to the scenario and repository.
      */
-    public void createRoute() {
-        selectedRoute = new Route(firstStation, lastStation, selectedLocomotive, selectedCargo);
-        selectedScenario.addRoute(selectedRoute);
-        Repositories.getInstance().getRouteRepository().addRoute(selectedRoute);
+    public void createRoute(Scenario scenario, Station firstStation, Station lastStation, Locomotive locomotive, List<Cargo> cargo) {
+        Route route = new Route(firstStation, lastStation, locomotive, cargo);
+        scenario.addRoute(route);
+        Repositories.getInstance().getRouteRepository().addRoute(route);
     }
 
     /**
      * Creates a route including intermediate stops, selected locomotive, and cargo,
      * then adds it to the scenario and repository.
      */
-    public void createRoute2() {
-        selectedRoute = new Route(firstStation, lastStation, selectedLocomotive, selectedCargo);
-        selectedRoute.setStops(stops);
-        selectedScenario.addRoute(selectedRoute);
-        Repositories.getInstance().getRouteRepository().addRoute(selectedRoute);
+    public void createRoute2(Scenario scenario, Station firstStation, Station lastStation, Locomotive locomotive,
+                             List<Cargo> cargo, List<Station> stops) {
+        Route route = new Route(firstStation, lastStation, locomotive, cargo);
+        route.setStops(stops);
+        scenario.addRoute(route);
+        Repositories.getInstance().getRouteRepository().addRoute(route);
     }
 }

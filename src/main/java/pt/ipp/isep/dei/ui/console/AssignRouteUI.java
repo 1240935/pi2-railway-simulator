@@ -45,20 +45,20 @@ public class AssignRouteUI {
         }
         System.out.print("Enter the scenario's number: ");
         int choice = scanner.nextInt();
-        controller.setSelectedScenario(controller.chooseScenario(controller.getAvailableScenarios(), choice));
+        //Scenario(controller.chooseScenario(controller.getAvailableScenarios(), choice));
 
         // Display available locomotives and get user selection
-        List<String> locomotiveNames = controller.getAvailableLocomotivesNames();
+        List<String> locomotiveNames = controller.getAvailableLocomotivesNames(controller.chooseScenario(controller.getAvailableScenarios(), choice));
         System.out.println("Available Locomotives:");
         for (String locomotiveName : locomotiveNames) {
             System.out.println(locomotiveName);
         }
         System.out.print("Enter the locomotive's number: ");
         int choice2 = scanner.nextInt();
-        controller.setSelectedLocomotive(controller.chooseLocomotive(controller.getAvailableLocomotives(), choice2));
+        //Locomotive(controller.chooseLocomotive(controller.getAvailableLocomotives(), choice2));
 
         // Display available stations
-        List<String> stationNames = controller.getAvailableStationNames();
+        List<String> stationNames = controller.getAvailableStationNames(controller.chooseScenario(controller.getAvailableScenarios(), choice));
         System.out.println("Available Stations:");
         for (int i = 0; i < stationNames.size(); i++) {
             System.out.println((i + 1) + ": " + stationNames.get(i));
@@ -70,13 +70,13 @@ public class AssignRouteUI {
         // Select starting station
         System.out.print("Select the starting station: ");
         int choice3 = scanner.nextInt();
-        controller.setFirstStation(controller.chooseStation(controller.getAvailableStations(), choice3));
+        //FirstStation(controller.chooseStation(controller.getAvailableStations(), choice3));
         chosenStops.add(choice3);
 
         // Select ending station
         System.out.print("Select the ending station: ");
         int choice4 = scanner.nextInt();
-        controller.setLastStation(controller.chooseStation(controller.getAvailableStations(), choice4));
+        //LastStation(controller.chooseStation(controller.getAvailableStations(), choice4));
         chosenStops.add(choice4);
 
         scanner.nextLine(); // Consume leftover newline
@@ -114,14 +114,16 @@ public class AssignRouteUI {
                     System.out.println("This station has already been selected. Choose a different one.");
                 } else {
                     chosenStops.add(selection);
-                    controller.addStation(controller.chooseStation(controller.getAvailableStations(), selection));
+                    controller.addStation(controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(), choice)), selection));
                     System.out.println("Station added.");
                 }
             }
         }
 
         // Display available cargo at selected stations
-        List<String> supplyCargoDisplay = controller.getSupplyDisplayList();
+        List<String> supplyCargoDisplay = controller.getSupplyDisplayList(controller.chooseScenario(controller.getAvailableScenarios(), choice),
+                controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(), choice)), choice3),
+                controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice4));
 
         System.out.println();
         System.out.println("Supplied Cargo Available:");
@@ -140,7 +142,9 @@ public class AssignRouteUI {
             for (String part : parts) {
                 try {
                     int idx = Integer.parseInt(part);
-                    boolean success = controller.selectCargoByIndex(idx);
+                    boolean success = controller.selectCargoByIndex(idx,controller.chooseScenario(controller.getAvailableScenarios(), choice),
+                            controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice3),
+                                    controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice4));
                     if (!success) {
                         System.out.println("Invalid cargo index: " + idx);
                     }
@@ -151,12 +155,14 @@ public class AssignRouteUI {
         }
 
         // Create route using controller depending on presence of stops
-        if (hasStops) {
-            controller.createRoute2();
+      /*  if (hasStops) {
+            controller.createRoute2(controller.chooseScenario(controller.getAvailableScenarios(), choice),
+                    controller.chooseStation(controller.getAvailableStations(), choice3));
         } else {
-            controller.createRoute();
+            controller.createRoute(controller.chooseScenario(controller.getAvailableScenarios(), choice),
+                    controller.chooseStation(controller.getAvailableStations(), choice3));
         }
 
-        System.out.println("Route Created!");
+        System.out.println("Route Created!"); */
     }
 }

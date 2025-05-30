@@ -56,6 +56,8 @@ public class RailwayMaintenanceUI {
         MaintenanceType type = promptMaintenanceType();
         controller.setMaintenanceType(type);
 
+        long start = System.nanoTime();
+
         // Step 3: Get possible starting stations
         List<String> possibleStarts = controller.getPossibleStartingStationNames();
 
@@ -64,6 +66,8 @@ public class RailwayMaintenanceUI {
             controller.visualizeGraph();
             return;
         }
+
+        long end = System.nanoTime();
 
         System.out.println("Possible starting stations:");
         for (String name : possibleStarts) {
@@ -81,6 +85,9 @@ public class RailwayMaintenanceUI {
         }
 
         System.out.println("Starting station '" + chosenName + "' selected.");
+
+        long duration = end - start; // em nanosegundos
+        System.out.println("US14 Time (ns): " + duration);
 
         // Step 5: Visualize graph
         controller.visualizeGraph();

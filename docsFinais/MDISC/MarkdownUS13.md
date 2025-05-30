@@ -1,4 +1,4 @@
-# US14 Mathematical Code Explanation Documentation
+# US13 Mathematical Code Explanation Documentation
 
 This section complements US13 explanation with the logic used in the `PathVerifier` class to determine if a valid route exists between stations of a given type and under specific locomotive constraints.
 

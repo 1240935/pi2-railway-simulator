@@ -39,7 +39,7 @@ public class StationRepository {
         try (BufferedReader br = new BufferedReader(new FileReader(stationsFile))) {
             String line = br.readLine();
             if (line != null) {
-                String[] stationNames = line.split(";");
+                String[] stationNames = line.split(";");    
                 for (String name : stationNames) {
                     StationType type = getStationTypeFromName(name);
                     stations.add(new Station(name, type));
@@ -89,7 +89,7 @@ public class StationRepository {
     /**
      * Adds a new {@link Station} to the repository's internal list.
      *
-     * @param station the {@link Station} object to add
+     * @param station the {@link Station} object to addScenario
      */
     public void addStation(Station station) {
         stations.add(station);

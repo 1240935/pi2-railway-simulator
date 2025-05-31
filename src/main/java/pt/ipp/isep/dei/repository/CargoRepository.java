@@ -16,7 +16,7 @@ public class CargoRepository {
     /**
      * Adds a Cargo to the repository if it is not null and not already present.
      *
-     * @param cargo the Cargo object to add
+     * @param cargo the Cargo object to addScenario
      */
     public void addCargo(Cargo cargo) {
         if (cargo != null && !cargoes.contains(cargo)) {

@@ -3,8 +3,8 @@ package pt.ipp.isep.dei.controller;
 import pt.ipp.isep.dei.domain.Map;
 import pt.ipp.isep.dei.repository.MapRepository;
 import pt.ipp.isep.dei.repository.Repositories;
-import java.util.stream.Collectors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SaveMapController {
@@ -15,10 +15,24 @@ public class SaveMapController {
         this.repository = Repositories.getInstance().getMapRepository();
     }
 
+    public boolean saveMapToFile(Map map, String filePath) {
+        return Repositories.getInstance().getMapRepository().saveMapToSerializedFile(map, filePath);
+    }
+    public List<Map> getMaps() {
+        return repository.getMaps();
+    }
+
+
+    public int getMapCount() {
+        return repository.getMaps().size();
+    }
+
     public List<String> getMapNames() {
-        return repository.getMaps().stream()
-                .map(Map::getName)
-                .collect(Collectors.toList());  // toList nao era suportado nesta versao, subsituido por Collectors
+        List<String> names = new ArrayList<>();
+        for (Map map : repository.getMaps()) {
+            names.add(map.getName());
+        }
+        return names;
     }
 
     public boolean saveMapByIndex(int index, String filePath) {
@@ -26,12 +40,7 @@ public class SaveMapController {
         if (index < 0 || index >= maps.size()) {
             return false;
         }
-        Map map = maps.get(index);
-        repository.saveMapToCSV(map, filePath);
-        return true;
-    }
-
-    public int getMapCount() {
-        return repository.getMaps().size();
+        Map selectedMap = maps.get(index);
+        return repository.saveMapToSerializedFile(selectedMap, filePath);
     }
 }

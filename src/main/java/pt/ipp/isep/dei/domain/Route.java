@@ -215,7 +215,7 @@ public class Route {
                 }
             }
 
-            // If the number of connections (degree) is odd, add to list
+            // If the number of connections (degree) is odd, addScenario to list
             if (degree % 2 != 0) {
                 oddDegreeStations.add(current);
             }

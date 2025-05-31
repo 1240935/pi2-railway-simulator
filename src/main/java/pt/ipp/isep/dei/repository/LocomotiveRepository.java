@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Repository class responsible for storing and managing {@link Locomotive} objects.
- * Provides methods to add locomotives, retrieve all locomotives, and generate the next unique ID.
+ * Provides methods to addScenario locomotives, retrieve all locomotives, and generate the next unique ID.
  */
 public class LocomotiveRepository {
 

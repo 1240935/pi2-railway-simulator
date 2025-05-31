@@ -1,11 +1,14 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents a single block within a city on the map.
  * <p>
  * Each {@code CityBlock} has a {@link Position} which defines its location on the grid.
  */
-public class CityBlock {
+public class CityBlock implements Serializable {
+
 
     /** The position of this city block on the map. */
     private Position position;

@@ -14,7 +14,7 @@ public class CityRepository {
     /**
      * Adds a new City to the repository.
      *
-     * @param city the City object to add
+     * @param city the City object to addScenario
      */
     public void addCity(City city) {
         cities.add(city);

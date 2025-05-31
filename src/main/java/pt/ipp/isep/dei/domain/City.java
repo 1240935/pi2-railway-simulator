@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.Random;
  * A {@code City} has a name, a central position, and a list of associated {@link CityBlock}s.
  * It defines specific cargo types that it supplies and demands.
  */
-public class City {
+public class City implements Serializable {
+
 
     /** The central position of the city on the map. */
     private Position position;

@@ -230,15 +230,6 @@ public class Repositories {
         return locomotiveTypeRepository;
     }
 
-    /**
-     * Returns the repository managing scenarios.
-     * Alias to {@link #getScenarioRepository()}.
-     *
-     * @return the {@link ScenarioRepository} instance
-     */
-    public ScenarioRepository getScenarioRepo() {
-        return scenarioRepo;
-    }
 
     /**
      * Returns the repository managing cities.

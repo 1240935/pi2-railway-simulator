@@ -1,12 +1,15 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents an industry placed on a map at a specific position.
  * <p>
  * Each industry has a defined {@link IndustryType} and a {@link Position} indicating
  * where it is located on the map grid.
  */
-public class Industry {
+public class Industry implements Serializable {
+
 
     /** The type of the industry (e.g., Steel Mill, Oil Well). */
     private IndustryType industryType;

@@ -2,12 +2,11 @@ package pt.ipp.isep.dei.repository;
 
 import pt.ipp.isep.dei.domain.Map;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Repository class responsible for storing and managing {@link Map} objects.
- * Provides methods to add maps and retrieve the list of stored maps.
+ * Provides methods to addScenario maps and retrieve the list of stored maps.
  */
 public class MapRepository {
 
@@ -46,50 +45,35 @@ public class MapRepository {
             return null;
         }
     }
-    public void saveMapToCSV(Map map, String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            // Metadata
-            writer.write("MapName;" + map.getName() + "\n");
-            writer.write("MapSize;" + map.getSize() + "\n");
-            writer.write("MapScale;" + map.getScale() + "\n\n");
-
-            // Cities
-            writer.write("Cities\n");
-            writer.write("Name;X;Y\n");
-            for (var city : map.getCities()) {
-                writer.write(city.getName() + ";" + city.getPosition().getxCoordinate() + ";" + city.getPosition().getyCoordinate() + "\n");
-            }
-
-            writer.write("\n");
-
-            // CityBlocks
-            writer.write("CityBlocks\n");
-            writer.write("CityName;X;Y\n");
-            for (var city : map.getCities()) {
-                if (city.getBlocks() != null) {
-                    for (var block : city.getBlocks()) {
-                        writer.write(city.getName() + ";" +
-                                block.getPosition().getxCoordinate() + ";" +
-                                block.getPosition().getyCoordinate() + "\n");
-                    }
-                }
-            }
-
-            writer.write("\n");
-
-            // Industries
-            writer.write("Industries\n");
-            writer.write("Type;X;Y\n");
-            for (var industry : map.getIndustries()) {
-                writer.write(industry.getType() + ";" +
-                        industry.getPosition().getxCoordinate() + ";" +
-                        industry.getPosition().getyCoordinate() + "\n");
-            }
-
-            System.out.println("Map saved successfully to " + filePath);
+    /**
+     * Saves a map object to a serialized file (.ser)
+     *
+     * @param map      the map to serialize
+     * @param filePath the destination file path (e.g., "maps/portugal.ser")
+     */
+    public boolean saveMapToSerializedFile(Map map, String filePath) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            out.writeObject(map);
+            return true;
         } catch (IOException e) {
-            System.err.println("Error saving map: " + e.getMessage());
+            System.err.println("Error serializing map: " + e.getMessage());
+            return false;
         }
     }
 
+    /**
+     * Loads a serialized map from a file.
+     *
+     * @param filePath the path to the serialized file
+     * @return the deserialized Map object, or null if loading fails
+     */
+    public Map loadMapFromSerializedFile(String filePath) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
+            Map map = (Map) in.readObject();
+            return map;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading map: " + e.getMessage());
+            return null;
+        }
+    }
 }

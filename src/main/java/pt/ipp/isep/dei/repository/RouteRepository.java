@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Repository class responsible for storing and managing {@link Route} objects.
- * Provides methods to add routes and retrieve the list of stored routes.
+ * Provides methods to addScenario routes and retrieve the list of stored routes.
  */
 public class RouteRepository {
 

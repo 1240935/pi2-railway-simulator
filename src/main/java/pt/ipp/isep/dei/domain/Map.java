@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,7 +9,8 @@ import java.util.ArrayList;
  * <p>
  * The map provides functionality to manage its elements and validate positions within its bounds.
  */
-public class Map {
+public class Map implements Serializable {
+
 
     /**
      * The name of the map.
@@ -96,7 +98,7 @@ public class Map {
     /**
      * Adds a city to the map.
      *
-     * @param city the city to add
+     * @param city the city to addScenario
      */
     public void addCity(City city) {
         cities.add(city);
@@ -114,7 +116,7 @@ public class Map {
     /**
      * Adds an industry to the map.
      *
-     * @param industry the industry to add
+     * @param industry the industry to addScenario
      */
     public void addIndustry(Industry industry) {
         industries.add(industry);

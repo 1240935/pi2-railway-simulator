@@ -15,7 +15,7 @@ public class BuildingRepository {
     /**
      * Adds a Building to the repository.
      *
-     * @param building the Building to add
+     * @param building the Building to addScenario
      * @throws NullPointerException if the building is null
      */
     public void addBuilding(Building building) {

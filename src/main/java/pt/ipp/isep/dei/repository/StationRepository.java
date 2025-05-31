@@ -89,7 +89,7 @@ public class StationRepository {
     /**
      * Adds a new {@link Station} to the repository's internal list.
      *
-     * @param station the {@link Station} object to add
+     * @param station the {@link Station} object to addScenario
      */
     public void addStation(Station station) {
         stations.add(station);

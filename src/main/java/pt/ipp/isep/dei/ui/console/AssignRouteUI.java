@@ -81,24 +81,24 @@ public class AssignRouteUI {
 
         scanner.nextLine(); // Consume leftover newline
 
-        // Ask user if they want to add intermediate stops
-        System.out.print("Would you like to add stops to the route? (yes/no): ");
+        // Ask user if they want to addScenario intermediate stops
+        System.out.print("Would you like to addScenario stops to the route? (yes/no): ");
         String stopResponse = scanner.nextLine().trim().toLowerCase();
         boolean hasStops = false;
 
         if (stopResponse.equals("yes") || stopResponse.equals("y")) {
             hasStops = true;
 
-            // Loop to add stops until user finishes
+            // Loop to addScenario stops until user finishes
             while (true) {
-                System.out.println("Available stations to add as stops:");
+                System.out.println("Available stations to addScenario as stops:");
                 for (int i = 0; i < stationNames.size(); i++) {
                     if (!chosenStops.contains(i + 1)) {
                         System.out.printf("%d. %s%n", i + 1, stationNames.get(i));
                     }
                 }
 
-                System.out.print("Enter the number of a station to add as a stop (or 0 to finish): ");
+                System.out.print("Enter the number of a station to addScenario as a stop (or 0 to finish): ");
                 while (!scanner.hasNextInt()) {
                     System.out.print("Invalid input. Please enter a number: ");
                     scanner.next();

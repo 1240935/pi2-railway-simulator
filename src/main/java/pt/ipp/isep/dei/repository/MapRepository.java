@@ -6,7 +6,7 @@ import java.io.*;
 
 /**
  * Repository class responsible for storing and managing {@link Map} objects.
- * Provides methods to add maps and retrieve the list of stored maps.
+ * Provides methods to addScenario maps and retrieve the list of stored maps.
  */
 public class MapRepository {
 

@@ -130,7 +130,7 @@ public class AssignRouteController {
     /**
      * Adds a station to the list of intermediate stops on the route.
      *
-     * @param station the Station to add as a stop
+     * @param station the Station to addScenario as a stop
      */
     public void addStation(Station station) {
         stops.add(station);

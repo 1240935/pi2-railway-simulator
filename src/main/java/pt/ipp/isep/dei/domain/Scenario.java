@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * including locomotive types, industry types, industry changers,
  * and resource types for importation and exportation.
  */
-public class Scenario {
+public class Scenario implements Serializable {
     private Map map;
     private int year;
     private List<LocomotiveType> locomotiveTypes;
@@ -91,7 +92,7 @@ public class Scenario {
     /**
      * Adds a station to the scenario.
      *
-     * @param station the station to add
+     * @param station the station to addScenario
      */
     public void addStation(Station station) {
         stations.add(station);
@@ -109,7 +110,7 @@ public class Scenario {
     /**
      * Adds a locomotive to the scenario.
      *
-     * @param locomotive the locomotive to add
+     * @param locomotive the locomotive to addScenario
      */
     public void addLocomotive(Locomotive locomotive) {
         locomotives.add(locomotive);
@@ -136,7 +137,7 @@ public class Scenario {
     /**
      * Adds a route to the scenario.
      *
-     * @param route the route to add
+     * @param route the route to addScenario
      */
     public void addRoute(Route route) {
         routes.add(route);

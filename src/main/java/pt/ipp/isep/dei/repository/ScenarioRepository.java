@@ -3,10 +3,11 @@ package pt.ipp.isep.dei.repository;
 import pt.ipp.isep.dei.domain.Scenario;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.*;
 
 /**
  * Repository class responsible for storing and managing {@link Scenario} objects.
- * Provides methods to add scenarios and retrieve all stored scenarios.
+ * Provides methods to addScenario scenarios and retrieve all stored scenarios.
  */
 public class ScenarioRepository {
 
@@ -16,9 +17,9 @@ public class ScenarioRepository {
     /**
      * Adds a new {@link Scenario} to the repository if it is not null and not already present.
      *
-     * @param scenario the {@link Scenario} to add
+     * @param scenario the {@link Scenario} to addScenario
      */
-    public void add(Scenario scenario) {
+    public void addScenario(Scenario scenario) {
         if (scenario != null && !scenarios.contains(scenario)) {
             scenarios.add(scenario);
         }
@@ -43,4 +44,6 @@ public class ScenarioRepository {
     public List<Scenario> getScenarios() {
         return scenarios;
     }
+
+
 }

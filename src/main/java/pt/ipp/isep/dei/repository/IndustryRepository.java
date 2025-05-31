@@ -16,7 +16,7 @@ public class IndustryRepository {
     /**
      * Adds a new Industry to the repository.
      *
-     * @param industry the Industry object to add
+     * @param industry the Industry object to addScenario
      */
     public void addIndustry(Industry industry) {
         industries.add(industry);

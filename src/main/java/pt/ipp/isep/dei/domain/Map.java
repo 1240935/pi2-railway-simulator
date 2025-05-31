@@ -98,7 +98,7 @@ public class Map implements Serializable {
     /**
      * Adds a city to the map.
      *
-     * @param city the city to add
+     * @param city the city to addScenario
      */
     public void addCity(City city) {
         cities.add(city);
@@ -116,7 +116,7 @@ public class Map implements Serializable {
     /**
      * Adds an industry to the map.
      *
-     * @param industry the industry to add
+     * @param industry the industry to addScenario
      */
     public void addIndustry(Industry industry) {
         industries.add(industry);

@@ -3,6 +3,7 @@ package pt.ipp.isep.dei.ui.console;
 import pt.ipp.isep.dei.domain.Editor;
 import pt.ipp.isep.dei.domain.Player;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -145,6 +146,8 @@ public class MenuUI {
             System.out.println("4. Create Scenario");
             System.out.println("5. Save Map");
             System.out.println("6. Load Map");
+            System.out.println("7. Save Scenario");
+            System.out.println("8. Load Scenario");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");
@@ -157,6 +160,8 @@ public class MenuUI {
                 case "4" -> new CreateScenarioUI().start();
                 case "5" -> new SaveMapUI().start();
                 case "6" -> new LoadMapUI().start();
+                case "7" -> new SaveScenarioUI().start();
+                case "8" -> new LoadScenarioUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
                     System.out.println();

@@ -340,6 +340,6 @@ public class CreateScenarioController {
      */
     public void createScenario() {
         Scenario scenario = new Scenario(selectedMap, selectedYear, locomotiveTypes, changers, exportation, importation);
-        Repositories.getInstance().getScenarioRepository().add(scenario);
+        Repositories.getInstance().getScenarioRepository().addScenario(scenario);
     }
 }

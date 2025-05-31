@@ -31,10 +31,10 @@ class ScenarioRepositoryTest {
     }
 
     @Test
-    void addScenario_ShouldAddScenario_WhenScenarioIsNotNullAndNotDuplicate() {
+    void addScenario_ShouldAddScenarioScenario_WhenScenarioIsNotNullAndNotDuplicate() {
         Scenario scenario = createScenario("Mapa A", 2025);
 
-        repository.add(scenario);
+        repository.addScenario(scenario);
 
         List<Scenario> scenarios = repository.getScenarios();
         assertEquals(1, scenarios.size());
@@ -42,18 +42,18 @@ class ScenarioRepositoryTest {
     }
 
     @Test
-    void addScenario_ShouldNotAdd_WhenScenarioIsNull() {
-        repository.add(null);
+    void addScenario_ShouldNotAdd_Scenario_WhenScenarioIsNull() {
+        repository.addScenario(null);
 
         assertTrue(repository.getScenarios().isEmpty(), "Não deve adicionar cenário nulo.");
     }
 
     @Test
-    void addScenario_ShouldNotAddDuplicateScenario() {
+    void addScenario_ShouldNotAddScenarioDuplicateScenario() {
         Scenario scenario = createScenario("Mapa B", 2030);
 
-        repository.add(scenario);
-        repository.add(scenario);
+        repository.addScenario(scenario);
+        repository.addScenario(scenario);
 
         List<Scenario> scenarios = repository.getScenarios();
         assertEquals(1, scenarios.size(), "Não deve adicionar cenários duplicados.");
@@ -64,8 +64,8 @@ class ScenarioRepositoryTest {
         Scenario scenario1 = createScenario("Mapa C", 2020);
         Scenario scenario2 = createScenario("Mapa D", 2022);
 
-        repository.add(scenario1);
-        repository.add(scenario2);
+        repository.addScenario(scenario1);
+        repository.addScenario(scenario2);
 
         ArrayList<Scenario> allScenarios = repository.getAll();
         assertEquals(2, allScenarios.size());

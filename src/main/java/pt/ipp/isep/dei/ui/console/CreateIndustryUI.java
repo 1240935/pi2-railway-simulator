@@ -46,11 +46,13 @@ public class CreateIndustryUI {
 
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
+        int size = controller.getMapByIndex(mapIndex).getSize();
 
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
+
 
 
         System.out.println("Available industry types:");
@@ -62,10 +64,6 @@ public class CreateIndustryUI {
         System.out.print("Select industry type: ");
         int industryTypeIndex = scanner.nextInt();
 
-        controller.createIndustry(controller.getIndustryTypeByIndex(industryTypeIndex),controller.createPosition(x,y),
-                controller.getMapByIndex(mapIndex).getSize(), mapIndex);
-        System.out.println("Industry created successfully!");
-
-
+        controller.createIndustry(controller.getIndustryTypeByIndex(industryTypeIndex),controller.createPosition(x,y),size , mapIndex);
     }
 }

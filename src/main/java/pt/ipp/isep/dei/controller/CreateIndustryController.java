@@ -82,7 +82,7 @@ public class CreateIndustryController {
      */
     public List<String> getAvailableIndustryTypeNames() {
         List<String> names = new ArrayList<>();
-        for (IndustryType type : IndustryType.values()) {
+        for (IndustryType type : Repositories.getInstance().getIndustryTypeRepository().getIndustryTypes()) {
             names.add(type.name());
         }
         return names;

@@ -9,51 +9,93 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-  class CreateIndustryUI{
-  }
+class CreateIndustryUI {
+}
 
-  class CreateIndustryController {
-    +CreateIndustryController()
-    +getAvailableMaps()
-    +setMapByIndex(index)
-    +getAvailableIndustryTypeNames()
-    +checkCoordinates(xCoordinate, yCoordinate)
-    +setIndustryTypeByIndex(index)
-    +createIndustry(type, position, resourceType)
-    +setType(type)
-  }
+class CreateIndustryController {
+  +CreateIndustryController()
+  +getAvailableMapNames()
+  +getMapByIndex(mapIndex)
+  +getAvailableIndustryTypeNames()
+  +createIndustry(dto)
+}
 
+class Repositories {
+  -Repositories()
+  +getInstance()
+  +getMapRepository()
+  +getIndustryRepository()
+  +getIndustryTypeRepository()
+}
 
-  class Repositories {
-      - Repositories()
-      + getInstance()
-      + getMapRepository()
-  }
-  class MapRepository {
-    +getMaps()
-  }
+class MapRepository {
+  +getMaps()
+}
 
-  class Industry {
-    -position : Position
-    -type : IndustryType
-    +Industry(position, type)
-  }
-  class Map {
-    - size : int
-    - name : String
-    - industries : List<Industry>
-    - cities : List<City>
-    + Map(name, size)
-    +checkCoordinates(position)
-    }
+class IndustryRepository {
+  +createIndustry(dto)
+  +createIndustry(industryType, xCoordinate, yCoordinate, mapSize)
+  +addIndustry(industry)
+}
 
-  class Position {
-    -xCoordinate : int
-    -yCoordinate : int
-    +Position(xCoordinate, yCoordinate)
-  }
+class IndustryTypeRepository {
+  +getIndustryTypes()
+}
 
-  enum IndustryType{
+class MapListMapper {
+  -toDTO(mapList)
+  -toDTO(map)
+}
+
+class IndustryTypeListMapper {
+  +toDTO(industryTypes>)
+  +toDTO(industryType)
+}
+
+class IndustryListMapper {
+  +toIndustry(dto):
+}
+
+class MapDTO {
+  -size: int
+  -name: String
+  -scale: double
+}
+
+class IndustryTypeDTO {
+  -importation: boolean
+  -exportation: boolean
+}
+
+class IndustryDTO {
+  -industryType: IndustryType
+  -xCoordinate: int
+  -yCoordinate: int
+  -mapSize: int
+  +getIndustryType()
+  +getXCoordinate()
+  +getYCoordinate()
+  +getMapSize()
+}
+
+class Map {
+  - size : int
+  - name : String
+  - scale : int
+  - industries : List<Industry>
+  - cities : List<City>
+  +getMap(mapIndex)
+  +addIndustry(industry)
+}
+
+class Industry {
+  -industryType: IndustryType
+  -position: Position
+  +checkPosition(position, mapSize)
+  +checkIndustryType(industryType)
+}
+
+ enum IndustryType{
     aluminum mill
     auto plant
     bakery
@@ -93,25 +135,48 @@ skinparam classAttributeIconSize 0
     weapons factory
     port
     --
-    importation: ResourceType
-    exportation: ResourceType
+    -importation: ResourceType
+    -exportation: ResourceType
 
   }
 
+class Position {
+  -xCoordinate: int
+  -yCoordinate: int
+  +createPosition(x, y)
+}
 
-
-
+' Associations
 CreateIndustryUI ..> CreateIndustryController
-CreateIndustryController ..>  Repositories
-CreateIndustryController ..>  MapRepository
-CreateIndustryController ..>  Map
-CreateIndustryController ..> Position
-CreateIndustryController ..> IndustryType
-CreateIndustryController ..> Industry
-Repositories --> "1" MapRepository : map repository
+
+CreateIndustryController ..> Repositories
+
 Repositories -> "1" Repositories : instance
-MapRepository --> "*" Map : map
-Industry --> "1" Position : position
-IndustryType --> "1" Industry : industry type
+Repositories --> "1" MapRepository: mapRepository
+Repositories --> "1" IndustryRepository: industryRepository
+Repositories --> "1" IndustryTypeRepository: industryTypeRepository
+
+CreateIndustryController ..> MapListMapper
+
+MapListMapper --> "1" MapDTO
+
+CreateIndustryController ..> IndustryTypeListMapper
+
+IndustryTypeListMapper --> "1" IndustryTypeDTO
+
+CreateIndustryController ..> IndustryListMapper
+
+IndustryListMapper --> Industry
+
+IndustryListMapper --> IndustryDTO
+
+Industry --> "1" Position: position
+
+IndustryTypeRepository --> "38" IndustryType: industryType
+MapRepository --> "1..*" Map: map
+IndustryType --> "1" Industry: industryType
+
+IndustryRepository --> "*" Industry: industry
+Map --> "*" Industry: industry
 
 @enduml

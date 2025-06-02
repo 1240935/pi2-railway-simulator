@@ -45,5 +45,37 @@ public class ScenarioRepository {
         return scenarios;
     }
 
+    /**
+     * Saves a scenario object to a serialized file (.ser)
+     *
+     * @param scenario the scenario to serialize
+     * @param filePath the destination file path
+     * @return true if successful, false otherwise
+     */
+    public boolean saveScenarioToSerializedFile(Scenario scenario, String filePath) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            out.writeObject(scenario);
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error serializing scenario: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Loads a serialized scenario from a file
+     *
+     * @param filePath path to the serialized file
+     * @return deserialized Scenario object or null if failed
+     */
+    public Scenario loadScenarioFromSerializedFile(String filePath) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
+            Scenario scenario = (Scenario) in.readObject();
+            return scenario;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading scenario: " + e.getMessage());
+            return null;
+        }
+    }
 
 }

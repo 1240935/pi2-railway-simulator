@@ -9,141 +9,373 @@ actor "Editor" as EDITOR
 participant ":AddCityUI" as UI
 participant ":AddCityController" as CTRL
 participant "Repositories" as REPOS
-participant ":MapRepository" as MAP_REPOS
-participant "Position" as PSTN
-participant "Map" as MAP
-participant "CityBlock" as BLOCK
-participant "City" as CITY
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "mapRepository \n :MapRepository" as MAP_REPOS
+participant ":MapListMapper" as MAPPER
+participant ":List<Map>" as LIST_MAP
+participant ":List<MapDTO>" as LDTO
+participant ":MapDTO" as MDTO
+participant "map \n :Map" as MAP
+participant "cityBlockRepository \n :CityBlockRepository" as CB_REPOS
+participant ":CityBlockMapper" as CBMAPPER
+participant ":CityBlockDTO" as CBDTO
+participant "cityBlock \n :CityBlock" as CITY_BLOCK
+participant "cityRepository \n :CityRepository" as CITY_REPOS
+participant ":CityMapper" as CMAPPER
+participant ":CityDTO" as CDTO
+participant "city \n :City" as CITY
+participant "position \n :Position" as POS
 
 activate EDITOR
 
     EDITOR -> UI : asks to add a city
     activate UI
-        UI --> CTRL** : create()
-        UI -> CTRL : getAvailableMapNames()
-            activate CTRL
-            CTRL -> REPOS : getInstance()
-                activate REPOS
-                REPOS --> CTRL : repositories
-                deactivate REPOS
-            CTRL -> MAP_REPOS : getMapRepository()
-                activate MAP_REPOS
-                MAP_REPOS --> CTRL : mapRepository
-                deactivate MAP_REPOS
-             CTRL --> UI : availableMaps
-            deactivate CTRL
 
+    UI --> CTRL** : create()
 
+    UI -> CTRL : getAvailableMapNames()
+    activate CTRL
 
-        UI --> EDITOR : displays list of available maps
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+    REPOS --> CTRL : repositories
+    deactivate REPOS
+
+    CTRL -> REPO_SINGLETON : getMapRepository()
+    activate REPO_SINGLETON
+    REPO_SINGLETON --> CTRL : mapRepository
+    deactivate REPO_SINGLETON
+
+    CTRL -> MAP_REPOS : getMaps()
+    activate MAP_REPOS
+    MAP_REPOS --> CTRL : mapList
+    deactivate MAP_REPOS
+
+    CTRL -> MAPPER : toDTO(mapList)
+    activate MAPPER
+
+    MAPPER --> LDTO** : create()
+
+    loop for each map
+        MAPPER -> LIST_MAP : getMap()
+        activate LIST_MAP
+        LIST_MAP --> MAPPER : map
+        deactivate LIST_MAP
+
+        MAPPER -> MAPPER : toDTO(map)
+        activate MAPPER
+        MAPPER --> MDTO** : create(size, name, scale)
+        deactivate MAPPER
+
+        MAPPER -> LDTO : addMap(mapDTO)
+        activate LDTO
+        deactivate LDTO
+    end loop
+
+    MAPPER --> CTRL : mapListDTO
+    deactivate MAPPER
+
+    CTRL -> LDTO : getAvailableMapNames(mapListDTO)
+    activate LDTO
+
+    LDTO --> CTRL : map names
+    deactivate LDTO
+
+    CTRL --> UI : map names
+    deactivate CTRL
+
+    UI --> EDITOR : displays list of available maps
     deactivate UI
 
     EDITOR -> UI : selects a map
     activate UI
-    UI -> CTRL : setMap(map)
-        activate CTRL
-        CTRL --> UI : selected map
-        deactivate CTRL
-        UI --> EDITOR : asks for city name
+
+    UI -> CTRL : getMapByIndex(mapIndex)
+    activate CTRL
+
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+    REPOS --> CTRL : repositories
+    deactivate REPOS
+
+    CTRL -> REPO_SINGLETON : getMapRepository()
+    activate REPO_SINGLETON
+    REPO_SINGLETON --> CTRL : mapRepository
+    deactivate REPO_SINGLETON
+
+    CTRL -> MAP_REPOS : getMaps()
+    activate MAP_REPOS
+    MAP_REPOS --> CTRL : mapList
+    deactivate MAP_REPOS
+
+    CTRL -> MAP : getMap(mapIndex)
+    activate MAP
+
+    MAP --> CTRL : map
+    deactivate MAP
+
+    CTRL --> UI : selected map
+    deactivate CTRL
+
+    UI --> EDITOR : asks for city name
     deactivate UI
 
     EDITOR -> UI : types the city name
     activate UI
-    UI -> CTRL : checkName(name)
-    activate CTRL
-    CTRL --> UI : valid name
-    deactivate CTRL
-    UI -> CTRL: setSelectedName(name)
-    activate CTRL
-    CTRL --> UI: name
-    deactivate CTRL
-        UI --> EDITOR : asks for XY coordinates
+
+    UI --> EDITOR : asks for XY coordinates
     deactivate UI
 
-    EDITOR -> UI : types XY coordinates
+    EDITOR -> UI : types coordinates
     activate UI
-        UI -> CTRL : createPosition(xCoordinate, yCoordinate)
-        activate CTRL
-        CTRL -> PSTN** : create(xCoordinate, yCoordinate)
-        CTRL --> UI : position
-         UI -> CTRL: checkCoordinates(position)
 
-            CTRL -> MAP : checkCoordinates(position)
-            activate MAP
-
-            MAP --> CTRL : valid coordinates
-            deactivate MAP
-
-            CTRL --> UI : valid coordinates
-
-            UI -> CTRL: setCenter(position)
-
-            CTRL --> UI : center set
-            deactivate CTRL
-
-        UI --> EDITOR : asks for number of city blocks
+    UI --> EDITOR : asks for number of city blocks
     deactivate UI
-
-    EDITOR -> UI : types number of city blocks
+    EDITOR -> UI : types number of blocks
     activate UI
-        UI -> CTRL : setNumber(number)
-        activate CTRL
-        CTRL --> UI : number
-        deactivate CTRL
-        UI --> EDITOR : asks for automatic or manual block placement
+
+    UI --> EDITOR : asks for automatic or manual placement
     deactivate UI
 
-    alt automatic block placement
+    alt automatic placement
         EDITOR -> UI : selects automatic placement
         activate UI
 
-        loop block positioning
-            UI -> CTRL: setSelectedBlocks(generateCityBlocks(position))
-            activate CTRL
-            CTRL --> UI: blocks set
-            deactivate CTRL
-        end loop
+       UI -> CTRL : createBlocksAutomatically(dto)
+                      activate CTRL
 
-            UI --> EDITOR : blocks placed automatically
-        deactivate UI
-    else alt Manual placement
-        EDITOR -> UI : selects manual placement
-        activate UI
+                      CTRL -> REPOS : getInstance()
+                      activate REPOS
 
-        loop block positioning
-            UI --> EDITOR : asks for block position
-            EDITOR -> UI : types block position
-        UI -> CTRL : createPosition (xCoordinate, yCoordinate)
-        activate CTRL
-        CTRL -> PSTN** : addSelectedPosition(create(xCoordinate, yCoordinate))
-        CTRL --> UI : position added
+                          REPOS --> CTRL : repositories
+                      deactivate REPOS
+
+                      CTRL -> REPO_SINGLETON : getCityBlockRepository()
+                      activate REPO_SINGLETON
+                      REPO_SINGLETON --> CTRL: cityBlockRepository
+                      deactivate REPO_SINGLETON
+                      CTRL -> CB_REPOS: createCityBlock(dto)
+                      activate CB_REPOS
+
+                      CB_REPOS -> CBMAPPER : toCityBlock(dto)
+                      activate CBMAPPER
+
+                      CBMAPPER -> CBDTO: getXCoordinate()
+                      activate CBDTO
+
+                      CBDTO --> CBMAPPER: xCoordinate
+                      deactivate CBDTO
+                      CBMAPPER -> CBDTO: getYCoordinate()
+                          activate CBDTO
+
+                          CBDTO --> CBMAPPER: yCoordinate
+                          deactivate CBDTO
+
+                          CBMAPPER -> CBDTO: getBlocks()
+                                  activate CBDTO
+
+                                  CBDTO --> CBMAPPER: blocks
+                          deactivate CBDTO
+
+                          CBMAPPER -> CBDTO: getRandomize()
+                              activate CBDTO
+
+                             CBDTO --> CBMAPPER: randomize
+                        deactivate CBDTO
+
+
+                      CBMAPPER --> CB_REPOS: xCoordinate, yCoordinate, blocks, randomize
+                      deactivate CBMAPPER
+
+                      CB_REPOS -> CITY_BLOCK: generateBlocks(xCoordinate, yCoordinate, blocks, randomize)
+                      activate CITY_BLOCK
+
+                      CITY_BLOCK --> POS**: createPosition(xCoordinate, yCoordinate)
+
+                      CITY_BLOCK -> CITY_BLOCK: checkPosition(position)
+                          activate CITY_BLOCK
+
+                          CITY_BLOCK --> CITY_BLOCK: valid
+                          deactivate CITY_BLOCK
+
+                    CITY_BLOCK --> CB_REPOS: cityBlock
+                       deactivate CITY_BLOCK
+
+                       CB_REPOS -> CB_REPOS: addCityBlock(cityBlock)
+                       activate CB_REPOS
+
+                       CB_REPOS --> CB_REPOS: success
+                       deactivate CB_REPOS
+
+        CB_REPOS --> CTRL: success
+        deactivate CB_REPOS
+
+        CTRL --> UI: success
         deactivate CTRL
 
-        end loop
 
-        UI -> CTRL : setSelectedBlocks(createBlocks(addSelectedPosition))
-        activate CTRL
+        UI --> EDITOR : blocks placed automatically
 
-        CTRL --> UI : blocks set
+    else manual placement
+
+    EDITOR -> UI : selects manual placement
+                 UI -> CTRL : createBlocksManually(dto)
+                                     activate CTRL
+
+                                     CTRL -> REPOS : getInstance()
+                                     activate REPOS
+
+                                         REPOS --> CTRL : repositories
+                                     deactivate REPOS
+
+                                     CTRL -> REPO_SINGLETON : getCityBlockRepository()
+                                     activate REPO_SINGLETON
+                                     REPO_SINGLETON --> CTRL: cityBlockRepository
+                                     deactivate REPO_SINGLETON
+                                     CTRL -> CB_REPOS: createCityBlock(dto)
+                                     activate CB_REPOS
+
+                                     CB_REPOS -> CBMAPPER : toCityBlock(dto)
+                                     activate CBMAPPER
+
+                                     CBMAPPER -> CBDTO: getXCoordinate()
+                                     activate CBDTO
+
+                                     CBDTO --> CBMAPPER: xCoordinate
+                                     deactivate CBDTO
+                                     CBMAPPER -> CBDTO: getYCoordinate()
+                                         activate CBDTO
+
+                                         CBDTO --> CBMAPPER: yCoordinate
+                                         deactivate CBDTO
+
+                                         CBMAPPER -> CBDTO: getBlocks()
+                                                 activate CBDTO
+
+                                                 CBDTO --> CBMAPPER: blocks
+                                         deactivate CBDTO
+
+                                     CBMAPPER --> CB_REPOS: xCoordinate, yCoordinate, blocks
+                                     deactivate CBMAPPER
+
+                                     CB_REPOS -> CITY_BLOCK: createBlocks(xCoordinate, yCoordinate, blocks)
+                                     activate CITY_BLOCK
+
+        CITY_BLOCK --> POS**: createPosition(xCoordinate, yCoordinate)
+
+        CITY_BLOCK -> CITY_BLOCK: checkPosition(position)
+        activate CITY_BLOCK
+
+        CITY_BLOCK --> CITY_BLOCK: valid
+        deactivate CITY_BLOCK
+
+        CITY_BLOCK --> CB_REPOS: cityBlock
+        deactivate CITY_BLOCK
+
+        CB_REPOS -> CB_REPOS: addCityBlock(cityBlock)
+        activate CB_REPOS
+
+        CB_REPOS --> CB_REPOS: success
+        deactivate CB_REPOS
+
+        CB_REPOS --> CTRL: success
+        deactivate CB_REPOS
+        CTRL --> UI: success
         deactivate CTRL
-
     end alt
 
-    UI --> EDITOR : shows all data for confirmation
-
-    deactivate UI
-
-    EDITOR -> UI : confirms data
-    activate UI
-
-        UI -> CTRL : createCity()
+    UI -> CTRL : createCity(dto)
         activate CTRL
-        CTRL -> CITY** : create(selectedName, selectedCenter,SelectedBlocks)
-        CTRL --> UI: city
+
+        CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL : repositories
+        deactivate REPOS
+
+        CTRL -> REPO_SINGLETON : getCityRepository()
+        activate REPO_SINGLETON
+        REPO_SINGLETON --> CTRL: cityRepository
+        deactivate REPO_SINGLETON
+        CTRL -> CITY_REPOS: createCity(dto)
+        activate CITY_REPOS
+
+        CITY_REPOS -> CMAPPER : toCity(dto)
+        activate CMAPPER
+
+        CMAPPER -> CDTO: getName()
+        activate CDTO
+
+        CDTO --> CMAPPER: name
+        deactivate CDTO
+        CMAPPER -> CDTO: getXCoordinate()
+        activate CDTO
+
+        CDTO --> CMAPPER: xCoordinate
+        deactivate CDTO
+        CMAPPER -> CDTO: getYCoordinate()
+        activate CDTO
+
+        CDTO --> CMAPPER: yCoordinate
+        deactivate CDTO
+
+        CMAPPER -> CDTO: getMapSize()
+        activate CDTO
+
+        CDTO --> CMAPPER: mapSize
+        deactivate CDTO
+
+        CMAPPER --> CITY_REPOS: name, xCoordinate, yCoordinate, mapSize
+        deactivate CMAPPER
+
+        CITY_REPOS -> CITY: createCity(name, xCoordinate, yCoordinate, mapSize)
+        activate CITY
+
+        CITY --> POS**: createPosition(xCoordinate, yCoordinate)
+
+        CITY -> CITY: checkPosition(position, mapSize)
+        activate CITY
+
+        CITY --> CITY: valid
+        deactivate CITY
+
+        CITY -> CITY: checkName(name)
+        activate CITY
+
+        CITY --> CITY: valid
+        deactivate CITY
+
+        CITY --> CITY_REPOS: city
+        deactivate CITY
+
+        CITY_REPOS -> CITY_REPOS: addCity(city)
+        activate CITY_REPOS
+
+        CITY_REPOS --> CITY_REPOS: success
+        deactivate CITY_REPOS
+
+        CITY_REPOS -> MAP: city
+        deactivate CITY_REPOS
+
+        activate MAP
+
+        MAP -> MAP: addCity(city)
+        activate MAP
+
+        MAP --> MAP: success
+
+        deactivate MAP
+
+        MAP --> CTRL: success
+        deactivate MAP
+
+        CTRL --> UI: success
         deactivate CTRL
 
-        UI --> EDITOR : displays operation success
+        UI --> EDITOR: displays operation success
     deactivate UI
 
-deactivate EDITOR
+    deactivate EDITOR
 @enduml

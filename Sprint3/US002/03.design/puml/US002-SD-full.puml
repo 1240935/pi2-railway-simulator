@@ -22,10 +22,8 @@ autonumber
     participant ":List<IndustryTypeDTO>" as ITLDTO
     participant ":IndustryTypeDTO" as ITDTO
     participant "industryRepository \n :IndustryRepository" as IND_REPOS
-        participant ":IndustryListMapper" as IMAPPER
-        participant ":List<Industry>" as LIST_IND
-        participant ":List<IndustryDTO>" as ILDTO
-        participant ":IndustryDTO" as IDTO
+    participant ":IndustryMapper" as IMAPPER
+    participant ":IndustryDTO" as IDTO
     participant "industry \n :Industry" as INDUSTRY
     participant "position \n :Position" as POS
 

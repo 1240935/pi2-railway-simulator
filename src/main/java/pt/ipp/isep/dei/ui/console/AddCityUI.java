@@ -30,6 +30,7 @@ public class AddCityUI {
         System.out.print("Select a map by number: ");
         int mapIndex = scanner.nextInt() - 1;
         scanner.nextLine();
+        int mapSize = controller.getMapByIndex(mapIndex).getSize();
 
         System.out.println("Write a name for your city:");
         String name = scanner.nextLine();
@@ -69,6 +70,6 @@ public class AddCityUI {
             }
             controller.createBlocksManually((controller.getPositions()), blocks);
         }
-        controller.createCity(controller.createPosition(x, y), name, controller.getCityBlocks(), controller.getMapByIndex(mapIndex).getSize() , mapIndex);
+        controller.createCity(controller.createPosition(x, y), name, controller.getCityBlocks(), mapSize, mapIndex);
     }
 }

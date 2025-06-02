@@ -59,7 +59,7 @@ class IndustryListMapper {
 class MapDTO {
   -size: int
   -name: String
-  -scale: double
+  -scale: int
 }
 
 class IndustryTypeDTO {

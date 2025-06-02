@@ -9,80 +9,129 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class AddCityUI {
-
+class AddCityUI{
 }
 
 class AddCityController {
   +AddCityController()
-  +setMap(map)
   +getAvailableMapNames()
-  +chooseMap(List<Map>, choice)
-  +getAvailableMaps()
-  +checkName(name)
-  +setSelectedName(name)
-  +createPosition(xCoordinate, yCoordinate)
-  +checkCoordinates(position)
-  +createBlocks(List<position>, cityblocks)
-  +createCity()
-  +getSelectedPositions()
-  +setSelectedBlocks(List<CityBlock>)
-  +setCenter(position)
-  +addSelectedPositions(xCoordinate,yCoordinate)
-  +generateBlocks(position,number, randomize)
-}
-
-class MapRepository {
-     +getMap()
+  +getMapByIndex(int)
+  +createBlocksAutomatically(CityBlockDTO)
+  +createBlocksManually(CityBlockDTO)
+  +createCity(CityDTO)
 }
 
 class Repositories {
-    - Repositories()
-    + getInstance()
-    + getMapRepository()
+  -Repositories()
+  +getInstance()
+  +getMapRepository()
+  +getCityBlockRepository(): CityBlockRepository
+  +getCityRepository(): CityRepository
+}
+
+class MapRepository {
+  +getMaps()
+}
+
+class CityBlockRepository {
+  +createCityBlock(CityBlockDTO)
+  +addCityBlock(CityBlock)
+}
+
+class CityRepository {
+  +createCity(CityDTO)
+  +addCity(City)
+}
+
+class MapListMapper {
+  +toDTO(List<Map>)
+}
+
+class CityBlockMapper {
+  +toCityBlock(CityBlockDTO)
+}
+
+class CityMapper {
+  +toCity(CityDTO)
+}
+
+class MapDTO {
+  -name: String
+  -size: int
+  -scale: int
+}
+
+class CityBlockDTO {
+  -xCoordinate: int
+  -yCoordinate: int
+  -blocks: int
+  -randomize: boolean
+}
+
+class CityDTO {
+  -name: String
+  -xCoordinate: int
+  -yCoordinate: int
+  +mapSize: int
 }
 
 class Map {
   - size : int
-  - name : String
-  +checkCoordinates(position)
+    - name : String
+    - scale : int
+    - industries : List<Industry>
+    - cities : List<City>
+  +addCity(City): void
+}
+
+class CityBlock {
+   -position: Position
+  +generateBlocks(xCoordinate, yCoordinate, blocks, randomize)
+  +createBlocks(xCoordinate, yCoordinate, blocks)
+  +checkPosition(Position)
 }
 
 class City {
-  - position: Position
-  - name: String
-  - blocks: List <CityBlocks>
-  - supply : ResourceType
-  - demand : ResourceType
-  + City(position, name, blocks)
+  -name: String
+  -position: Position
+  -cityBlocks: List <CityBlock>
+  +createCity(name, xCoordinate, yCoordinate, mapSize)
+  +checkPosition(position, mapSize)
+  +checkName(name)
 }
 
 class Position {
- - xCoordinate: int
- - yCoordinate: int
- +Position(xCoordinate, yCoordinate)
+  -xCoordinate: int
+  -yCoordinate: int
+  +createPosition(xCoordinate, yCoordinate)
 }
 
-class CityBlock{
-   - position: Position
-   +CityBlock(position)
-}
+' Relationships
+AddCityUI --> AddCityController
 
-AddCityUI ..> AddCityController
 AddCityController ..> Repositories
-AddCityController ..> MapRepository
-AddCityController ..> City
-AddCityController ..> Map
+AddCityController ..> MapListMapper
+AddCityController ..> CityBlockMapper
+AddCityController ..> CityMapper
 
-MapRepository --> "1..*" Map : map
+Repositories -> "1" Repositories : instance
+Repositories --> "1" MapRepository: mapRepository
+Repositories --> "1" CityBlockRepository: cityBlockRepository
+Repositories --> "1" CityRepository: cityRepository
 
-Map --> "*" City : city
+MapRepository --> "*" Map: map
+MapListMapper --> "1" MapDTO: mapDTO
+MapListMapper --> "1" Map: map
+CityBlockMapper --> "1" CityBlock: cityBlock
+CityBlockMapper --> "1" CityBlockDTO: cityBlockDTO
+CityMapper --> "1" City: city
+CityMapper --> "1" CityDTO: cityDTO
 
-Repositories --> "1" MapRepository : mapRepository
-Repositories --> "1" Repositories : instance
+CityBlockRepository --> "*" CityBlock: cityBlock
+CityRepository --> "*" City: city
 
-City --> "1" Position : position
-City --> "1..*" CityBlock : city block
-CityBlock --> "1" Position : position
+City --> "1" Position: position
+CityBlock --> "1" Position: position
+Map --> "*" City: city
 
 @enduml

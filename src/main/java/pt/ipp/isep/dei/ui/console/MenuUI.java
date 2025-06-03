@@ -106,7 +106,9 @@ public class MenuUI {
             System.out.println("10. Assign Route");
             System.out.println("12. Simulator");
             System.out.println("13. Train Route Verification");
-            System.out.println("14. Railway Maintenance");
+            System.out.println("14. Train Route Verification Testing");
+            System.out.println("15. Railway Maintenance");
+            System.out.println("16. Railway Maintenance Testing");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");
@@ -120,7 +122,9 @@ public class MenuUI {
                 case "10" -> new AssignRouteUI().start();
                 case "12" -> new SimulatorUI().start(player);
                 case "13" -> new VerifyTrainTravelUI().start();
-                case "14" -> new RailwayMaintenanceUI().start();
+                case "14" -> new VerifyTrainTravelTestUI().start();
+                case "15" -> new RailwayMaintenanceUI().start();
+                case "16" -> new RailwayMaintenanceTestUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
                     System.out.println();

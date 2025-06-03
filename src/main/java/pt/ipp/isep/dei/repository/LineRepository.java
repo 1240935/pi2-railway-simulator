@@ -58,6 +58,44 @@ public class LineRepository {
         return lines;
     }
 
+
+    public List<Line> loadLinesInt(String linesFile, List<Station> stationList) {
+        lines.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(linesFile))) {
+            String lineStr;
+            while ((lineStr = br.readLine()) != null) {
+                String[] parts = lineStr.split(";");
+                if (parts.length < 4) continue;
+
+                String startRaw = parts[0].trim(); // e.g., "S10"
+                String endRaw = parts[1].trim();   // e.g., "S25"
+
+                // Extract numeric part just for processing if needed
+                int startNumber = Integer.parseInt(startRaw.substring(1));
+                int endNumber = Integer.parseInt(endRaw.substring(1));
+
+                // Use full names to find the stations
+                Station startStation = findStationByName(stationList, startRaw);
+                Station endStation = findStationByName(stationList, endRaw);
+
+                boolean electrified = parts[2].trim().equals("1");
+                double distance = Double.parseDouble(parts[3].trim());
+
+                if (startStation != null && endStation != null) {
+                    lines.add(new Line(startStation, endStation, electrified, distance));
+                } else {
+                    System.err.printf("Could not find stations for line: %s -> %s%n", startRaw, endRaw);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Error reading lines file: " + e.getMessage());
+        }
+
+        return lines;
+    }
+
+
     /**
      * Searches for a station in a list by its name, ignoring case.
      *

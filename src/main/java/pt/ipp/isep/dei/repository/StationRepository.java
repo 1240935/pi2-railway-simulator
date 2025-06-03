@@ -51,6 +51,27 @@ public class StationRepository {
         return stations;
     }
 
+    public List<Station> loadStationsInt(String stationsFile) {
+        stations.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(stationsFile))) {
+            String line = br.readLine();
+            if (line != null) {
+                String[] stationNames = line.split(",");
+                for (String name : stationNames) {
+                    name = name.trim(); // e.g., "S10"
+                    int stationNumber = Integer.parseInt(name.substring(1)); // e.g., 10
+                    // Optionally use stationNumber for something
+                    StationType type = getStationTypeFromName(name); // or from stationNumber if needed
+                    stations.add(new Station(name, type));
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return stations;
+    }
+
+
     /**
      * Determines the {@link StationType} based on the first character of the given station name.
      * <p>

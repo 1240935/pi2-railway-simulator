@@ -7,24 +7,37 @@
 ### Pseudocódigo (Route.findEulerianPath)
 
 ```
-procedure findEulerianPath(graph)
-    oddDegreeStations := []
+INICIO
+ED: graph, stations, lines, oddDegreeStations, current, degree, line
 
-    para cada estação em graph.stations:
-        degree := 0
-        para cada linha em graph.lines:
-            se linha conecta à estação:
-                degree := degree + 1
+stations ← obter estações do grafo
+lines ← obter linhas do grafo
+oddDegreeStations ← lista vazia
 
-        se degree é ímpar:
-            adicionar estação a oddDegreeStations
+REPETIR PARA cada current em stations
+    degree ← 0
 
-    se oddDegreeStations está vazia:
-        return graph.stations
-    senão se oddDegreeStations.size == 2:
-        return oddDegreeStations
-    senão:
-        return null
+    REPETIR PARA cada line em lines
+        SE line.start == current OU line.end == current ENTÃO
+            degree ← degree + 1
+        FIMSE
+    FIMREPETIR
+
+    SE degree é ímpar ENTÃO
+        adicionar current a oddDegreeStations
+    FIMSE
+FIMREPETIR
+
+SE tamanho(oddDegreeStations) == 0 ENTÃO
+    DEVOLVE stations
+SENÃO SE tamanho(oddDegreeStations) == 2 ENTÃO
+    DEVOLVE oddDegreeStations
+SENÃO
+    DEVOLVE nulo
+FIMSE
+
+FIM
+
 ```
 
 ### Contagem de Operações no Pior Caso

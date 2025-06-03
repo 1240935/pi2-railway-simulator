@@ -44,9 +44,10 @@ public class VerifyTrainTravelTestUI {
         int stationOption = chooseStationType();
         controller.setStationTypeByOption(stationOption);
 
+        controller.buildGraphFromFiles(stationsFile, linesFile);
+
         long start = System.nanoTime();
 
-        controller.buildGraphFromFiles(stationsFile, linesFile);
         boolean result = controller.verify();
 
         long end = System.nanoTime();

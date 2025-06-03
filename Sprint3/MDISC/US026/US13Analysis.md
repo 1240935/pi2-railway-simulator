@@ -8,30 +8,77 @@
 ### Pseudocódigo (PathVerifier.verifyPath)
 
 ```
-procedure verifyPath(graph, locoType, stationType)
-    candidateStations := estações com tipo == stationType
-    for cada start em candidateStations
-        if bfs(graph, locoType, stationType, start, candidateStations) then
-            return true
-    return false
+INICIO
+ED: graph, locoType, stationType
+ED: stations, candidateStations, s, start
+
+stations ← lista de estações do grafo
+candidateStations ← lista vazia
+
+REPETIR PARA cada s em stations
+    SE s.tipo == stationType ENTÃO
+        adicionar s a candidateStations
+    FIMSE
+FIMREPETIR
+
+REPETIR PARA cada start em candidateStations
+    SE bfs(graph, locoType, stationType, start, candidateStations) ENTÃO
+        ESCREVER true
+        PARAR
+    FIMSE
+FIMREPETIR
+
+ESCREVER false
+FIM
+
+
 ```
 
 ### Pseudocódigo (PathVerifier.bfs)
 
 ```
-procedure bfs(graph, locoType, stationType, start, candidates)
-    queue := [start]
-    visited := [start]
-    while queue não está vazia
-        current := queue.pop()
-        if current ≠ start e current.tipo == stationType então
-            return true
-        vizinhos := conexões(current)
-        para cada vizinho
-            se ainda não visitado e (linha é eletrificada se locoType == ELECTRIC)
-                marcar visitado
-                adicionar à fila
-    return false
+INICIO
+ED: graph, locoType, targetStationType, start, candidates
+ED: queue, visited, current, head, connections, line, neighbor
+
+queue ← [start]
+visited ← [start]
+head ← 0
+
+REPETIR ENQUANTO head < tamanho(queue)
+    current ← queue[head]
+    head ← head + 1
+
+    SE current ≠ start E current.tipo == targetStationType ENTÃO
+        ESCREVER true
+        PARAR
+    FIMSE
+
+    connections ← conexões do grafo a partir de current
+
+    REPETIR PARA cada line em connections
+        SE line.start == current ENTÃO
+            neighbor ← line.end
+        SENÃO
+            neighbor ← line.start
+        FIMSE
+
+        SE neighbor está em visited ENTÃO
+            CONTINUAR
+        FIMSE
+
+        SE locoType == ELECTRIC E line não é eletrificada ENTÃO
+            CONTINUAR
+        FIMSE
+
+        adicionar neighbor a visited
+        adicionar neighbor a queue
+    FIMREPETIR
+FIMREPETIR
+
+ESCREVER false
+FIM
+
 ```
 
 ### Contagem de Operações no Pior Caso
@@ -58,36 +105,10 @@ Sejam:
 
 ---
 
-## Construção do Grafo (GraphC.buildGraph)
-
-### Pseudocódigo
-
-```
-procedure buildGraph(stations, lines)
-    limpar lista de estações
-    para cada estação em stations
-        adicionar à lista
-    limpar lista de linhas
-    para cada linha em lines
-        adicionar à lista
-```
-
-### Contagem Literal
-
-- `n` operações para adicionar estações
-- `m` operações para adicionar linhas
-
-### Complexidade Pior Caso
-
-**O(n + m)**
-
----
-
 ## Conclusão
 
 | Algoritmo            | Complexidade (Pior Caso) |
 |----------------------|--------------------------|
-| buildGraph           | O(n + m)                 |
 | verifyPath (com BFS) | O(n(n + m))              |
 
 > A verificação de caminho é significativamente mais custosa do que a construção do grafo. Isso reflete o esforço de percorrer múltiplas vezes o grafo em largura para diferentes estações.

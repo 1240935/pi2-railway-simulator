@@ -11,6 +11,12 @@ public class MapDTO {
         this.scale = scale;
     }
 
+    public MapDTO(){
+        this.size = 1;
+        this.name = "Default";
+        this.scale = 1;
+    }
+
     public int getSize() {
         return size;
     }
@@ -21,5 +27,17 @@ public class MapDTO {
 
     public int getScale() {
         return scale;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

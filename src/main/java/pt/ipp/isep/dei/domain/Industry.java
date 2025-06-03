@@ -64,6 +64,15 @@ public class Industry implements Serializable {
         this.position = position;
     }
 
+    public boolean checkPosition(Position position, int size) {
+        return position.getxCoordinate() >= 0 && position.getxCoordinate() < size &&
+                position.getyCoordinate() >= 0 && position.getyCoordinate() < size;
+    }
+
+    public IndustryType getIndustryType() {
+        return industryType;
+    }
+
     public static Position createPosition(int x, int y){
         return Position.createPosition(x, y);
     }

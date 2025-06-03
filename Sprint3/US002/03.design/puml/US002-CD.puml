@@ -63,8 +63,8 @@ class MapDTO {
 }
 
 class IndustryTypeDTO {
-  -importation: boolean
-  -exportation: boolean
+  -importation: ResourceType
+  -exportation: ResourceType
 }
 
 class IndustryDTO {

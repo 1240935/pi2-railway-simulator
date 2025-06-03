@@ -157,4 +157,6 @@ public enum IndustryType {
         }
         return scenario.getExportation();
     }
+
+
 }

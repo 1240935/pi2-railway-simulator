@@ -1,40 +1,17 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.CreateIndustryController;
+import pt.ipp.isep.dei.dto.IndustryDTO;
 
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Console-based UI for creating a new industry on a selected map.
- * <p>
- * This interface guides the user through the following steps:
- * <ul>
- *     <li>Display available maps and prompt the user to select one</li>
- *     <li>Request valid coordinates for the industry location</li>
- *     <li>Display available industry types and prompt selection</li>
- *     <li>Create the industry and show a confirmation message</li>
- * </ul>
- * <p>
- * Relies on {@link CreateIndustryController} for handling domain logic and data access.
- */
 public class CreateIndustryUI {
 
-    /** Controller responsible for managing industry creation logic. */
+
     private final CreateIndustryController controller = new CreateIndustryController();
 
-    /**
-     * Starts the interactive process for industry creation via console input.
-     * <ol>
-     *     <li>Displays a list of available maps and lets the user choose one</li>
-     *     <li>Prompts the user to input X and Y coordinates for the industry</li>
-     *     <li>Validates the coordinates with the selected map</li>
-     *     <li>Displays a list of industry types and lets the user choose one</li>
-     *     <li>Creates the industry and confirms its creation</li>
-     * </ol>
-     * <p>
-     * If invalid coordinates are entered, the process is terminated with a warning.
-     */
+
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
@@ -46,7 +23,7 @@ public class CreateIndustryUI {
 
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
-        int size = controller.getMapByIndex(mapIndex).getSize();
+        int size = controller.getMapSizeByIndex(mapIndex);
 
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
@@ -64,6 +41,20 @@ public class CreateIndustryUI {
         System.out.print("Select industry type: ");
         int industryTypeIndex = scanner.nextInt();
 
-        controller.createIndustry(controller.getIndustryTypeByIndex(industryTypeIndex),controller.createPosition(x,y),size , mapIndex);
+        String selectedType = industryTypeNames.get(industryTypeIndex); // User input
+
+        IndustryDTO dto = new IndustryDTO();
+        dto.setIndustryTypeName(selectedType);
+        dto.setxCoordinate(x);
+        dto.setyCoordinate(y);
+        dto.setMapIndex(mapIndex);
+
+        boolean result = controller.createIndustry(dto);
+
+        if (result) {
+            System.out.println("Industry was created successfully.");
+        } else {
+            System.out.println("Failed to create industry.");
+        }
     }
 }

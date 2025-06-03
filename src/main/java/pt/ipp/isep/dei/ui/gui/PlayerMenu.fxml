@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10.0" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="pt.ipp.isep.dei.ui.gui.PlayerMenuGUI">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Player Menu" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <Button text="Build Station" onAction="#handleBuildStation"/>
+    <Button text="Upgrade Station" onAction="#handleUpgradeStation"/>
+    <Button text="View Station Details" onAction="#handleViewStationDetails"/>
+    <Button text="Buy Locomotive" onAction="#handleBuyLocomotive"/>
+    <Button text="Assign Route" onAction="#handleAssignRoute"/>
+    <Button text="Simulator" onAction="#handleSimulator"/>
+    <Button text="Train Route Verification" onAction="#handleVerifyTrainRoute"/>
+    <Button text="Train Route Verification Testing" onAction="#handleVerifyTrainRouteTest"/>
+    <Button text="Railway Maintenance" onAction="#handleRailwayMaintenance"/>
+    <Button text="Railway Maintenance Testing" onAction="#handleRailwayMaintenanceTest"/>
+    <Button text="Logout" onAction="#handleLogout"/>
+</VBox>

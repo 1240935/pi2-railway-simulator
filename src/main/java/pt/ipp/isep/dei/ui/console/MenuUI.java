@@ -40,6 +40,7 @@ public class MenuUI {
                 case 2 -> {
                     Player player = loginAsPlayer();
                     if (player != null) showPlayerMenu(player);
+
                 }
                 case 0 -> {
                     System.out.println("Exiting...");
@@ -109,6 +110,7 @@ public class MenuUI {
             System.out.println("14. Train Route Verification Testing");
             System.out.println("15. Railway Maintenance");
             System.out.println("16. Railway Maintenance Testing");
+            System.out.println("17. Shortest Route Calculation");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");
@@ -125,6 +127,7 @@ public class MenuUI {
                 case "14" -> new VerifyTrainTravelTestUI().start();
                 case "15" -> new RailwayMaintenanceUI().start();
                 case "16" -> new RailwayMaintenanceTestUI().start();
+                case "17" -> new ShortestPathUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
                     System.out.println();

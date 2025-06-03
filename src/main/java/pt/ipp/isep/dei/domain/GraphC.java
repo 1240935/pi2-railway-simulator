@@ -65,6 +65,55 @@ public class GraphC {
     }
 
     /**
+     * Returns a list of neighboring stations directly connected to the given station.
+     * Only considers lines currently loaded in the graph.
+     *
+     * @param station the station whose neighbors to find
+     * @return a list of adjacent stations
+     */
+    public List<Station> getNeighbors(Station station) {
+        List<Station> neighbors = new ArrayList<>();
+
+        for (Line line : this.lines) {
+            Station start = line.getStart();
+            Station end = line.getEnd();
+
+            if (station.equals(start)) {
+                if (!neighbors.contains(end)) {
+                    neighbors.add(end);
+                }
+            } else if (station.equals(end)) {
+                if (!neighbors.contains(start)) {
+                    neighbors.add(start);
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    /**
+     * Returns the distance between two directly connected stations.
+     * If no direct connection exists, returns -1.
+     *
+     * @param a first station
+     * @param b second station
+     * @return distance between them if connected; otherwise -1
+     */
+    public int getDistance(Station a, Station b) {
+        for (Line line : this.lines) {
+            Station start = line.getStart();
+            Station end = line.getEnd();
+
+            if ((start.equals(a) && end.equals(b)) || (start.equals(b) && end.equals(a))) {
+                return line.getDistance(); // assuming Line has getDistance()
+            }
+        }
+        return -1; // no direct connection
+    }
+
+
+    /**
      * Checks whether the graph contains the specified station.
      *
      * @param station the station to check for existence in the graph

@@ -9,7 +9,7 @@ public class Line {
     private Station start;
     private Station end;
     private boolean isElectrified;
-    private double distance;  // Distance of the line segment
+    private int distance;  // Distance of the line segment
 
     /**
      * Constructs a Line object.
@@ -19,7 +19,7 @@ public class Line {
      * @param isElectrified Indicates if the line is electrified.
      * @param distance The distance between the start and end stations.
      */
-    public Line(Station start, Station end, boolean isElectrified, double distance) {
+    public Line(Station start, Station end, boolean isElectrified, int distance) {
         this.start = start;
         this.end = end;
         this.isElectrified = isElectrified;
@@ -48,5 +48,5 @@ public class Line {
      * Returns the distance between the stations.
      * @return the distance as a double
      */
-    public double getDistance() { return distance; }
+    public int getDistance() { return distance; }
 }

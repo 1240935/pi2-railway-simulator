@@ -40,7 +40,7 @@ public class LineRepository {
                 String startName = parts[0].trim();
                 String endName = parts[1].trim();
                 boolean electrified = parts[2].trim().equals("1");
-                double distance = Double.parseDouble(parts[3].trim());
+                int distance = Integer.parseInt(parts[3].trim());
 
                 Station startStation = findStationByName(stationList, startName);
                 Station endStation = findStationByName(stationList, endName);
@@ -80,7 +80,7 @@ public class LineRepository {
                 Station endStation = findStationByName(stationList, endRaw);
 
                 boolean electrified = parts[2].trim().equals("1");
-                double distance = Double.parseDouble(parts[3].trim());
+                int distance = Integer.parseInt(parts[3].trim());
 
                 if (startStation != null && endStation != null) {
                     lines.add(new Line(startStation, endStation, electrified, distance));

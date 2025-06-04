@@ -1,6 +1,8 @@
 package pt.ipp.isep.dei.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a single block within a city on the map.
@@ -22,6 +24,9 @@ public class CityBlock implements Serializable {
         this.position = position;
     }
 
+    public CityBlock(){
+    }
+
     /**
      * Returns the position of this city block.
      *
@@ -29,5 +34,21 @@ public class CityBlock implements Serializable {
      */
     public Position getPosition() {
         return position;
+    }
+
+    public List<Position> createPositions(int[] x, int[] y){
+
+        List<Position> positions = new ArrayList<>();
+
+
+        for (int i = 0; i < x.length; i++) {
+
+            Position position = new Position(x[i], y[i]);
+
+
+            positions.add(position);
+        }
+
+        return positions;
     }
 }

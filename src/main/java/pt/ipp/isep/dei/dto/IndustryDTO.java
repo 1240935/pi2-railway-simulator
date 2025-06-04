@@ -1,10 +1,12 @@
 package pt.ipp.isep.dei.dto;
 
+import pt.ipp.isep.dei.domain.IndustryType;
+
 public class IndustryDTO {
-    private String industryTypeName;
+    private IndustryType industryType;
     private int xCoordinate;
     private int yCoordinate;
-    private int mapIndex;
+    private int size;
 
     public int getyCoordinate() {
         return yCoordinate;
@@ -14,12 +16,12 @@ public class IndustryDTO {
         return xCoordinate;
     }
 
-    public int getMapIndex() {
-        return mapIndex;
+    public int getSize() {
+        return size;
     }
 
-    public String getIndustryTypeName() {
-        return industryTypeName;
+    public IndustryType getIndustryType() {
+        return industryType;
     }
 
     public void setyCoordinate(int yCoordinate) {
@@ -30,11 +32,11 @@ public class IndustryDTO {
         this.xCoordinate = xCoordinate;
     }
 
-    public void setIndustryTypeName(String industryTypeName) {
-        this.industryTypeName = industryTypeName;
+    public void setIndustryType(IndustryType industryType) {
+        this.industryType = industryType;
     }
 
-    public void setMapIndex(int mapIndex) {
-        this.mapIndex = mapIndex;
+    public void setSize(int size) {
+        this.size = size;
     }
 }

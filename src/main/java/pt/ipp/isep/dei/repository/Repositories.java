@@ -66,6 +66,8 @@ public class Repositories {
     /** Repository for routes. */
     private RouteRepository routeRepository;
 
+    private CityBlockRepository cityBlockRepository;
+
     /**
      * Private constructor to initialize all repositories.
      * This enforces singleton pattern by restricting instantiation to within this class.
@@ -87,6 +89,7 @@ public class Repositories {
         cargoRepository = new CargoRepository();
         buildingRepository = new BuildingRepository();
         routeRepository = new RouteRepository();
+        cityBlockRepository = new CityBlockRepository();
     }
 
     /**
@@ -275,4 +278,7 @@ public class Repositories {
     public RouteRepository getRouteRepository() {
         return routeRepository;
     }
+
+    public CityBlockRepository getCityBlockRepository(){ return cityBlockRepository;}
 }
+

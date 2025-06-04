@@ -9,7 +9,6 @@ public class IndustryTypeListMapper {
         List<IndustryTypeDTO> result = new ArrayList<IndustryTypeDTO>();
         for (IndustryType type : types) {
             IndustryTypeDTO dto = new IndustryTypeDTO();
-            dto.setName(type.name());
             dto.setImportation(type.getImportation());
             dto.setExportation(type.getExportation());
             result.add(dto);

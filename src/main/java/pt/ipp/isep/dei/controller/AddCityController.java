@@ -1,6 +1,11 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.CityBlockDTO;
+import pt.ipp.isep.dei.dto.CityBlockMapper;
+import pt.ipp.isep.dei.dto.CityDTO;
+import pt.ipp.isep.dei.dto.CityMapper;
+import pt.ipp.isep.dei.repository.CityBlockRepository;
 import pt.ipp.isep.dei.repository.CityRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 
@@ -21,9 +26,6 @@ public class AddCityController {
      */
     public AddCityController() {
     }
-
-    private List<Position> positions;
-    private List<CityBlock> blocks;
 
     /**
      * Retrieves a list of all available maps from the repository.
@@ -63,33 +65,25 @@ public class AddCityController {
         }
     }
 
-    public void savePositions(Position position){
-       positions.add(position);
+
+    public List<CityBlock> createBlocks(CityBlockDTO cityBlockDTO){
+        CityBlockMapper cityBlockMapper = new CityBlockMapper();
+        List<CityBlock> cityBlocks;
+        cityBlocks = cityBlockMapper.toCityBlock(cityBlockDTO);
+        for (CityBlock block : cityBlocks) {
+            Repositories.getInstance().getCityBlockRepository().addCityBlock(block);
+        }
+        return cityBlocks;
     }
 
-    public List<Position> getPositions(){
-        return positions;
+    public List<Position> createPositions(int[] x, int[] y){
+        CityBlock cityBlock = new CityBlock();
+        return cityBlock.createPositions(x, y);
     }
 
-    public Position createPosition(int x, int y){
-        return City.createPosition(x, y);
-    }
-
-    public void createBlocksManually(List<Position> positions, int cityBlocks){
-        blocks = City.createBlocks(positions, cityBlocks);
-    }
-
-    public List<CityBlock> getCityBlocks(){
-        return blocks;
-    }
-
-    public void createBlocksAutomatically(Position position, int number, boolean randomize){
-        blocks = City.generateBlocks(position, number, randomize);
-    }
-
-    public void createCity(Position position, String name, List<CityBlock> blocks, int mapSize, int mapIndex) {
-        City city = CityRepository.createCity(position, name, blocks, mapSize);
+    public void createCity(CityDTO cityDTO) {
+        CityMapper cityMapper = new CityMapper();
+        City city = cityMapper.toCity(cityDTO);
         Repositories.getInstance().getCityRepository().addCity(city);
-        getMapByIndex(mapIndex).addCity(city);
     }
 }

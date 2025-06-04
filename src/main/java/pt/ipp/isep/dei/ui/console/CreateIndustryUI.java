@@ -23,7 +23,6 @@ public class CreateIndustryUI {
 
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
-        int size = controller.getMapSizeByIndex(mapIndex);
 
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
@@ -50,6 +49,7 @@ public class CreateIndustryUI {
         dto.setMapIndex(mapIndex);
 
         boolean result = controller.createIndustry(dto);
+
 
         if (result) {
             System.out.println("Industry was created successfully.");

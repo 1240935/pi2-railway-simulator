@@ -1,6 +1,8 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.AddCityController;
+import pt.ipp.isep.dei.dto.CityBlockDTO;
+import pt.ipp.isep.dei.dto.CityDTO;
 
 import java.util.List;
 import java.util.Scanner;
@@ -50,26 +52,38 @@ public class AddCityUI {
         int mode = scanner.nextInt();
         scanner.nextLine();
 
-        if (mode == 1) {
-            controller.createBlocksAutomatically(controller.createPosition(x, y), blocks, true);
-        } else {
-            System.out.println("Please enter the coordinates for each block:");
+        CityBlockDTO cityBlockDTO = new CityBlockDTO();
+        cityBlockDTO.setxCoordinate(x);
+        cityBlockDTO.setyCoordinate(y);
 
+        if (mode == 1) {
+            cityBlockDTO.setRandomize(true);
+        } else {
+            cityBlockDTO.setRandomize(false);
+            System.out.println("Please enter the coordinates for each block:");
+                int[] blockX = new int[blocks];
+                int[] blockY = new int[blocks];
             for (int i = 0; i < blocks; i++) {
-                int blockX, blockY;
 
                 System.out.printf("Block %d - Type the x coordinate: ", i + 1);
-                blockX = scanner.nextInt();
+                blockX[i] = scanner.nextInt();
 
                 System.out.printf("Block %d - Type the y coordinate: ", i + 1);
-                blockY = scanner.nextInt();
+                blockY[i] = scanner.nextInt();
                 scanner.nextLine();
 
-                controller.savePositions(controller.createPosition(blockX, blockY));
 
             }
-            controller.createBlocksManually((controller.getPositions()), blocks);
+            cityBlockDTO.setBlocks(blocks);
+            cityBlockDTO.setPositions(controller.createPositions(blockX,blockY));
         }
-        controller.createCity(controller.createPosition(x, y), name, controller.getCityBlocks(), mapSize, mapIndex);
+        CityDTO cityDTO = new CityDTO();
+        cityDTO.setName(name);
+        cityDTO.setMapSize(mapSize);
+        cityDTO.setxCoordinate(x);
+        cityDTO.setyCoordinate(y);
+        cityDTO.setCityBlocks(controller.createBlocks(cityBlockDTO));
+        controller.createCity(cityDTO);
+
     }
 }

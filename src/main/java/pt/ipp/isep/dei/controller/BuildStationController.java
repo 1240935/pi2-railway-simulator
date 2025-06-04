@@ -217,7 +217,7 @@ public class BuildStationController {
      * @return true if selected type is Station; false otherwise.
      */
     public boolean isSelectedTypeStation() {
-        return selectedType != null && selectedType.name().equals("Station");
+        return selectedType.name().equals("STATION");
     }
 
     /**
@@ -303,11 +303,6 @@ public class BuildStationController {
         if (selectedType == null || x == 0 || y == 0) {
             throw new IllegalStateException("Station type and position must be selected before setting compass center.");
         }
-
-        if (selectedType != StationType.STATION) {
-            throw new IllegalStateException("Compass center is only used for Station type.");
-        }
-
         int radius = selectedType.getRadius();
 
         int centerX, centerY;

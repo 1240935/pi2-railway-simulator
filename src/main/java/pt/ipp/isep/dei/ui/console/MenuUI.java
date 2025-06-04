@@ -2,6 +2,7 @@ package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.domain.Editor;
 import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.ui.gui.PlayerMenuLauncher;
 
 import java.sql.SQLOutput;
 import java.util.Scanner;
@@ -39,8 +40,17 @@ public class MenuUI {
                 }
                 case 2 -> {
                     Player player = loginAsPlayer();
-                    if (player != null) showPlayerMenu(player);
-
+                    if (player != null) {
+                        int uiChoice = promptUIChoice();
+                        if (uiChoice == 1) {
+                            showPlayerMenu(player);
+                        } else if (uiChoice == 2) {
+                            System.out.println("Launching graphical interface...");
+                            PlayerMenuLauncher.launchUI(player);
+                        } else {
+                            System.out.println("Invalid UI choice. Returning to main menu.");
+                        }
+                    }
                 }
                 case 0 -> {
                     System.out.println("Exiting...");
@@ -198,6 +208,15 @@ public class MenuUI {
         System.out.print("Password (7 characters, including 3 capital and 2 numbers): ");
         return scanner.nextLine();
     }
+
+    private int promptUIChoice() {
+        System.out.println("Choose UI type:");
+        System.out.println("1. Console UI");
+        System.out.println("2. Graphical UI (JavaFX)");
+        System.out.print("Enter option: ");
+        return scanner.nextInt();
+    }
+
 
     /**
      * Validates whether a given password meets the following constraints:

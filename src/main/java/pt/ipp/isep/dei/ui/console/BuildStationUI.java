@@ -67,20 +67,12 @@ public class BuildStationUI {
             } catch (NumberFormatException ignored) {}
             System.out.println("Invalid input. Try again.");
         }
-        controller.setScenario(scenarioIndex - 1);
+        scenarioIndex = scenarioIndex - 1;
 
-        // Step 2: Input Coordinates
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
-
-        if (!controller.checkOverbuilding(x, y)) {
-            System.out.println("Invalid position for current map. Exiting.");
-            return;
-        }
-
-        controller.setPosition(x, y);
 
         // Step 3: Choose Station Type
         List<String> stationTypeNames = controller.getAvailableStationTypes();
@@ -92,13 +84,6 @@ public class BuildStationUI {
         int typeIndex = scanner.nextInt() - 1;
         scanner.nextLine(); // consume leftover newline
 
-        if (!controller.setType(typeIndex)) {
-            System.out.println("Invalid type. Exiting.");
-            return;
-        }
-
-        // Step 4: Determine demanded and supplied cargoes based on position and type
-        controller.determineStationCargoes(x, y);
 
         // Step 5: Set station center depending on station type
         if (controller.isSelectedTypeStation()) {
@@ -136,11 +121,6 @@ public class BuildStationUI {
         }
 
         // Step 8: Attempt to create the station and show success/failure message
-        boolean success = controller.createStation(x, y);
-        if (success) {
-            System.out.println("Station '" + proposedName + "' created successfully.");
-        } else {
-            System.out.println("Not enough budget to buy this station.");
-        }
+        controller.createStation(x, y);
     }
 }

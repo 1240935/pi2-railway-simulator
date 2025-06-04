@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pt.ipp.isep.dei.ui.gui.BuildStationGUI"
+      spacing="10" padding="20" alignment="TOP_LEFT">
+
+    <Label text="Build Station" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10">
+        <Label text="Scenario:" />
+        <ComboBox fx:id="scenarioComboBox" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="X Coordinate:" />
+        <TextField fx:id="xField" prefWidth="100" />
+        <Label text="Y Coordinate:" />
+        <TextField fx:id="yField" prefWidth="100" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Station Type:" />
+        <ComboBox fx:id="stationTypeComboBox" prefWidth="200" />
+    </HBox>
+
+    <!-- Compass Direction (Only shown for station type) -->
+    <HBox fx:id="compassDirectionBox" spacing="10" visible="false" managed="false">
+        <Label text="Compass Direction (NE, SE, NW, SW):" />
+        <TextField fx:id="compassDirectionField" prefWidth="100" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Station Name:" />
+        <TextField fx:id="nameField" prefWidth="200" />
+        <Button fx:id="proposeNameButton" text="Propose Name" />
+    </HBox>
+
+    <HBox spacing="20">
+        <Button fx:id="buyButton" text="Buy Station" />
+        <Label fx:id="feedbackLabel" text="" style="-fx-text-fill: darkred;" />
+    </HBox>
+
+    <Label fx:id="budgetLabel" text="Budget: " style="-fx-font-weight: bold;" />
+    <Label fx:id="costLabel" text="Cost: " style="-fx-font-weight: bold;" />
+
+</VBox>

@@ -30,7 +30,7 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleBuyLocomotive() {
-        new BuyLocomotiveUI().start(player);
+        new BuyLocomotiveGUI().start();
     }
 
     @FXML

@@ -327,10 +327,16 @@ activate EDITOR
         CDTO --> CMAPPER: mapSize
         deactivate CDTO
 
-        CMAPPER --> CITY_REPOS: name, xCoordinate, yCoordinate, mapSize
+        CMAPPER -> CDTO: getCityBlocks()
+                activate CDTO
+
+                CDTO --> CMAPPER: blocks
+                deactivate CDTO
+
+        CMAPPER --> CITY_REPOS: name, xCoordinate, yCoordinate, mapSize, cityBlocks
         deactivate CMAPPER
 
-        CITY_REPOS -> CITY: createCity(name, xCoordinate, yCoordinate, mapSize)
+        CITY_REPOS -> CITY: createCity(name, cityBlocks, xCoordinate, yCoordinate, mapSize)
         activate CITY
 
         CITY --> POS**: createPosition(xCoordinate, yCoordinate)
@@ -346,6 +352,12 @@ activate EDITOR
 
         CITY --> CITY: valid
         deactivate CITY
+
+        CITY -> CITY: checkCityBlocks(cityBlocks)
+                activate CITY
+
+                CITY --> CITY: valid
+                deactivate CITY
 
         CITY --> CITY_REPOS: city
         deactivate CITY

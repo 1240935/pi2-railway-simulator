@@ -67,6 +67,7 @@ public class BuildStationUI {
             } catch (NumberFormatException ignored) {}
             System.out.println("Invalid input. Try again.");
         }
+
         scenarioIndex = scenarioIndex - 1;
 
         System.out.print("Enter X coordinate: ");
@@ -86,32 +87,30 @@ public class BuildStationUI {
 
 
         // Step 5: Set station center depending on station type
-        if (controller.isSelectedTypeStation()) {
+
+        String direction = "";
+        if (controller.isSelectedTypeStation(typeIndex)) {
             System.out.print("Enter compass direction (NE, SE, NW, SW): ");
-            String direction = scanner.nextLine().trim();
-            controller.setCompassCenter(direction, x, y);
-        } else {
-            controller.setGeometricCenter();
+            direction = scanner.nextLine().trim();
         }
 
         // Step 6: Propose a station name and ask player to accept or customize
-        String proposedName = controller.getRecommendedName(x, y);
-        System.out.println("Proposed name: " + proposedName);
-        System.out.print("Use proposed name? (y/n): ");
-        String response = scanner.next().trim().toLowerCase();
+        String proposedName = controller.getRecommendedName(x, y, scenarioIndex,typeIndex);
+        String name;
+        System.out.print("Proposed name: " + proposedName + "\nUse proposed name? (y/n): ");
+        String answer = scanner.nextLine();
 
-        if (!response.equals("y")) {
+        if (answer.equalsIgnoreCase("n")) {
             System.out.print("Enter custom name: ");
-            scanner.nextLine(); // consume leftover newline
-            proposedName = scanner.nextLine().trim();
+            name = scanner.nextLine();
+        } else {
+            name = proposedName;
         }
 
-        controller.setName(proposedName);
-        scanner.nextLine();
 
         // Step 7: Confirm purchase by displaying player budget and station cost
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Station cost: " + controller.getSelectedType().getCost());
+        System.out.println("Station cost: " + controller.getStationTypeByIndex(typeIndex).getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
 
         String confirmation = scanner.nextLine().trim().toLowerCase();
@@ -120,7 +119,6 @@ public class BuildStationUI {
             return;
         }
 
-        // Step 8: Attempt to create the station and show success/failure message
-        controller.createStation(x, y);
+        controller.createStation(controller.createPosition(x, y), name, controller.getCenter(direction, x, y, typeIndex), controller.getStationTypeByIndex(typeIndex), controller.getDemandedCargoes(x, y, scenarioIndex, typeIndex), controller.getSuppliedCargoes(x, y, scenarioIndex, typeIndex), player, scenarioIndex, typeIndex, controller.getMap(scenarioIndex), controller.getScenarioByIndex(scenarioIndex));
     }
 }

@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.ipp.isep.dei.domain.Station;
-import pt.ipp.isep.dei.domain.StationType;
+import pt.ipp.isep.dei.domain.*;
 
 /**
  * Repository responsible for loading and storing {@link Station} objects from a CSV file.
@@ -116,7 +115,33 @@ public class StationRepository {
         stations.add(station);
     }
 
+    public static Station createStation(Position position, String name, StationCenter center,
+                                        StationType type, List<Cargo> demandedCargoes,
+                                        List<Cargo> suppliedCargoes, Map map, Scenario scenario) {
 
+        if (!position.checkPosition(position, map.getSize())) {
+            System.out.println("Invalid position.");
+            return null;
+        }
 
+        if (!Station.checkOverbuilding(position, map, scenario)) {
+            System.out.println("Cannot build here. Overbuilding detected.");
+            return null;
+        }
+
+        if (!Station.checkCenter(center)) {
+            System.out.println("Center is out of bounds.");
+            return null;
+        }
+
+        if (!Station.checkType(type)) {
+            System.out.println("Invalid station type.");
+            return null;
+        }
+
+        Station station = new Station(name, center, position, type, demandedCargoes, suppliedCargoes);
+        System.out.println("Station created successfully!");
+        return station;
+    }
 
 }

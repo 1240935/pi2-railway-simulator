@@ -264,6 +264,54 @@ public class Station {
         return supplied;
     }
 
+    public static Position createPosition(int x, int y) {
+        return Position.createPosition(x, y);
+    }
+
+    public static boolean checkOverbuilding(Position position, Map map, Scenario scenario) {
+        if (!map.checkCoordinates(position)) {
+            return false;
+        }
+
+        for (City city : map.getCities()) {
+            if (city.getPosition().equals(position)) {
+                return false;
+            }
+        }
+
+        for (Industry industry : map.getIndustries()) {
+            if (industry.getPosition().equals(position)) {
+                return false;
+            }
+        }
+
+        for (Station station : scenario.getStations()) {
+            if (station.getPosition().equals(position)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the station center is defined.
+     *
+     * @return true if the center is not null, false otherwise.
+     */
+    public static boolean checkCenter(StationCenter center) {
+        return center != null;
+    }
+
+    /**
+     * Checks if the station type is defined.
+     *
+     * @return true if the type is not null, false otherwise.
+     */
+    public static boolean checkType(StationType type) {
+        return type != null;
+    }
+
     /**
      * Returns the name of the station.
      *

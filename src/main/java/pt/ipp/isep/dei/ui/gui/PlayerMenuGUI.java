@@ -25,7 +25,7 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleViewStationDetails() {
-        new ViewStationDetailsUI().start();
+        new ViewStationDetailsGUI().start();
     }
 
     @FXML

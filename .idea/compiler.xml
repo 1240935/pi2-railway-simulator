@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="project-template" />
+        <module name="sem2-pi-24.25-g051-repo" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="project-template" options="-Xlint:all" />
+      <module name="sem2-pi-24.25-g051-repo" options="-Xlint:all" />
     </option>
   </component>
 </project>

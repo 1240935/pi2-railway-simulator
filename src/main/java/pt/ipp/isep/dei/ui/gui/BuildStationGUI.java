@@ -1,168 +1,122 @@
 package pt.ipp.isep.dei.ui.gui;
 
-import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import pt.ipp.isep.dei.controller.BuildStationController;
 import pt.ipp.isep.dei.domain.Player;
-
-import java.util.List;
+import pt.ipp.isep.dei.domain.StationType;
 
 public class BuildStationGUI {
 
-    @FXML
-    private ComboBox<String> scenarioComboBox;
-    @FXML
-    private TextField xField;
-    @FXML
-    private TextField yField;
-    @FXML
-    private ComboBox<String> stationTypeComboBox;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextField compassDirectionField;
-    @FXML
-    private HBox compassDirectionBox;
-    @FXML
-    private Button proposeNameButton;
-    @FXML
-    private Button buyButton;
-    @FXML
-    private Label feedbackLabel;
-    @FXML
-    private Label budgetLabel;
-    @FXML
-    private Label costLabel;
-
     private final BuildStationController controller = new BuildStationController();
 
-    public void setPlayer(Player player) {
+    public void start(Player player) {
         controller.setPlayer(player);
-        loadScenarios();
-        updateBudgetLabel();
-    }
 
-    private void loadScenarios() {
-        List<String> scenarios = controller.getAvailableScenarioDescriptions();
-        scenarioComboBox.getItems().clear();
-        scenarioComboBox.getItems().addAll(scenarios);
-    }
+        Stage stage = new Stage();
+        stage.setTitle("Build Station");
 
-    private void loadStationTypes() {
-        List<String> stationTypes = controller.getAvailableStationTypes();
-        stationTypeComboBox.getItems().clear();
-        stationTypeComboBox.getItems().addAll(stationTypes);
-    }
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(15));
+        grid.setHgap(10);
+        grid.setVgap(10);
 
-    private void updateBudgetLabel() {
-        budgetLabel.setText("Budget: " + controller.getPlayer().getBudget());
-    }
+        // Scenario ComboBox
+        Label scenarioLabel = new Label("Select Scenario:");
+        ComboBox<String> scenarioComboBox = new ComboBox<>(FXCollections.observableArrayList(controller.getAvailableScenarioDescriptions()));
+        grid.add(scenarioLabel, 0, 0);
+        grid.add(scenarioComboBox, 1, 0);
 
-    private void updateCompassDirectionVisibility() {
-        boolean isStation = controller.isSelectedTypeStation();
-        compassDirectionBox.setVisible(isStation);
-        compassDirectionBox.setManaged(isStation);
-    }
+        // Coordinates
+        Label xLabel = new Label("X Coordinate:");
+        TextField xField = new TextField();
+        grid.add(xLabel, 0, 1);
+        grid.add(xField, 1, 1);
 
-    @FXML
-    public void initialize() {
-        scenarioComboBox.setOnAction(event -> {
-            int index = scenarioComboBox.getSelectionModel().getSelectedIndex();
-            if (index >= 0) {
-                controller.setScenario(index);
-                loadStationTypes();
-                clearFields();
+        Label yLabel = new Label("Y Coordinate:");
+        TextField yField = new TextField();
+        grid.add(yLabel, 0, 2);
+        grid.add(yField, 1, 2);
+
+        // Station Type
+        Label typeLabel = new Label("Station Type:");
+        ComboBox<String> typeComboBox = new ComboBox<>(FXCollections.observableArrayList(controller.getAvailableStationTypes()));
+        grid.add(typeLabel, 0, 3);
+        grid.add(typeComboBox, 1, 3);
+
+        // Direction (only if needed)
+        Label directionLabel = new Label("Compass Direction (NE/SE/NW/SW):");
+        TextField directionField = new TextField();
+        directionLabel.setVisible(false);
+        directionField.setVisible(false);
+        grid.add(directionLabel, 0, 4);
+        grid.add(directionField, 1, 4);
+
+        // Name proposal
+        Label nameLabel = new Label("Station Name:");
+        TextField nameField = new TextField();
+        grid.add(nameLabel, 0, 5);
+        grid.add(nameField, 1, 5);
+
+        // Confirm button
+        Button buildButton = new Button("Build Station");
+        grid.add(buildButton, 1, 6);
+
+        // Events
+        typeComboBox.setOnAction(e -> {
+            int typeIndex = typeComboBox.getSelectionModel().getSelectedIndex();
+            if (controller.isSelectedTypeStation(typeIndex)) {
+                directionLabel.setVisible(true);
+                directionField.setVisible(true);
+            } else {
+                directionLabel.setVisible(false);
+                directionField.setVisible(false);
             }
         });
 
-        stationTypeComboBox.setOnAction(event -> {
-            int index = stationTypeComboBox.getSelectionModel().getSelectedIndex();
-            if (index >= 0) {
-                controller.setType(index);
-                updateCompassDirectionVisibility();
-                updateCostLabel();
+        buildButton.setOnAction(e -> {
+            try {
+                int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+                int typeIndex = typeComboBox.getSelectionModel().getSelectedIndex();
+                int x = Integer.parseInt(xField.getText());
+                int y = Integer.parseInt(yField.getText());
+
+                String name = nameField.getText();
+                if (name.isEmpty()) {
+                    name = controller.getRecommendedName(x, y, scenarioIndex, typeIndex);
+                }
+
+                String direction = directionField.getText();
+
+                controller.createStation(
+                        controller.createPosition(x, y),
+                        name,
+                        controller.getCenter(direction, x, y, typeIndex),
+                        controller.getStationTypeByIndex(typeIndex),
+                        controller.getDemandedCargoes(x, y, scenarioIndex, typeIndex),
+                        controller.getSuppliedCargoes(x, y, scenarioIndex, typeIndex),
+                        player,
+                        scenarioIndex,
+                        typeIndex,
+                        controller.getMap(scenarioIndex),
+                        controller.getScenarioByIndex(scenarioIndex)
+                );
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION, "Station built successfully!");
+                success.show();
+                stage.close();
+
+            } catch (Exception ex) {
+                Alert error = new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage());
+                error.show();
             }
         });
 
-        proposeNameButton.setOnAction(event -> proposeName());
-        buyButton.setOnAction(event -> handleBuy());
-    }
-
-    private void updateCostLabel() {
-        if (controller.getSelectedType() != null) {
-            costLabel.setText("Cost: " + controller.getSelectedType().getCost());
-        } else {
-            costLabel.setText("Cost: N/A");
-        }
-    }
-
-    private void proposeName() {
-        try {
-            int x = Integer.parseInt(xField.getText());
-            int y = Integer.parseInt(yField.getText());
-            String proposedName = controller.getRecommendedName(x, y);
-            nameField.setText(proposedName);
-        } catch (NumberFormatException e) {
-            feedbackLabel.setText("Invalid coordinates for proposing name.");
-        }
-    }
-
-    private void handleBuy() {
-        try {
-            int x = Integer.parseInt(xField.getText());
-            int y = Integer.parseInt(yField.getText());
-
-            if (!controller.checkOverbuilding(x, y)) {
-                feedbackLabel.setText("Invalid position on the map.");
-                return;
-            }
-
-            controller.setPosition(x, y);
-
-            int typeIndex = stationTypeComboBox.getSelectionModel().getSelectedIndex();
-            if (!controller.setType(typeIndex)) {
-                feedbackLabel.setText("Invalid station type.");
-                return;
-            }
-
-            controller.determineStationCargoes(x, y);
-
-            if (controller.isSelectedTypeStation()) {
-                String direction = compassDirectionField.getText().trim();
-                controller.setCompassCenter(direction, x, y);
-            } else {
-                controller.setGeometricCenter();
-            }
-
-            String name = nameField.getText().trim();
-            if (name.isEmpty()) {
-                feedbackLabel.setText("Station name cannot be empty.");
-                return;
-            }
-            controller.setName(name);
-
-            boolean success = controller.createStation(x, y);
-            if (success) {
-                feedbackLabel.setText("Station '" + name + "' created successfully.");
-                updateBudgetLabel();
-                clearFields();
-            } else {
-                feedbackLabel.setText("Not enough budget to buy this station.");
-            }
-
-        } catch (NumberFormatException e) {
-            feedbackLabel.setText("Invalid input. Please enter valid numbers for coordinates.");
-        }
-    }
-
-    private void clearFields() {
-        xField.clear();
-        yField.clear();
-        nameField.clear();
-        compassDirectionField.clear();
-        feedbackLabel.setText("");
-        costLabel.setText("Cost: N/A");
-        updateCompassDirectionVisibility();
+        stage.setScene(new Scene(grid, 500, 400));
+        stage.show();
     }
 }

@@ -40,31 +40,20 @@ public class CreateIndustryController {
         List<IndustryType> types = repositories.getIndustryTypeRepository().getIndustryTypes();
         List<IndustryTypeDTO> dtos = typeMapper.toDTOList(types);
 
-        List<String> names = new ArrayList<String>();
-        for (int i = 0; i < dtos.size(); i++) {
-            names.add(dtos.get(i).toString());
+        List<String> names = new ArrayList<>();
+        for (IndustryTypeDTO dto : dtos) {
+            names.add(dto.toString());
         }
 
         return names;
     }
 
-    public boolean createIndustry(IndustryDTO dto, int mapIndex) {
+    public void createIndustry(IndustryDTO dto, int mapIndex) {
         List<Map> maps = repositories.getMapRepository().getMaps();
         Map selectedMap = maps.get(mapIndex);
 
         Industry industry = industryMapper.toIndustry(dto);
-
-        if (!industry.checkPosition(industry.getPosition(), selectedMap.getSize())) {
-            return false;
-        }
-
-        if (!industry.checkIndustryType(industry.getIndustryType())) {
-            return false;
-        }
-
         repositories.getIndustryRepository().addIndustry(industry);
         selectedMap.addIndustry(industry);
-
-        return true;
     }
 }

@@ -118,11 +118,11 @@ activate EDITOR
            MAP_REPOS --> CTRL: mapList
            deactivate MAP_REPOS
 
-           CTRL -> MAP: getMap(mapIndex)
-           activate MAP
+           CTRL -> LIST_MAP: getMap(mapIndex)
+           activate LIST_MAP
 
-           MAP--> CTRL: map
-           deactivate MAP
+           LIST_MAP --> CTRL: map
+           deactivate LIST_MAP
 
            CTRL -> MAP: getSize(map)
            activate MAP
@@ -164,7 +164,7 @@ activate EDITOR
           ITMAPPER --> ITLDTO**: create()
 
 
-          loop for each map
+          loop for each industryType
 
           ITMAPPER -> LIST_INDTYPE: getIndustryType()
           activate LIST_INDTYPE
@@ -174,7 +174,7 @@ activate EDITOR
           ITMAPPER -> ITMAPPER: toDTO(type)
           activate ITMAPPER
 
-          ITMAPPER --> ITDTO** : create(importation, exportation)
+          ITMAPPER --> ITDTO** : create()
           deactivate ITMAPPER
 
           ITMAPPER -> ITLDTO: addType(typeDTO)

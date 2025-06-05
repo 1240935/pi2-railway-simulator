@@ -65,6 +65,7 @@ activate EDITOR
 
         MAPPER -> MAPPER : toDTO(map)
         activate MAPPER
+
         MAPPER --> MDTO** : create(size, name, scale)
         deactivate MAPPER
 

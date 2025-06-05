@@ -49,13 +49,6 @@ public class CreateIndustryUI {
         dto.setyCoordinate(y);
         dto.setSize(size);
 
-        boolean result = controller.createIndustry(dto,mapIndex);
-
-
-        if (result) {
-            System.out.println("Industry was created successfully.");
-        } else {
-            System.out.println("Failed to create industry.");
-        }
+        controller.createIndustry(dto,mapIndex);
     }
 }

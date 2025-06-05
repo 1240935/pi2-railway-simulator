@@ -11,164 +11,390 @@ actor "Editor" as EDITOR
 participant ":CreateScenarioUI" as UI
 participant ":CreateScenarioController" as CTRL
 participant "Repositories" as REPOS
-participant ":MapRepository" as MAP_REPO
-participant "LocomotiveTypeRepository" as LOCO_REPO
-participant "IndustryTypeRepository" as IND_REPO
-participant "IndustryChangerRepository" as CHANGER_REPO
-participant "Scenario" as SCENARIO
-participant "ResourceTypeRepository" as RES_REPO
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "mapRepository \n :MapRepository" as MAP_REPOS
+participant ":MapListMapper" as MAPPER
+participant ":List<Map>" as LIST_MAP
+participant ":List<MapDTO>" as LDTO
+participant ":MapDTO" as MDTO
+participant "locomotiveTypeRepository \n :LocomotiveTypeRepository" as LTYPE_REPOS
+participant ":LocomotiveTypeListMapper" as LTYPEMAPPER
+participant ":List<LocomotiveType>" as LIST_LTYPE
+participant ":List<LocomotiveTypeListDTO>" as LTYPELDTO
+participant ":LocomotiveTypeDTO" as LTYPEDTO
+participant "resourceTypeRepository \n :ResourceTypeRepository" as RTYPE_REPOS
+participant ":ResourceTypeListMapper" as RTYPEMAPPER
+participant ":List<ResourceType>" as LIST_RTYPE
+participant ":List<ResourceTypeListDTO>" as RTYPELDTO
+participant ":ResourceTypeDTO" as RTYPEDTO
+participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
+participant ":ScenarioMapper" as SMAPPER
+participant ":ScenarioDTO" as SDTO
+participant "scenario \n :Scenario" as SCENARIO
 
 
 activate EDITOR
 
     EDITOR -> UI : asks to create a scenario
     activate UI
+
         UI --> CTRL** : create()
 
+      UI -> CTRL : getAvailableMapNames()
+          activate CTRL
 
-        UI -> CTRL : getAvailableMapNames()
-        activate CTRL
+          CTRL -> REPOS : getInstance()
+          activate REPOS
 
-            CTRL -> REPOS : getInstance()
-            activate REPOS
-            REPOS --> CTRL : repositories
-            deactivate REPOS
+          REPOS --> CTRL : repositories
+          deactivate REPOS
 
-            CTRL -> MAP_REPO : getAvailableMaps()
-            activate MAP_REPO
-            MAP_REPO --> CTRL : list of maps
-            deactivate MAP_REPO
+          CTRL -> REPO_SINGLETON : getMapRepository()
+          activate REPO_SINGLETON
+          REPO_SINGLETON --> CTRL : mapRepository
+          deactivate REPO_SINGLETON
 
-        CTRL --> UI : list of maps
-        deactivate CTRL
+          CTRL -> MAP_REPOS : getMaps()
+          activate MAP_REPOS
+          MAP_REPOS --> CTRL : mapList
+          deactivate MAP_REPOS
 
-    UI --> EDITOR : shows the list of maps
-    deactivate UI
+          CTRL -> MAPPER : toDTO(mapList)
+          activate MAPPER
+
+          MAPPER --> LDTO** : create()
+
+          loop for each map
+              MAPPER -> LIST_MAP : getMap()
+              activate LIST_MAP
+              LIST_MAP --> MAPPER : map
+              deactivate LIST_MAP
+
+              MAPPER -> MAPPER : toDTO(map)
+              activate MAPPER
+
+              MAPPER --> MDTO** : create(size, name, scale)
+              deactivate MAPPER
+
+              MAPPER -> LDTO : addMap(mapDTO)
+              activate LDTO
+              deactivate LDTO
+          end loop
+
+          MAPPER --> CTRL : mapListDTO
+          deactivate MAPPER
+
+          CTRL -> LDTO : getAvailableMapNames(mapListDTO)
+          activate LDTO
+
+          LDTO --> CTRL : map names
+          deactivate LDTO
+
+          CTRL --> UI : map names
+          deactivate CTRL
+
+          UI --> EDITOR : displays list of available maps
+          deactivate UI
 
     EDITOR -> UI : selects a map
     activate UI
-    UI -> CTRL : setMap(chooseMap(maps, choice)
-    activate CTRL
-    CTRL --> UI : map selected
-    deactivate CTRL
 
     UI --> EDITOR : asks for a year
     deactivate UI
 
     EDITOR -> UI : types a year
     activate UI
-    UI -> CTRL : setYear(year)
-    activate CTRL
-    CTRL --> UI : year set
-    deactivate CTRL
 
     UI -> CTRL : getAvailableLocomotiveTypeNames()
     activate CTRL
-    CTRL -> REPOS : getInstance()
-    activate REPOS
-    REPOS --> CTRL : repositories
-    deactivate REPOS
-    CTRL -> LOCO_REPO : getLocomotiveTypes()
-    activate LOCO_REPO
-    LOCO_REPO --> CTRL : list of types
-    deactivate LOCO_REPO
-    CTRL --> UI : list of locomotive types
-    deactivate CTRL
-    UI --> EDITOR : shows locomotive types
+
+              CTRL -> REPOS : getInstance()
+              activate REPOS
+
+              REPOS --> CTRL : repositories
+              deactivate REPOS
+
+              CTRL -> REPO_SINGLETON : getLocomotiveTypeRepository()
+              activate REPO_SINGLETON
+              REPO_SINGLETON --> CTRL : locomotiveTypeRepository
+              deactivate REPO_SINGLETON
+
+              CTRL -> LTYPE_REPOS : getLocomotiveTypes()
+              activate LTYPE_REPOS
+              LTYPE_REPOS --> CTRL : locomotiveTypeList
+              deactivate LTYPE_REPOS
+
+              CTRL -> LTYPEMAPPER : toDTO(locomotiveTypeList)
+              activate LTYPEMAPPER
+
+              LTYPEMAPPER --> LTYPELDTO** : create()
+
+              loop for each locomotiveType
+                  LTYPEMAPPER -> LIST_LTYPE : getLocomotiveType()
+                  activate LIST_LTYPE
+                  LIST_LTYPE --> LTYPEMAPPER : locomotiveType
+                  deactivate LIST_LTYPE
+
+                  LTYPEMAPPER -> LTYPEMAPPER : toDTO(locomotiveType)
+                  activate LTYPEMAPPER
+
+                  LTYPEMAPPER --> LTYPEDTO** : create()
+                  deactivate LTYPEMAPPER
+
+                  LTYPEMAPPER -> LTYPELDTO : addLocomotiveType(locomotiveTypeDTO)
+                  activate LTYPELDTO
+                  deactivate LTYPELDTO
+              end loop
+
+              LTYPEMAPPER --> CTRL : locomotiveTypeListDTO
+              deactivate LTYPEMAPPER
+
+              CTRL -> LTYPELDTO : getAvailableLocomotiveTypeNames(locomotiveTypeListDTO)
+              activate LTYPELDTO
+
+              LTYPELDTO --> CTRL : locomotiveType names
+              deactivate LTYPELDTO
+
+              CTRL --> UI : locomotiveType names
+              deactivate CTRL
+
+     UI --> EDITOR: displays list of available locomotive types
     deactivate UI
 
     EDITOR -> UI : selects types
+
     activate UI
-    UI -> CTRL : setLocomotiveTypes(chooseLocomotiveTypes(types, choice))
-    activate CTRL
-    CTRL --> UI : types selected
-    deactivate CTRL
 
-    UI -> CTRL : getAvailableIndustryTypeNames()
-    activate CTRL
-    CTRL -> REPOS : getInstance()
-    activate REPOS
-    REPOS --> CTRL : repositories
-    deactivate REPOS
-    CTRL -> IND_REPO : getIndustryTypes()
-    activate IND_REPO
-    IND_REPO --> CTRL : list of types
-    deactivate IND_REPO
-    CTRL --> UI : list of industry types
-    deactivate CTRL
-    UI --> EDITOR : shows industry types
-    deactivate UI
-
-    EDITOR -> UI : selects types
-    activate UI
-    UI -> CTRL : setIndustryTypes(chooseIndustryTypes(types,choice))
-    activate CTRL
-    CTRL --> UI : types selected
-    deactivate CTRL
-
-    UI -> CTRL : getAvailableImpor_ExportationNames()
+    UI -> CTRL : getAvailableResourceTypeNames()
         activate CTRL
         CTRL -> REPOS : getInstance()
-        activate REPOS
-        REPOS --> CTRL : repositories
-        deactivate REPOS
-        CTRL -> RES_REPO : getResourceTypes()
-        activate RES_REPO
-        RES_REPO --> CTRL : list of types
-            deactivate RES_REPO
-            CTRL --> UI : list of resource types
-            deactivate CTRL
-            UI --> EDITOR : shows resource types and asks to choose \n importation
+                      activate REPOS
+
+                      REPOS --> CTRL : repositories
+                      deactivate REPOS
+
+                      CTRL -> REPO_SINGLETON : getResourceTypeRepository()
+                      activate REPO_SINGLETON
+                      REPO_SINGLETON --> CTRL : resourceTypeRepository
+                      deactivate REPO_SINGLETON
+
+                      CTRL -> RTYPE_REPOS : getResourceTypes()
+                      activate RTYPE_REPOS
+                      RTYPE_REPOS --> CTRL : resourceTypeList
+                      deactivate RTYPE_REPOS
+
+                      CTRL -> RTYPEMAPPER : toDTO(resourceTypeList)
+                      activate RTYPEMAPPER
+
+                      RTYPEMAPPER --> RTYPELDTO** : create()
+
+                      loop for each resourceType
+                          RTYPEMAPPER -> LIST_RTYPE : getResourceType()
+                          activate LIST_RTYPE
+                          LIST_RTYPE --> RTYPEMAPPER : resourceType
+                          deactivate LIST_RTYPE
+
+                          RTYPEMAPPER ->RTYPEMAPPER : toDTO(resourceType)
+                          activate RTYPEMAPPER
+
+                          RTYPEMAPPER --> RTYPEDTO** : create()
+                          deactivate RTYPEMAPPER
+
+                          RTYPEMAPPER -> RTYPELDTO : addResourceType(resourceTypeDTO)
+                          activate RTYPELDTO
+                          deactivate RTYPELDTO
+                      end loop
+
+                      RTYPEMAPPER --> CTRL : resourceTypeListDTO
+                      deactivate RTYPEMAPPER
+
+                      CTRL -> RTYPELDTO : getAvailableResourceTypeNames(resourceTypeListDTO)
+                      activate RTYPELDTO
+
+                      RTYPELDTO --> CTRL : resourceType names
+                      deactivate RTYPELDTO
+
+                      CTRL --> UI : resourceType names
+                      deactivate CTRL
+            UI --> EDITOR : shows resource types available for importation
             deactivate UI
 
-    EDITOR -> UI : types importation availability and resources
+    EDITOR -> UI : selects imported resources
     activate UI
-    UI -> CTRL : setImportation(chooseImportation(types,choice)
-    activate CTRL
-    CTRL --> UI : importation
-    deactivate CTRL
 
-    UI --> EDITOR : asks for exportation availability and resources
-        deactivate UI
-        EDITOR -> UI : types exportation availability and resources
+        UI -> CTRL : getAvailableResourceTypeNames()
+            activate CTRL
+            CTRL -> REPOS : getInstance()
+                          activate REPOS
+
+                          REPOS --> CTRL : repositories
+                          deactivate REPOS
+
+                          CTRL -> REPO_SINGLETON : getResourceTypeRepository()
+                          activate REPO_SINGLETON
+                          REPO_SINGLETON --> CTRL : resourceTypeRepository
+                          deactivate REPO_SINGLETON
+
+                          CTRL -> RTYPE_REPOS : getResourceTypes()
+                          activate RTYPE_REPOS
+                          RTYPE_REPOS --> CTRL : resourceTypeList
+                          deactivate RTYPE_REPOS
+
+                          CTRL -> RTYPEMAPPER : toDTO(resourceTypeList)
+                          activate RTYPEMAPPER
+
+                          RTYPEMAPPER --> RTYPELDTO** : create()
+
+                          loop for each resourceType
+                              RTYPEMAPPER -> LIST_RTYPE : getResourceType()
+                              activate LIST_RTYPE
+                              LIST_RTYPE --> RTYPEMAPPER : resourceType
+                              deactivate LIST_RTYPE
+
+                              RTYPEMAPPER ->RTYPEMAPPER : toDTO(resourceType)
+                              activate RTYPEMAPPER
+
+                              RTYPEMAPPER --> RTYPEDTO** : create()
+                              deactivate RTYPEMAPPER
+
+                              RTYPEMAPPER -> RTYPELDTO : addResourceType(resourceTypeDTO)
+                              activate RTYPELDTO
+                              deactivate RTYPELDTO
+                          end loop
+
+                          RTYPEMAPPER --> CTRL : resourceTypeListDTO
+                          deactivate RTYPEMAPPER
+
+                          CTRL -> RTYPELDTO : getAvailableResourceTypeNames(resourceTypeListDTO)
+                          activate RTYPELDTO
+
+                          RTYPELDTO --> CTRL : resourceType names
+                          deactivate RTYPELDTO
+
+                          CTRL --> UI : resourceType names
+                          deactivate CTRL
+                UI --> EDITOR : shows resource types available for exportation
+                deactivate UI
+
+        EDITOR -> UI : selects exported resources
         activate UI
-        UI -> CTRL : setExportation(chooseExportation(types,choice)
-        activate CTRL
-        CTRL --> UI : exportation
-        deactivate CTRL
 
-    UI -> CTRL : getAvailableIndustryChangerNames()
-    activate CTRL
-    CTRL -> REPOS : getInstance()
-                            activate REPOS
-                            REPOS --> CTRL : repositories
-                            deactivate REPOS
-    CTRL -> CHANGER_REPO : getIndustryChangers()
-    activate CHANGER_REPO
-    CHANGER_REPO --> CTRL : list of changers
-    deactivate CHANGER_REPO
-    CTRL --> UI : list of changers
-    deactivate CTRL
-    UI --> EDITOR : shows industry changers
+    UI --> EDITOR : asks for an industry changer percentage
     deactivate UI
 
-    EDITOR -> UI : selects changers
-    activate UI
-    UI -> CTRL : setIndustryChangers(chooseChangers(changers, choice))
-    activate CTRL
-    CTRL --> UI : changers selected
-    deactivate CTRL
-
-    UI --> EDITOR : shows all data and asks for confirmation
-    deactivate UI
-    EDITOR -> UI : confirms all data
+    EDITOR -> UI : types a number
     activate UI
 
-    UI -> CTRL : createScenario()
-    activate CTRL
-    CTRL -> SCENARIO ** : create(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
-    CTRL --> UI : scenario
-    deactivate CTRL
+   UI -> CTRL : createScenario(dto)
+      activate CTRL
+
+      CTRL -> REPOS : getInstance()
+      activate REPOS
+
+          REPOS --> CTRL : repositories
+      deactivate REPOS
+
+      CTRL -> REPO_SINGLETON : getScenarioRepository()
+      activate REPO_SINGLETON
+      REPO_SINGLETON --> CTRL: scenarioRepository
+      deactivate REPO_SINGLETON
+      CTRL -> SCEN_REPOS: createScenario(dto)
+      activate SCEN_REPOS
+
+      SCEN_REPOS -> SMAPPER : toScenario(dto)
+      activate SMAPPER
+
+      SMAPPER -> SDTO: getMap()
+      activate SDTO
+
+      SDTO --> SMAPPER: map
+      deactivate SDTO
+
+      SMAPPER -> SDTO: getYear()
+            activate SDTO
+
+            SDTO --> SMAPPER: year
+                  deactivate SDTO
+
+      SMAPPER -> SDTO: getLocomotiveTypes()
+      activate SDTO
+
+      SDTO --> SMAPPER: locomotiveTypes
+      deactivate SDTO
+      SMAPPER -> SDTO: getImportation()
+          activate SDTO
+
+          SDTO --> SMAPPER: importation
+          deactivate SDTO
+
+      SMAPPER -> SDTO: getExportation()
+                  activate SDTO
+
+                  SDTO --> SMAPPER: exportation
+                  deactivate SDTO
+      SMAPPER -> SDTO: getChanger()
+            activate SDTO
+
+            SDTO --> SMAPPER: changer
+            deactivate SDTO
+
+
+      SMAPPER --> SCEN_REPOS: map, year, locomotiveTypes, importation, exportation, changer
+      deactivate SMAPPER
+
+      SCEN_REPOS -> SCENARIO: createScenario( map, year, locomotiveTypes, importation, exportation, changer)
+      activate SCENARIO
+
+
+      SCENARIO -> SCENARIO: checkMap(map)
+          activate SCENARIO
+
+          SCENARIO --> SCENARIO: valid
+          deactivate SCENARIO
+
+      SCENARIO -> SCENARIO: checkYear(year)
+      activate SCENARIO
+
+      SCENARIO --> SCENARIO: valid
+      deactivate SCENARIO
+
+      SCENARIO -> SCENARIO: checkLocomotiveTypes(locomotiveTypes)
+            activate SCENARIO
+
+            SCENARIO --> SCENARIO: valid
+            deactivate SCENARIO
+
+      SCENARIO -> SCENARIO: checkImportation(importation)
+            activate SCENARIO
+
+            SCENARIO --> SCENARIO: valid
+            deactivate SCENARIO
+
+      SCENARIO -> SCENARIO: checkExportation(exportation)
+            activate SCENARIO
+
+            SCENARIO --> SCENARIO: valid
+            deactivate SCENARIO
+
+      SCENARIO -> SCENARIO: checkChanger(changer)
+            activate SCENARIO
+
+            SCENARIO --> SCENARIO: valid
+            deactivate SCENARIO
+
+      SCENARIO --> SCEN_REPOS: scenario
+      deactivate SCENARIO
+
+      SCEN_REPOS -> SCEN_REPOS: addScenario(scenario)
+      activate SCEN_REPOS
+
+      SCEN_REPOS --> SCEN_REPOS: success
+      deactivate SCEN_REPOS
+      SCEN_REPOS --> CTRL: success
+      deactivate SCEN_REPOS
+
+      CTRL --> UI: success
+      deactivate CTRL
 
     UI --> EDITOR : displays success
     deactivate UI

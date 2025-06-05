@@ -25,4 +25,12 @@ public class IndustryTypeDTO {
     public void setImportation(List<ResourceType>  importation) {
         this.importation = importation;
     }
+
+    @Override
+    public String toString() {
+        return "IndustryType{" +
+                "importation=" + importation +
+                ", exportation=" + exportation +
+                '}';
+    }
 }

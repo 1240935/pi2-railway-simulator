@@ -1,10 +1,7 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
-import pt.ipp.isep.dei.dto.CityBlockDTO;
-import pt.ipp.isep.dei.dto.CityBlockMapper;
-import pt.ipp.isep.dei.dto.CityDTO;
-import pt.ipp.isep.dei.dto.CityMapper;
+import pt.ipp.isep.dei.dto.*;
 import pt.ipp.isep.dei.repository.CityBlockRepository;
 import pt.ipp.isep.dei.repository.CityRepository;
 import pt.ipp.isep.dei.repository.Repositories;
@@ -27,42 +24,23 @@ public class AddCityController {
     public AddCityController() {
     }
 
-    /**
-     * Retrieves a list of all available maps from the repository.
-     *
-     * @return List of Map objects available.
-     */
-    public List<Map> getAvailableMaps() {
-        return Repositories.getInstance().getMapRepository().getMaps();
-    }
 
-    /**
-     * Returns the names of all available maps.
-     * Useful for UI display without exposing map objects.
-     *
-     * @return a list of map names
-     */
     public List<String> getAvailableMapNames() {
-        List<String> names = new ArrayList<>();
-        for (Map map : getAvailableMaps()) {
-            names.add(map.getName());
+        MapListMapper mapListMapper = new MapListMapper();
+        List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
+        List<MapDTO> mapDTOs = mapListMapper.toDTOList(maps);
+
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i < mapDTOs.size(); i++) {
+            names.add(mapDTOs.get(i).getName());
         }
+
         return names;
     }
 
-    /**
-     * Selects a map from the available maps using its index.
-     *
-     * @param index the index of the selected map
-     * @throws IllegalArgumentException if the index is invalid
-     */
-    public Map getMapByIndex(int index) {
+    public int getMapSizeByIndex(int index) {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
-        if (index >= 0 && index < maps.size()) {
-            return maps.get(index);
-        } else {
-            throw new IllegalArgumentException("Invalid map index");
-        }
+        return maps.get(index).getSize();
     }
 
 

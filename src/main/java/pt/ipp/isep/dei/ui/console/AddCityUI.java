@@ -22,17 +22,16 @@ public class AddCityUI {
     }
 
     public void start() {
-        List<String> names = controller.getAvailableMapNames();
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Available maps:");
-        for (int i = 0; i < names.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, names.get(i));
+        List<String> mapNames = controller.getAvailableMapNames();
+        for (int i = 0; i < mapNames.size(); i++) {
+            System.out.println((i + 1) + ": " + mapNames.get(i));
         }
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Select a map by number: ");
+        System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
-        scanner.nextLine();
-        int mapSize = controller.getMapByIndex(mapIndex).getSize();
+        int size = controller.getMapSizeByIndex(mapIndex);
 
         System.out.println("Write a name for your city:");
         String name = scanner.nextLine();
@@ -79,7 +78,7 @@ public class AddCityUI {
         }
         CityDTO cityDTO = new CityDTO();
         cityDTO.setName(name);
-        cityDTO.setMapSize(mapSize);
+        cityDTO.setMapSize(size);
         cityDTO.setxCoordinate(x);
         cityDTO.setyCoordinate(y);
         cityDTO.setCityBlocks(controller.createBlocks(cityBlockDTO));

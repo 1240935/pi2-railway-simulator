@@ -20,7 +20,7 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleUpgradeStation() {
-        new UpgradeStationUI().start(player);
+        new UpgradeStationGUI().start();
     }
 
     @FXML

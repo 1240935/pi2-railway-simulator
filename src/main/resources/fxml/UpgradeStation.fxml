@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pt.ipp.isep.dei.ui.gui.UpgradeStationGUI"
+      spacing="15" alignment="TOP_CENTER" prefWidth="420" prefHeight="200" style="-fx-padding: 15;">
+
+    <!-- Scenario -->
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="400">
+        <Label text="Scenario:" minWidth="100" />
+        <ComboBox fx:id="scenarioComboBox" prefWidth="280"/>
+    </HBox>
+
+    <!-- Station -->
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="400">
+        <Label text="Station:" minWidth="100" />
+        <ComboBox fx:id="stationComboBox" prefWidth="280"/>
+    </HBox>
+
+    <!-- Building Type -->
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="400">
+        <Label text="Building Type:" minWidth="100" />
+        <ComboBox fx:id="buildingTypeComboBox" prefWidth="280"/>
+    </HBox>
+
+    <!-- Budget and Cost -->
+    <HBox spacing="20" alignment="CENTER_LEFT" prefWidth="400">
+        <Label text="Budget:" minWidth="100"/>
+        <Label fx:id="budgetLabel" text="0" prefWidth="60" style="-fx-border-color: lightgray; -fx-padding: 2;"/>
+        <Label text="Cost:" minWidth="50"/>
+        <Label fx:id="costLabel" text="0" prefWidth="60" style="-fx-border-color: lightgray; -fx-padding: 2;"/>
+    </HBox>
+
+    <!-- Buy Button -->
+    <Button fx:id="buyButton" text="Upgrade" maxWidth="100" prefWidth="100" />
+
+    <!-- Feedback -->
+    <Label fx:id="feedbackLabel" text=" " textFill="red" wrapText="true" prefWidth="400"/>
+
+</VBox>

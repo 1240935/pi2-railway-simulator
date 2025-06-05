@@ -15,7 +15,7 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleBuildStation() {
-        new BuildStationUI().start(player);
+        new BuildStationGUI().start(player);
     }
 
     @FXML

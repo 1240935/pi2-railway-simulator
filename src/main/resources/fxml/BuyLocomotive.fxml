@@ -13,8 +13,12 @@
     <Label text="Select Locomotive Model:" />
     <ComboBox fx:id="modelComboBox" prefWidth="300" />
 
-    <Label fx:id="budgetLabel" text="Player budget: -" />
-    <Label fx:id="costLabel" text="Locomotive cost: -" />
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="400">
+        <Label text="Budget:" minWidth="100"/>
+        <Label fx:id="budgetLabel" text="0" prefWidth="60" style="-fx-border-color: lightgray; -fx-padding: 2;"/>
+        <Label text="Cost:" minWidth="50"/>
+        <Label fx:id="costLabel" text="0" prefWidth="60" style="-fx-border-color: lightgray; -fx-padding: 2;"/>
+    </HBox>
 
     <Button fx:id="buyButton" text="Buy Locomotive" maxWidth="150" />
 

@@ -40,7 +40,7 @@
         <Label fx:id="feedbackLabel" style="-fx-text-fill: darkred;" text="" />
     </HBox>
 
-    <HBox spacing="15" alignment="CENTER_LEFT" prefWidth="400">
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="400">
         <Label text="Budget:" minWidth="100"/>
         <Label fx:id="budgetLabel" text="0" prefWidth="60" style="-fx-border-color: lightgray; -fx-padding: 2;"/>
         <Label text="Cost:" minWidth="50"/>

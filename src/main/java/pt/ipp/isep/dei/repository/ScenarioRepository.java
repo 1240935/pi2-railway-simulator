@@ -1,5 +1,8 @@
 package pt.ipp.isep.dei.repository;
 
+import pt.ipp.isep.dei.domain.LocomotiveType;
+import pt.ipp.isep.dei.domain.Map;
+import pt.ipp.isep.dei.domain.ResourceType;
 import pt.ipp.isep.dei.domain.Scenario;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,14 @@ public class ScenarioRepository {
         if (scenario != null && !scenarios.contains(scenario)) {
             scenarios.add(scenario);
         }
+    }
+
+    public static Scenario createScenario(Map map, int year, List<LocomotiveType> locomotiveTypes,
+                                      List<ResourceType> importation, List<ResourceType> exportation, int changer){
+         ScenarioRepository scenarioRepository = new ScenarioRepository();
+         Scenario scenario = new Scenario(map,year,locomotiveTypes,importation,exportation,changer);
+         scenarioRepository.addScenario(scenario);
+         return scenario;
     }
 
     /**

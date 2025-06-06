@@ -158,5 +158,8 @@ public enum IndustryType {
         return scenario.getExportation();
     }
 
+    public String toString() {
+        return name();
+    }
 
 }

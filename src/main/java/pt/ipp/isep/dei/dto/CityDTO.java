@@ -1,6 +1,5 @@
 package pt.ipp.isep.dei.dto;
 
-import pt.ipp.isep.dei.domain.City;
 import pt.ipp.isep.dei.domain.CityBlock;
 
 import java.util.List;

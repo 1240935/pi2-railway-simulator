@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.CreateScenarioController;
+import pt.ipp.isep.dei.dto.ScenarioDTO;
 
 import java.util.List;
 import java.util.Scanner;
@@ -36,23 +37,14 @@ public class CreateScenarioUI {
      */
     public void start() {
         // Display available maps
-        List<String> names = controller.getAvailableMapNames();
         System.out.println("Available maps:");
-        for (int i = 0; i < names.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, names.get(i));
+        List<String> mapNames = controller.getAvailableMapNames();
+        for (int i = 0; i < mapNames.size(); i++) {
+            System.out.println((i + 1) + ": " + mapNames.get(i));
         }
 
-        // User selects a map by number, with input validation
-        int choice;
-        do {
-            System.out.print("Select a map by number: ");
-            while (!scanner.hasNextInt()) {
-                System.out.print("Invalid input. Please enter a number: ");
-                scanner.next(); // discard non-integer input
-            }
-            choice = scanner.nextInt();
-        } while (choice < 1 || choice > names.size());
-        controller.setMap(controller.chooseMap(controller.getAvailableMaps(), choice));
+        System.out.print("Select map by number: ");
+        int mapIndex = scanner.nextInt() - 1;
 
         // User selects a year for the scenario, validated between 1800 and 2025
         int year;
@@ -64,7 +56,6 @@ public class CreateScenarioUI {
             }
             year = scanner.nextInt();
         } while (year < 1800 || year > 2025);
-        controller.setYear(year);
 
         // Display locomotive types and select multiple by number
         List<String> types = controller.getAvailableLocomotiveTypeNames();
@@ -72,37 +63,40 @@ public class CreateScenarioUI {
         for (int i = 0; i < types.size(); i++) {
             System.out.println((i + 1) + ": " + types.get(i));
         }
-        List<Integer> selections = controller.readIntegerSelections("Enter the locomotive's numbers (separated by space): ");
-        controller.setLocomotiveTypes(controller.chooseLocomotiveTypes(controller.getAvailableLocomotivesTypes(), selections));
+        List<Integer> selectionsLocomotiveTypes = controller.readIntegerSelections("Enter the locomotive's numbers (separated by space): ");
 
-        // Display resource types for importation and select multiple by number
-        List<String> impor_exportypes = controller.getAvailableImpor_ExportationNames();
+        List<String> impor_exportypes = controller.getAvailableResourceTypeNames();
         System.out.println("Available resource types (importation):");
         for (int i = 0; i < impor_exportypes.size(); i++) {
             System.out.println((i + 1) + ": " + impor_exportypes.get(i));
         }
-        List<Integer> selections3 = controller.readIntegerSelections("Enter resource types numbers (separated by space): ");
-        controller.setImportation(controller.chooseImportation(controller.getAvailableResourceType(), selections3));
+        List<Integer> selectionsImportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):  \n Type ! for null. ");
 
         // Display resource types for exportation and select multiple by number
         System.out.println("Available resource types (exportation):");
         for (int i = 0; i < impor_exportypes.size(); i++) {
             System.out.println((i + 1) + ": " + impor_exportypes.get(i));
         }
-        List<Integer> selections4 = controller.readIntegerSelections("Enter resource types numbers (separated by space): ");
-        controller.setExportation(controller.chooseExportation(controller.getAvailableResourceType(), selections4));
+        List<Integer> selectionsExportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):  \n Type ! for null. ");
 
         // Display industry changer types and select multiple by number
-        List<String> changerTypes = controller.getAvailableIndustryChangerNames();
-        System.out.println("Available changer types:");
-        for (int i = 0; i < changerTypes.size(); i++) {
-            System.out.println((i + 1) + ": " + changerTypes.get(i));
+        System.out.println("Enter the industry changer value (1 - 200):");
+        int changer = scanner.nextInt();
+        while (changer < 1 || changer > 200) {
+            System.out.println("Invalid input. Please enter a value between 1 and 200:");
+            changer = scanner.nextInt();
         }
-        List<Integer> selections5 = controller.readIntegerSelections("Enter changer types numbers (separated by space): ");
-        controller.setChangers(controller.chooseIndustryChanger(controller.getAvailableIndustryChangers(), selections5));
+
+        ScenarioDTO scenarioDTO = new ScenarioDTO();
+        scenarioDTO.setMap(controller.selectMap(mapIndex));
+        scenarioDTO.setYear(year);
+        scenarioDTO.setLocomotiveTypes(controller.chooseLocomotiveTypes(selectionsLocomotiveTypes));
+        scenarioDTO.setImportation(controller.chooseResourceTypes(selectionsImportation));
+        scenarioDTO.setExportation(controller.chooseResourceTypes(selectionsExportation));
+        scenarioDTO.setChanger(changer);
 
         // Create the scenario based on the user's selections
-        controller.createScenario();
+        controller.createScenario(scenarioDTO);
         System.out.println("Scenario created successfully.");
     }
 }

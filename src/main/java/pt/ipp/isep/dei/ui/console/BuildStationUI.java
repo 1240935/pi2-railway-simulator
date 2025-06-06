@@ -95,18 +95,24 @@ public class BuildStationUI {
         }
 
         // Step 6: Propose a station name and ask player to accept or customize
-        String proposedName = controller.getRecommendedName(x, y, scenarioIndex,typeIndex);
+        String proposedName = controller.getRecommendedName(x, y, scenarioIndex, typeIndex);
         String name;
-        System.out.print("Proposed name: " + proposedName + "\nUse proposed name? (y/n): ");
-        String answer = scanner.nextLine();
 
-        if (answer.equalsIgnoreCase("n")) {
+        if (proposedName == null) {
+            System.out.println("You must manually enter a station name.");
             System.out.print("Enter custom name: ");
             name = scanner.nextLine();
         } else {
-            name = proposedName;
-        }
+            System.out.print("Proposed name: " + proposedName + "\nUse proposed name? (y/n): ");
+            String answer = scanner.nextLine();
 
+            if (answer.equalsIgnoreCase("n")) {
+                System.out.print("Enter custom name: ");
+                name = scanner.nextLine();
+            } else {
+                name = proposedName;
+            }
+        }
 
         // Step 7: Confirm purchase by displaying player budget and station cost
         System.out.println("Player budget: " + player.getBudget());

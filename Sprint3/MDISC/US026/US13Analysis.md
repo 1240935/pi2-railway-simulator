@@ -8,76 +8,75 @@
 ### Pseudocódigo (PathVerifier.verifyPath)
 
 ```
-INICIO
-ED: graph, locoType, stationType
-ED: stations, candidateStations, s, start
+1.  INICIO
+2.  ED: graph, locoType, stationType
+3.  ED: stations, candidateStations, s, start
 
-stations ← lista de estações do grafo
-candidateStations ← lista vazia
+4.  stations ← lista de estações do grafo
+5.  candidateStations ← lista vazia
 
-REPETIR PARA cada s em stations
-    SE s.tipo == stationType ENTÃO
-        adicionar s a candidateStations
-    FIMSE
-FIMREPETIR
+6.  REPETIR PARA cada s em stations
+7.      SE s.tipo == stationType ENTÃO
+8.          adicionar s a candidateStations
+9.      FIMSE
+10. FIMREPETIR
 
-REPETIR PARA cada start em candidateStations
-    SE bfs(graph, locoType, stationType, start, candidateStations) ENTÃO
-        ESCREVER true
-        PARAR
-    FIMSE
-FIMREPETIR
+11. REPETIR PARA cada start em candidateStations
+12.     SE bfs(graph, locoType, stationType, start, candidateStations) ENTÃO
+13.         ESCREVER true
+14.         PARAR
+15.     FIMSE
+16. FIMREPETIR
 
-ESCREVER false
-FIM
-
+17. ESCREVER false
+18. FIM
 
 ```
 
 ### Pseudocódigo (PathVerifier.bfs)
 
 ```
-INICIO
-ED: graph, locoType, targetStationType, start, candidates
-ED: queue, visited, current, head, connections, line, neighbor
+1.  INICIO
+2.  ED: graph, locoType, targetStationType, start, candidates
+3.  ED: queue, visited, current, head, connections, line, neighbor
 
-queue ← [start]
-visited ← [start]
-head ← 0
+4.  queue ← [start]
+5.  visited ← [start]
+6.  head ← 0
 
-REPETIR ENQUANTO head < tamanho(queue)
-    current ← queue[head]
-    head ← head + 1
+7.  REPETIR ENQUANTO head < tamanho(queue)
+8.      current ← queue[head]
+9.      head ← head + 1
 
-    SE current ≠ start E current.tipo == targetStationType ENTÃO
-        ESCREVER true
-        PARAR
-    FIMSE
+10.     SE current ≠ start E current.tipo == targetStationType ENTÃO
+11.         ESCREVER true
+12.         PARAR
+13.     FIMSE
 
-    connections ← conexões do grafo a partir de current
+14.     connections ← conexões do grafo a partir de current
 
-    REPETIR PARA cada line em connections
-        SE line.start == current ENTÃO
-            neighbor ← line.end
-        SENÃO
-            neighbor ← line.start
-        FIMSE
+15.     REPETIR PARA cada line em connections
+16.         SE line.start == current ENTÃO
+17.             neighbor ← line.end
+18.         SENÃO
+19.             neighbor ← line.start
+20.         FIMSE
 
-        SE neighbor está em visited ENTÃO
-            CONTINUAR
-        FIMSE
+21.         SE neighbor está em visited ENTÃO
+22.             CONTINUAR
+23.         FIMSE
 
-        SE locoType == ELECTRIC E line não é eletrificada ENTÃO
-            CONTINUAR
-        FIMSE
+24.         SE locoType == ELECTRIC E line não é eletrificada ENTÃO
+25.             CONTINUAR
+26.         FIMSE
 
-        adicionar neighbor a visited
-        adicionar neighbor a queue
-    FIMREPETIR
-FIMREPETIR
+27.         adicionar neighbor a visited
+28.         adicionar neighbor a queue
+29.     FIMREPETIR
+30. FIMREPETIR
 
-ESCREVER false
-FIM
+31. ESCREVER false
+32. FIM
 
 ```
 
@@ -96,6 +95,30 @@ Sejam:
 - Lista `visited` pode ter até `n` inserções/verificações → `O(n)`
 - Cada estação pode ter até `d` vizinhos, onde somatório de todos os graus é `2m` → complexidade linear em `n + m`
 
+### Tabela:
+
+| **Linhas** | **verifyPath**                               | **bfs**                                                    |
+|------------|----------------------------------------------|------------------------------------------------------------|
+| 04         | 1A (cópia da lista de estações)              | –                                                          |
+| 05         | 1A (inicialização de lista vazia)            | –                                                          |
+| 06–07      | nC (comparações do tipo de estação)          | –                                                          |
+| 08         | até kA (adicionar até k estações candidatas) | –                                                          |
+| 11         | até k chamadas a `bfs(...)`                  | –                                                          |
+| 12         | até kR (interrompe ao encontrar caminho)     | –                                                          |
+| 17         | 1R (se nenhum caminho encontrado)            | –                                                          |
+| -          | -                                            | -                                                          |
+| 04–05      | –                                            | 2A (inicialização de `queue` e `visited`)                  |
+| 06         | –                                            | 1A (`head ← 0`)                                            |
+| 07         | –                                            | até nC (condição do ciclo `head < queue.length`)           |
+| 08         | –                                            | nA (`current ← queue[head]`)                               |
+| 09         | –                                            | nI (`head ← head + 1`)                                     |
+| 10         | –                                            | até nC (verificação de tipo ≠ start e tipo correto)        |
+| 11–12      | –                                            | 1R (se condição satisfeita, termina)                       |
+| 14         | –                                            | mA (acesso às conexões: graus totais ≤ 2m)                 |
+| 15–29      | –                                            | por aresta: até 3mC (comparações start, visited, locoType) |
+| 27–28      | –                                            | até 2mA (inserções em `visited` e `queue`)                 |
+
+
 #### Total:
 - verifyPath: `O(k(n + m))` ⟶ como `k ≤ n` → `O(n(n + m))`
 
@@ -107,8 +130,9 @@ Sejam:
 
 ## Conclusão
 
-| Algoritmo            | Complexidade (Pior Caso) |
-|----------------------|--------------------------|
-| verifyPath (com BFS) | O(n(n + m))              |
+| **Algoritmo**          | **Complexidade (Pior Caso)** |
+|------------------------|------------------------------|
+| `verifyPath` (com BFS) | `O(n(n + m))`                |
+| `bfs`                  | `O(n + m)`                   |
 
-> A verificação de caminho é significativamente mais custosa do que a construção do grafo. Isso reflete o esforço de percorrer múltiplas vezes o grafo em largura para diferentes estações.
+

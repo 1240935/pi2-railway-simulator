@@ -342,7 +342,7 @@ activate EDITOR
       SMAPPER --> SCEN_REPOS: map, year, locomotiveTypes, importation, exportation, changer
       deactivate SMAPPER
 
-      SCEN_REPOS -> SCENARIO: createScenario( map, year, locomotiveTypes, importation, exportation, changer)
+      SCEN_REPOS -> SCENARIO: createScenario(map, year, locomotiveTypes, importation, exportation, changer)
       activate SCENARIO
 
 

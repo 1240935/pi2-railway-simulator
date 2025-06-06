@@ -37,6 +37,9 @@ public class BuyLocomotiveGUI {
 
     @FXML
     public void start() {
+        scenarioComboBox = new ComboBox<>();
+        modelComboBox = new ComboBox<>();
+        buyButton = new Button();
         scenarioComboBox.setOnAction(event -> {
             int selectedIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {

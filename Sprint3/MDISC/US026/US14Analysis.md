@@ -7,36 +7,37 @@
 ### Pseudocódigo (Route.findEulerianPath)
 
 ```
-INICIO
-ED: graph, stations, lines, oddDegreeStations, current, degree, line
+01. INICIO  
+02. ED: graph, stations, lines, oddDegreeStations, current, degree, line  
 
-stations ← obter estações do grafo
-lines ← obter linhas do grafo
-oddDegreeStations ← lista vazia
+03. stations ← obter estações do grafo  
+04. lines ← obter linhas do grafo  
+05. oddDegreeStations ← lista vazia  
 
-REPETIR PARA cada current em stations
-    degree ← 0
+06. REPETIR PARA cada current em stations  
+07.     degree ← 0  
 
-    REPETIR PARA cada line em lines
-        SE line.start == current OU line.end == current ENTÃO
-            degree ← degree + 1
-        FIMSE
-    FIMREPETIR
+08.     REPETIR PARA cada line em lines  
+09.         SE line.start == current OU line.end == current ENTÃO  
+10.             degree ← degree + 1  
+11.         FIMSE  
+12.    FIMREPETIR  
 
-    SE degree é ímpar ENTÃO
-        adicionar current a oddDegreeStations
-    FIMSE
-FIMREPETIR
+13.     SE degree é ímpar ENTÃO  
+14.         adicionar current a oddDegreeStations  
+15.     FIMSE  
+16. FIMREPETIR  
 
-SE tamanho(oddDegreeStations) == 0 ENTÃO
-    DEVOLVE stations
-SENÃO SE tamanho(oddDegreeStations) == 2 ENTÃO
-    DEVOLVE oddDegreeStations
-SENÃO
-    DEVOLVE nulo
-FIMSE
+17. SE tamanho(oddDegreeStations) == 0 ENTÃO  
+18.     DEVOLVE stations  
+19. SENÃO SE tamanho(oddDegreeStations) == 2 ENTÃO  
+20.     DEVOLVE oddDegreeStations  
+21. SENÃO  
+22.     DEVOLVE nulo  
+23. FIMSE  
 
-FIM
+24. FIM
+
 
 ```
 
@@ -51,6 +52,27 @@ Sejam:
 - Para cada estação, percorre `m` linhas → `O(m)` por estação
 - Verificação de conexão por linha → até 2 comparações
 - Inserção em lista e verificação de paridade → `O(1)`
+
+### Tabela
+
+| **Linhas** | **findEulerianPath**                                                   |
+|------------|------------------------------------------------------------------------|
+| 04         | 1A (obter lista de estações)                                           |
+| 05         | 1A (obter lista de linhas)                                             |
+| 06         | 1A (inicialização de lista `oddDegreeStations`)                        |
+| 08         | nC (loop externo: percorre todas as `n` estações)                      |
+| 09         | nA (inicialização do grau a zero para cada estação)                    |
+| 11–13      | n × mC (comparações: `line.start == current` ou `line.end == current`) |
+| 12         | até 2mC por iteração (duas comparações por linha)                      |
+| 13         | até mI (incrementos do grau da estação)                                |
+| 16         | nC (verificação de paridade do grau — é ímpar?)                        |
+| 17         | até nA (inserções na lista de estações com grau ímpar)                 |
+| 20         | 1C (tamanho da lista `oddDegreeStations`)                              |
+| 21         | 1R (retorna lista de todas as estações se grafo é Euleriano)           |
+| 22         | 1C (verifica se há 2 vértices com grau ímpar)                          |
+| 23         | 1R (retorna esses dois vértices para o caminho semi-Euleriano)         |
+| 24         | 1R (senão, devolve nulo: grafo não admite caminho Euleriano)           |
+
 
 #### Total:
 - Custo total: `O(n × m)`
@@ -67,4 +89,3 @@ Sejam:
 |-------------------------------------|--------------------------|
 | findEulerianPath (grau de vértices) | O(n × m)                 |
 
-> O algoritmo de verificação de percurso Euleriano é eficiente, mas pode ser otimizado utilizando um mapa de graus previamente calculado ou representação com listas de adjacência.

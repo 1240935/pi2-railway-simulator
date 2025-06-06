@@ -76,23 +76,22 @@ public class BuildStationController {
         return closest;
     }
 
-    /**
-     * Generates a recommended station name based on the closest city and selected station type.
-     *
-     * @param x X coordinate of the station position.
-     * @param y Y coordinate of the station position.
-     * @return Recommended station name or an empty string if prerequisites are not met.
-     */
+
     public String getRecommendedName(int x, int y, int scenarioIndex, int typeIndex) {
-        if (getStationTypeByIndex(typeIndex) == null || getScenarioByIndex(scenarioIndex) == null) return "";
+        if (getStationTypeByIndex(typeIndex) == null || getScenarioByIndex(scenarioIndex) == null) return null;
+
         int radius = getStationTypeByIndex(typeIndex).getRadius();
         Position position = new Position(x, y);
         City closestCity = getClosestCity(position, scenarioIndex);
 
-        if (closestCity == null || closestCity.getPosition().euclideanDistance(position) <= radius) return "";
+        if (closestCity == null || closestCity.getPosition().euclideanDistance(position) > radius) {
+            System.out.println("No nearby city found within the allowed radius. Please enter a name manually.");
+            return null;
+        }
 
         return closestCity.getName() + " " + getStationTypeByIndex(typeIndex).name();
     }
+
 
     /**
      * Returns the list of available station types as strings.

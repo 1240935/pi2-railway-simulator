@@ -20,12 +20,12 @@ participant ":MapDTO" as MDTO
 participant "locomotiveTypeRepository \n :LocomotiveTypeRepository" as LTYPE_REPOS
 participant ":LocomotiveTypeListMapper" as LTYPEMAPPER
 participant ":List<LocomotiveType>" as LIST_LTYPE
-participant ":List<LocomotiveTypeListDTO>" as LTYPELDTO
+participant ":List<LocomotiveTypeDTO>" as LTYPELDTO
 participant ":LocomotiveTypeDTO" as LTYPEDTO
 participant "resourceTypeRepository \n :ResourceTypeRepository" as RTYPE_REPOS
 participant ":ResourceTypeListMapper" as RTYPEMAPPER
 participant ":List<ResourceType>" as LIST_RTYPE
-participant ":List<ResourceTypeListDTO>" as RTYPELDTO
+participant ":List<ResourceTypeDTO>" as RTYPELDTO
 participant ":ResourceTypeDTO" as RTYPEDTO
 participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
 participant ":ScenarioMapper" as SMAPPER

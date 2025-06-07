@@ -19,7 +19,7 @@ participant "scenario \n :Scenario" as SCENARIO
 participant "stationTypeRepository \n :StationTypeRepository" as STYPE_REPOS
 participant ":StationTypeListMapper" as STYPEMAPPER
 participant ":List<StationType>" as LIST_STYPE
-participant ":List<StationTypeListDTO>" as STYPELDTO
+participant ":List<StationTypeDTO>" as STYPELDTO
 participant ":StationTypeDTO" as STYPEDTO
 participant "closestCity \n :City" as CITY
 participant "stationRepository \n :StationRepository" as STA_REPOS
@@ -28,7 +28,6 @@ participant ":StationDTO" as STADTO
 participant "station \n :Station" as STATION
 participant "position \n :Position" as POS
 participant "player \n :Player" as PLR
-
 
 
 activate PLAYER
@@ -204,16 +203,16 @@ activate PLAYER
             CTRL -> SCENARIO: getClosestCity(x, y, scenarioIndex)
             activate SCENARIO
 
-            SCENARIO --> CTRL: closestCity
-            deactivate SCENARIO
-
-            CTRL -> CITY: getName()
+            SCENARIO -> CITY: getName()
             activate CITY
 
-            CITY --> CTRL: name
+            CITY --> SCENARIO: name
             deactivate CITY
 
-            CTRL --> UI: closestCity name
+            SCENARIO --> CTRL: name
+            deactivate SCENARIO
+
+            CTRL --> UI: name
             deactivate CTRL
 
         UI --> PLAYER : recommends a name based on the closest city
@@ -230,7 +229,6 @@ activate PLAYER
         deactivate CTRL
 
        end alt
-
 
     UI -> CTRL : createStation(dto)
     activate CTRL
@@ -291,12 +289,6 @@ activate PLAYER
                   STADTO --> STAMAPPER: suppliedCargo
                   deactivate STADTO
 
-    STAMAPPER -> STADTO: getPlayer()
-                      activate STADTO
-
-                      STADTO --> STAMAPPER: player
-                      deactivate STADTO
-
      STAMAPPER -> STADTO: getScenarioIndex()
                           activate STADTO
 
@@ -324,10 +316,10 @@ activate PLAYER
 
 
 
-    STAMAPPER --> STA_REPOS: stationType, xCoordinate, yCoordinate, name, center, demandedCargo, suppliedCargo, player, scenarioIndex, stationTypeIndex, map, scenario
+    STAMAPPER --> STA_REPOS: stationType, xCoordinate, yCoordinate, name, center, demandedCargo, suppliedCargo, scenarioIndex, stationTypeIndex, map, scenario
     deactivate STAMAPPER
 
-    STA_REPOS -> STATION: createStation(stationType, xCoordinate, yCoordinate, name, center, demandedCargo, suppliedCargo, player, scenarioIndex, stationTypeIndex, map, scenario)
+    STA_REPOS -> STATION: createStation(stationType, xCoordinate, yCoordinate, name, center, demandedCargo, suppliedCargo, scenarioIndex, stationTypeIndex, map, scenario)
     activate STATION
 
     STATION --> POS**: createPosition(xCoordinate, yCoordinate)
@@ -378,7 +370,7 @@ activate PLAYER
         SCENARIO --> CTRL: success
         deactivate SCENARIO
 
-        CTRL --> PLR: deductBudget(cost)
+        CTRL --> PLR: deductBudget(stationType)
 
     CTRL --> UI: success
     deactivate CTRL

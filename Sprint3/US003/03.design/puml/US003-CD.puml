@@ -106,7 +106,6 @@ class Position {
   +createPosition(xCoordinate, yCoordinate)
 }
 
-' Relationships
 AddCityUI --> AddCityController
 
 AddCityController ..> Repositories

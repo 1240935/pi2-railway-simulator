@@ -32,7 +32,7 @@ public class IndustryRepository {
     }
 
     public static Industry createIndustry(IndustryType industryType, int x, int y, int size) {
-         Position position = Industry.createPosition(x,y);
+        Position position = Industry.createPosition(x,y);
         Industry industry = new Industry(industryType, position);
         if (industry.getPosition().checkPosition(position, size) && industry.checkIndustryType(industryType)) {
             System.out.println("Industry created successfully!");

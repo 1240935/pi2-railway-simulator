@@ -140,6 +140,9 @@ BuildStationController ..> ScenarioListMapper
 BuildStationController ..> StationTypeListMapper
 BuildStationController ..> StationMapper
 BuildStationController ..> Player
+BuildStationController ..> ScenarioRepository
+BuildStationController ..> StationRepository
+BuildStationController ..> StationTypeRepository
 
 ScenarioRepository --> "1..*" Scenario: scenario
 StationTypeRepository --> "3" StationType: stationType

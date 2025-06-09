@@ -43,16 +43,14 @@ class IndustryTypeRepository {
 }
 
 class MapListMapper {
-  -toDTO(mapList)
-  -toDTO(map)
+   +toDTO(map)
 }
 
 class IndustryTypeListMapper {
-  +toDTO(industryTypes>)
   +toDTO(industryType)
 }
 
-class IndustryListMapper {
+class IndustryMapper {
   +toIndustry(dto):
 }
 
@@ -96,48 +94,47 @@ class Industry {
 }
 
  enum IndustryType{
-    aluminum mill
-    auto plant
+    aluminum_mill
+    auto_plant
     bakery
-    bauxit mine
+    bauxit_mine
     cannery
-    cattle yard
-    chemical plant
-    cement plant
-    coal mine
-    coffee farm
-    cotton farm
-    dairy farm
-    dairy processor
-    electric plant
-    fertilizer plant
-    grain silo
-    gravel pit
-    iron mine
+    cattle_yard
+    chemical_plant
+    cement_plant
+    coal_mine
+    coffee_farm
+    cotton_farm
+    dairy_farm
+    dairy_processor
+    electric_plant
+    fertilizer_plant
+    grain_silo
+    gravel_pit
+    iron_mine
     landfill
-    logging camp
-    lumber mill
-    meat packing plant
-    nuclear plant
-    oil refinery
-    oil well
-    paper mill
-    produce orchard
-    rubber farm
-    steel mill
-    textile mill
-    tire factory
-    tool and die factory
-    uranium mine
-    geocore plant
+    logging_camp
+    lumber_mill
+    meat_packing_plant
+    nuclear_plant
+    oil_refinery
+    oil_well
+    paper_mill
+    produce_orchard
+    rubber_farm
+    steel_mill
+    textile_mill
+    tire_factory
+    tool_and_die_factory
+    uranium_mine
+    geocore_plant
     distillery
-    munitions factory
-    weapons factory
+    munitions_factory
+    weapons_factory
     port
     --
     -importation: ResourceType
     -exportation: ResourceType
-
   }
 
 class Position {
@@ -146,37 +143,35 @@ class Position {
   +createPosition(x, y)
 }
 
-' Associations
 CreateIndustryUI ..> CreateIndustryController
 
 CreateIndustryController ..> Repositories
+CreateIndustryController ..> MapListMapper
+CreateIndustryController ..> IndustryTypeRepository
+CreateIndustryController ..> MapRepository
+CreateIndustryController ..> IndustryRepository
+CreateIndustryController ..> IndustryTypeListMapper
+CreateIndustryController ..> IndustryMapper
 
 Repositories -> "1" Repositories : instance
 Repositories --> "1" MapRepository: mapRepository
 Repositories --> "1" IndustryRepository: industryRepository
 Repositories --> "1" IndustryTypeRepository: industryTypeRepository
 
-CreateIndustryController ..> MapListMapper
-
 MapListMapper --> "1" MapDTO
-
-CreateIndustryController ..> IndustryTypeListMapper
+MapListMapper --> "1..*" Map
 
 IndustryTypeListMapper --> "1" IndustryTypeDTO
+IndustryTypeListMapper --> "1..*" IndustryType
 
-CreateIndustryController ..> IndustryListMapper
-
-IndustryListMapper --> Industry
-
-IndustryListMapper --> IndustryDTO
+IndustryMapper --> "1..*" Industry: industry
+IndustryMapper --> "*" IndustryDTO: industryDTO
 
 Industry --> "1" Position: position
 
 IndustryTypeRepository --> "38" IndustryType: industryType
 MapRepository --> "1..*" Map: map
-IndustryType --> "1" Industry: industryType
 
 IndustryRepository --> "*" Industry: industry
-Map --> "*" Industry: industry
 
 @enduml

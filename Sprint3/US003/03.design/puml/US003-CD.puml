@@ -112,6 +112,9 @@ AddCityController ..> Repositories
 AddCityController ..> MapListMapper
 AddCityController ..> CityBlockMapper
 AddCityController ..> CityMapper
+AddCityController ..> MapRepository
+AddCityController ..> CityBlockRepository
+AddCityController ..> CityRepository
 
 Repositories -> "1" Repositories : instance
 Repositories --> "1" MapRepository: mapRepository

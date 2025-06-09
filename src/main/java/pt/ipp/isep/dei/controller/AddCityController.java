@@ -31,8 +31,8 @@ public class AddCityController {
         List<MapDTO> mapDTOs = mapListMapper.toDTOList(maps);
 
         List<String> names = new ArrayList<String>();
-        for (int i = 0; i < mapDTOs.size(); i++) {
-            names.add(mapDTOs.get(i).getName());
+        for (MapDTO mapDTO : mapDTOs) {
+            names.add(mapDTO.getName());
         }
 
         return names;

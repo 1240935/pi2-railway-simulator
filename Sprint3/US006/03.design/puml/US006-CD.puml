@@ -147,6 +147,10 @@ UpgradeStationController ..> StationListMapper
 UpgradeStationController ..> BuildingTypeListMapper
 UpgradeStationController ..> BuildingMapper
 UpgradeStationController ..> Player
+UpgradeStationController ..> StationRepository
+UpgradeStationController ..> ScenarioRepository
+UpgradeStationController ..> BuildingTypeRepository
+UpgradeStationController ..> BuildingRepository
 
 Repositories -> "1" Repositories : instance
 Repositories --> "1" ScenarioRepository: scenarioRepository

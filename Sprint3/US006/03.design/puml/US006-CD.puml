@@ -9,112 +9,164 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class UpgradeStationUI {
-}
+class UpgradeStationUI
 
 class UpgradeStationController {
-    + UpgradeStationController()
-    + getAvailableScenarios()
-    + setScenario(scenario)
-    + getAvailableStations()
-    + setStation(station)
-    + getAvailableScenarioNames()
-    + getAvailableStationNames()
-    + getAvailableBuildingNames()
-    + getAvailableBuildingTypes()
-    + setType(type)
-    + setScenarioByIndex(index)
-    + setStationByIndex(index)
-    + setBuildingTypeByIndex(index)
-    + getSelectedBuildingCost()
-    + getPlayer()
-    + setPlayer(player)
-    + setBuilding(building)
-    + createAndSetBuilding()
+  + UpgradeStationController()
+  + getAvailableScenarioNames()
+  + getAvailableStationNames()
+  + getAvailableBuildingNames()
+  + createBuilding(dto)
 }
 
-class ScenarioRepository {
-    + getScenarios()
+class Player {
+    - username: String
+    - password: String
+    - budget: int
+  + deductBudget(buildingType)
 }
 
-class StationRepository {
-    + getStations()
+class Scenario{
+    - map: Map
+    - year: int
+    - locomotiveTypes: List<LocomotiveType>
+    - importation: List<ResourceType>
+    - exportation: List<ResourceType>
+    - changer: int
 }
 
-class Repositories {
-    - Repositories()
-    + getInstance()
-    + getScenarioRepository()
-    + getStationRepository()
-}
-
-class BuildingTypeRepository{
-    +getAvailableBuildingTypes()
-}
-
-enum BuildingType {
-    Telegraph
-    Telephone
-    Small Café
-    Large Café
-    Customs
-    Post office
-    Small hotel
-    Large hotel
-    Silo
-    Liquid Storage
-    --
-    upgrade : int
-    cost : int
+class Station {
+    -name: String
+    -center: StationCenter
+    -position: Position
+    -stationType: StationType
+    -demandedCargo: List<Cargo>
+    -suppliedCargo: List<Cargo>
+  + setBuilding(building)
 }
 
 class Building {
-    -type: BuildingType
-    + Building(type)
+  - buildingType: BuildingType
+  + checkBuildingType(buildingType)
 }
 
-class Station{
-    -name : String
-    -position : Position
-    -type : StationType
-    -center : StationCenter
-    -building: Building
-    -supply: List<Cargo>
-    -demand: List<Cargo>
-    +setBuilding(building)
+enum BuildingType {
+  TELEGRAPH
+  TELEPHONE
+  SMALL_CAFE
+  LARGE_CAFE
+  SMALL_RESTAURANT
+  LARGE_RESTAURANT
+  CUSTOMS
+  POST_OFFICE
+  SMALL_HOTEL
+  LARGE_HOTEL
+  SILO
+  LIQUID_STORAGE
+  --
+  -cost
+  -availabilityYear
+  -upgradeGroup
 }
 
-class Scenario {
-    -map: Map
-    -year: int
-    -locomotiveTypes: List<LocomotiveType>
-    -industryTypes: List<IndustryType>
-    -importation: List<ResourceType>
-    -exportation: List<ResourceType>
-    -changers: List<IndustryChanger>
+class ScenarioDTO {
+  - map: Map
+  - year
+  - locomotiveTypes
+  - importation
+  - exportation
+  - changer
 }
 
+class StationDTO {
+  -name: String
+      -center: StationCenter
+      -position: Position
+      -stationType: StationType
+      -demandedCargo: List<Cargo>
+      -suppliedCargo: List<Cargo>
+}
+
+class BuildingTypeDTO {
+  - cost
+  - availabilityYear
+  - upgradeGroup
+}
+
+class BuildingDTO {
+    -buildingType: BuildingType
+}
+
+class Repositories {
+  - Repositories()
+  + getInstance()
+  + getScenarioRepository()
+  + getStationRepository()
+  + getBuildingTypeRepository()
+  + getBuildingRepository()
+}
+
+class ScenarioRepository {
+  + getScenarios()
+}
+
+class StationRepository {
+  + getStations()
+ }
+
+class BuildingTypeRepository {
+  + getBuildingType()
+}
+
+class BuildingRepository {
+  + createBuilding(dto)
+  + addBuilding(building)
+}
+
+class ScenarioListMapper {
+  + toDTO(List<Scenario>)
+}
+
+class StationListMapper {
+  + toDTO(List<Station>)
+}
+
+class BuildingTypeListMapper {
+  + toDTO(List<BuildingType>)
+}
+
+class BuildingMapper {
+  + toBuilding(dto)
+}
 
 UpgradeStationUI ..> UpgradeStationController
 
 UpgradeStationController ..> Repositories
-UpgradeStationController ..> ScenarioRepository
-UpgradeStationController ..> StationRepository
-UpgradeStationController ..> Building
-UpgradeStationController ..> Scenario
-UpgradeStationController ..> BuildingTypeRepository
+UpgradeStationController ..> ScenarioListMapper
+UpgradeStationController ..> StationListMapper
+UpgradeStationController ..> BuildingTypeListMapper
+UpgradeStationController ..> BuildingMapper
+UpgradeStationController ..> Player
 
-ScenarioRepository --> "1..*" Scenario  : scenario
-StationRepository --> "1..*" Station  : station
+Repositories -> "1" Repositories : instance
+Repositories --> "1" ScenarioRepository: scenarioRepository
+Repositories --> "1" StationRepository: stationRepository
+Repositories --> "1" BuildingTypeRepository: buildingTypeRepository
+Repositories --> "1" BuildingRepository: buildingRepository
 
-BuildingTypeRepository --> "1..*" BuildingType : building type
-Scenario --> "*" Station : station
-Station --> "*" Building : building
+StationRepository --> "1..*" Station: station
+ScenarioRepository --> "1..*" Scenario: scenario
+BuildingTypeRepository --> "12" BuildingType: buildingType
+BuildingRepository --> "*" Building: building
 
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" Repositories : instance
-Repositories --> "1" StationRepository : station repository
-BuildingType --> "1" Building : building type
 
+ScenarioListMapper --> "1" ScenarioDTO: scenarioDTO
+ScenarioListMapper --> "1..*" Scenario: scenario
+StationListMapper --> "1" StationDTO: stationDTO
+StationListMapper --> "1..*" Station: station
+BuildingTypeListMapper --> "1" BuildingTypeDTO: buildingTypeDTO
+BuildingTypeListMapper --> "1..*" BuildingType: buildingType
+BuildingMapper --> "1..*" Building: building
+BuildingMapper --> "1" BuildingDTO: buildingDTO
 
 @enduml

@@ -133,7 +133,7 @@ activate PLAYER
                           LIST_STYPE --> STYPEMAPPER : stationType
                           deactivate LIST_STYPE
 
-                          STYPEMAPPER -> STYPEMAPPER : toDTO(locomotiveType)
+                          STYPEMAPPER -> STYPEMAPPER : toDTO(stationType)
                           activate STYPEMAPPER
 
                           STYPEMAPPER --> STYPEDTO** : create()
@@ -370,7 +370,7 @@ activate PLAYER
         SCENARIO --> CTRL: success
         deactivate SCENARIO
 
-        CTRL --> PLR: deductBudget(stationType)
+        CTRL -> PLR: deductBudget(stationType)
 
     CTRL --> UI: success
     deactivate CTRL

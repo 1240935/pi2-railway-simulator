@@ -114,7 +114,7 @@ public class ViewStationController {
      * @param index Index of the station.
      * @return Description of the buildings or a default message if none are available.
      */
-    public String getBuildingDetailsString(int index) {
+    public String   getBuildingDetailsString(int index) {
         List<Building> buildings = getBuildingDetails(index);
         if (buildings != null && !buildings.isEmpty()) {
             StringBuilder sb = new StringBuilder();

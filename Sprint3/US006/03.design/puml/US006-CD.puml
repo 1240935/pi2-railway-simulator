@@ -42,6 +42,7 @@ class Station {
     -stationType: StationType
     -demandedCargo: List<Cargo>
     -suppliedCargo: List<Cargo>
+    -buildings: List <Building>
     +addBuilding(building)
 }
 

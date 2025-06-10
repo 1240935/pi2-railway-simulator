@@ -10,87 +10,101 @@ skinparam classAttributeIconSize 0
 'left to right direction
 
 
-class ViewStationUI {
-}
-
-class ViewStationController {
-  +ViewStationController()
-  +getAvailableScenarios()
-  +getAvailableScenarioDescriptions()
-  +setScenario(index)
-  +getAvailableStations()
-  +getAvailableStationNames()
-  +getStationByIndex(index)
-  +getBuilding(station)
-  +getBuildingDetails(index)
-  +getBuildingDetailsString(index)
-  +getCargoInfo(index)
-}
-
-class Repositories {
-  -Repositories()
-  +getInstance()
-  +getScenarioRepository()
-  +getStationRepository()
-}
-
-class ScenarioRepository {
-  +getScenarios()
-}
-
-class StationRepository {
-  +getStations()
-}
-
-class Scenario {
-    -map: Map
-    -year: int
-    -locomotiveTypes: List<LocomotiveType>
-    -industryTypes: List<IndustryType>
-    -importation: List<ResourceType>
-    -exportation: List<ResourceType>
-    -changers: List<IndustryChanger>
-}
+    class ViewStationDetailsUI {
+    }
 
 
-class Station{
-    -name : String
-    -position : Position
-    -type : StationType
-    -center : StationCenter
-    -building: Building
-    -supply: List<Cargo>
-    -demand: List<Cargo>
-    +getBuilding(station)
-    +getCargo(station)
-}
-
-class Building {
-    -type: BuildingType
-}
-
-class Cargo {
-  -type: CargoType
-  -quantity: int
-}
+    class ViewStationDetailsController {
+        +ViewStationDetailsController()
+        +getAvailableScenarioNames()
+        +getAvailableStationNames()
+        +getBuildingDetailsString(stationIndex)
+        +getCargoInfo(stationIndex)
+    }
 
 
-ViewStationUI ..> ViewStationController
-ViewStationController ..> Repositories
-ViewStationController ..> ScenarioRepository
-ViewStationController ..> StationRepository
-ViewStationController ..> Scenario
-ViewStationController ..> Station
+    class Repositories {
+        -Repositories()
+        +getInstance()
+        +getScenarioRepository()
+        +getStationRepository()
+    }
 
-Repositories -> "1" Repositories : instance
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" StationRepository : station repository
-ScenarioRepository --> "1..*" Scenario : scenario
-StationRepository --> "1..*" Station : station
-Scenario --> "*" Station : station
+    class ScenarioRepository {
+        +getScenarios()
+    }
 
-Station --> "*" Building : building
-Station --> "*" Cargo : cargo
+    class StationRepository {
+        +getStations()
+    }
 
+    class Scenario {
+        - map: Map
+            - year: int
+            - locomotiveTypes: List<LocomotiveType>
+            - importation: List<ResourceType>
+            - exportation: List<ResourceType>
+            - changer: int
+    }
+
+    class Station {
+        -name: String
+            -center: StationCenter
+            -position: Position
+            -stationType: StationType
+            -demandedCargo: List<Cargo>
+            -suppliedCargo: List<Cargo>
+            -buildings: List <Building>
+        +getBuildingDetailsString()
+        +getCargoInfo()
+    }
+
+
+    class ScenarioListMapper {
+        +toDTO(List<Scenario>)
+    }
+
+    class StationListMapper {
+        +toDTO(List<Station>)
+    }
+
+
+    class ScenarioDTO {
+        - map: Map
+            - year: int
+            - locomotiveTypes: List<LocomotiveType>
+            - importation: List<ResourceType>
+            - exportation: List<ResourceType>
+            - changer: int
+    }
+
+    class StationDTO {
+        -name: String
+            -center: StationCenter
+            -position: Position
+            -stationType: StationType
+            -demandedCargo: List<Cargo>
+            -suppliedCargo: List<Cargo>
+            -buildings: List <Building>
+    }
+
+    ViewStationDetailsUI ..> ViewStationDetailsController
+
+    ViewStationDetailsController ..> Repositories
+    ViewStationDetailsController ..> ScenarioRepository
+    ViewStationDetailsController ..> StationRepository
+    ViewStationDetailsController ..> ScenarioListMapper
+    ViewStationDetailsController ..> StationListMapper
+
+    Repositories --> ScenarioRepository: scenarioRepository
+    Repositories --> StationRepository: stationRepository
+
+    StationRepository --> "1..*" Station: station
+    ScenarioRepository --> "1..*" Scenario: scenario
+
+    ScenarioListMapper --> "1" ScenarioDTO: scenarioDTO
+    ScenarioListMapper --> "1..*" Scenario: scenario
+    StationListMapper --> "1" StationDTO: stationDTO
+    StationListMapper --> "1..*" Station: station
 
 @enduml

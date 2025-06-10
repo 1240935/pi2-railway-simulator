@@ -42,7 +42,7 @@ class Station {
     -stationType: StationType
     -demandedCargo: List<Cargo>
     -suppliedCargo: List<Cargo>
-  + setBuilding(building)
+    +addBuilding(building)
 }
 
 class Building {
@@ -79,7 +79,7 @@ class ScenarioDTO {
 }
 
 class StationDTO {
-  -name: String
+      -name: String
       -center: StationCenter
       -position: Position
       -stationType: StationType

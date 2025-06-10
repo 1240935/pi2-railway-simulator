@@ -66,8 +66,16 @@ public class ViewStationDetailsGUI {
         String buildingDetails = controller.getBuildingDetailsString(stationIndex);
         String cargoInfo = controller.getCargoInfo(stationIndex);
 
-        detailsTextArea.setText("Building Details:\n" + buildingDetails + "\n\nCargo Information:\n" + cargoInfo);
+        String displayedCargoInfo;
+        if (cargoInfo == null || cargoInfo.trim().isEmpty()) {
+            displayedCargoInfo = "No available cargo";
+        } else {
+            displayedCargoInfo = cargoInfo;
+        }
+
+        detailsTextArea.setText("Building Details:\n" + buildingDetails + "\n\nCargo Information:\n" + displayedCargoInfo);
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -49,23 +49,36 @@ public class CargoStatus {
         return demanded;
     }
 
-    /**
-     * Returns a string representation of the cargo status,
-     * listing supplied and demanded cargo types and quantities.
-     *
-     * @return formatted string with supplied and demanded cargo details
-     */
     @Override
     public String toString() {
+        boolean noSupplied = supplied == null || supplied.isEmpty();
+        boolean noDemanded = demanded == null || demanded.isEmpty();
+
+        if (noSupplied && noDemanded) {
+            return "No available cargo";
+        }
+
         StringBuilder sb = new StringBuilder();
+
         sb.append("Supplied Cargoes:\n");
-        for (Cargo c : this.supplied) {
-            sb.append(" - ").append(c.getType().name()).append(": ").append(c.getQuantity()).append("\n");
+        if (noSupplied) {
+            sb.append("  No cargo supplied.\n");
+        } else {
+            for (Cargo supplied : supplied) {
+                sb.append("  ").append(supplied).append("\n");
+            }
         }
+
         sb.append("Demanded Cargoes:\n");
-        for (Cargo c : this.demanded) {
-            sb.append(" - ").append(c.getType().name()).append(": ").append(c.getQuantity()).append("\n");
+        if (noDemanded) {
+            sb.append("  No cargo demanded.\n");
+        } else {
+            for (Cargo demanded : demanded) {
+                sb.append("  ").append(demanded).append("\n");
+            }
         }
-        return sb.toString();
+
+        return sb.toString().trim();
     }
+
 }

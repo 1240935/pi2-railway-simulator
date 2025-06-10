@@ -272,7 +272,7 @@ autonumber
 
          activate STATION
 
-            STATION -> STATION: setBuilding(building)
+            STATION -> STATION: addBuilding(building)
             activate STATION
 
             STATION --> STATION: success

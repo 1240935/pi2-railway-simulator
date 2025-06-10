@@ -81,8 +81,6 @@ public class ViewStationDetailsUI {
             return;
         }
 
-
-        // Step 3: Show details as strings
         String buildingDetails = controller.getBuildingDetailsString(stationIndex);
         String cargoInfo = controller.getCargoInfo(stationIndex);
 
@@ -90,6 +88,12 @@ public class ViewStationDetailsUI {
         System.out.println(buildingDetails);
 
         System.out.println("\nCargo Information:");
-        System.out.println(cargoInfo);
+
+        if (cargoInfo == null || cargoInfo.trim().isEmpty()) {
+            System.out.println("No available cargo");
+        } else {
+            System.out.println(cargoInfo);
+        }
+
     }
 }

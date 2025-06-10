@@ -57,8 +57,6 @@ public class BuyLocomotiveGUI {
         buyButton.setOnAction(event -> handleBuy());
     }
 
-
-
     private void loadScenarios() {
         List<String> scenarios = controller.getAvailableScenarioDescriptions();
         if (scenarios.isEmpty()) {
@@ -84,17 +82,17 @@ public class BuyLocomotiveGUI {
 
     private void updateBudgetLabel() {
         if (player != null) {
-            budgetLabel.setText("Player budget: " + player.getBudget());
+            budgetLabel.setText(String.valueOf(player.getBudget()));
         } else {
-            budgetLabel.setText("Player budget: -");
+            budgetLabel.setText("-");
         }
     }
 
     private void updateCostLabel() {
         if (controller.getSelectedModel() != null) {
-            costLabel.setText("Locomotive cost: " + controller.getSelectedModel().getCost());
+            costLabel.setText(String.valueOf(controller.getSelectedModel().getCost()));
         } else {
-            costLabel.setText("Locomotive cost: -");
+            costLabel.setText("-");
         }
     }
 

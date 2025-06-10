@@ -9,147 +9,192 @@ skinparam classAttributeIconSize 0
 
 'left to right direction
 
-class BuyLocomotiveUI{
-}
-
+class BuyLocomotiveUI
 class BuyLocomotiveController {
-  + BuyLocomotiveController()
-  + getAvailableScenarios()
-  + setScenario(scenario)
-  + getAvailableScenarioDescriptions()
-  + chooseScenarioByIndex(index)
-  + getSelectedModel()
-  + chooseModelByIndex(index)
-  + getPlayer()
-  + setPlayer(player)
-  + getAvailableModelDescriptions()
-  + getAvailableLocomotiveModels()
-  + setModel(model)
-  + createLocomotive()
+    +BuyLocomotiveController()
+    +getAvailableScenarioNames()
+    +getAvailableLocomotiveModelDescriptions()
+    +createLocomotive(dto)
 }
 
 class Repositories {
-  + getInstance()
-  + getScenarios()
-  + getLocomotiveModels()
-  + getLocomotives()
+    -Repositories()
+    +getInstance()
+    +getScenarioRepository()
+    +getLocomotiveModelRepository()
+    +getLocomotiveRepository()
 }
 
 class ScenarioRepository {
-  + getScenarios()
+    +getScenarios()
 }
 
 class LocomotiveModelRepository {
-  + getLocomotiveModels()
+    +getLocomotiveModels()
 }
 
 class LocomotiveRepository {
-  + nextID()
+    +createLocomotive(dto)
+    +nextId()
+    +addLocomotive(locomotive)
 }
 
 class Scenario {
-       -map: Map
-       -year: int
-       -locomotiveTypes: List<LocomotiveType>
-       -industryTypes: List<IndustryType>
-       -importation: List<ResourceType>
-       -exportation: List<ResourceType>
-       -changers: List<IndustryChanger>
-       +addLocomotive(locomotive)
- }
+    - map: Map
+        - year: int
+        - locomotiveTypes: List<LocomotiveType>
+        - importation: List<ResourceType>
+        - exportation: List<ResourceType>
+        - changer: int
+    +addLocomotive(locomotive)
+}
 
 enum LocomotiveModel{
-    TREVITHICK_1
-    STEPHENSON_ROCKET
-    JOHN_BULL
-    DEWITT_CLINTON
-    PRUSSIAN
-    AMERICAN_C
-    IRON_DUKE
-    A3
-    EIGHT_WHEELER
-    VULCAN
-    CONSOLIDATION
-    TRUCK_SHAY
-    MASTODON
-    TEN_WHEELER
-    MOGUL
-    BOBO
-    ATLANTIC
-    CAMELBACK
-    PACIFIC
-    CLASS_G10
-    PRAIRIE
-    D16SB
-    CLASS_13H
-    USRA
-    MIKADO
-    BE_II
-    CLASS_B12
-    EE
-    CLASS_1045
-    USRA_II
-    CLASS_A4_MALLARD
-    GG1
-    CLASS_E18
-    HUDSON
-    DAYLIGHT
-    J3A_STREAMLINER
-    AE
-    CLASS_1020
-    BIG_BOY
-    T1
-    F3AB
-    ALCO_PA1
-    F9
-    GP9
-    E69
-    TGVX_TSC
-    GP18
-    V200
-    PENN_E44
-    CLASS_55_DELTIC
-    SHINKANSEN_BULLET
-    FP45
-    SD45
-    SDP40
-    E60CP
-    TGV_TSC
-    CLASS_E111
-    E656_FS
-    DASH_9
-    AMD_103
-    THALYS_BULLET
-    EUROSTAR_TSC
-    CLASS_232
-    DB18_201_TSC
-    BRENNER_TSC
-    MAG_LEV_TBX_1
-
+   TREVITHICK_1
+   STEPHENSON_ROCKET
+   JOHN_BULL
+   DEWITT_CLINTON
+   PRUSSIAN
+   AMERICAN_C
+   IRON_DUKE
+   A3
+   EIGHT_WHEELER
+   VULCAN
+   CONSOLIDATION
+   TRUCK_SHAY
+   MASTODON
+   TEN_WHEELER
+   MOGUL
+   BOBO
+   ATLANTIC
+   CAMELBACK
+   PACIFIC
+   CLASS_G10
+   PRAIRIE
+   D16SB
+   CLASS_13H
+   USRA
+   MIKADO
+   BE_II
+   CLASS_B12
+   EE
+   CLASS_1045
+   USRA_II
+   CLASS_A4_MALLARD
+   GG1
+   CLASS_E18
+   HUDSON
+   DAYLIGHT
+   J3A_STREAMLINER
+   AE
+   CLASS_1020
+   BIG_BOY
+   T1
+   F3AB
+   ALCO_PA1
+   F9
+   GP9
+   E69
+   TGVX_TSC
+   GP18
+   V200
+   PENN_E44
+   CLASS_55_DELTIC
+   SHINKANSEN_BULLET
+   FP45
+   SD45
+   SDP40
+   E60CP
+   TGV_TSC
+   CLASS_E111
+   E656_FS
+   DASH_9
+   AMD_103
+   THALYS_BULLET
+   EUROSTAR_TSC
+   CLASS_232
+   DB18_201_TSC
+   BRENNER_TSC
+   MAG_LEV_TBX_1
+   --
+   - power: String
+   - acceleration: String
+   -topSpeed: int
+   -operationStartYear: int
+   -fuelCost: int
+   -maintenancePYear: int
+   -cost: int
+   -locomotiveType: LocomotiveType
 }
 
 class Locomotive {
-  - iD: int
-  - model: LocomotiveModel
-  + Locomotive(model, iD)
+    -locomotiveModel: LocomotiveModel
+    -iD: int
+    +checkModel(locomotiveModel)
+    +checkId(iD)
+}
+
+class ScenarioDTO{
+ - map: Map
+            - year: int
+            - locomotiveTypes: List<LocomotiveType>
+            - importation: List<ResourceType>
+            - exportation: List<ResourceType>
+            - changer: int
+}
+
+class LocomotiveModelDTO{
+    - power: String
+   - acceleration: String
+   -topSpeed: int
+   -operationStartYear: int
+   -fuelCost: int
+   -maintenancePYear: int
+   -cost: int
+   -locomotiveType: LocomotiveType
+}
+
+class LocomotiveDTO {
+    -locomotiveModel: LocomotiveModel
+    +getLocomotiveModel()
+}
+
+class ScenarioListMapper {
+    +toDTO(List<Scenario>)
+}
+
+class LocomotiveModelListMapper {
+    +toDTO(List<LocomotiveModel>)
+}
+
+class LocomotiveMapper {
+    +toLocomotive(dto)
 }
 
 BuyLocomotiveUI ..> BuyLocomotiveController
-BuyLocomotiveController ..> Scenario
-BuyLocomotiveController ..> LocomotiveModel
-BuyLocomotiveController ..> Locomotive
+
 BuyLocomotiveController ..> Repositories
+BuyLocomotiveController ..> ScenarioListMapper
+BuyLocomotiveController ..> LocomotiveModelListMapper
+BuyLocomotiveController ..> LocomotiveMapper
+BuyLocomotiveController ..> ScenarioRepository
+BuyLocomotiveController ..> LocomotiveModelRepository
+BuyLocomotiveController ..> LocomotiveRepository
 
-Repositories -> "1" Repositories : instance
-Repositories --> "1" ScenarioRepository : scenario repository
-Repositories --> "1" LocomotiveModelRepository : locomotive model repository
-Repositories --> "1" LocomotiveRepository : locomotive repository
-ScenarioRepository --> Scenario : scenario
+Repositories --> "1" ScenarioRepository: scenarioRespository
+Repositories --> "1" LocomotiveModelRepository: locomotiveModelRepository
+Repositories --> "1" LocomotiveRepository: locomotiveRepository
 
-Scenario --> "*" Locomotive: locomotive
-LocomotiveModelRepository --> "*" LocomotiveModel : locomotive model
+ScenarioRepository --> "1..*" Scenario: scenario
+LocomotiveModelRepository --> "65" LocomotiveModel: locomotiveModel
 LocomotiveRepository --> "*" Locomotive: locomotive
-Locomotive --> "1" LocomotiveModel: model
 
+ScenarioListMapper --> "1" ScenarioDTO: scenarioDTO
+ScenarioListMapper --> "1..*" Scenario: scenario
+LocomotiveModelListMapper --> "1" LocomotiveModelDTO: locomotiveModelDTO
+LocomotiveModelListMapper --> "1..*" LocomotiveModel: locomotiveModel
+LocomotiveMapper --> "1" LocomotiveDTO: locomotiveDTO
+LocomotiveMapper --> "1..*" Locomotive: locomotive
 
+Scenario --> Locomotive: locomotive
 @enduml

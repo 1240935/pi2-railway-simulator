@@ -10,11 +10,22 @@ actor "Player" as PLAYER
 participant ":BuyLocomotiveUI" as UI
 participant ":BuyLocomotiveController" as CTRL
 participant "Repositories" as REPOS
-participant "ScenarioRepository" as SCENARIO_REPO
-participant "LocomotiveModelRepository" as LOC_REPO
-participant "Scenario" as SCENARIO
-participant "LocomotiveRepository" as LOCOMOTIVE_REPO
-participant "Locomotive" as LOCOMOTIVE
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
+participant ":ScenarioListMapper" as SMAPPER
+participant ":List<Scenario>" as LIST_SCENARIO
+participant ":List<ScenarioDTO>" as SLDTO
+participant ":ScenarioDTO" as SDTO
+participant "scenario \n :Scenario" as SCENARIO
+participant "locomotiveModelRepository \n :LocomotiveModelRepository" as LMODEL_REPOS
+participant ":LocomotiveModelListMapper" as LMODELMAPPER
+participant ":List<LocomotiveModel>" as LIST_LMODEL
+participant ":List<LocomotiveModelDTO>" as LMODELLDTO
+participant ":LocomotiveModelDTO" as LMODELDTO
+participant "locomotiveRepository \n :locomotiveRepository" as LOCO_REPOS
+participant ":LocomotiveMapper" as LMAPPER
+participant ":LocomotiveDTO" as LDTO
+participant "locomotive \n :Locomotive" as LOCOMOTIVE
 
 activate PLAYER
 
@@ -22,83 +33,200 @@ activate PLAYER
     activate UI
         UI --> CTRL** : create()
 
-        UI -> CTRL : getAvailableScenarioDescriptions()
-        activate CTRL
-            CTRL -> REPOS : getInstance()
-            activate REPOS
-                REPOS --> CTRL : repositories
-            deactivate REPOS
+                    UI -> CTRL : getAvailableScenarioNames()
+                   activate CTRL
 
-            CTRL -> SCENARIO_REPO : getScenarios()
-            activate SCENARIO_REPO
-                SCENARIO_REPO --> CTRL : list of scenarios
-            deactivate SCENARIO_REPO
+                               CTRL -> REPOS : getInstance()
+                               activate REPOS
 
-            CTRL --> UI : list of scenarios
-        deactivate CTRL
+                               REPOS --> CTRL : repositories
+                               deactivate REPOS
+
+                               CTRL -> REPO_SINGLETON : getScenarioRepository()
+                               activate REPO_SINGLETON
+                               REPO_SINGLETON --> CTRL : scenarioRepository
+                               deactivate REPO_SINGLETON
+
+                               CTRL -> SCEN_REPOS : getScenarios()
+                               activate SCEN_REPOS
+                               SCEN_REPOS --> CTRL : scenarioList
+                               deactivate SCEN_REPOS
+
+                               CTRL -> SMAPPER : toDTO(scenarioList)
+                               activate SMAPPER
+
+                               SMAPPER --> SLDTO** : create()
+
+                               loop for each scenario
+                                   SMAPPER -> LIST_SCENARIO : getScenario()
+                                   activate LIST_SCENARIO
+                                   LIST_SCENARIO --> SMAPPER : scenario
+                                   deactivate LIST_SCENARIO
+
+                                   SMAPPER -> SMAPPER : toDTO(scenario)
+                                   activate SMAPPER
+
+                                   SMAPPER --> SDTO** : create(map, year, locomotiveTypes, importation, exportation, changer)
+                                   deactivate SMAPPER
+
+                                   SMAPPER -> SLDTO : addScenario(scenario)
+                                   activate SLDTO
+                                   deactivate SLDTO
+                               end loop
+
+                               SMAPPER --> CTRL : scenarioListDTO
+                               deactivate SMAPPER
+
+                               CTRL -> SLDTO : getAvailableScenarioNames(scenarioListDTO)
+                               activate SLDTO
+
+                               SLDTO --> CTRL : scenario names
+                               deactivate SLDTO
+
+                               CTRL --> UI : scenario names
+                   deactivate CTRL
 
         UI --> PLAYER : shows available scenarios
     deactivate UI
 
 PLAYER -> UI : selects scenario
 activate UI
-    UI -> CTRL : chooseScenarioByIndex(index)
-    activate CTRL
-        CTRL --> UI : scenario selected
-    deactivate CTRL
 
     UI -> CTRL : getAvailableLocomotiveModelDescriptions()
-    activate CTRL
-        CTRL -> REPOS : getInstance()
-        activate REPOS
-            REPOS --> CTRL: repositories
-        deactivate REPOS
+        activate CTRL
 
-        CTRL -> LOC_REPO : getLocomotiveModels()
-        activate LOC_REPO
-            LOC_REPO --> CTRL : list of locomotives models
-        deactivate LOC_REPO
+                  CTRL -> REPOS : getInstance()
+                  activate REPOS
 
-        CTRL --> UI : list of locomotives
-    deactivate CTRL
+                  REPOS --> CTRL : repositories
+                  deactivate REPOS
 
-    UI --> PLAYER : shows the list of locomotive models
+                  CTRL -> REPO_SINGLETON : getLocomotiveModelRepository()
+                  activate REPO_SINGLETON
+                  REPO_SINGLETON --> CTRL : locomotiveModelRepository
+                  deactivate REPO_SINGLETON
+
+                  CTRL -> LMODEL_REPOS : getLocomotiveModels()
+                  activate LMODEL_REPOS
+                  LMODEL_REPOS --> CTRL : locomotiveModelList
+                  deactivate LMODEL_REPOS
+
+                  CTRL -> LMODELMAPPER : toDTO(locomotiveModelList)
+                  activate LMODELMAPPER
+
+                  LMODELMAPPER --> LMODELLDTO** : create()
+
+                  loop for each locomotiveModel
+                      LMODELMAPPER -> LIST_LMODEL : getLocomotiveModel()
+                      activate LIST_LMODEL
+                      LIST_LMODEL --> LMODELMAPPER : locomotiveModel
+                      deactivate LIST_LMODEL
+
+                      LMODELMAPPER -> LMODELMAPPER : toDTO(locomotiveModel)
+                      activate LMODELMAPPER
+
+                      LMODELMAPPER --> LMODELDTO** : create()
+                      deactivate LMODELMAPPER
+
+                      LMODELMAPPER -> LMODELLDTO : addLocomotiveModel(locomotiveModelDTO)
+                      activate LMODELLDTO
+                      deactivate LMODELLDTO
+                  end loop
+
+                  LMODELMAPPER --> CTRL : locomotiveModelListDTO
+                  deactivate LMODELMAPPER
+
+                  CTRL -> LMODELLDTO : getAvailableLocomotiveModelDescriptions(locomotiveModelListDTO)
+                  activate LMODELLDTO
+
+                  LMODELLDTO --> CTRL : locomotiveModel descriptions
+                  deactivate LMODELLDTO
+
+                  CTRL --> UI : locomotiveModel descriptions
+                  deactivate CTRL
+
+    UI --> PLAYER : shows the list of locomotive models descriptions
 deactivate UI
 
-PLAYER -> UI : selects locomotive model
+PLAYER -> UI : selects a locomotive model
 activate UI
-    UI -> CTRL : chooseModelByIndex(index)
+
+    UI -> CTRL : createLocomotive(dto)
     activate CTRL
-    CTRL --> UI: selected model
+
+   CTRL -> REPOS : getInstance()
+       activate REPOS
+
+           REPOS --> CTRL : repositories
+       deactivate REPOS
+
+       CTRL -> REPO_SINGLETON : getLocomotiveRepository()
+       activate REPO_SINGLETON
+       REPO_SINGLETON --> CTRL: locomotiveRepository
+       deactivate REPO_SINGLETON
+       CTRL -> LOCO_REPOS: createLocomotive(dto)
+       activate LOCO_REPOS
+
+       LOCO_REPOS -> LMAPPER : toLocomotive(dto)
+       activate LMAPPER
+
+       LMAPPER -> LDTO: getLocomotiveModel()
+       activate LDTO
+
+       LDTO --> LMAPPER: locomotiveModel
+       deactivate LDTO
+
+       LMAPPER --> LOCO_REPOS: locomotiveModel
+       deactivate LMAPPER
+
+       LOCO_REPOS -> LOCO_REPOS: nextId()
+       activate LOCO_REPOS
+
+       LOCO_REPOS --> LOCO_REPOS: iD
+       deactivate LOCO_REPOS
+
+       LOCO_REPOS -> LOCOMOTIVE: createLocomotive(locomotiveModel, iD)
+       activate LOCOMOTIVE
+
+       LOCOMOTIVE -> LOCOMOTIVE: checkModel(model)
+           activate LOCOMOTIVE
+
+           LOCOMOTIVE --> LOCOMOTIVE: valid
+           deactivate LOCOMOTIVE
+
+       LOCOMOTIVE -> LOCOMOTIVE: checkId(iD)
+       activate LOCOMOTIVE
+
+       LOCOMOTIVE --> LOCOMOTIVE: valid
+       deactivate LOCOMOTIVE
+
+       LOCOMOTIVE --> LOCO_REPOS: locomotive
+       deactivate LOCOMOTIVE
+
+       LOCO_REPOS -> LOCO_REPOS: addLocomotive(locomotive)
+       activate LOCO_REPOS
+
+       LOCO_REPOS --> LOCO_REPOS: success
+       deactivate LOCO_REPOS
+
+        LOCO_REPOS -> SCENARIO: locomotive
+        deactivate LOCO_REPOS
+
+        activate SCENARIO
+
+           SCENARIO -> SCENARIO: addLocomotive(locomotive)
+           activate SCENARIO
+
+           SCENARIO --> SCENARIO: success
+           deactivate SCENARIO
+
+           SCENARIO --> CTRL: success
+           deactivate SCENARIO
+
+       CTRL --> UI: success
     deactivate CTRL
 
-    UI --> PLAYER: shows all data for confirmation
-
-    deactivate UI
-    PLAYER -> UI: confirms all data
-    activate UI
-
-    UI -> CTRL : createLocomotive()
-    activate CTRL
-    CTRL -> REPOS : getInstance()
-            activate REPOS
-                REPOS --> CTRL: repositories
-            deactivate REPOS
-
-            CTRL -> LOCOMOTIVE_REPO : getLocomotives()
-            activate LOCOMOTIVE_REPO
-                LOCOMOTIVE_REPO --> CTRL : list of locomotives
-            deactivate LOCOMOTIVE_REPO
-      CTRL -> LOCOMOTIVE_REPO : nextID()
-            activate LOCOMOTIVE_REPO
-                LOCOMOTIVE_REPO --> CTRL : iD
-            deactivate LOCOMOTIVE_REPO
-        CTRL -> LOCOMOTIVE** : create(model, iD)
-
-        CTRL --> UI : locomotive
-    deactivate CTRL
-
-    UI --> PLAYER : operation success
+    UI --> PLAYER : displays operation success
 deactivate UI
 
 deactivate PLAYER

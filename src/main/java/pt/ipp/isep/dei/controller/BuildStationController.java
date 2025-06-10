@@ -234,9 +234,12 @@ public class BuildStationController {
 
     public void createStation(Position position, String name, StationCenter center, StationType type, List<Cargo> demandedCargoes, List <Cargo> suppliedCargoes, Player player, int scenarioIndex , int typeIndex, Map map, Scenario scenario) {
         player.deductBudget(getStationTypeByIndex(typeIndex).getCost());
-        Station station = StationRepository.createStation(position, name, center, type, demandedCargoes, suppliedCargoes, map, scenario);
+        Station station = Repositories.getInstance().getStationRepository().createStation(position, name, center, type, demandedCargoes, suppliedCargoes, map, scenario);
         getScenarioByIndex(scenarioIndex).addStation(station);
         Repositories.getInstance().getStationRepository().addStation(station);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 }

@@ -1,6 +1,9 @@
 package pt.ipp.isep.dei.repository;
 
 import pt.ipp.isep.dei.domain.Locomotive;
+import pt.ipp.isep.dei.domain.LocomotiveModel;
+import pt.ipp.isep.dei.domain.Scenario;
+import pt.ipp.isep.dei.domain.Station;
 
 import java.util.ArrayList;
 
@@ -49,5 +52,22 @@ public class LocomotiveRepository {
             }
         }
         return maxId + 1;
+    }
+
+    public static Locomotive createLocomotive(LocomotiveModel locomotiveModel, int iD){
+        if (!Locomotive.checkId(iD)) {
+            System.out.println("Invalid id.");
+            return null;
+        }
+
+        if (!Locomotive.checkModel(locomotiveModel)) {
+            System.out.println("Invalid locomotive model.");
+            return null;
+        }
+
+        Locomotive locomotive = new Locomotive(iD, locomotiveModel);
+        System.out.println("Locomotive bought successfully!");
+        return locomotive;
+
     }
 }

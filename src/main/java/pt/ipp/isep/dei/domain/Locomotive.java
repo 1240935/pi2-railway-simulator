@@ -32,6 +32,30 @@ public class Locomotive {
     }
 
     /**
+     * Validates whether the given ID is a valid locomotive ID.
+     * A valid ID is a positive integer.
+     *
+     * @param id the ID to check
+     * @return true if the ID is valid, false otherwise
+     */
+    public static boolean checkId(int id) {
+        return id > 0;
+    }
+
+    /**
+     * Validates whether the given locomotive model is acceptable.
+     * A valid model is non-null, has non-negative cost, and a non-null type.
+     *
+     * @param model the locomotive model to validate
+     * @return true if the model is valid, false otherwise
+     */
+    public static boolean checkModel(LocomotiveModel model) {
+        return model != null &&
+                model.getCost() >= 0 &&
+                model.getType() != null;
+    }
+
+    /**
      * Returns a string representation of the locomotive in the format:
      * "[model] [id]".
      *

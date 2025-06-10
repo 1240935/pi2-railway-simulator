@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import pt.ipp.isep.dei.controller.BuyLocomotiveController;
 import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.domain.Scenario;
+import pt.ipp.isep.dei.domain.LocomotiveModel;
 
 import java.util.List;
 
@@ -28,33 +30,31 @@ public class BuyLocomotiveGUI {
 
     private Player player;
 
+    private int selectedScenarioIndex = -1;
+    private int selectedModelIndex = -1;
+
     public void setPlayer(Player player) {
         this.player = player;
         controller.setPlayer(player);
-        loadScenarios();
         updateBudgetLabel();
     }
 
     @FXML
-    public void initialize() {
-        scenarioComboBox.setOnAction(event -> {
-            int selectedIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
-            if (selectedIndex >= 0) {
-                controller.chooseScenarioByIndex(selectedIndex);
+    public void initialize() {scenarioComboBox.setOnAction(event -> {
+            selectedScenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            if (selectedScenarioIndex >= 0) {
                 loadModels();
-                updateCostLabel();
             }
         });
 
         modelComboBox.setOnAction(event -> {
-            int selectedIndex = modelComboBox.getSelectionModel().getSelectedIndex();
-            if (selectedIndex >= 0) {
-                controller.chooseModelByIndex(selectedIndex);
-                updateCostLabel();
-            }
+            selectedModelIndex = modelComboBox.getSelectionModel().getSelectedIndex();
+            updateCostLabel();
         });
 
         buyButton.setOnAction(event -> handleBuy());
+
+        loadScenarios();
     }
 
     private void loadScenarios() {
@@ -64,58 +64,75 @@ public class BuyLocomotiveGUI {
             disableAll();
             return;
         }
+
         scenarioComboBox.getItems().setAll(scenarios);
         scenarioComboBox.getSelectionModel().selectFirst();
-        controller.chooseScenarioByIndex(0);
+        selectedScenarioIndex = 0;
         loadModels();
     }
 
     private void loadModels() {
-        List<String> models = controller.getAvailableModelDescriptions();
+        if (selectedScenarioIndex < 0) {
+            modelComboBox.getItems().clear();
+            selectedModelIndex = -1;
+            updateCostLabel();
+            return;
+        }
+
+        List<String> models = controller.getAvailableModelDescriptions(selectedScenarioIndex);
         modelComboBox.getItems().setAll(models);
+
         if (!models.isEmpty()) {
             modelComboBox.getSelectionModel().selectFirst();
-            controller.chooseModelByIndex(0);
+            selectedModelIndex = 0;
+        } else {
+            selectedModelIndex = -1;
         }
+
         updateCostLabel();
     }
 
     private void updateBudgetLabel() {
-        if (player != null) {
-            budgetLabel.setText(String.valueOf(player.getBudget()));
-        } else {
-            budgetLabel.setText("-");
-        }
+        budgetLabel.setText(player != null ? String.valueOf(player.getBudget()) : "-");
     }
 
+
+
     private void updateCostLabel() {
-        if (controller.getSelectedModel() != null) {
-            costLabel.setText(String.valueOf(controller.getSelectedModel().getCost()));
+        if (selectedScenarioIndex >= 0 && selectedModelIndex >= 0) {
+            LocomotiveModel model = controller.getModelByIndex(selectedModelIndex, selectedScenarioIndex);
+            costLabel.setText(String.valueOf(model.getCost()));
         } else {
             costLabel.setText("-");
         }
     }
+
+
 
     private void handleBuy() {
         if (player == null) {
             showAlert("Player not set.");
             return;
         }
-        if (controller.getSelectedModel() == null) {
-            showAlert("No locomotive model selected.");
+        if (selectedScenarioIndex < 0 || selectedModelIndex < 0) {
+            showAlert("Please select a valid scenario and model.");
             return;
         }
-        if (player.getBudget() < controller.getSelectedModel().getCost()) {
+
+        Scenario scenario = controller.getScenarioByIndex(selectedScenarioIndex);
+        LocomotiveModel model = controller.getModelByIndex(selectedModelIndex, selectedScenarioIndex);
+
+        if (player.getBudget() < model.getCost()) {
             showAlert("Not enough budget to buy this locomotive.");
             return;
         }
 
-        boolean success = controller.createLocomotive();
-        if (success) {
+        try {
+            controller.createLocomotive(model, scenario);
             showAlert("Locomotive successfully bought!");
             updateBudgetLabel();
-        } else {
-            showAlert("Purchase failed.");
+        } catch (Exception e) {
+            showAlert("Purchase failed: " + e.getMessage());
         }
     }
 

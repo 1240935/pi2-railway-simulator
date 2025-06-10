@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class BuyLocomotiveController {
 
-    private Scenario scenario;
-    private LocomotiveModel selectedModel;
     private Player player;
 
     /**
@@ -33,15 +31,6 @@ public class BuyLocomotiveController {
     }
 
     /**
-     * Sets the current scenario to the given scenario.
-     *
-     * @param scenario Scenario selected by the user.
-     */
-    public void setScenario(Scenario scenario) {
-        this.scenario = scenario;
-    }
-
-    /**
      * Returns a list of descriptive strings for each available scenario,
      * formatted as "Map: [map name], Year: [year]".
      *
@@ -55,15 +44,35 @@ public class BuyLocomotiveController {
         return descriptions;
     }
 
-    /**
-     * Selects a scenario by its index in the available scenarios list.
-     *
-     * @param index Index of the scenario in the list.
-     */
-    public void chooseScenarioByIndex(int index) {
-        List<Scenario> scenarios = getAvailableScenarios();
-        this.scenario = scenarios.get(index);
+    public Scenario getScenarioByIndex(int index) {
+        List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+
+        if (index < 0 || index >= scenarios.size()) {
+            throw new IndexOutOfBoundsException("Invalid scenario index: " + index);
+        }
+
+        return scenarios.get(index);
     }
+
+    /**
+     * Retrieves a specific locomotive model by its index in the filtered list
+     * of available locomotive models for the selected scenario.
+     *
+     * @param index the index of the locomotive model to retrieve
+     * @param scenarioIndex the index of the selected scenario
+     * @return the LocomotiveModel at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public LocomotiveModel getModelByIndex(int index, int scenarioIndex) {
+        List<LocomotiveModel> models = getAvailableLocomotiveModels(scenarioIndex);
+
+        if (index < 0 || index >= models.size()) {
+            throw new IndexOutOfBoundsException("Invalid locomotive model index: " + index);
+        }
+
+        return models.get(index);
+    }
+
 
     /**
      * Retrieves a filtered list of locomotive models that are allowed
@@ -71,15 +80,17 @@ public class BuyLocomotiveController {
      *
      * @return List of locomotive models available for purchase.
      */
-    public List<LocomotiveModel> getAvailableLocomotiveModels() {
+    public List<LocomotiveModel> getAvailableLocomotiveModels(int scenarioIndex) {
         List<LocomotiveModel> allModels = Repositories.getInstance()
                 .getLocomotiveModelRepository()
                 .getLocomotiveModels();
 
+
+
         List<LocomotiveModel> available = new ArrayList<>();
 
-        List<LocomotiveType> allowedTypesInScenario = scenario.getLocomotiveTypes();
-        int scenarioYear = scenario.getYear();
+        List<LocomotiveType> allowedTypesInScenario = getScenarioByIndex(scenarioIndex).getLocomotiveTypes();
+        int scenarioYear = getScenarioByIndex(scenarioIndex).getYear();
 
         for (LocomotiveModel model : allModels) {
             if (allowedTypesInScenario.contains(model.getType()) &&
@@ -88,42 +99,6 @@ public class BuyLocomotiveController {
             }
         }
         return available;
-    }
-
-    /**
-     * Sets the locomotive model that the player has selected.
-     *
-     * @param model The locomotive model chosen.
-     */
-    public void setModel(LocomotiveModel model) {
-        this.selectedModel = model;
-    }
-
-    /**
-     * Gets the locomotive model currently selected by the player.
-     *
-     * @return Selected LocomotiveModel.
-     */
-    public LocomotiveModel getSelectedModel() {
-        return selectedModel;
-    }
-
-    /**
-     * Selects a locomotive model by its index in the available models list.
-     *
-     * @param index Index of the model in the available models list.
-     */
-    public void chooseModelByIndex(int index) {
-        this.selectedModel = getAvailableLocomotiveModels().get(index);
-    }
-
-    /**
-     * Gets the current player performing the purchase.
-     *
-     * @return Player instance.
-     */
-    public Player getPlayer() {
-        return player;
     }
 
     /**
@@ -141,9 +116,9 @@ public class BuyLocomotiveController {
      *
      * @return List of model descriptions.
      */
-    public List<String> getAvailableModelDescriptions() {
+    public List<String> getAvailableModelDescriptions(int scenarioIndex) {
         List<String> descriptions = new ArrayList<>();
-        for (LocomotiveModel model : getAvailableLocomotiveModels()) {
+        for (LocomotiveModel model : getAvailableLocomotiveModels(scenarioIndex)) {
             String desc = model.name() +
                     " | Power: " + model.getPower() +
                     " | Acceleration: " + model.getAcceleration() +
@@ -164,16 +139,11 @@ public class BuyLocomotiveController {
      *
      * @return true if locomotive was successfully created and purchased, false if budget is insufficient.
      */
-    public boolean createLocomotive() {
-        LocomotiveModel model = selectedModel;
-        if (!player.canAfford(model.getCost())) {
-            return false;
-        }
-        int id = Repositories.getInstance().getLocomotiveRepository().nextID();
-        Locomotive loco = new Locomotive(id, selectedModel);
-        player.deductBudget(model.getCost());
-        scenario.addLocomotive(loco);
-        Repositories.getInstance().getLocomotiveRepository().addLocomotive(loco);
-        return true;
+    public void createLocomotive(LocomotiveModel locomotiveModel, Scenario scenario) {
+        int iD = Repositories.getInstance().getLocomotiveRepository().nextID();
+        Locomotive locomotive = Repositories.getInstance().getLocomotiveRepository().createLocomotive(locomotiveModel, iD);
+        player.deductBudget(locomotiveModel.getCost());
+        scenario.addLocomotive(locomotive);
+        Repositories.getInstance().getLocomotiveRepository().addLocomotive(locomotive);
     }
 }

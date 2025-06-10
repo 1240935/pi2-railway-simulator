@@ -58,9 +58,8 @@ public class BuyLocomotiveUI {
             } catch (NumberFormatException ignored) {}
             System.out.println("Invalid input. Try again.");
         }
-        controller.chooseScenarioByIndex(scenarioIndex - 1);
 
-        List<String> models = controller.getAvailableModelDescriptions();
+        List<String> models = controller.getAvailableModelDescriptions(scenarioIndex - 1);
         if (models.isEmpty()) {
             System.out.println("No locomotive models available for the selected scenario.");
             return;
@@ -83,11 +82,10 @@ public class BuyLocomotiveUI {
             } catch (NumberFormatException ignored) {}
             System.out.println("Invalid input. Try again.");
         }
-        controller.chooseModelByIndex(modelIndex - 1);
 
         // Show budget and cost, then ask for confirmation
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Locomotive cost: " + controller.getSelectedModel().getCost());
+        System.out.println("Locomotive cost: " + controller.getModelByIndex(modelIndex - 1, scenarioIndex - 1).getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
 
         String confirmation = scanner.nextLine().trim().toLowerCase();
@@ -96,11 +94,10 @@ public class BuyLocomotiveUI {
             return;
         }
 
-        boolean success = controller.createLocomotive();
-        if (success) {
-            System.out.println("Locomotive successfully bought!");
-        } else {
-            System.out.println("Not enough budget to buy this locomotive.");
-        }
+        controller.createLocomotive(
+                controller.getModelByIndex(modelIndex - 1, scenarioIndex - 1),
+                controller.getScenarioByIndex(scenarioIndex - 1)
+        );
+
     }
 }

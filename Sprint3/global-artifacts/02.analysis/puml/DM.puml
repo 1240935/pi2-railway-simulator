@@ -142,13 +142,14 @@ class CargoStatus{
 }
 
 class PointOfRoute{
-    quantity
-    mode
 }
 
 class PortsBehaviour{
     importation
     exportation
+}
+
+class CargoMode{
 }
 
 
@@ -210,7 +211,6 @@ TechnologicalRestriction "1" -- "*" IndustryType: affects >
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
 Station "1" -- "1" StationType: has >
-Station "1" -- "1" PointOfRoute: includes <
 
 Building "1" -- "1" BuildingType : has >
 
@@ -233,7 +233,10 @@ Railway "1" -- "1" RailwayType: has >
 
 Cargo "1" -- "1" ResourceType: has >
 Cargo "1" -- "1" CargoStatus: has >
-Cargo "*" -- "1" PointOfRoute: includes <
+
+PointOfRoute "1" -- "1" CargoMode: includes >
+PointOfRoute "1" -- "1..*" Cargo: includes >
+PointOfRoute "1" -- "2..*" Station: includes >
 
 
 

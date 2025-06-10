@@ -94,32 +94,38 @@ public class ViewStationController {
     }
 
     /**
-     * Returns the building details of the station at the given index.
+     * Returns the list of buildings of the station at the given index.
      *
      * @param index Index of the station in the stations list.
-     * @return The building of the station at the given index, or null if index is invalid.
+     * @return The list of buildings of the station at the given index, or null if index is invalid.
      */
-    public Building getBuildingDetails(int index) {
+    public List<Building> getBuildingDetails(int index) {
         Station station = getStationByIndex(index);
         if (station != null) {
-            return station.getBuilding();
+            return station.getBuildings(); // assuming getBuildings() returns List<Building>
         }
         return null;
     }
+
 
     /**
      * Returns a string describing the building details of the station at the given index.
      *
      * @param index Index of the station.
-     * @return Description of the building or a default message if not available.
+     * @return Description of the buildings or a default message if none are available.
      */
     public String getBuildingDetailsString(int index) {
-        Building building = getBuildingDetails(index);
-        if (building != null) {
-            return building.toString();
+        List<Building> buildings = getBuildingDetails(index);
+        if (buildings != null && !buildings.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Building b : buildings) {
+                sb.append(b.toString()).append("\n");
+            }
+            return sb.toString().trim();
         }
         return "No building details available.";
     }
+
 
     /**
      * Returns a string describing the cargo information of the given station.

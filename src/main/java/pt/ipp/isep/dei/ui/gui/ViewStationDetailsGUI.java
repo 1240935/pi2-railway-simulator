@@ -22,7 +22,7 @@ public class ViewStationDetailsGUI {
     private final ViewStationController controller = new ViewStationController();
 
     @FXML
-    public void start() {
+    public void initialize() {
         loadScenarios();
 
         scenarioComboBox.setOnAction(event -> {

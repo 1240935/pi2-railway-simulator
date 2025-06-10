@@ -30,19 +30,28 @@ public class UpgradeStationGUI {
     @FXML
     private Label feedbackLabel;
 
-    private UpgradeStationController controller;
+    private UpgradeStationController controller = new UpgradeStationController();
     private Player player;
 
-    // Guardar os objetos selecionados
     private Scenario selectedScenario;
     private Station selectedStation;
     private BuildingType selectedBuildingType;
 
-    public void start() {
-        controller = new UpgradeStationController();
+    public void setPlayer(Player player) {
+        this.player = player;
+        budgetLabel.setText(String.valueOf(player.getBudget()));
+
+        if (controller != null) {
+            controller.setPlayer(player);
+        }
+    }
+
+    public void initialize() {
 
         List<String> scenarios = controller.getAvailableScenarioNames();
+        scenarioComboBox.getItems().clear();
         scenarioComboBox.getItems().addAll(scenarios);
+
 
         scenarioComboBox.setOnAction(e -> {
             int index = scenarioComboBox.getSelectionModel().getSelectedIndex();
@@ -71,15 +80,9 @@ public class UpgradeStationGUI {
 
         buyButton.setOnAction(e -> handleBuyButton());
 
-        // Inicialmente desabilitar controles que dependem de seleção anterior
         stationComboBox.setDisable(true);
         buildingTypeComboBox.setDisable(true);
         buyButton.setDisable(true);
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-        budgetLabel.setText(String.valueOf(player.getBudget()));
     }
 
     private void updateStations() {
@@ -138,14 +141,22 @@ public class UpgradeStationGUI {
             return;
         }
 
+        System.out.println("Attempting to buy building: " + selectedBuildingType);
+        System.out.println("Player budget before purchase: " + player.getBudget());
+
         if (controller.possibleBuilding(selectedBuildingType)) {
             controller.createBuilding(selectedStation, selectedBuildingType);
+            System.out.println("Building purchased successfully.");
+            System.out.println("Player budget after purchase: " + player.getBudget());
+
             feedbackLabel.setStyle("-fx-text-fill: green;");
             feedbackLabel.setText("Station upgraded successfully!");
             budgetLabel.setText(String.valueOf(player.getBudget()));
         } else {
             feedbackLabel.setStyle("-fx-text-fill: darkred;");
             feedbackLabel.setText("Not enough budget to upgrade this station.");
+            System.out.println("Purchase failed: Not enough budget.");
         }
     }
+
 }

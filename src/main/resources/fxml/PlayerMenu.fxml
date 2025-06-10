@@ -17,9 +17,5 @@
     <Button text="Buy Locomotive" onAction="#handleBuyLocomotive"/>
     <Button text="Assign Route" onAction="#handleAssignRoute"/>
     <Button text="Simulator" onAction="#handleSimulator"/>
-    <Button text="Train Route Verification" onAction="#handleVerifyTrainRoute"/>
-    <Button text="Train Route Verification Testing" onAction="#handleVerifyTrainRouteTest"/>
-    <Button text="Railway Maintenance" onAction="#handleRailwayMaintenance"/>
-    <Button text="Railway Maintenance Testing" onAction="#handleRailwayMaintenanceTest"/>
     <Button text="Logout" onAction="#handleLogout"/>
 </VBox>

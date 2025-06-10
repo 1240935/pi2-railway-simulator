@@ -36,10 +36,7 @@ public class BuyLocomotiveGUI {
     }
 
     @FXML
-    public void start() {
-        scenarioComboBox = new ComboBox<>();
-        modelComboBox = new ComboBox<>();
-        buyButton = new Button();
+    public void initialize() {
         scenarioComboBox.setOnAction(event -> {
             int selectedIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
@@ -59,6 +56,8 @@ public class BuyLocomotiveGUI {
 
         buyButton.setOnAction(event -> handleBuy());
     }
+
+
 
     private void loadScenarios() {
         List<String> scenarios = controller.getAvailableScenarioDescriptions();

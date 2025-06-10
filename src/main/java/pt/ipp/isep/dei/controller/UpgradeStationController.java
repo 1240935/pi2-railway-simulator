@@ -23,6 +23,7 @@ public class UpgradeStationController {
      */
     private Player player;
 
+
     /**
      * Default constructor for UpgradeStationController.
      */
@@ -137,8 +138,7 @@ public class UpgradeStationController {
      * @param index index of the scenario to select
      */
     public Scenario setScenarioByIndex(int index) {
-        Scenario scenario = getAvailableScenarios().get(index);
-        return scenario;
+        return getAvailableScenarios().get(index);
     }
 
     /**
@@ -147,8 +147,7 @@ public class UpgradeStationController {
      * @param index index of the station to select
      */
     public Station setStationByIndex(int index, Scenario scenario){
-    Station station = getAvailableStations(scenario).get(index);
-    return station;
+        return getAvailableStations(scenario).get(index);
     }
 
     /**
@@ -157,8 +156,7 @@ public class UpgradeStationController {
      * @param index index of the building type to select
      */
     public BuildingType setBuildingTypeByIndex(int index, Scenario scenario, Station station) {
-        BuildingType buildingType = getAvailableBuildingTypes(scenario,station).get(index);
-        return buildingType;
+        return getAvailableBuildingTypes(scenario,station).get(index);
     }
 
     /**
@@ -201,16 +199,13 @@ public class UpgradeStationController {
      * @return true if building was successfully created and assigned; false if player cannot afford
      */
     public boolean possibleBuilding(BuildingType buildingType) {
-        if (!player.canAfford(buildingType.getCost())) {
-            return false;
-        }
-        return true;
+        return player.canAfford(buildingType.getCost());
     }
 
     public void createBuilding(Station station, BuildingType buildingType){
         player.deductBudget(buildingType.getCost());
         Building building = Repositories.getInstance().getBuildingRepository().createBuilding(buildingType);
-        station.setBuilding(building);
+        station.addBuilding(building);
         Repositories.getInstance().getBuildingRepository().addBuilding(building);
     }
 

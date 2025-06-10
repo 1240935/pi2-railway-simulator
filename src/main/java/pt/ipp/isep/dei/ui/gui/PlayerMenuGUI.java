@@ -1,9 +1,15 @@
 package pt.ipp.isep.dei.ui.gui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.ui.console.*;
+
+import java.io.IOException;
 
 public class PlayerMenuGUI {
 
@@ -15,23 +21,80 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleBuildStation() {
-        new BuildStationGUI().start(player);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BuildStation.fxml"));
+            Parent root = loader.load();
+            BuildStationGUI controller = loader.getController();
+            controller.setPlayer(player);
+
+            Stage stage = new Stage();
+            stage.setTitle("Build Station");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void handleUpgradeStation() {
-        new UpgradeStationGUI().start();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UpgradeStation.fxml"));
+            Parent root = loader.load();
+            UpgradeStationGUI controller = loader.getController();
+            controller.setPlayer(player);
+            controller.initialize();
+
+            Stage stage = new Stage();
+            stage.setTitle("Upgrade Station");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     @FXML
     private void handleViewStationDetails() {
-        new ViewStationDetailsGUI().start();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ViewStationDetails.fxml"));
+            Parent root = loader.load();
+
+            ViewStationDetailsGUI controller = loader.getController();
+            controller.initialize();
+
+            Stage stage = new Stage();
+            stage.setTitle("View Station Details");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void handleBuyLocomotive() {
-        new BuyLocomotiveGUI().start();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BuyLocomotive.fxml"));
+            Parent root = loader.load();
+
+            BuyLocomotiveGUI controller = loader.getController();
+            controller.setPlayer(player);
+            controller.initialize();
+
+            Stage stage = new Stage();
+            stage.setTitle("Buy Locomotive");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void handleAssignRoute() {
@@ -41,26 +104,6 @@ public class PlayerMenuGUI {
     @FXML
     private void handleSimulator() {
         new SimulatorUI().start(player);
-    }
-
-    @FXML
-    private void handleVerifyTrainRoute() {
-        new VerifyTrainTravelUI().start();
-    }
-
-    @FXML
-    private void handleVerifyTrainRouteTest() {
-        new VerifyTrainTravelTestUI().start();
-    }
-
-    @FXML
-    private void handleRailwayMaintenance() {
-        new RailwayMaintenanceUI().start();
-    }
-
-    @FXML
-    private void handleRailwayMaintenanceTest() {
-        new RailwayMaintenanceTestUI().start();
     }
 
     @FXML

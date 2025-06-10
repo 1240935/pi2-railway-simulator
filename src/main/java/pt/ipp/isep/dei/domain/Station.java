@@ -19,7 +19,7 @@ public class Station {
 
     private StationType type;
 
-    private Building building;
+    private List<Building> buildings = new ArrayList<>();
 
     private List<Cargo> demands;
 
@@ -51,16 +51,16 @@ public class Station {
      * @param position Geographical position of the station.
      * @param center   The center position of the station.
      * @param type     Station type.
-     * @param building Building associated with the station.
+     * @param buildings Buildings associated with the station.
      * @param demands  Cargo demands list.
      * @param supplies Cargo supplies list.
      */
-    public Station(String name, Position position, StationCenter center, StationType type, Building building, List<Cargo> demands, List<Cargo> supplies) {
+    public Station(String name, Position position, StationCenter center, StationType type, List<Building> buildings, List<Cargo> demands, List<Cargo> supplies) {
         this.name = name;
         this.center = center;
         this.position = position;
         this.type = type;
-        this.building = building;
+        this.buildings = buildings;
         this.demands = demands;
         this.supplies = supplies;
     }
@@ -149,22 +149,16 @@ public class Station {
         this.position = position;
     }
 
-    /**
-     * Returns the building associated with this station.
-     *
-     * @return Building object, or null if none is set.
-     */
-    public Building getBuilding() {
-        return building;
+    public List<Building> getBuildings() {
+        return buildings;
     }
 
-    /**
-     * Sets the building associated with this station.
-     *
-     * @param building Building to associate.
-     */
-    public void setBuilding(Building building) {
-        this.building = building;
+    public void addBuilding(Building building) {
+        this.buildings.add(building);
+    }
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
     }
 
     /**

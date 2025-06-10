@@ -1,96 +1,117 @@
 package pt.ipp.isep.dei.ui.gui;
 
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
 import pt.ipp.isep.dei.controller.BuildStationController;
 import pt.ipp.isep.dei.domain.Player;
-import pt.ipp.isep.dei.domain.StationType;
+
 
 public class BuildStationGUI {
 
     private final BuildStationController controller = new BuildStationController();
+    private Player player;
 
-    public void start(Player player) {
+    @FXML
+    private ComboBox<String> scenarioComboBox;
+
+    @FXML
+    private TextField xField, yField, nameField, compassDirectionField;
+
+    @FXML
+    private ComboBox<String> stationTypeComboBox;
+
+    @FXML
+    private Label feedbackLabel, costLabel, budgetLabel;
+
+    @FXML
+    private HBox compassDirectionBox;
+
+    @FXML
+    private Button buyButton, proposeNameButton;
+
+    private boolean initialized = false;
+
+    public void setPlayer(Player player) {
+        this.player = player;
         controller.setPlayer(player);
+        if (!initialized) {
+            start();
+            initialized = true;
+        }
+        populateFields();
+    }
 
-        Stage stage = new Stage();
-        stage.setTitle("Build Station");
+    public void start() {
+        scenarioComboBox.getItems().clear();
+        stationTypeComboBox.getItems().clear();
 
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(15));
-        grid.setHgap(10);
-        grid.setVgap(10);
+        scenarioComboBox.setItems(FXCollections.observableArrayList(controller.getAvailableScenarioDescriptions()));
+        stationTypeComboBox.setItems(FXCollections.observableArrayList(controller.getAvailableStationTypes()));
 
-        // Scenario ComboBox
-        Label scenarioLabel = new Label("Select Scenario:");
-        ComboBox<String> scenarioComboBox = new ComboBox<>(FXCollections.observableArrayList(controller.getAvailableScenarioDescriptions()));
-        grid.add(scenarioLabel, 0, 0);
-        grid.add(scenarioComboBox, 1, 0);
+        stationTypeComboBox.setDisable(false);
 
-        // Coordinates
-        Label xLabel = new Label("X Coordinate:");
-        TextField xField = new TextField();
-        grid.add(xLabel, 0, 1);
-        grid.add(xField, 1, 1);
+        stationTypeComboBox.setOnAction(e -> {
+            int index = stationTypeComboBox.getSelectionModel().getSelectedIndex();
+            if (index >= 0) {
+                boolean isStation = controller.isSelectedTypeStation(index);
+                compassDirectionBox.setVisible(isStation);
+                compassDirectionBox.setManaged(isStation);
 
-        Label yLabel = new Label("Y Coordinate:");
-        TextField yField = new TextField();
-        grid.add(yLabel, 0, 2);
-        grid.add(yField, 1, 2);
-
-        // Station Type
-        Label typeLabel = new Label("Station Type:");
-        ComboBox<String> typeComboBox = new ComboBox<>(FXCollections.observableArrayList(controller.getAvailableStationTypes()));
-        grid.add(typeLabel, 0, 3);
-        grid.add(typeComboBox, 1, 3);
-
-        // Direction (only if needed)
-        Label directionLabel = new Label("Compass Direction (NE/SE/NW/SW):");
-        TextField directionField = new TextField();
-        directionLabel.setVisible(false);
-        directionField.setVisible(false);
-        grid.add(directionLabel, 0, 4);
-        grid.add(directionField, 1, 4);
-
-        // Name proposal
-        Label nameLabel = new Label("Station Name:");
-        TextField nameField = new TextField();
-        grid.add(nameLabel, 0, 5);
-        grid.add(nameField, 1, 5);
-
-        // Confirm button
-        Button buildButton = new Button("Build Station");
-        grid.add(buildButton, 1, 6);
-
-        // Events
-        typeComboBox.setOnAction(e -> {
-            int typeIndex = typeComboBox.getSelectionModel().getSelectedIndex();
-            if (controller.isSelectedTypeStation(typeIndex)) {
-                directionLabel.setVisible(true);
-                directionField.setVisible(true);
+                int cost = controller.getStationTypeByIndex(index).getCost();
+                costLabel.setText(String.valueOf(cost));
             } else {
-                directionLabel.setVisible(false);
-                directionField.setVisible(false);
+                compassDirectionBox.setVisible(false);
+                compassDirectionBox.setManaged(false);
+                costLabel.setText("0");
             }
         });
 
-        buildButton.setOnAction(e -> {
+        scenarioComboBox.setOnAction(e -> {
+            int index = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            if (index >= 0) {
+                // Optionally do something on scenario change, like reset feedback or update budget
+                feedbackLabel.setText("");
+                budgetLabel.setText(String.valueOf(player.getBudget()));
+            }
+        });
+
+        proposeNameButton.setOnAction(e -> {
             try {
                 int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
-                int typeIndex = typeComboBox.getSelectionModel().getSelectedIndex();
+                int typeIndex = stationTypeComboBox.getSelectionModel().getSelectedIndex();
                 int x = Integer.parseInt(xField.getText());
                 int y = Integer.parseInt(yField.getText());
 
-                String name = nameField.getText();
-                if (name.isEmpty()) {
-                    name = controller.getRecommendedName(x, y, scenarioIndex, typeIndex);
-                }
+                String proposed = controller.getRecommendedName(x, y, scenarioIndex, typeIndex);
 
-                String direction = directionField.getText();
+                if (proposed == null || proposed.isEmpty()) {
+                    feedbackLabel.setStyle("-fx-text-fill: darkred;");
+                    feedbackLabel.setText("No nearby city found within the allowed radius. Please enter a name manually.");
+                    nameField.clear();
+                } else {
+                    nameField.setText(proposed);
+                    feedbackLabel.setText(""); // Clear feedback if name proposed
+                }
+            } catch (Exception ex) {
+                feedbackLabel.setStyle("-fx-text-fill: darkred;");
+                feedbackLabel.setText("Error proposing name: " + ex.getMessage());
+            }
+        });
+
+
+        buyButton.setOnAction(e -> {
+            try {
+                int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+                int typeIndex = stationTypeComboBox.getSelectionModel().getSelectedIndex();
+                int x = Integer.parseInt(xField.getText());
+                int y = Integer.parseInt(yField.getText());
+
+                String direction = compassDirectionField.getText();
+                String name = nameField.getText().isEmpty()
+                        ? controller.getRecommendedName(x, y, scenarioIndex, typeIndex)
+                        : nameField.getText();
 
                 controller.createStation(
                         controller.createPosition(x, y),
@@ -106,17 +127,29 @@ public class BuildStationGUI {
                         controller.getScenarioByIndex(scenarioIndex)
                 );
 
-                Alert success = new Alert(Alert.AlertType.INFORMATION, "Station built successfully!");
-                success.show();
-                stage.close();
+                feedbackLabel.setStyle("-fx-text-fill: green;");
+                feedbackLabel.setText("Station built successfully!");
+
+                // Update budget display after purchase
+                budgetLabel.setText(String.valueOf(player.getBudget()));
 
             } catch (Exception ex) {
-                Alert error = new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage());
-                error.show();
+                feedbackLabel.setStyle("-fx-text-fill: red;");
+                feedbackLabel.setText("Error: " + ex.getMessage());
             }
         });
 
-        stage.setScene(new Scene(grid, 500, 400));
-        stage.show();
+        compassDirectionBox.setVisible(false);
+        compassDirectionBox.setManaged(false);
+
+        costLabel.setText("0");
+        budgetLabel.setText(String.valueOf(player.getBudget()));
+    }
+
+    private void populateFields() {
+        if (player != null) {
+            budgetLabel.setText(String.valueOf(player.getBudget()));
+        }
     }
 }
+

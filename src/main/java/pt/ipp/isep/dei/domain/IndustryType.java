@@ -158,8 +158,22 @@ public enum IndustryType {
         return scenario.getExportation();
     }
 
+    @Override
     public String toString() {
-        return name();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name());
+
+        if (importation != null && !importation.isEmpty()) {
+            sb.append(" | Imports: ");
+            sb.append(importation);
+        }
+
+        if (exportation != null && !exportation.isEmpty()) {
+            sb.append(" | Exports: ");
+            sb.append(exportation);
+        }
+
+        return sb.toString();
     }
 
 }

@@ -31,6 +31,7 @@ public class AddCityUI {
 
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
+        scanner.nextLine();
         int size = controller.getMapSizeByIndex(mapIndex);
 
         System.out.println("Write a name for your city:");

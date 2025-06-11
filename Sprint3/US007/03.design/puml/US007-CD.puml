@@ -96,6 +96,7 @@ skinparam classAttributeIconSize 0
     ViewStationDetailsController ..> ScenarioListMapper
     ViewStationDetailsController ..> StationListMapper
 
+    Repositories -> "1" Repositories : instance
     Repositories --> ScenarioRepository: scenarioRepository
     Repositories --> StationRepository: stationRepository
 

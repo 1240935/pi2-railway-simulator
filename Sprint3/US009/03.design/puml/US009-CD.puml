@@ -181,6 +181,7 @@ BuyLocomotiveController ..> ScenarioRepository
 BuyLocomotiveController ..> LocomotiveModelRepository
 BuyLocomotiveController ..> LocomotiveRepository
 
+Repositories -> "1" Repositories : instance
 Repositories --> "1" ScenarioRepository: scenarioRespository
 Repositories --> "1" LocomotiveModelRepository: locomotiveModelRepository
 Repositories --> "1" LocomotiveRepository: locomotiveRepository

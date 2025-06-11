@@ -1,125 +1,245 @@
 @startuml
-skinparam classAttributeIconSize 0
+'skinparam monochrome true
+skinparam packageStyle rectangle
 skinparam shadowing false
 skinparam linetype polyline
+'skinparam linetype orto
 
+skinparam classAttributeIconSize 0
 
-class AssignRouteUI{
+'left to right direction
+
+class AssignRouteUI {
 }
 
 class AssignRouteController {
-    +AssignRouteController()
-  +getAvailableLocomotives()
-  +getAvailableLocomotivesNames()
-  +getAvailableScenarios()
-  +getAvailableScenarioNames()
-  +getAvailableStations()
-  +getAvailableStationNames()
-  +chooseScenario(List<Scenario>)
-  +chooseLocomotive(List<Locomotive>)
-  +chooseStation(List<Station>)
-  +addStation(Station)
-  +setFirstStation(Station)
-  +setLastStation(Station)
-  +getSupply()
-  +getSupplyDisplayList()
-  +selectCargoByIndex(index)
-  +setSelectedLocomotive(Locomotive)
-  +setSelectedScenario(Scenario)
-  +createRoute()
-  +createRoute2()
-}
-
-class Scenario {
-  -map: Map
-           -year: int
-           -locomotiveTypes: List<LocomotiveType>
-           -industryTypes: List<IndustryType>
-           -importation: List<ResourceType>
-           -exportation: List<ResourceType>
-           -changers: List<IndustryChanger>
-  +getLocomotives()
-  +getStations()
-  +addRoute(Route)
-}
-
-class Route {
-  - startingStation: Station
-    - endingStation: Station
-    - stops: List<Station>
-    - locomotive: Locomotive
-    - cargos: List <Cargos>
-  +setStops(List<Station>)
-  +createRoute(
-}
-
-class Station {
-  - name: String
-    - center: StationCenter
-    - position: Position
-    - type: StationType
-    - building: BuildingType
-    - demands: List<Cargo>
-    - supplies: List<Cargo>
-  +getSuppliesOnly(List<Industry>, List<City>)
-  +toString()
-}
-
-class Locomotive {
-    - iD: int
-    - model: LocomotiveModel
-  +toString()
-}
-
-class Cargo {
-  - type: ResourceType
-  - quantity : int
-  +getType()
-}
-
-class Map {
-  - size : int
-  - name : String
-  - industries : List<Industry>
-  - cities : List<City>
-  +getIndustries()
-  +getCities()
+    + AssignTrainController()
+    + getAvailableScenarioNames()
+    + getAvailableStationNames()
+    + getAvailableCargoNames()
+    + getAvailableCargoNames()
+    + getAvailableCargoModeNames()
+    + createPointOfRoute(dto)
+    + getAvailableLocomotiveNames()
+    + createRoute(dto)
 }
 
 class Repositories {
-  +getInstance()
-  +getScenarioRepository()
-  +getRouteRepository()
+    -Repositories()
+    + getInstance()
+    + getScenarioRepository()
+    + getStationRepository()
+    + getCargoRepository()
+    + getCargoModeRepository()
+    + getPointOfRouteRepository()
+    + getLocomotiveRepository()
+    + getRouteRepository()
+}
+class ScenarioRepository {
+    +getScenarios()
 }
 
-class ScenarioRepository {
-  +getScenarios()
+class StationRepository {
+    +getStations()
+}
+
+class CargoRepository {
+    +getCargos()
+}
+
+class CargoModeRepository{
+    +getCargoModes()
+}
+
+class LocomotiveRepository {
+    +getLocomotives()
 }
 
 class RouteRepository {
-  +addRoute(Route)
+    +createRoute(dto)
+    +addRoute(route)
+}
+
+class Scenario {
+    - map: Map
+    - year: int
+    - locomotiveTypes: List<LocomotiveType>
+    - importation: List<ResourceType>
+    - exportation: List<ResourceType>
+    - changer: int
+    +addRoute(route)
+}
+
+class Station {
+    -name: String
+    -center: StationCenter
+    -position: Position
+    -stationType: StationType
+    -demandedCargo: List<Cargo>
+    -suppliedCargo: List<Cargo>
+    -buildings: List <Building>
+}
+
+class Cargo {
+    - type: ResourceType
+    - quantity: int
+}
+
+class Locomotive {
+    - model: LocomotiveModel
+    - id: int
+}
+
+class PointOfRoute {
+    - station: Station
+    - cargo: List<Cargo>
+    - cargoMode: CargoMode
+    +checkStation(station)
+    +checkCargo(cargo)
+    +checkCargoMode(cargoMode)
+}
+
+class Route {
+    - pointsOfRoute: List<PointOfRoute>
+    - locomotive: Locomotive
+    +checkPointsOfRoute(pointsOfRoute)
+    +checkLocomotive(locomotive)
+}
+
+enum CargoMode{
+    FULL
+    HALF
+    AVAILABLE
+}
+
+class ScenarioDTO{
+    - map: Map
+    - year: int
+    - locomotiveTypes: List<LocomotiveType>
+    - importation: List<ResourceType>
+    - exportation: List<ResourceType>
+    - changer: int
+}
+
+class StationDTO{
+    -name: String
+    -center: StationCenter
+    -position: Position
+    -stationType: StationType
+    -demandedCargo: List<Cargo>
+    -suppliedCargo: List<Cargo>
+    -buildings: List <Building>
+}
+
+class CargoDTO{
+    - type: ResourceType
+    - quantity: int
+}
+
+class LocomotiveDTO{
+    - model: LocomotiveModel
+    - id: int
+}
+
+class PointOfRouteDTO{
+    - station: Station
+    - cargo: List<Cargo>
+    - cargoMode: CargoMode
+}
+
+class RouteDTO{
+    - pointsOfRoute: List<PointOfRoute>
+    - locomotive: Locomotive
+}
+
+class PointOfRouteMapper {
+    +toPointOfRoute(dto)
+}
+
+class ScenarioListMapper {
+    +toDTO(List<Scenario>)
+}
+
+class StationListMapper {
+    +toDTO(List<Station>)
+}
+
+class CargoListMapper {
+    +toDTO(List<Cargo>)
+}
+
+class CargoModeListMapper{
+    +toDTO(List<CargoMode>)
+}
+
+class LocomotiveListMapper {
+    +toDTO(List<Locomotive>)
+}
+
+class RouteMapper {
+    +toRoute(dto)
 }
 
 AssignRouteUI ..> AssignRouteController
 
-AssignRouteController ..> Scenario
-AssignRouteController ..> Station
-AssignRouteController ..> Route
-AssignRouteController ..> Locomotive
-AssignRouteController ..> Cargo
 AssignRouteController ..> Repositories
+AssignRouteController ..> ScenarioListMapper
+AssignRouteController ..> StationListMapper
+AssignRouteController ..> CargoListMapper
+AssignRouteController ..> CargoModeListMapper
+AssignRouteController ..> LocomotiveListMapper
+AssignRouteController ..> PointOfRouteMapper
+AssignRouteController ..> RouteMapper
 
-Scenario --> "1..*" Map: map
-Scenario --> "1..*" Locomotive: locomotive
-Scenario --> "1..*" Station: station
-Scenario --> "1..*" Route: route
 
-Cargo --> "1" CargoType: cargo type
+AssignRouteController ..> ScenarioRepository
+AssignRouteController ..> StationRepository
+AssignRouteController ..> CargoRepository
+AssignRouteController ..> CargoModeRepository
+AssignRouteController ..> LocomotiveRepository
+AssignRouteController ..> RouteRepository
 
 Repositories -> "1" Repositories : instance
-Repositories --> ScenarioRepository: scenario repository
-Repositories --> RouteRepository: route repository
+Repositories --> "1" ScenarioRepository: scenarioRepository
+Repositories --> "1" StationRepository: stationRepository
+Repositories --> "1" CargoRepository: cargoRepository
+Repositories --> "1" CargoModeRepository: cargoModeRepository
+Repositories --> "1" LocomotiveRepository: locomotiveRepository
+Repositories --> "1" RouteRepository: routeRepository
 
-ScenarioRepository --> "*" Scenario: scenario
+ScenarioRepository --> "1..*" Scenario: scenario
+StationRepository --> "2..*" Station: station
+CargoRepository --> "1..*" Cargo: cargo
+CargoModeRepository --> "3" CargoMode: cargoMode
+LocomotiveRepository --> "1..*" Locomotive: locomotive
 RouteRepository --> "*" Route: route
+
+ScenarioListMapper --> "1" ScenarioDTO: scenarioDTO
+ScenarioListMapper --> "1..*" Scenario: scenario
+
+StationListMapper --> "1" StationDTO: stationDTO
+StationListMapper --> "1..*" Station: station
+
+CargoListMapper --> "1" CargoDTO: cargoDTO
+CargoListMapper --> "1..*" Cargo: cargo
+
+CargoModeListMapper --> "1" CargoModeDTO: cargoModeDTO
+CargoModeListMapper --> "3" CargoMode: cargoMode
+
+LocomotiveListMapper --> "1" LocomotiveDTO: locomotiveDTO
+LocomotiveListMapper --> "1..*" Locomotive: locomotive
+
+PointOfRouteMapper --> "1" PointOfRouteDTO: pointsOfRouteDTO
+PointOfRouteMapper --> "1..*" PointOfRoute: pointsOfRoute
+
+RouteMapper --> "1" RouteDTO: routeDTO
+RouteMapper --> "1..*" Route: route
+
+Scenario --> "*" Route: route
+Route --> "1..*" Locomotive: locomotive
+Route --> "2..*" PointOfRoute: pointsOfRoute
+PointOfRoute --> "1..*" Cargo: cargo
+PointOfRoute --> "1" Station: station
+PointOfRoute --> "1" CargoMode: cargoMode
+
 @enduml

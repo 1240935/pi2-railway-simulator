@@ -121,35 +121,6 @@ public class City implements Serializable {
         return blocks;
     }
 
-    /**
-     * Generates city blocks randomly or fixed around a center position.
-     *
-     * If randomize is true, blocks are placed near the center with some variation.
-     * If false, all blocks are placed at the center.
-     *
-     * @param position The central Position of the city.
-     * @param number The number of blocks to generate.
-     * @param randomize Whether to randomize the block positions around the center.
-     * @return List of generated CityBlock objects.
-     */
-    public static List<CityBlock> generateBlocks(Position position, int number, boolean randomize) {
-        List<CityBlock> blocks = new ArrayList<>();
-        Random rand = new Random();
-
-        for (int i = 0; i < number; i++) {
-            Position pos;
-            if (randomize) {
-                int dx = (int) Math.round(rand.nextGaussian() * 2);
-                int dy = (int) Math.round(rand.nextGaussian() * 2);
-                pos = new Position(position.getxCoordinate() + dx, position.getyCoordinate() + dy);
-            } else {
-                pos = position;
-            }
-            blocks.add(new CityBlock(pos));
-        }
-
-        return blocks;
-    }
 
     public boolean checkName(String name) {
         return name.matches("^[a-zA-Z\\s]+$");

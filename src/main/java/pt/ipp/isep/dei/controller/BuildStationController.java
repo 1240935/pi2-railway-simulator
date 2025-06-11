@@ -1,11 +1,13 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.*;
 import pt.ipp.isep.dei.repository.CargoRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 import pt.ipp.isep.dei.repository.StationRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -99,12 +101,18 @@ public class BuildStationController {
      * @return List of station type names.
      */
     public List<String> getAvailableStationTypes() {
-        List<String> types = new ArrayList<>();
-        for (StationType type : StationType.values()) {
-            types.add(type.name());
+        StationTypeMapper stationTypeMapper = new StationTypeMapper();
+            List<StationType> types = Arrays.asList(StationType.values());
+            List<StationTypeDTO> dtos = stationTypeMapper.toDTOList(types);
+
+            List<String> names = new ArrayList<>();
+            for (StationTypeDTO dto : dtos) {
+                names.add(dto.toString());
+            }
+
+            return names;
         }
-        return types;
-    }
+
 
     /**
      * Checks if the currently selected station type is "Station".
@@ -232,11 +240,16 @@ public class BuildStationController {
         return null;
     }
 
-    public void createStation(Position position, String name, StationCenter center, StationType type, List<Cargo> demandedCargoes, List <Cargo> suppliedCargoes, Player player, int scenarioIndex , int typeIndex, Map map, Scenario scenario) {
+    public void createStationGUI(Position position, String name, StationCenter center, StationType type, List<Cargo> demandedCargoes, List <Cargo> suppliedCargoes, Player player, int scenarioIndex , int typeIndex, Map map, Scenario scenario) {
         player.deductBudget(getStationTypeByIndex(typeIndex).getCost());
         Station station = Repositories.getInstance().getStationRepository().createStation(position, name, center, type, demandedCargoes, suppliedCargoes, map, scenario);
         getScenarioByIndex(scenarioIndex).addStation(station);
-        Repositories.getInstance().getStationRepository().addStation(station);
+    }
+
+    public void createStation(StationDTO stationDTO) {
+        StationMapper stationMapper = new StationMapper();
+        player.deductBudget(stationDTO.getStationType().getCost());
+        stationDTO.getScenario().addStation(stationMapper.toStation(stationDTO));
     }
 
     public Player getPlayer() {

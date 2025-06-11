@@ -2,6 +2,7 @@ package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.BuildStationController;
 import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.dto.StationDTO;
 
 import java.util.List;
 import java.util.Scanner;
@@ -43,6 +44,7 @@ public class BuildStationUI {
     public void start(Player player) {
         Scanner scanner = new Scanner(System.in);
         controller.setPlayer(player);
+        StationDTO stationDTO = new StationDTO();
 
         List<String> scenarios = controller.getAvailableScenarioDescriptions();
         if (scenarios.isEmpty()) {
@@ -113,10 +115,10 @@ public class BuildStationUI {
                 name = proposedName;
             }
         }
-
+        stationDTO.setStationType(controller.getStationTypeByIndex(typeIndex));
         // Step 7: Confirm purchase by displaying player budget and station cost
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Station cost: " + controller.getStationTypeByIndex(typeIndex).getCost());
+        System.out.println("Station cost: " + stationDTO.getStationType().getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
 
         String confirmation = scanner.nextLine().trim().toLowerCase();
@@ -124,7 +126,13 @@ public class BuildStationUI {
             System.out.println("Purchase cancelled.");
             return;
         }
-
-        controller.createStation(controller.createPosition(x, y), name, controller.getCenter(direction, x, y, typeIndex), controller.getStationTypeByIndex(typeIndex), controller.getDemandedCargoes(x, y, scenarioIndex, typeIndex), controller.getSuppliedCargoes(x, y, scenarioIndex, typeIndex), player, scenarioIndex, typeIndex, controller.getMap(scenarioIndex), controller.getScenarioByIndex(scenarioIndex));
+        stationDTO.setPosition(controller.createPosition(x,y));
+        stationDTO.setName(name);
+        stationDTO.setCenter(controller.getCenter(direction,x,y,typeIndex));
+        stationDTO.setScenario(controller.getScenarioByIndex(scenarioIndex));
+        stationDTO.setMap(stationDTO.getScenario().getMap());
+        stationDTO.setSupplies(controller.getSuppliedCargoes(x,y,scenarioIndex,typeIndex));
+        stationDTO.setDemands(controller.getDemandedCargoes(x,y,scenarioIndex,typeIndex));
+        controller.createStation(stationDTO);
     }
 }

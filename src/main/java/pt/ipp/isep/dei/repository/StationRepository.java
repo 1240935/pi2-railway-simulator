@@ -141,6 +141,7 @@ public class StationRepository {
 
         Station station = new Station(name, center, position, type, demandedCargoes, suppliedCargoes);
         System.out.println("Station created successfully!");
+        Repositories.getInstance().getStationRepository().addStation(station);
         return station;
     }
 

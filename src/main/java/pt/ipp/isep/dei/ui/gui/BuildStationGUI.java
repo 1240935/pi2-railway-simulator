@@ -113,7 +113,7 @@ public class BuildStationGUI {
                         ? controller.getRecommendedName(x, y, scenarioIndex, typeIndex)
                         : nameField.getText();
 
-                controller.createStation(
+                controller.createStationGUI(
                         controller.createPosition(x, y),
                         name,
                         controller.getCenter(direction, x, y, typeIndex),

@@ -53,6 +53,6 @@ public class Cargo {
      */
     @Override
     public String toString() {
-        return "Cargo:" + type;
+        return type.name();
     }
 }

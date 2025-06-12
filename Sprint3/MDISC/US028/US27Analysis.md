@@ -90,17 +90,17 @@ Sejam:
 
 ### Tabela:
 
-| **Linhas** | **findShortestPathWithWaypoints** | **dijkstra**                                       |
-|------------|-----------------------------------|----------------------------------------------------|
-| 04         | 1A (inicialização)                | –                                                  |
-| 06         | 1A (variável current)             | –                                                  |
-| 07–15      | k chamadas a dijkstra             | –                                                  |
-| 16–21      | 1 chamada final a dijkstra        | –                                                  |
-| 22         | 1R (retorno final)                | –                                                  |
-| 04–07      | –                                 | nA (inicializações: distances, previous)           |
-| 08–09      | –                                 | 1A + nA (valor source e queue)                     |
-| 10–21      | –                                 | nC (iterações queue) + mC (arestas total no grafo) |
-| 22         | –                                 | O(n) (construção caminho invertido)                |
+| **Linhas** | **Passos findShortestPathWithWaypoints** | **Passos dijkstra**                                |
+|------------|------------------------------------------|----------------------------------------------------|
+| 04         | 1A (inicialização)                       | –                                                  |
+| 06         | 1A (variável current)                    | –                                                  |
+| 07–15      | k chamadas a dijkstra                    | –                                                  |
+| 16–21      | 1 chamada final a dijkstra               | –                                                  |
+| 22         | 1R (retorno final)                       | –                                                  |
+| 04–07      | –                                        | nA (inicializações: distances, previous)           |
+| 08–09      | –                                        | 1A + nA (valor source e queue)                     |
+| 10–21      | –                                        | nC (iterações queue) + mC (arestas total no grafo) |
+| 22         | –                                        | O(n) (construção caminho invertido)                |
 
 ### Complexidade Pior Caso
 

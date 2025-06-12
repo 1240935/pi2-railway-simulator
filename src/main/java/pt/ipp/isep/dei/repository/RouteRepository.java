@@ -1,7 +1,10 @@
 package pt.ipp.isep.dei.repository;
 
+import pt.ipp.isep.dei.domain.Locomotive;
+import pt.ipp.isep.dei.domain.PointOfRoute;
 import pt.ipp.isep.dei.domain.Route;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Repository class responsible for storing and managing {@link Route} objects.
@@ -21,6 +24,17 @@ public class RouteRepository {
      */
     public ArrayList<Route> getRoutes() {
         return routes;
+    }
+
+    public static Route createRoute(Locomotive locomotive, List<PointOfRoute> pointsOfRoute){
+        Route route = new Route(locomotive, pointsOfRoute);
+        if (route.checkLocomotive(locomotive) && route.checkPointsOfRoute(pointsOfRoute)) {
+            System.out.println("Route created successfully!");
+            return route;
+        } else {
+            System.out.println("Invalid route parameters.");
+            return null;
+        }
     }
 
     /**

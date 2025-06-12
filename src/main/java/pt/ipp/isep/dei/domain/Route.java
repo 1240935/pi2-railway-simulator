@@ -6,105 +6,31 @@ import java.util.List;
 public class Route {
 
     /**
-     * The station where the route starts.
-     */
-    private Station startingStation;
-
-    /**
-     * The station where the route ends.
-     */
-    private Station endingStation;
-
-    /**
-     * List of intermediate stations (stops) between start and end.
-     */
-    private List<Station> stops;
-
-    /**
      * The locomotive assigned to this route.
      */
     private Locomotive locomotive;
 
     /**
-     * The list of cargo items to be transported on this route.
+     * The list of points of the route, each with its own station and cargo list.
      */
-    private List<Cargo> cargo;
+    private List<PointOfRoute> pointsOfRoute;
 
     /**
-     * Constructs a Route with specified starting station, ending station,
-     * locomotive, and cargo list. Initializes the stops list as empty.
+     * Constructs a Route with a specified locomotive and list of points of route.
      *
-     * @param startingStation the station where the route begins
-     * @param endingStation the station where the route ends
      * @param locomotive the locomotive assigned to the route
-     * @param cargo the cargo to be transported on the route
+     * @param pointsOfRoute the ordered points of the route
      */
-    public Route(Station startingStation, Station endingStation, Locomotive locomotive, List<Cargo> cargo){
-        this.startingStation = startingStation;
-        this.endingStation = endingStation;
+    public Route(Locomotive locomotive, List<PointOfRoute> pointsOfRoute) {
         this.locomotive = locomotive;
-        this.cargo = cargo;
-        this.stops = new ArrayList<>();
+        this.pointsOfRoute = pointsOfRoute;
     }
 
     /**
      * Default constructor for Route.
      */
-    public Route(){
-    }
-
-    /**
-     * Returns the starting station of this route.
-     *
-     * @return the starting station
-     */
-    public Station getStartingStation() {
-        return startingStation;
-    }
-
-    /**
-     * Sets the starting station of this route.
-     *
-     * @param startingStation the station to set as start
-     */
-    public void setStartingStation(Station startingStation) {
-        this.startingStation = startingStation;
-    }
-
-    /**
-     * Returns the ending station of this route.
-     *
-     * @return the ending station
-     */
-    public Station getEndingStation() {
-        return endingStation;
-    }
-
-    /**
-     * Sets the ending station of this route.
-     *
-     * @param endingStation the station to set as end
-     */
-    public void setEndingStation(Station endingStation) {
-        this.endingStation = endingStation;
-    }
-
-    /**
-     * Returns the list of intermediate stops along this route.
-     *
-     * @return list of stop stations
-     */
-    public List<Station> getStops() {
-        return stops;
-    }
-
-    /**
-     * Sets the list of intermediate stops for this route.
-     *
-     * @param stops list of stations to set as stops
-     */
-    public void setStops(List<Station> stops) {
-        this.stops = stops;
+    public Route() {
+        this.pointsOfRoute = new ArrayList<>();
     }
 
     /**
@@ -126,72 +52,59 @@ public class Route {
     }
 
     /**
-     * Returns the list of cargo items transported on this route.
+     * Returns the ordered list of points that make up the route.
      *
-     * @return list of cargo
+     * @return list of points of route
      */
-    public List<Cargo> getCargo() {
-        return cargo;
+    public List<PointOfRoute> getPointsOfRoute() {
+        return pointsOfRoute;
     }
 
     /**
-     * Sets the list of cargo items for this route.
+     * Sets the list of points for this route.
      *
-     * @param cargo list of cargo items to assign
+     * @param pointsOfRoute the points to assign
      */
-    public void setCargo(List<Cargo> cargo) {
-        this.cargo = cargo;
+    public void setPointsOfRoute(List<PointOfRoute> pointsOfRoute) {
+        this.pointsOfRoute = pointsOfRoute;
     }
 
-    /**
-     * Returns a list of all stations along the route, including the
-     * starting station, all intermediate stops, and the ending station.
-     *
-     * @return list of stations in order along the route
-     */
-    public List<Station> getRouteStations() {
-        List<Station> stations = new ArrayList<>();
-        stations.add(startingStation);
-        if (stops != null) {
-            stations.addAll(stops);
+    public boolean checkPointsOfRoute(List<PointOfRoute> pointsOfRoute) {
+        if (pointsOfRoute == null || pointsOfRoute.isEmpty()) {
+            return false;
         }
-        stations.add(endingStation);
-        return stations;
+
+        for (PointOfRoute point : pointsOfRoute) {
+            if (point == null
+                    || !point.checkStation(point.getStation())
+                    || !point.checkCargo(point.getCargoList())
+                    || !point.checkCargoMode(point.getCargoMode())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkLocomotive(Locomotive locomotive) {
+        return locomotive != null && locomotive.getLocomotiveModel() != null && locomotive.getId() > 0;
     }
 
     /**
-     * Returns a string representation of this route, including
-     * the starting station, ending station, stops, locomotive, and cargo.
+     * Returns a string representation of this route.
      *
-     * @return string representation of the route
+     * @return string representation
      */
     @Override
     public String toString() {
-        if (stops!= null) {
-            return "Route:" +
-                    "\n  Starting Station: " + startingStation +
-                    "\n  Ending Station: " + endingStation +
-                    "\n  Stops Stations: " + stops +
-                    "\n  Locomotive: " + locomotive +
-                    "\n  Cargo: " + cargo;
-        } else {
-            return "Route:" +
-                    "\n  Starting Station: " + startingStation +
-                    "\n  Ending Station: " + endingStation +
-                    "\n  Locomotive: " + locomotive +
-                    "\n  Cargo: " + cargo;
-        }
+        return "Route:" +
+                "\n  Locomotive: " + locomotive +
+                "\n  Points of Route: " + pointsOfRoute;
     }
 
     /**
      * Finds possible starting stations for a maintenance route (Eulerian path)
      * based on the current railway graph.
-     * <p>
-     * An Eulerian path exists if:
-     * <ul>
-     *   <li>All stations have even degree (Eulerian circuit: can start anywhere), OR</li>
-     *   <li>Exactly two stations have odd degree (Eulerian path: must start at one of them)</li>
-     * </ul>
      *
      * @param graph the railway graph containing stations and lines
      * @return a list of possible starting stations if an Eulerian path or circuit is possible;
@@ -201,35 +114,25 @@ public class Route {
         List<Station> stations = graph.getStations();
         List<Line> lines = graph.getLines();
 
-        // List to store stations with an odd number of connected lines
         List<Station> oddDegreeStations = new ArrayList<>();
 
-        // For each station, count how many lines are connected to it
         for (Station current : stations) {
             int degree = 0;
-
-            // Count lines connected to the current station
             for (Line line : lines) {
                 if (line.getStart().equals(current) || line.getEnd().equals(current)) {
                     degree++;
                 }
             }
-
-            // If the number of connections (degree) is odd, addScenario to list
             if (degree % 2 != 0) {
                 oddDegreeStations.add(current);
             }
         }
 
-        // Determine possible starting stations based on the number of odd-degree nodes
         if (oddDegreeStations.isEmpty()) {
-            // Eulerian circuit: any station can be a start
             return stations;
         } else if (oddDegreeStations.size() == 2) {
-            // Eulerian path: must start at one of the odd-degree stations
             return oddDegreeStations;
         } else {
-            // No Eulerian path is possible
             return null;
         }
     }

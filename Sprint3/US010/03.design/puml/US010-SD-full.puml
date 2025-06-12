@@ -8,7 +8,7 @@ autonumber
 'hide footbox
 actor "Player" as PLAYER
 participant ":AssignRouteUI" as UI
-participant ":AssignTrainRoute" as CTRL
+participant ":AssignRouteController" as CTRL
 participant "Repositories" as REPOS
 participant "repositories \n :Repositories" as REPO_SINGLETON
 participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
@@ -449,7 +449,7 @@ activate PLAYER
                 LOCO_MAPPER --> CTRL : locomotivesDTO
                 deactivate LOCO_MAPPER
 
-            CTRL -> LOCO_LIST_DTO: getAvailableLocomotiveNames(locomotiveList)
+            CTRL -> LOCO_LIST_DTO: getAvailableLocomotiveNames(locomotiveListDTO)
             activate LOCO_LIST_DTO
 
                 LOCO_LIST_DTO --> CTRL : locomotive names

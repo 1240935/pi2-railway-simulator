@@ -97,7 +97,7 @@ Sejam:
 
 ### Tabela:
 
-| **Linhas** | **verifyPath**                               | **bfs**                                                    |
+| **Linhas** | **Passos verifyPath**                        | **Passos bfs**                                             |
 |------------|----------------------------------------------|------------------------------------------------------------|
 | 04         | 1A (cópia da lista de estações)              | –                                                          |
 | 05         | 1A (inicialização de lista vazia)            | –                                                          |

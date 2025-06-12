@@ -17,7 +17,6 @@ class AssignRouteController {
     + getAvailableScenarioNames()
     + getAvailableStationNames()
     + getAvailableCargoNames()
-    + getAvailableCargoNames()
     + getAvailableCargoModeNames()
     + createPointOfRoute(dto)
     + getAvailableLocomotiveNames()

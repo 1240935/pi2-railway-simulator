@@ -6,163 +6,130 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Console-based User Interface for assigning routes to locomotives
- * in different scenarios. This class interacts with the user through
- * the console to gather input on scenario selection, locomotive choice,
- * route stations, optional intermediate stops, and cargo selection,
- * then delegates the operations to the AssignRouteController.
- */
 public class AssignRouteUI {
+
     private final AssignRouteController controller;
     private final Scanner scanner;
 
-    /**
-     * Constructs a new AssignRouteUI instance,
-     * initializing the controller and input scanner.
-     */
     public AssignRouteUI() {
-        controller = new AssignRouteController();
-        scanner = new Scanner(System.in);
+        this.controller = new AssignRouteController();
+        this.scanner = new Scanner(System.in);
     }
 
-    /**
-     * Starts the user interaction for assigning a route.
-     * Guides the user through:
-     *  - selecting a scenario,
-     *  - choosing a locomotive,
-     *  - selecting start and end stations,
-     *  - optionally adding intermediate stops,
-     *  - selecting cargo to supply,
-     * and finally creates the route through the controller.
-     */
     public void start() {
-        // Display available scenarios and get user selection
+        // 1. Select Scenario
         List<String> scenarioNames = controller.getAvailableScenarioNames();
-        System.out.println("Available Scenarios:");
+        System.out.println("Available scenarios:");
         for (int i = 0; i < scenarioNames.size(); i++) {
             System.out.println((i + 1) + ": " + scenarioNames.get(i));
         }
-        System.out.print("Enter the scenario's number: ");
-        int choice = scanner.nextInt();
-        //Scenario(controller.chooseScenario(controller.getAvailableScenarios(), choice));
+        System.out.print("Select scenario number: ");
+        int scenarioIndex = scanner.nextInt();
+        scanner.nextLine();
 
-        // Display available locomotives and get user selection
-        List<String> locomotiveNames = controller.getAvailableLocomotivesNames(controller.chooseScenario(controller.getAvailableScenarios(), choice));
-        System.out.println("Available Locomotives:");
+        // 2. Add Points of Route
+        System.out.print("Enter number of points in the route: ");
+        int numPoints = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Integer> usedStationIndices = new ArrayList<>();
+
+        for (int i = 0; i < numPoints; i++) {
+            System.out.println("\n--- Point of Route #" + (i + 1) + " ---");
+
+            // Get all stations names
+            List<String> allStationNames = controller.getAvailableStationNames(scenarioIndex);
+            List<Integer> availableIndices = new ArrayList<>();
+            int displayIndex = 1;
+
+            // Show only unused stations
+            for (int j = 0; j < allStationNames.size(); j++) {
+                if (!usedStationIndices.contains(j)) {  // j is zero-based
+                    System.out.println(displayIndex + ": " + allStationNames.get(j));
+                    availableIndices.add(j);  // zero-based index
+                    displayIndex++;
+                }
+            }
+
+            if (availableIndices.isEmpty()) {
+                System.out.println("No more unique stations available.");
+                break;
+            }
+
+            System.out.print("Select station number: ");
+            int stationChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (stationChoice < 1 || stationChoice > availableIndices.size()) {
+                System.out.println("Invalid choice.");
+                return;
+            }
+
+            int zeroBasedStationIndex = availableIndices.get(stationChoice - 1); // zero-based index
+            usedStationIndices.add(zeroBasedStationIndex); // store zero-based
+
+            int oneBasedStationIndex = zeroBasedStationIndex + 1;
+
+            List<String> cargoNames = controller.getAvailableCargoNames(scenarioIndex, oneBasedStationIndex);
+            List<Integer> selectedCargoIndices = new ArrayList<>();
+
+            if (!cargoNames.isEmpty()) {
+                System.out.println("Available cargo at this station:");
+                for (int j = 0; j < cargoNames.size(); j++) {
+                    System.out.println((j + 1) + ": " + cargoNames.get(j));
+                }
+
+                while (true) {
+                    System.out.print("Select cargo number to pick up (or 0 to stop): ");
+                    int cargoIndex = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (cargoIndex == 0) break;
+                    if (cargoIndex < 1 || cargoIndex > cargoNames.size()) {
+                        System.out.println("Invalid choice.");
+                    } else if (!selectedCargoIndices.contains(cargoIndex)) {
+                        selectedCargoIndices.add(cargoIndex);
+                    } else {
+                        System.out.println("Cargo already selected.");
+                    }
+                }
+            } else {
+                System.out.println("No cargo available at this station.");
+            }
+
+            // 2.3. Select Cargo Mode
+            List<String> cargoModes = controller.getCargoModeNames();
+            System.out.println("Select cargo mode:");
+            for (int j = 0; j < cargoModes.size(); j++) {
+                System.out.println((j + 1) + ": " + cargoModes.get(j));
+            }
+            System.out.print("Enter cargo mode number: ");
+            int modeIndex = scanner.nextInt();
+            scanner.nextLine();
+
+            // 2.4. Add Point of Route
+            controller.createPointOfRoute(
+                    controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1),
+                    controller.getSelectedCargoList(
+                            selectedCargoIndices,
+                            controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1).getSupplies()
+                    ),
+                    controller.getCargoModeByIndex(modeIndex)
+            );
+        }
+
+        // 3. Select Locomotive
+        List<String> locomotiveNames = controller.getAvailableLocomotiveNames(scenarioIndex);
+        System.out.println("\nAvailable Locomotives:");
         for (String locomotiveName : locomotiveNames) {
-            System.out.println(locomotiveName);
-        }
-        System.out.print("Enter the locomotive's number: ");
-        int choice2 = scanner.nextInt();
-        //Locomotive(controller.chooseLocomotive(controller.getAvailableLocomotives(), choice2));
-
-        // Display available stations
-        List<String> stationNames = controller.getAvailableStationNames(controller.chooseScenario(controller.getAvailableScenarios(), choice));
-        System.out.println("Available Stations:");
-        for (int i = 0; i < stationNames.size(); i++) {
-            System.out.println((i + 1) + ": " + stationNames.get(i));
+            System.out.println("ID:" + locomotiveName);
         }
 
-        // List to track chosen stations and prevent duplicates in stops
-        List<Integer> chosenStops = new ArrayList<>();
+        System.out.print("Select locomotive number: ");
+        int locoIndex = scanner.nextInt();
+        scanner.nextLine();
 
-        // Select starting station
-        System.out.print("Select the starting station: ");
-        int choice3 = scanner.nextInt();
-        //FirstStation(controller.chooseStation(controller.getAvailableStations(), choice3));
-        chosenStops.add(choice3);
-
-        // Select ending station
-        System.out.print("Select the ending station: ");
-        int choice4 = scanner.nextInt();
-        //LastStation(controller.chooseStation(controller.getAvailableStations(), choice4));
-        chosenStops.add(choice4);
-
-        scanner.nextLine(); // Consume leftover newline
-
-        // Ask user if they want to addScenario intermediate stops
-        System.out.print("Would you like to addScenario stops to the route? (yes/no): ");
-        String stopResponse = scanner.nextLine().trim().toLowerCase();
-        boolean hasStops = false;
-
-        if (stopResponse.equals("yes") || stopResponse.equals("y")) {
-            hasStops = true;
-
-            // Loop to addScenario stops until user finishes
-            while (true) {
-                System.out.println("Available stations to addScenario as stops:");
-                for (int i = 0; i < stationNames.size(); i++) {
-                    if (!chosenStops.contains(i + 1)) {
-                        System.out.printf("%d. %s%n", i + 1, stationNames.get(i));
-                    }
-                }
-
-                System.out.print("Enter the number of a station to addScenario as a stop (or 0 to finish): ");
-                while (!scanner.hasNextInt()) {
-                    System.out.print("Invalid input. Please enter a number: ");
-                    scanner.next();
-                }
-                int selection = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                if (selection == 0) break; // Finish adding stops
-
-                if (selection < 1 || selection > stationNames.size()) {
-                    System.out.println("Invalid selection. Please choose a valid station number.");
-                } else if (chosenStops.contains(selection)) {
-                    System.out.println("This station has already been selected. Choose a different one.");
-                } else {
-                    chosenStops.add(selection);
-                    controller.addStation(controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(), choice)), selection));
-                    System.out.println("Station added.");
-                }
-            }
-        }
-
-        // Display available cargo at selected stations
-        List<String> supplyCargoDisplay = controller.getSupplyDisplayList(controller.chooseScenario(controller.getAvailableScenarios(), choice),
-                controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(), choice)), choice3),
-                controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice4));
-
-        System.out.println();
-        System.out.println("Supplied Cargo Available:");
-        if (supplyCargoDisplay.isEmpty()) {
-            System.out.println("No supplied cargo available at selected stations.");
-        } else {
-            for (String cargoStr : supplyCargoDisplay) {
-                System.out.println(cargoStr);
-            }
-
-            // Let user select cargo by entering indices separated by space
-            System.out.print("Enter the numbers of the cargo you want to select (separated by space): ");
-            String input = scanner.nextLine();
-            String[] parts = input.trim().split("\\s+");
-
-            for (String part : parts) {
-                try {
-                    int idx = Integer.parseInt(part);
-                    boolean success = controller.selectCargoByIndex(idx,controller.chooseScenario(controller.getAvailableScenarios(), choice),
-                            controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice3),
-                                    controller.chooseStation(controller.getAvailableStations(controller.chooseScenario(controller.getAvailableScenarios(),choice)), choice4));
-                    if (!success) {
-                        System.out.println("Invalid cargo index: " + idx);
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input: " + part);
-                }
-            }
-        }
-
-        // Create route using controller depending on presence of stops
-      /*  if (hasStops) {
-            controller.createRoute2(controller.chooseScenario(controller.getAvailableScenarios(), choice),
-                    controller.chooseStation(controller.getAvailableStations(), choice3));
-        } else {
-            controller.createRoute(controller.chooseScenario(controller.getAvailableScenarios(), choice),
-                    controller.chooseStation(controller.getAvailableStations(), choice3));
-        }
-
-        System.out.println("Route Created!"); */
+        // 4. Create Route
+        controller.createRoute(controller.getScenarioByIndex(scenarioIndex), controller.getLocomotiveByIndex(scenarioIndex, locoIndex), controller.getPointsOfRoute());
     }
 }

@@ -55,7 +55,7 @@ Sejam:
 
 ### Tabela
 
-| **Linhas** | **findEulerianPath**                                                   |
+| **Linhas** | **Passos findEulerianPath**                                            |
 |------------|------------------------------------------------------------------------|
 | 04         | 1A (obter lista de estações)                                           |
 | 05         | 1A (obter lista de linhas)                                             |

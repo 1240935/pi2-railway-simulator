@@ -31,6 +31,10 @@ public class Locomotive {
         return id;
     }
 
+    public LocomotiveModel getLocomotiveModel() {
+        return locomotiveModel;
+    }
+
     /**
      * Validates whether the given ID is a valid locomotive ID.
      * A valid ID is a positive integer.

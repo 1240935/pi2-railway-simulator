@@ -92,7 +92,7 @@ public class AssignRouteController {
     }
 
     public List<PointOfRoute> getPointsOfRoute() {
-        return new ArrayList<>(pointsOfRoute); // return a copy to protect the original list
+        return new ArrayList<>(pointsOfRoute);
     }
 
 

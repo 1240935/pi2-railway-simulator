@@ -4,7 +4,6 @@ import pt.ipp.isep.dei.domain.Editor;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.ui.gui.PlayerMenuLauncher;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -117,10 +116,8 @@ public class MenuUI {
             System.out.println("10. Assign Route");
             System.out.println("12. Simulator");
             System.out.println("13. Train Route Verification");
-            System.out.println("14. Train Route Verification Testing");
-            System.out.println("15. Railway Maintenance");
-            System.out.println("16. Railway Maintenance Testing");
-            System.out.println("17. Shortest Route Calculation");
+            System.out.println("14. Railway Maintenance");
+            System.out.println("27. Shortest Route Calculation");
             System.out.println("0. Exit");
 
             System.out.print("Choose an option: ");
@@ -132,12 +129,10 @@ public class MenuUI {
                 case "7" -> new ViewStationDetailsUI().start();
                 case "9" -> new BuyLocomotiveUI().start(player);
                 case "10" -> new AssignRouteUI().start();
-                case "12" -> new SimulatorUI().start(player);
+//                case "12" -> new SimulatorUI().start(player);
                 case "13" -> new VerifyTrainTravelUI().start();
-                case "14" -> new VerifyTrainTravelTestUI().start();
-                case "15" -> new RailwayMaintenanceUI().start();
-                case "16" -> new RailwayMaintenanceTestUI().start();
-                case "17" -> new ShortestPathUI().start();
+                case "14" -> new RailwayMaintenanceUI().start();
+                case "27" -> new ShortestPathUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");
                     System.out.println();

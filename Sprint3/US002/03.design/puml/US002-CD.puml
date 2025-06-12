@@ -15,7 +15,7 @@ class CreateIndustryUI {
 class CreateIndustryController {
   +CreateIndustryController()
   +getAvailableMapNames()
-  +getMapByIndex(mapIndex)
+  +getMapSizeByIndex(mapIndex)
   +getAvailableIndustryTypeNames()
   +createIndustry(dto)
 }

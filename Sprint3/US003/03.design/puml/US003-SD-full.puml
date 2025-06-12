@@ -92,7 +92,7 @@ activate EDITOR
     EDITOR -> UI : selects a map
     activate UI
 
-    UI -> CTRL : getMapByIndex(mapIndex)
+    UI -> CTRL : getMapSizeByIndex(mapIndex)
     activate CTRL
 
     CTRL -> REPOS : getInstance()

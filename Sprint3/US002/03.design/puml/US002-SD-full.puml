@@ -99,7 +99,7 @@ activate EDITOR
 
     activate UI
 
-    UI -> CTRL: getMapByIndex(mapIndex)
+    UI -> CTRL: getMapSizeByIndex(mapIndex)
     activate CTRL
 
     CTRL -> REPOS : getInstance()

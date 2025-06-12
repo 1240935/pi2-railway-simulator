@@ -8,6 +8,9 @@ import pt.ipp.isep.dei.repository.LineRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 import pt.ipp.isep.dei.repository.StationRepository;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +22,50 @@ public class ShortestPathController {
     private List<Station> stations;
     private List<Line> lines;
     private int lastPathCost = 0;
+    private String startStationName;
+    private String endStationName;
+    private List<String> waypointsNames;
 
     public ShortestPathController() {
         this.stationRepo = Repositories.getInstance().getStationRepository();
         this.lineRepo = Repositories.getInstance().getLineRepository();
         this.graph = new GraphC();
+        this.waypointsNames = new ArrayList<>();
+    }
+
+    public void loadRouteFromFile(String filePath) {
+        startStationName = null;
+        endStationName = null;
+        waypointsNames.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine();
+            if (line != null) {
+                String[] stationNames = line.split(";");
+                if (stationNames.length >= 2) {
+                    startStationName = stationNames[0].trim();
+                    endStationName = stationNames[stationNames.length - 1].trim();
+                    for (int i = 1; i < stationNames.length - 1; i++) {
+                        waypointsNames.add(stationNames[i].trim());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // follows your existing loadStations style
+        }
+    }
+
+
+    public String getStartStation() {
+        return this.startStationName;
+    }
+
+    public String getEndStation() {
+        return this.endStationName;
+    }
+
+    public List<String> getWaypoints() {
+        return this.waypointsNames;
     }
 
     public void setFiles(String stationsFile, String linesFile) {
@@ -154,14 +196,6 @@ public class ShortestPathController {
             if (s.getName().equalsIgnoreCase(name.trim())) return s;
         }
         return null;
-    }
-
-    public List<String> getAllStationNames() {
-        List<String> names = new ArrayList<>();
-        for (Station s : graph.getStations()) {
-            names.add(s.getName());
-        }
-        return names;
     }
 
     public List<Station> getStations() {

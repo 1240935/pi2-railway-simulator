@@ -15,7 +15,7 @@ class AddCityUI{
 class AddCityController {
   +AddCityController()
   +getAvailableMapNames()
-  +getMapByIndex(int)
+  +getMapSizeByIndex(mapIndex)
   +createBlocksAutomatically(CityBlockDTO)
   +createBlocksManually(CityBlockDTO)
   +createCity(CityDTO)

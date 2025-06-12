@@ -101,10 +101,10 @@ public class PlayerMenuGUI {
         new AssignRouteUI().start();
     }
 
-    @FXML
+    /* @FXML
     private void handleSimulator() {
         new SimulatorUI().start(player);
-    }
+    } */
 
     @FXML
     private void handleLogout() {

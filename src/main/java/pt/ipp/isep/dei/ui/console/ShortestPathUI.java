@@ -2,14 +2,9 @@ package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.ShortestPathController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * UI class for finding the shortest path through ordered waypoints.
- * Complies with layered architecture — no domain class imports.
- */
 public class ShortestPathUI {
 
     private final ShortestPathController controller;
@@ -21,45 +16,30 @@ public class ShortestPathUI {
     }
 
     public void start() {
-
-        // Load files
+        // Load graph files
         System.out.print("Enter stations file path: ");
         String stationsFile = scanner.nextLine();
         System.out.print("Enter lines file path: ");
         String linesFile = scanner.nextLine();
         controller.setFiles(stationsFile, linesFile);
 
-        // Show available stations
-        List<String> stationNames = controller.getAllStationNames();
-        if (stationNames.isEmpty()) {
-            System.out.println("No stations available. Please check the data files.");
+        // Load route (start;waypoints;end) from file
+        System.out.print("Enter route file path: ");
+        String routeFile = scanner.nextLine();
+
+        try {
+            controller.loadRouteFromFile(routeFile);
+        } catch (RuntimeException e) {
+            System.out.println("Error loading route: " + e.getMessage());
             return;
         }
 
-        System.out.println("\nAvailable Stations:");
-        for (String name : stationNames) {
-            System.out.println(" - " + name);
-        }
-        System.out.println();
-
-        // Read start and end stations
-        System.out.print("Enter START station name: ");
-        String start = scanner.nextLine().trim();
-        System.out.print("Enter END station name: ");
-        String end = scanner.nextLine().trim();
-
-        // Read waypoints
-        List<String> waypoints = new ArrayList<>();
-        System.out.println("Enter WAYPOINT stations (in order). Type 'done' to finish:");
-        while (true) {
-            System.out.print("Waypoint: ");
-            String wp = scanner.nextLine().trim();
-            if (wp.equalsIgnoreCase("done")) break;
-            if (!wp.isEmpty()) waypoints.add(wp);
-        }
-
-        // Get path
-        List<String> path = controller.getShortestPathAsNames(start, end, waypoints);
+        // Compute shortest path
+        List<String> path = controller.getShortestPathAsNames(
+                controller.getStartStation(),
+                controller.getEndStation(),
+                controller.getWaypoints()
+        );
         int cost = controller.getLastPathCost();
 
         System.out.println();
@@ -72,7 +52,7 @@ public class ShortestPathUI {
                 if (i < path.size() - 1) System.out.print(" -> ");
             }
             System.out.println();
-            System.out.println("Total Cost (Distance): " + cost);
+            System.out.println("Total Cost (Distance): " + cost + "km");
         }
 
         controller.visualizeGraph();

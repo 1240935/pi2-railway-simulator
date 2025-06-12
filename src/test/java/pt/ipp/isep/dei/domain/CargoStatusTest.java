@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CargoStatusTest {
 
+    // Testa se o método getSupplied() retorna corretamente a lista de carga fornecida
     @Test
     void getSupplied_ShouldReturnCorrectSuppliedCargoList() {
         Cargo coalCargo = new Cargo(ResourceType.COAL, 100);
@@ -20,6 +21,7 @@ class CargoStatusTest {
         assertEquals(supplied, cargoStatus.getSupplied());
     }
 
+    // Testa se o método getDemanded() retorna corretamente a lista de carga exigida
     @Test
     void getDemanded_ShouldReturnCorrectDemandedCargoList() {
         Cargo oilCargo = new Cargo(ResourceType.OIL, 200);
@@ -30,6 +32,7 @@ class CargoStatusTest {
         assertEquals(demanded, cargoStatus.getDemanded());
     }
 
+    // Testa se o método toString() contém os detalhes das cargas fornecidas e exigidas
     @Test
     void toString_ShouldContainSuppliedAndDemandedCargoDetails() {
         Cargo coalCargo = new Cargo(ResourceType.COAL, 100);
@@ -43,11 +46,45 @@ class CargoStatusTest {
 
         String toStringResult = cargoStatus.toString();
 
-        // Verifica se a string contém as descrições esperadas
         assertTrue(toStringResult.contains("Supplied Cargoes:"));
         assertTrue(toStringResult.contains("COAL: 100"));
         assertTrue(toStringResult.contains("GRAIN: 50"));
         assertTrue(toStringResult.contains("Demanded Cargoes:"));
         assertTrue(toStringResult.contains("OIL: 200"));
+    }
+
+    // Testa se o construtor lança exceção quando a lista de fornecidos é nula
+    @Test
+    void constructor_ShouldThrowException_WhenSuppliedIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> new CargoStatus(null, List.of()));
+    }
+
+    // Testa se o construtor lança exceção quando a lista de exigidos é nula
+    @Test
+    void constructor_ShouldThrowException_WhenDemandedIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> new CargoStatus(List.of(), null));
+    }
+
+    // Testa se o método toString() lida corretamente com listas vazias (sem cargas)
+    @Test
+    void toString_ShouldHandleEmptyListsGracefully() {
+        CargoStatus cargoStatus = new CargoStatus(List.of(), List.of());
+
+        String result = cargoStatus.toString();
+
+        assertTrue(result.contains("No available cargo"));
+    }
+
+    // Testa se o método toString() apresenta apenas as cargas fornecidas quando a lista de exigidos está vazia
+    @Test
+    void toString_ShouldReportOnlySupplied_WhenDemandedIsEmpty() {
+        Cargo coalCargo = new Cargo(ResourceType.COAL, 100);
+        CargoStatus cargoStatus = new CargoStatus(List.of(coalCargo), List.of());
+
+        String result = cargoStatus.toString();
+
+        assertTrue(result.contains("Supplied Cargoes:"));
+        assertTrue(result.contains("COAL"));
+        assertTrue(result.contains("No cargo demanded"));
     }
 }

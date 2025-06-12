@@ -10,7 +10,7 @@ public class MapTest {
 
     @BeforeEach
     public void setUp() {
-        map = new Map("TestMap", 10);
+        map = new Map(10, "TestMap", 30);
     }
 
     @Test

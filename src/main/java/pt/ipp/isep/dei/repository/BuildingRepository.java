@@ -26,7 +26,12 @@ public class BuildingRepository {
     }
 
     public static Building createBuilding(BuildingType buildingType){
+        if (!Building.checkType(buildingType)) {
+            System.out.println("Invalid type.");
+            return null;
+        }
         Building building = new Building(buildingType);
+        System.out.println("Station created successfully!");
         Repositories.getInstance().getBuildingRepository().addBuilding(building);
         return building;
     }

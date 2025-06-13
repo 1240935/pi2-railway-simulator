@@ -39,6 +39,10 @@ public class Building {
         this.buildingType = buildingType;
     }
 
+    public static boolean checkType(BuildingType type) {
+        return type != null;
+    }
+
     /**
      * Returns a string representation of the building.
      *

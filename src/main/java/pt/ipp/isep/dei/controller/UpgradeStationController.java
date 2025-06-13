@@ -42,19 +42,43 @@ public class UpgradeStationController {
         return Repositories.getInstance().getScenarioRepository().getScenarios();
     }
 
+    public Scenario getScenarioByIndex(int index) {
+        List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+
+        if (index < 0 || index >= scenarios.size()) {
+            throw new IndexOutOfBoundsException("Invalid scenario index: " + index);
+        }
+
+        return scenarios.get(index);
+    }
+
+    public Station getStationByIndex(int index) {
+        List<Station> stations = Repositories.getInstance().getStationRepository().getStations();
+
+        if (index < 0 || index >= stations.size()) {
+            throw new IndexOutOfBoundsException("Invalid scenario index: " + index);
+        }
+
+        return stations.get(index);
+    }
+
+    public BuildingType getBuildingTypeByIndex(int scenarioIndex, int stationIndex, int buildingTypeIndex) {
+        List<BuildingType> buildingTypes = getAvailableBuildingTypes(scenarioIndex, stationIndex);
+        if (buildingTypeIndex < 0 || buildingTypeIndex >= buildingTypes.size()) {
+            throw new IndexOutOfBoundsException("Invalid scenario index: " + buildingTypeIndex);
+        }
+
+        return buildingTypes.get(buildingTypeIndex);
+    }
 
     /**
      * Retrieves the list of stations available in the selected scenario.
      *
      * @return list of stations in the selected scenario, or empty list if no scenario selected
      */
-    public List<Station> getAvailableStations(Scenario scenario) {
-        if (scenario == null) {
-            return new ArrayList<>();
-        }
-        return scenario.getStations();
+    public List<Station> getAvailableStations(int scenarioIndex) {
+        return getScenarioByIndex(scenarioIndex).getStations();
     }
-
 
     /**
      * Returns the string representations of all available scenarios.
@@ -62,16 +86,11 @@ public class UpgradeStationController {
      * @return list of scenario names/descriptions
      */
     public List<String> getAvailableScenarioNames() {
-            ScenarioListMapper scenarioListMapper = new ScenarioListMapper();
-            List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
-            List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
-
-            List<String> names = new ArrayList<>();
-            for (int i = 0; i < scenarioDTOS.size(); i++) {
-                names.add(scenarioDTOS.get(i).toString());
-            }
-
-            return names;
+        List<String> names = new ArrayList<>();
+        for (Scenario scenario : getAvailableScenarios()) {
+            names.add(scenario.toString());
+        }
+        return names;
     }
 
     /**
@@ -80,18 +99,12 @@ public class UpgradeStationController {
      *
      * @return list of station names/descriptions
      */
-    public List<String> getAvailableStationNames(Scenario scenario) {
-        StationListMapper stationListMapper = new StationListMapper();
-        List<Station> stations = getAvailableStations(scenario);
-        List<StationDTO> stationDTOS = stationListMapper.toDTOList(stations);
-
+    public List<String> getAvailableStationNames(int scenarioIndex) {
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < stationDTOS.size(); i++) {
-            names.add(stationDTOS.get(i).toString());
+        for (Station station : getAvailableStations(scenarioIndex)) {
+            names.add(station.toString());
         }
-
         return names;
-
     }
 
     /**
@@ -101,36 +114,36 @@ public class UpgradeStationController {
      *
      * @return list of building type names/descriptions
      */
-    public List<String> getAvailableBuildingNames(Scenario scenario, Station station) {
+    public List<String> getAvailableBuildingTypeNames(int scenarioIndex, int stationIndex) {
         List<String> names = new ArrayList<>();
-        for (BuildingType buildingType : getAvailableBuildingTypes(scenario, station)) {
-            names.add(buildingType.toString());
+        List<BuildingType> types = getAvailableBuildingTypes(scenarioIndex, stationIndex);
+        BuildingTypeListMapper typeMapper = new BuildingTypeListMapper();
+        List<BuildingTypeDTO> dtos = typeMapper.toDTOList(types);
+
+        for (BuildingTypeDTO dto : dtos) {
+            names.add(dto.toString());
         }
         return names;
     }
 
-    /**
-     * Returns a list of building types that are available for construction
-     * given the selected scenario year and existing buildings' exclusivity
-     * constraints.
-     *
-     * @return list of available building types
-     */
-    public List<BuildingType> getAvailableBuildingTypes(Scenario scenario, Station station) {
+    public List<BuildingType> getAvailableBuildingTypes(int scenarioIndex, int stationIndex) {
+        Scenario scenario = getScenarioByIndex(scenarioIndex);
+        Station station = getStationByIndex(stationIndex);
+        int year = scenario.getYear();
+
+        List<Building> existingBuildings = station.getBuildings();
+        List<BuildingType> availableTypes = Repositories.getInstance()
+                .getBuildingTypeRepository()
+                .getAvailableBuildingTypes();
+
         List<BuildingType> result = new ArrayList<>();
 
-        if (scenario == null || station == null) return result;
-
-        int year = scenario.getYear();
-        List<Building> existing = Repositories.getInstance().getBuildingRepository().getBuildings();
-
-        for (BuildingType candidate : BuildingType.values()) {
+        for (BuildingType candidate : availableTypes) {
             if (candidate.getAvailabilityYear() > year) continue;
 
             boolean isExclusive = false;
-
-            for (Building b : existing) {
-                if (candidate.isMutuallyExclusiveWith(b.getBuildingType())) {
+            for (Building existing : existingBuildings) {
+                if (candidate.isMutuallyExclusiveWith(existing.getBuildingType())) {
                     isExclusive = true;
                     break;
                 }
@@ -144,47 +157,6 @@ public class UpgradeStationController {
         return result;
     }
 
-
-    /**
-     * Sets the selected scenario by its index in the available scenarios list.
-     *
-     * @param index index of the scenario to select
-     */
-    public Scenario setScenarioByIndex(int index) {
-        return getAvailableScenarios().get(index);
-    }
-
-    /**
-     * Sets the selected station by its index in the available stations list.
-     *
-     * @param index index of the station to select
-     */
-    public Station setStationByIndex(int index, Scenario scenario){
-        return getAvailableStations(scenario).get(index);
-    }
-
-    /**
-     * Sets the selected building type by its index in the available building types list.
-     *
-     * @param index index of the building type to select
-     */
-    public BuildingType setBuildingTypeByIndex(int index, Scenario scenario, Station station) {
-        return getAvailableBuildingTypes(scenario,station).get(index);
-    }
-
-    /**
-     * Retrieves the cost of the currently selected building type.
-     *
-     * @return cost of selected building type
-     * @throws IllegalStateException if no building type is selected
-     */
-    public int getSelectedBuildingCost(BuildingType buildingType) {
-        if (buildingType != null) {
-            return (buildingType.getCost());
-        } else {
-            throw new IllegalStateException("No building type selected.");
-        }
-    }
 
     /**
      * Retrieves the current player performing the upgrade operation.
@@ -212,34 +184,27 @@ public class UpgradeStationController {
      * @return true if building was successfully created and assigned; false if player cannot afford
      */
     public boolean possibleBuilding(BuildingTypeDTO buildingTypeDTO, Station station) {
-        // List of upgrade groups to check
         List<String> validUpgradeGroups = Arrays.asList("COMMUNICATION", "CAFE", "RESTAURANT", "HOTEL");
 
-        // Check if the building's upgrade group is valid
         if (validUpgradeGroups.contains(buildingTypeDTO.getUpgradeGroup())) {
-            // Get the buildings at the station
             List<Building> buildings = station.getBuildings();
 
-            // Check if any building at the station has the same type and a smaller cost
             for (Building building : buildings) {
                 if ( building.getBuildingType().getCost() < buildingTypeDTO.getCost()) {
-                    return false; // There is a building of the same type with a lower cost, return false
+                    return false;
                 }
             }
         }
 
 
-        // Check if the player can afford the building
         return player.canAfford(buildingTypeDTO.getCost());
     }
 
-
-
-    public void createAndSetBuilding(BuildingDTO buildingDTO, Station station){
+    public void createBuilding(BuildingDTO buildingDTO, int stationIndex){
         BuildingMapper buildingMapper = new BuildingMapper();
         player.deductBudget(buildingDTO.getBuildingType().getCost());
         Building building = buildingMapper.toBuilding(buildingDTO);
-        station.addBuilding(building);
+        getStationByIndex(stationIndex).addBuilding(building);
     }
 
 }

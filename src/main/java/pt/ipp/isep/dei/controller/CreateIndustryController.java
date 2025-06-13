@@ -18,7 +18,7 @@ public class CreateIndustryController {
         List<Map> maps = repositories.getMapRepository().getMaps();
         List<MapDTO> mapDTOs = mapMapper.toDTOList(maps);
 
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (int i = 0; i < mapDTOs.size(); i++) {
             names.add(mapDTOs.get(i).getName());
         }

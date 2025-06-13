@@ -29,8 +29,8 @@ public class CreateScenarioController {
         List<MapDTO> mapDTOs = mapListMapper.toDTOList(maps);
 
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < mapDTOs.size(); i++) {
-            names.add(mapDTOs.get(i).getName());
+        for (MapDTO mapDTO : mapDTOs) {
+            names.add(mapDTO.getName());
         }
 
         return names;
@@ -126,11 +126,31 @@ public class CreateScenarioController {
                 System.out.println("Invalid index: " + index);
             }
         }
+
         return selected;
     }
 
+    public List<Industry> getPorts(int mapIndex){
+        List<Industry> industries = getMapByIndex(mapIndex).getIndustries();
+        List<Industry> ports = new ArrayList<>();
 
+        for (Industry industry : industries) {
+            if (industry.getType() == IndustryType.PORT) {
+                ports.add(industry);
+            }
+        }
 
+        return ports;
+    }
+
+    public void configurePorts(int mapIndex, List<ResourceType> imports, List<ResourceType> exports) {
+        List<Industry> ports = getPorts(mapIndex);
+
+        for (Industry port : ports) {
+            port.getType().setImportation(imports);
+            port.getType().setExportation(exports);
+        }
+    }
 
     /**
      * Retrieves all available locomotive types.
@@ -168,7 +188,7 @@ public class CreateScenarioController {
         }
     }
 
-    public Map selectMap(int mapIndex){
+    public Map getMapByIndex(int mapIndex){
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         return maps.get(mapIndex);
     }

@@ -6,7 +6,6 @@ import pt.ipp.isep.dei.repository.CargoRepository;
 import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -101,7 +100,7 @@ public class BuildStationController {
      */
     public List<String> getAvailableStationTypes() {
         StationTypeMapper stationTypeMapper = new StationTypeMapper();
-            List<StationType> types = Arrays.asList(StationType.values());
+            List<StationType> types = Repositories.getInstance().getStationTypeRepository().getStationTypes();
             List<StationTypeDTO> dtos = stationTypeMapper.toDTOList(types);
 
             List<String> names = new ArrayList<>();
@@ -232,9 +231,9 @@ public class BuildStationController {
      * @return StationType at the given index, or null if index is invalid.
      */
     public StationType getStationTypeByIndex(int index) {
-        StationType[] types = StationType.values();
-        if (index >= 0 && index < types.length) {
-            return types[index];
+        List<StationType> types = Repositories.getInstance().getStationTypeRepository().getStationTypes();
+        if (index >= 0 && index < types.size()) {
+            return types.get(index);
         }
         return null;
     }

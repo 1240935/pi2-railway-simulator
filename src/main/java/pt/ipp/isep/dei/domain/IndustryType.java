@@ -158,6 +158,14 @@ public enum IndustryType {
         return scenario.getExportation();
     }
 
+    public void setImportation(List<ResourceType> importation) {
+        this.importation = importation;
+    }
+
+    public void setExportation(List<ResourceType> exportation) {
+        this.exportation = exportation;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

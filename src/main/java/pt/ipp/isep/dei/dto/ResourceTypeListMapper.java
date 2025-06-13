@@ -9,6 +9,7 @@ public class ResourceTypeListMapper {
         List<ResourceTypeDTO> result = new ArrayList<>();
         for (ResourceType type : types) {
             ResourceTypeDTO dto = new ResourceTypeDTO();
+            dto.setName(type.name());
             dto.setValue(type.getValue());
             result.add(dto);
         }

@@ -1,6 +1,6 @@
 package pt.ipp.isep.dei.ui.console;
 
-import pt.ipp.isep.dei.controller.UpgradeStationController;
+import  pt.ipp.isep.dei.controller.UpgradeStationController;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.dto.BuildingDTO;
 import pt.ipp.isep.dei.dto.BuildingTypeDTO;
@@ -43,18 +43,18 @@ public class UpgradeStationUI {
             System.out.println((i + 1) + ". " + scenarioNames.get(i));
         }
 
-        int scenarioChoice = -1;
-        while (scenarioChoice < 1 || scenarioChoice > scenarioNames.size()) {
+        int scenarioIndex = -1;
+        while (scenarioIndex < 1 || scenarioIndex > scenarioNames.size()) {
             System.out.print("Select scenario by number: ");
             try {
-                scenarioChoice = Integer.parseInt(scanner.nextLine());
+                scenarioIndex = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
 
         // 2. Show stations and get player selection
-        List<String> stationNames = controller.getAvailableStationNames(controller.setScenarioByIndex(scenarioChoice - 1));
+        List<String> stationNames = controller.getAvailableStationNames(scenarioIndex);
         if (stationNames.isEmpty()) {
             System.out.println("No stations available.");
             return;
@@ -64,19 +64,18 @@ public class UpgradeStationUI {
             System.out.println((i + 1) + ". " + stationNames.get(i));
         }
 
-        int stationChoice = -1;
-        while (stationChoice < 1 || stationChoice > stationNames.size()) {
+        int stationIndex = -1;
+        while (stationIndex < 1 || stationIndex > stationNames.size()) {
             System.out.print("Select station by number: ");
             try {
-                stationChoice = Integer.parseInt(scanner.nextLine());
+                stationIndex = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
 
         // 3. Show available building types and get player selection
-        List<String> buildingNames = controller.getAvailableBuildingNames(controller.setScenarioByIndex(scenarioChoice - 1),
-                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)));
+        List<String> buildingNames = controller.getAvailableBuildingTypeNames(scenarioIndex, stationIndex);
         if (buildingNames.isEmpty()) {
             System.out.println("No valid buildings available for this station.");
             return;
@@ -86,26 +85,22 @@ public class UpgradeStationUI {
             System.out.println((i + 1) + ". " + buildingNames.get(i));
         }
 
-        int buildingChoice = -1;
-        while (buildingChoice < 1 || buildingChoice > buildingNames.size()) {
+        int buildingTypeIndex = -1;
+        while (buildingTypeIndex < 1 || buildingTypeIndex > buildingNames.size()) {
             System.out.print("Select building type by number: ");
             try {
-                buildingChoice = Integer.parseInt(scanner.nextLine());
+                buildingTypeIndex = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        buildingTypeDTO.setAvailabilityYear(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
-                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getAvailabilityYear());
+        buildingTypeDTO.setAvailabilityYear(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getAvailabilityYear());
 
-        buildingTypeDTO.setUpgradeGroup(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
-                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getUpgradeGroup());
+        buildingTypeDTO.setUpgradeGroup(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getUpgradeGroup());
 
-        buildingTypeDTO.setCost(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
-                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getCost());
+        buildingTypeDTO.setCost(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getCost());
 
 
-        // 4. Display player's budget and building cost, ask for confirmation
         System.out.println("Player budget: " + player.getBudget());
         System.out.println("Building cost: " + buildingTypeDTO.getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
@@ -115,16 +110,7 @@ public class UpgradeStationUI {
             return;
         }
 
-        // 5. Attempt to upgrade the station
-        boolean success = controller.possibleBuilding(buildingTypeDTO,
-                controller.setStationByIndex(stationChoice - 1 , controller.setScenarioByIndex(scenarioChoice - 1)));
-        if (success) {
-            System.out.println("Station upgraded successfully.");
-            controller.createAndSetBuilding(buildingDTO,controller.setStationByIndex(stationChoice - 1,
-                    controller.setScenarioByIndex(scenarioChoice - 1)));
-        } else {
-            System.out.println("Not enough budget to upgrade this station.");
-        }
+        controller.createBuilding(buildingDTO, stationIndex);
 
     }
 }

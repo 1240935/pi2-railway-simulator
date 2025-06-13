@@ -6,7 +6,7 @@ import java.util.List;
 
 public class IndustryTypeListMapper {
     public List<IndustryTypeDTO> toDTOList(List<IndustryType> types) {
-        List<IndustryTypeDTO> result = new ArrayList<IndustryTypeDTO>();
+        List<IndustryTypeDTO> result = new ArrayList<>();
         for (IndustryType type : types) {
             IndustryTypeDTO dto = new IndustryTypeDTO();
             dto.setName(type.name());

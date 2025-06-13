@@ -1,7 +1,6 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.CreateIndustryController;
-import pt.ipp.isep.dei.domain.IndustryType;
 import pt.ipp.isep.dei.dto.IndustryDTO;
 
 import java.util.List;
@@ -9,9 +8,7 @@ import java.util.Scanner;
 
 public class CreateIndustryUI {
 
-
     private final CreateIndustryController controller = new CreateIndustryController();
-
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -30,8 +27,6 @@ public class CreateIndustryUI {
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
 
-
-
         System.out.println("Available industry types:");
         List<String> industryTypeNames = controller.getAvailableIndustryTypeNames();
         for (int i = 0; i < industryTypeNames.size(); i++) {
@@ -41,10 +36,8 @@ public class CreateIndustryUI {
         System.out.print("Select industry type: ");
         int industryTypeIndex = scanner.nextInt();
 
-        IndustryType selectedType = controller.getIndustryTypeByIndex(industryTypeIndex); // User input
-
         IndustryDTO dto = new IndustryDTO();
-        dto.setIndustryType(selectedType);
+        dto.setIndustryType(controller.getIndustryTypeByIndex(industryTypeIndex));
         dto.setxCoordinate(x);
         dto.setyCoordinate(y);
         dto.setSize(size);

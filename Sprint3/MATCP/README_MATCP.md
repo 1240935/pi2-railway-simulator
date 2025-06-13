@@ -1,19 +1,18 @@
-# US030 - Curve Fitting and Correlation Analysis
+# MATCP Sprint3 
 
-[US30 - Analysis](US30Analysis.md)
-
----
-
-# US031 - Cargo-Based Revenue Prediction
-
-[US31 - Analysis](US31Analysis.md)
+[US029 - Dataset CSV](G051Dataset_US29.csv)
 
 ---
 
-# US030 / US031 - Implementation
+[US030 / US031 - Implementation](G051MATCPS3.ipynb)
 
-[Code Implementation](G051MATCPS3.ipynb)
+---
 
-## US29 - Data set
+[US030 - Curve Fitting and Correlation Analysis](US30Analysis.md)
 
-- [US029 - Dataset CSV](G051Dataset_US29.csv)
+---
+
+[US031 - Cargo-Based Revenue Prediction](US31Analysis.md)
+
+
+

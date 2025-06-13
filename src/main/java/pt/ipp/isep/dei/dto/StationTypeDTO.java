@@ -2,14 +2,23 @@ package pt.ipp.isep.dei.dto;
 
 public class StationTypeDTO {
     private int cost, radius;
+    private String name;
 
-    public StationTypeDTO(int cost, int radius){
+    public StationTypeDTO(int cost, int radius, String name){
         this.cost = cost;
         this.radius = radius;
+        this.name = name;
     }
 
     public StationTypeDTO(){
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCost() {
@@ -30,6 +39,6 @@ public class StationTypeDTO {
 
     @Override
     public String toString() {
-        return ("Radius = " + radius + " Cost = " +cost);
+        return name + " (Radius: " + radius + ", Cost: " + cost + ")";
     }
 }

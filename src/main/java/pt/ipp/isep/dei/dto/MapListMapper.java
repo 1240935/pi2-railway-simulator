@@ -8,7 +8,7 @@ import java.util.List;
 public class MapListMapper {
 
     public List<MapDTO> toDTOList(List<Map> maps) {
-        List<MapDTO> result = new ArrayList<MapDTO>();
+        List<MapDTO> result = new ArrayList<>();
         for (Map map : maps) {
             MapDTO dto = new MapDTO();
             dto.setName(map.getName());

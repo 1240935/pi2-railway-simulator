@@ -43,6 +43,10 @@ public class Scenario implements Serializable {
         this.routes = new ArrayList<>();
     }
 
+    public int getIndustryChangers() {
+        return industryChangers;
+    }
+
     /**
      * Returns the list of resource types imported in this scenario.
      *

@@ -28,7 +28,7 @@ public class CreateScenarioController {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         List<MapDTO> mapDTOs = mapListMapper.toDTOList(maps);
 
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (int i = 0; i < mapDTOs.size(); i++) {
             names.add(mapDTOs.get(i).getName());
         }

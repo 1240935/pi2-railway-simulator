@@ -1,9 +1,7 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
-import pt.ipp.isep.dei.dto.BuildingDTO;
-import pt.ipp.isep.dei.dto.BuildingMapper;
-import pt.ipp.isep.dei.dto.BuildingTypeDTO;
+import pt.ipp.isep.dei.dto.*;
 import pt.ipp.isep.dei.repository.*;
 
 import java.util.ArrayList;
@@ -64,11 +62,16 @@ public class UpgradeStationController {
      * @return list of scenario names/descriptions
      */
     public List<String> getAvailableScenarioNames() {
-        List<String> names = new ArrayList<>();
-        for (Scenario scenario : getAvailableScenarios()) {
-            names.add(scenario.toString());
-        }
-        return names;
+            ScenarioListMapper scenarioListMapper = new ScenarioListMapper();
+            List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+            List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
+
+            List<String> names = new ArrayList<>();
+            for (int i = 0; i < scenarioDTOS.size(); i++) {
+                names.add(scenarioDTOS.get(i).toString());
+            }
+
+            return names;
     }
 
     /**
@@ -78,11 +81,17 @@ public class UpgradeStationController {
      * @return list of station names/descriptions
      */
     public List<String> getAvailableStationNames(Scenario scenario) {
+        StationListMapper stationListMapper = new StationListMapper();
+        List<Station> stations = getAvailableStations(scenario);
+        List<StationDTO> stationDTOS = stationListMapper.toDTOList(stations);
+
         List<String> names = new ArrayList<>();
-        for (Station station : getAvailableStations(scenario)) {
-            names.add(station.toString());
+        for (int i = 0; i < stationDTOS.size(); i++) {
+            names.add(stationDTOS.get(i).toString());
         }
+
         return names;
+
     }
 
     /**

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pt.ipp.isep.dei.ui.gui.AssignRouteGUI"
+      style="-fx-padding: 20;">
+
+    <Label text="Select Scenario:" />
+    <ComboBox fx:id="scenarioComboBox" prefWidth="300" />
+
+    <Label text="Select Station:" />
+    <ComboBox fx:id="stationComboBox" prefWidth="300" />
+
+    <Label text="Select Cargo (optional):" />
+    <ComboBox fx:id="cargoComboBox" prefWidth="300" />
+
+    <Label text="Select Cargo Mode:" />
+    <ComboBox fx:id="cargoModeComboBox" prefWidth="300" />
+
+    <Button fx:id="addPointButton" text="Add Point to Route" />
+
+    <Label text="Route Preview:" />
+    <VBox fx:id="routePreviewBox" spacing="5" style="-fx-border-color: gray; -fx-padding: 10;" />
+
+    <Label text="Select Locomotive:" />
+    <ComboBox fx:id="locomotiveComboBox" prefWidth="300" />
+
+    <Button fx:id="createRouteButton" text="Create Route" />
+
+    <Label fx:id="feedbackLabel" style="-fx-text-fill: red;" />
+
+</VBox>

@@ -38,7 +38,7 @@ public class ViewStationDetailsUI {
         Scanner scanner = new Scanner(System.in);
 
         // Step 1: Select Scenario
-        List<String> scenarioDescriptions = controller.getAvailableScenarioDescriptions();
+        List<String> scenarioDescriptions = controller.getAvailableScenarioNames();
         if (scenarioDescriptions.isEmpty()) {
             System.out.println("No scenarios available.");
             return;
@@ -58,10 +58,10 @@ public class ViewStationDetailsUI {
             return;
         }
 
-        controller.setScenario(scenarioIndex);
+
 
         // Step 2: List Stations
-        List<String> stationNames = controller.getAvailableStationNames();
+        List<String> stationNames = controller.getAvailableStationNames(scenarioIndex);
         if (stationNames.isEmpty()) {
             System.out.println("No stations available.");
             return;
@@ -81,8 +81,8 @@ public class ViewStationDetailsUI {
             return;
         }
 
-        String buildingDetails = controller.getBuildingDetailsString(stationIndex);
-        String cargoInfo = controller.getCargoInfo(stationIndex);
+        String buildingDetails = controller.getBuildingDetailsString(stationIndex, scenarioIndex);
+        String cargoInfo = controller.getCargoInfo(stationIndex, scenarioIndex);
 
         System.out.println("\nBuilding Details:");
         System.out.println(buildingDetails);

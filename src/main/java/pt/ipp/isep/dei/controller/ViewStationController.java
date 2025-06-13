@@ -1,6 +1,10 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.ScenarioDTO;
+import pt.ipp.isep.dei.dto.ScenarioListMapper;
+import pt.ipp.isep.dei.dto.StationDTO;
+import pt.ipp.isep.dei.dto.StationListMapper;
 import pt.ipp.isep.dei.repository.*;
 
 import java.util.ArrayList;
@@ -18,8 +22,6 @@ import java.util.List;
  * and supports UI components by providing relevant information in simple formats.
  */
 public class ViewStationController {
-
-    private Scenario selectedScenario;
 
     /**
      * Default constructor for the ViewStationController.
@@ -42,65 +44,56 @@ public class ViewStationController {
      *
      * @return List of scenario descriptions.
      */
-    public List<String> getAvailableScenarioDescriptions() {
-        List<String> descriptions = new ArrayList<>();
-        for (Scenario s : getAvailableScenarios()) {
-            descriptions.add("Map: " + s.getMap().getName() + ", Year: " + s.getYear());
+    public List<String> getAvailableScenarioNames() {
+        ScenarioListMapper scenarioListMapper = new ScenarioListMapper();
+        List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+        List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
+
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < scenarioDTOS.size(); i++) {
+            names.add(scenarioDTOS.get(i).toString());
         }
-        return descriptions;
+
+        return names;
     }
 
-    /**
-     * Sets the selected scenario by its index in the list of available scenarios.
-     *
-     * @param index Index of the scenario in the scenarios list.
-     * @return true if the index is valid and a scenario was selected; false otherwise.
-     */
-    public boolean setScenario(int index) {
-        List<Scenario> scenarios = getAvailableScenarios();
-        if (index >= 0 && index < scenarios.size()) {
-            this.selectedScenario = scenarios.get(index);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Returns a list of names of all available stations.
      *
      * @return List of station names.
      */
-    public List<String> getAvailableStationNames() {
-        List<Station> stations = getAvailableStations();
-        List<String> stationNames = new ArrayList<>();
-        for (Station station : stations) {
-            stationNames.add(station.getName());
+    public List<String> getAvailableStationNames(int scenarioIndex) {
+        StationListMapper stationListMapper = new StationListMapper();
+        Scenario scenario = setScenario(scenarioIndex);
+        List<Station> stations = getAvailableStations(scenario);
+        List<StationDTO> stationDTOS = stationListMapper.toDTOList(stations);
+
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < stationDTOS.size(); i++) {
+            names.add(stationDTOS.get(i).toString());
         }
-        return stationNames;
+
+        return names;
     }
 
-    /**
-     * Returns the station at the given index in the list of available stations.
-     *
-     * @param index Index of the station in the stations list.
-     * @return Station at the given index, or null if index is invalid.
-     */
-    public Station getStationByIndex(int index) {
-        List<Station> stations = getAvailableStations();
-        if (index >= 0 && index < stations.size()) {
-            return stations.get(index);
+
+    public Station getStationByIndex(int stationIndex, int scenarioIndex) {
+        Scenario scenario = setScenario(scenarioIndex);
+        List<Station> stations = getAvailableStations(scenario);
+        if (stationIndex >= 0 && stationIndex < stations.size()) {
+            return stations.get(stationIndex);
         }
         return null;
     }
 
-    /**
-     * Returns the list of buildings of the station at the given index.
-     *
-     * @param index Index of the station in the stations list.
-     * @return The list of buildings of the station at the given index, or null if index is invalid.
-     */
-    public List<Building> getBuildingDetails(int index) {
-        Station station = getStationByIndex(index);
+    public Scenario setScenario(int index){
+            return getAvailableScenarios().get(index);
+    }
+
+
+    public List<Building> getBuildingDetails(int stationIndex, int scenarioIndex) {
+        Station station = getStationByIndex(stationIndex, scenarioIndex);
         if (station != null) {
             return station.getBuildings(); // assuming getBuildings() returns List<Building>
         }
@@ -108,14 +101,9 @@ public class ViewStationController {
     }
 
 
-    /**
-     * Returns a string describing the building details of the station at the given index.
-     *
-     * @param index Index of the station.
-     * @return Description of the buildings or a default message if none are available.
-     */
-    public String   getBuildingDetailsString(int index) {
-        List<Building> buildings = getBuildingDetails(index);
+
+    public String getBuildingDetailsString(int stationIndex, int scenarioIndex) {
+        List<Building> buildings = getBuildingDetails(stationIndex, scenarioIndex);
         if (buildings != null && !buildings.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (Building b : buildings) {
@@ -127,16 +115,11 @@ public class ViewStationController {
     }
 
 
-    /**
-     * Returns a string describing the cargo information of the given station.
-     *
-     * @param index Index of the station.
-     * @return Description of cargo or a default message if not available.
-     */
-    public String getCargoInfo(int index) {
-        Station station = getStationByIndex(index);
+    public String getCargoInfo(int stationIndex, int scenarioIndex) {
+        Station station = getStationByIndex(stationIndex, scenarioIndex);
+        Scenario scenario = setScenario(scenarioIndex);
         if (station != null) {
-            CargoStatus cargoStatus = getCargoInfo(station);
+            CargoStatus cargoStatus = getCargoInfo(station,scenario );
             if (cargoStatus != null) {
                 return cargoStatus.toString();
             }
@@ -149,8 +132,8 @@ public class ViewStationController {
      *
      * @return A list of all stations.
      */
-    public List<Station> getAvailableStations() {
-        return selectedScenario.getStations();
+    public List<Station> getAvailableStations(Scenario scenario) {
+        return scenario.getStations();
     }
 
     /**
@@ -160,12 +143,12 @@ public class ViewStationController {
      * @return CargoStatus object containing cargo information.
      * @throws IllegalStateException if no scenario has been selected.
      */
-    public CargoStatus getCargoInfo(Station station) {
-        if (selectedScenario == null) {
+    public CargoStatus getCargoInfo(Station station, Scenario scenario) {
+        if (scenario == null) {
             throw new IllegalStateException("Scenario not set");
         }
-        List<Industry> industries = selectedScenario.getMap().getIndustries();
-        List<City> cities = selectedScenario.getMap().getCities();
+        List<Industry> industries = scenario.getMap().getIndustries();
+        List<City> cities = scenario.getMap().getCities();
         return station.getCargoes(industries, cities);
     }
 }

@@ -89,7 +89,6 @@ public class PlayerTest {
     // Testa se adicionar um valor negativo subtrai do orçamento (comportamento incorreto)
     @Test
     public void testAddBudget_NegativeAmount() {
-        player.addBudget(-20);
-        assertEquals(80, player.getBudget(), "Adicionar valor negativo deve subtrair orçamento");
+        assertThrows(IllegalArgumentException.class, () -> player.addBudget(-20));
     }
 }

@@ -2,6 +2,8 @@ package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.UpgradeStationController;
 import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.dto.BuildingDTO;
+import pt.ipp.isep.dei.dto.BuildingTypeDTO;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +29,8 @@ public class UpgradeStationUI {
      */
     public void start(Player player) {
         controller.setPlayer(player);
+        BuildingTypeDTO buildingTypeDTO = new BuildingTypeDTO();
+        BuildingDTO buildingDTO = new BuildingDTO();
 
         // 1. Show scenarios and get player selection
         List<String> scenarioNames = controller.getAvailableScenarioNames();
@@ -91,11 +95,19 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
+        buildingTypeDTO.setAvailabilityYear(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
+                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getAvailabilityYear());
+
+        buildingTypeDTO.setUpgradeGroup(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
+                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getUpgradeGroup());
+
+        buildingTypeDTO.setCost(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice-1),
+                controller.setStationByIndex(stationChoice - 1,controller.setScenarioByIndex(scenarioChoice-1))).getCost());
+
 
         // 4. Display player's budget and building cost, ask for confirmation
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Building cost: " + controller.getSelectedBuildingCost(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
-                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)))));
+        System.out.println("Building cost: " + buildingTypeDTO.getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
         if (!confirmation.equals("y")) {
@@ -104,15 +116,15 @@ public class UpgradeStationUI {
         }
 
         // 5. Attempt to upgrade the station
-        boolean success = controller.possibleBuilding(controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
-                controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1))));
+        boolean success = controller.possibleBuilding(buildingTypeDTO,
+                controller.setStationByIndex(stationChoice - 1 , controller.setScenarioByIndex(scenarioChoice - 1)));
         if (success) {
             System.out.println("Station upgraded successfully.");
-            controller.createBuilding(controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1)),
-                    controller.setBuildingTypeByIndex(buildingChoice - 1,controller.setScenarioByIndex(scenarioChoice - 1),
-                    controller.setStationByIndex(stationChoice - 1, controller.setScenarioByIndex(scenarioChoice - 1))));
+            controller.createAndSetBuilding(buildingDTO,controller.setStationByIndex(stationChoice - 1,
+                    controller.setScenarioByIndex(scenarioChoice - 1)));
         } else {
             System.out.println("Not enough budget to upgrade this station.");
         }
+
     }
 }

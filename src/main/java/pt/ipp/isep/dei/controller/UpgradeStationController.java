@@ -1,9 +1,13 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.BuildingDTO;
+import pt.ipp.isep.dei.dto.BuildingMapper;
+import pt.ipp.isep.dei.dto.BuildingTypeDTO;
 import pt.ipp.isep.dei.repository.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -198,15 +202,35 @@ public class UpgradeStationController {
      *
      * @return true if building was successfully created and assigned; false if player cannot afford
      */
-    public boolean possibleBuilding(BuildingType buildingType) {
-        return player.canAfford(buildingType.getCost());
+    public boolean possibleBuilding(BuildingTypeDTO buildingTypeDTO, Station station) {
+        // List of upgrade groups to check
+        List<String> validUpgradeGroups = Arrays.asList("COMMUNICATION", "CAFE", "RESTAURANT", "HOTEL");
+
+        // Check if the building's upgrade group is valid
+        if (validUpgradeGroups.contains(buildingTypeDTO.getUpgradeGroup())) {
+            // Get the buildings at the station
+            List<Building> buildings = station.getBuildings();
+
+            // Check if any building at the station has the same type and a smaller cost
+            for (Building building : buildings) {
+                if ( building.getBuildingType().getCost() < buildingTypeDTO.getCost()) {
+                    return false; // There is a building of the same type with a lower cost, return false
+                }
+            }
+        }
+
+
+        // Check if the player can afford the building
+        return player.canAfford(buildingTypeDTO.getCost());
     }
 
-    public void createBuilding(Station station, BuildingType buildingType){
-        player.deductBudget(buildingType.getCost());
-        Building building = Repositories.getInstance().getBuildingRepository().createBuilding(buildingType);
+
+
+    public void createAndSetBuilding(BuildingDTO buildingDTO, Station station){
+        BuildingMapper buildingMapper = new BuildingMapper();
+        player.deductBudget(buildingDTO.getBuildingType().getCost());
+        Building building = buildingMapper.toBuilding(buildingDTO);
         station.addBuilding(building);
-        Repositories.getInstance().getBuildingRepository().addBuilding(building);
     }
 
 }

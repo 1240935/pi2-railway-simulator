@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
+import pt.ipp.isep.dei.repository.Repositories;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,6 +262,10 @@ public class Station {
 
     public static Position createPosition(int x, int y) {
         return Position.createPosition(x, y);
+    }
+
+    public static Building createBuilding(BuildingType buildingType){
+        return Repositories.getInstance().getBuildingRepository().createBuilding(buildingType);
     }
 
     public static boolean checkOverbuilding(Position position, Map map, Scenario scenario) {

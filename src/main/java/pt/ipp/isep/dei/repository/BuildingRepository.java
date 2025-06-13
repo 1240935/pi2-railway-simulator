@@ -25,8 +25,9 @@ public class BuildingRepository {
         buildings.add(building);
     }
 
-    public Building createBuilding(BuildingType buildingType){
+    public static Building createBuilding(BuildingType buildingType){
         Building building = new Building(buildingType);
+        Repositories.getInstance().getBuildingRepository().addBuilding(building);
         return building;
     }
 

@@ -91,39 +91,53 @@ The methodology applied to fulfill US31 involved:
 
 ## Analysis and Interpretation of Results
 
-The statistical analysis carried out for US31 aimed to identify which type of cargo most significantly influenced the revenue of a specific railway station in a given year. This involved calculating Pearson correlation coefficients between each cargo type and the revenue, selecting the cargo with the highest correlation, applying a linear regression model, and estimating future revenue based on a 10% increase in that cargo.
+The goal of this analysis was to identify which cargo type most significantly contributed to the revenue of a specific railway station in a given year. This was achieved by:
 
-In the case of **Frankfurt Station** for the year **2023**, the analysis revealed:
+- Calculating Pearson correlation coefficients between each cargo type and the revenue.
+- Selecting the cargo with the highest correlation.
+- Applying a linear regression model to quantify the relationship.
+- Using December’s cargo data to simulate a 10% increase in January of the following year.
+- Estimating the expected revenue and reporting both the **95% confidence interval** and **95% prediction interval**.
 
-- The cargo type most correlated with revenue was **Cattle**, with a correlation coefficient of **0.7231**
-- A **linear regression** was applied between Cattle and revenue:
-    - **Slope:** 0.7699
-    - **Intercept:** 2566.24
-    - **R²:** 0.5229, indicating that approximately 52% of the variance in revenue is explained by the variation in Cattle cargo volume
-    - **Standard Error of the Slope:** 0.2326
+For the station of **Hamburg** in the year **2020**, the following results were obtained:
 
-Using this model, we estimated the expected revenue for **January 2024**, assuming a **10% increase** in the Cattle cargo volume recorded in **December 2023**:
+-  **Selected Cargo**: Iron
+-  **Correlation Coefficient (r)**: 0.9111
+  > This indicates a very strong positive linear relationship between the amount of Iron transported and the station's revenue.
 
-- **Projected Cattle Cargo:** 1507.23 units
-- **Predicted Revenue:** €3722.48
-- **95% Confidence Interval:** (€3418.38, €4026.57)
-- **95% Prediction Interval:** (€3154.87, €4280.22)
+### Linear Regression Model
+
+- **Slope**: 0.8716
+- **Intercept**: 351.3873
+- **Coefficient of Determination (R²)**: 0.8301
+- **Standard Error of the Slope**: *Calculated internally by the model*
+- **Residual Sum of Squares (SQE)**: 450132.83
+
+### Forecast for January 2021
+
+Assuming a **10% increase** in the volume of Iron from December 2020:
+
+- **New Cargo Quantity**: 487.42 units
+- **95% Confidence Interval**: (€635.55, €916.94)
+- **95% Prediction Interval**: (€283.02, €1269.47)
+
+> The prediction interval is wider than the confidence interval because it accounts for both the model’s uncertainty and the variability expected in future individual observations.
 
 ---
 
 ## Extrapolation to the Project Context
 
-Within the context of the Integrative Project, these results can guide strategic decision-making related to freight prioritization and resource planning. Specifically, this analysis enables:
+This analysis provides essential insights into how different types of cargo affect station profitability, enabling players and stakeholders in the simulation to:
 
-1. **Targeted Cargo Investment:** By identifying which cargo types correlate most with revenue, stations can prioritize operational improvements or upgrades for those commodities.
-
-2. **Forecasting Revenue:** Estimating revenue based on projected cargo growth allows players to simulate realistic financial outcomes and assess risk.
-
-3. **Adaptive Strategy:** Players can compare correlations across different stations and years to adjust their gameplay or simulation paths accordingly.
-
-4. **Scenario Testing:** Incorporating confidence and prediction intervals encourages users to reason with uncertainty, mirroring real-world economic planning.
+1. **Optimize Freight Handling**: Focus investments and logistic planning on cargo types with high revenue impact.
+2. **Simulate Financial Outcomes**: Project future revenues under hypothetical scenarios (e.g., increased cargo demand).
+3. **Incorporate Risk Analysis**: Use confidence and prediction intervals to estimate uncertainty in revenue forecasts.
+4. **Enhance Strategic Decisions**: Apply these insights to prioritize routes, upgrade stations, or schedule resources efficiently.
 
 ---
+
+This approach helps bridge statistical modeling with gameplay mechanics, enriching the simulation’s economic realism and decision-making depth.
+
 
 # Workload Distribution Among Team Members
 

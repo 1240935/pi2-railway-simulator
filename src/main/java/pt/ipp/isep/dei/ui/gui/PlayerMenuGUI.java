@@ -98,13 +98,28 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleAssignRoute() {
-        new AssignRouteUI().start();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AssignRoute.fxml"));
+            Parent root = loader.load();
+
+            AssignRouteGUI controller = loader.getController();
+            controller.setPlayer(player);
+            controller.initialize();
+
+            Stage stage = new Stage();
+            stage.setTitle("Assign Route");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    /* @FXML
+
+    @FXML
     private void handleSimulator() {
         new SimulatorUI().start(player);
-    } */
+    }
 
     @FXML
     private void handleLogout() {

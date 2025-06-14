@@ -46,6 +46,12 @@ public class Cargo {
         this.quantity = quantity;
     }
 
+    public int addQuantity(int other) {
+        this.quantity += other;
+        return this.quantity;
+    }
+
+
     /**
      * Returns a string representation of the cargo.
      *

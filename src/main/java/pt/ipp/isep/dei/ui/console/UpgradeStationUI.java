@@ -3,7 +3,6 @@ package pt.ipp.isep.dei.ui.console;
 import  pt.ipp.isep.dei.controller.UpgradeStationController;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.dto.BuildingDTO;
-import pt.ipp.isep.dei.dto.BuildingTypeDTO;
 
 import java.util.List;
 import java.util.Scanner;

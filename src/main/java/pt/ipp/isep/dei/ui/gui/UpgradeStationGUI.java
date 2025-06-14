@@ -7,9 +7,6 @@ import pt.ipp.isep.dei.domain.BuildingType;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.dto.BuildingDTO;
 
-
-import java.util.List;
-
 public class UpgradeStationGUI {
 
     @FXML
@@ -36,37 +33,43 @@ public class UpgradeStationGUI {
     private final UpgradeStationController controller = new UpgradeStationController();
     private Player player;
 
-    private int scenarioIndex = -1;
-    private int stationIndex = -1;
-    private int buildingTypeIndex = -1;
-
     public void setPlayer(Player player) {
         this.player = player;
         controller.setPlayer(player);
-        budgetLabel.setText("Budget: " + player.getBudget());
+        budgetLabel.setText(String.valueOf(player.getBudget()));
+        loadScenarios();
     }
 
     public void initialize() {
-        loadScenarios();
+        buyButton.setDisable(true);
 
         scenarioComboBox.setOnAction(e -> {
-            scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex() + 1;
-            if (scenarioIndex > 0) {
-                loadStations();
+            int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            if (scenarioIndex >= 0) {
+                loadStations(scenarioIndex);
             }
         });
 
         stationComboBox.setOnAction(e -> {
-            stationIndex = stationComboBox.getSelectionModel().getSelectedIndex() + 1;
-            if (stationIndex > 0) {
-                loadBuildingTypes();
+            int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
+            if (stationIndex >= 0) {
+                loadBuildingTypes(scenarioIndex, stationIndex);
             }
         });
 
         buildingTypeComboBox.setOnAction(e -> {
-            buildingTypeIndex = buildingTypeComboBox.getSelectionModel().getSelectedIndex() + 1;
-            if (buildingTypeIndex > 0) {
-                updateBuildingCost();
+            int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
+            int buildingTypeIndex = buildingTypeComboBox.getSelectionModel().getSelectedIndex();
+            if (buildingTypeIndex >= 0) {
+                BuildingType type = controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex);
+                costLabel.setText(String.valueOf(type.getCost()));
+                buyButton.setDisable(false);
+                feedbackLabel.setText("");
+            } else {
+                costLabel.setText("0");
+                buyButton.setDisable(true);
             }
         });
 
@@ -75,76 +78,85 @@ public class UpgradeStationGUI {
 
     private void loadScenarios() {
         scenarioComboBox.getItems().clear();
-        List<String> scenarioNames = controller.getAvailableScenarioNames();
-        scenarioComboBox.getItems().addAll(scenarioNames);
-    }
+        scenarioComboBox.getItems().addAll(controller.getAvailableScenarioNames());
 
-    private void loadStations() {
         stationComboBox.getItems().clear();
         buildingTypeComboBox.getItems().clear();
-        costLabel.setText("Cost: 0");
+        costLabel.setText("0");
         feedbackLabel.setText("");
         buyButton.setDisable(true);
-
-        List<String> stationNames = controller.getAvailableStationNames(scenarioIndex);
-        stationComboBox.getItems().addAll(stationNames);
     }
 
-    private void loadBuildingTypes() {
+    private void loadStations(int scenarioIndex) {
+        stationComboBox.getItems().clear();
+        stationComboBox.getItems().addAll(controller.getAvailableStationNames(scenarioIndex));
+
         buildingTypeComboBox.getItems().clear();
-        costLabel.setText("Cost: 0");
+        costLabel.setText("0");
         feedbackLabel.setText("");
         buyButton.setDisable(true);
-
-        List<String> buildingNames = controller.getAvailableBuildingTypeNames(scenarioIndex, stationIndex);
-        buildingTypeComboBox.getItems().addAll(buildingNames);
     }
 
-    private void updateBuildingCost() {
+    private void loadBuildingTypes(int scenarioIndex, int stationIndex) {
+        buildingTypeComboBox.getItems().clear();
+        buildingTypeComboBox.getItems().addAll(controller.getAvailableBuildingTypeNames(scenarioIndex, stationIndex));
+
+        costLabel.setText("0");
         feedbackLabel.setText("");
-        if (scenarioIndex > 0 && stationIndex > 0 && buildingTypeIndex > 0) {
-            BuildingType type = controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex);
-            costLabel.setText("Cost: " + type.getCost());
-            buyButton.setDisable(false);
-        }
+        buyButton.setDisable(true);
     }
 
     private void handleBuy() {
-        feedbackLabel.setText("");
+        int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+        int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
+        int buildingTypeIndex = buildingTypeComboBox.getSelectionModel().getSelectedIndex();
 
-        if (scenarioIndex <= 0 || stationIndex <= 0 || buildingTypeIndex <= 0) {
-            feedbackLabel.setText("Please make all selections.");
-            feedbackLabel.setStyle("-fx-text-fill: darkred;");
+        if (scenarioIndex < 0 || stationIndex < 0 || buildingTypeIndex < 0) {
+            showError("Please make all selections.");
             return;
         }
 
-        BuildingType type = controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex);
+        BuildingType selectedType = controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex);
+        int cost = selectedType.getCost();
 
-        int cost = type.getCost();
-
-        if (cost > player.getBudget()) {
-            feedbackLabel.setText("Not enough budget to upgrade.");
-            feedbackLabel.setStyle("-fx-text-fill: darkred;");
+        if (player.getBudget() < cost) {
+            showError("Not enough budget.");
             return;
         }
 
-        // Confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Purchase");
-        alert.setHeaderText("Confirm upgrade");
+        alert.setHeaderText("Upgrade Station");
         alert.setContentText("This will cost " + cost + ". Proceed?");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                BuildingDTO buildingDTO = new BuildingDTO();
-                controller.createBuilding(buildingDTO, stationIndex);
-                feedbackLabel.setText("Station upgraded successfully!");
-                feedbackLabel.setStyle("-fx-text-fill: green;");
-                budgetLabel.setText("Budget: " + player.getBudget());
-                buyButton.setDisable(true);
+                try {
+                    BuildingDTO dto = new BuildingDTO();
+                    dto.setBuildingType(selectedType);
+
+                    controller.createBuilding(dto, stationIndex);  // Uses index from current scenario's stations
+
+                    player.deductBudget(cost);
+                    budgetLabel.setText(String.valueOf(player.getBudget()));
+
+                    feedbackLabel.setText("Upgrade successful!");
+                    feedbackLabel.setStyle("-fx-text-fill: green;");
+                    buyButton.setDisable(true);
+                    costLabel.setText("0");
+                    buildingTypeComboBox.getSelectionModel().clearSelection();
+                } catch (Exception e) {
+                    showError("Upgrade failed: " + e.getMessage());
+                }
             } else {
-                feedbackLabel.setText("Purchase cancelled.");
-                feedbackLabel.setStyle("-fx-text-fill: darkorange;");
+                feedbackLabel.setText("Upgrade canceled.");
+                feedbackLabel.setStyle("-fx-text-fill: orange;");
             }
         });
+    }
+
+    private void showError(String message) {
+        feedbackLabel.setText(message);
+        feedbackLabel.setStyle("-fx-text-fill: darkred;");
+        buyButton.setDisable(true);
     }
 }

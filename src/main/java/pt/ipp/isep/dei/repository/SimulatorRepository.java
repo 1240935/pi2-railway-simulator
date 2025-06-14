@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.repository;
 
+import pt.ipp.isep.dei.domain.Simulator;
+
 import java.io.*;
 
 public class SimulatorRepository {

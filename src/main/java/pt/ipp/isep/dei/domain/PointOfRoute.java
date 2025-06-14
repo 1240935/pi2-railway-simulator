@@ -7,6 +7,8 @@ public class PointOfRoute {
     private Station station;
     private List<Cargo> cargoList;
     private CargoMode cargoMode;
+    private double estimatedTimeToNextArrival;
+
 
     public PointOfRoute(Station station, List<Cargo> cargoList, CargoMode cargoMode) {
         this.station = station;
@@ -53,6 +55,10 @@ public class PointOfRoute {
 
     public boolean checkCargoMode(CargoMode mode) {
         return mode != null;
+    }
+
+    public void setEstimatedTimeToNextArrival(double timeHours) {
+        this.estimatedTimeToNextArrival = timeHours;
     }
 
 

@@ -14,7 +14,7 @@ public class Scenario implements Serializable {
     private Map map;
     private int year;
     private List<LocomotiveType> locomotiveTypes;
-    private int industryChangers;
+    private int industryChanger;
     private List<ResourceType> importation;
     private List<ResourceType> exportation;
     private List<Station> stations;
@@ -35,7 +35,7 @@ public class Scenario implements Serializable {
         this.map = map;
         this.year = year;
         this.locomotiveTypes = locomotiveTypes;
-        this.industryChangers = industryChanger;
+        this.industryChanger = industryChanger;
         this.importation = importation;
         this.exportation = exportation;
         this.stations = new ArrayList<>();
@@ -43,8 +43,8 @@ public class Scenario implements Serializable {
         this.routes = new ArrayList<>();
     }
 
-    public int getIndustryChangers() {
-        return industryChangers;
+    public int getIndustryChanger() {
+        return industryChanger;
     }
 
     /**

@@ -27,6 +27,12 @@ public class Station {
 
     private List<Cargo> supplies;
 
+    private int demandLevel;
+
+    private int deliveriesCount;
+
+
+
     /**
      * Creates a Station with specified name, center, position, type, demands, and supplies.
      *
@@ -104,6 +110,14 @@ public class Station {
      */
     public void setType(StationType type) {
         this.type = type;
+    }
+
+    public void setDemands(List<Cargo> demands) {
+        this.demands = demands;
+    }
+
+    public void setSupplies(List<Cargo> supplies) {
+        this.supplies = supplies;
     }
 
     /**
@@ -310,6 +324,34 @@ public class Station {
      */
     public static boolean checkType(StationType type) {
         return type != null;
+    }
+
+    public int getDemandLevel() {
+        return demandLevel;
+    }
+
+    public void setDemandLevel(int demandLevel) {
+        this.demandLevel = demandLevel;
+    }
+
+    public double getTotalRevenueBonus() {
+        double totalBonus = 0;
+        for (Building b : buildings) {
+            totalBonus += b.getRevenueBonus();
+        }
+        return totalBonus;
+    }
+
+    public void incrementDeliveries() {
+        deliveriesCount++;
+    }
+
+    public int getDeliveriesCount() {
+        return deliveriesCount;
+    }
+
+    public void resetDeliveries() {
+        this.deliveriesCount = 0;
     }
 
     /**

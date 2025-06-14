@@ -12,6 +12,8 @@ public class Building {
      */
     private BuildingType buildingType;
 
+    private double revenueBonus;
+
     /**
      * Constructs a Building with the specified building type.
      *
@@ -42,6 +44,16 @@ public class Building {
     public static boolean checkType(BuildingType type) {
         return type != null;
     }
+
+    public double getRevenueBonus() {
+        if (buildingType == BuildingType.LARGE_HOTEL || buildingType == BuildingType.LARGE_CAFE || buildingType == BuildingType.LARGE_RESTAURANT){
+            revenueBonus = 10;
+        } else {
+            revenueBonus = 5;
+        }
+        return revenueBonus;
+    }
+
 
     /**
      * Returns a string representation of the building.

@@ -9,7 +9,7 @@ public class ScenarioListMapper {
         List<ScenarioDTO> result = new ArrayList<>();
         for (Scenario scenario : scenarios) {
             ScenarioDTO dto = new ScenarioDTO();
-            dto.setChanger(scenario.getIndustryChangers());
+            dto.setChanger(scenario.getIndustryChanger());
             dto.setExportation(scenario.getExportation());
             dto.setImportation(scenario.getImportation());
             dto.setYear(scenario.getYear());

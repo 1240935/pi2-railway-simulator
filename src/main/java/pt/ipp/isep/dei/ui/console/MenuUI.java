@@ -129,7 +129,7 @@ public class MenuUI {
                 case "7" -> new ViewStationDetailsUI().start();
                 case "9" -> new BuyLocomotiveUI().start(player);
                 case "10" -> new AssignRouteUI().start();
-//                case "12" -> new SimulatorUI().start(player);
+                case "12" -> new SimulatorUI().start(player);
                 case "13" -> new VerifyTrainTravelUI().start();
                 case "14" -> new RailwayMaintenanceUI().start();
                 case "27" -> new ShortestPathUI().start();

@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import pt.ipp.isep.dei.controller.AssignRouteController;
-import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,20 +45,31 @@ public class AssignRouteGUI {
 
     public void setPlayer(Player player) {
         this.player = player;
-        initializeUI();
     }
 
-    private void initializeUI() {
+    @FXML
+    public void initialize() {
         scenarioComboBox.setItems(FXCollections.observableArrayList(controller.getAvailableScenarioNames()));
 
         scenarioComboBox.setOnAction(e -> {
             selectedScenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
-            updateStations();
-            updateLocomotives();
-            feedbackLabel.setText("");
+            usedStationIndices.clear();
             routePreview.clear();
             routePreviewBox.getChildren().clear();
-            usedStationIndices.clear();
+            feedbackLabel.setText("");
+            updateStations();
+            updateLocomotives();
+            cargoComboBox.getItems().clear();
+        });
+
+        stationComboBox.setOnAction(e -> {
+            int stationIndexFiltered = stationComboBox.getSelectionModel().getSelectedIndex();
+            if (stationIndexFiltered >= 0) {
+                int realStationIndex = calculateRealStationIndex(stationIndexFiltered);
+                updateCargoes(realStationIndex);
+            } else {
+                cargoComboBox.getItems().clear();
+            }
         });
 
         addPointButton.setOnAction(e -> addPointOfRoute());
@@ -69,7 +80,7 @@ public class AssignRouteGUI {
 
     private void updateStations() {
         if (selectedScenarioIndex >= 0) {
-            List<String> stationNames = controller.getAvailableStationNames(selectedScenarioIndex);
+            List<String> stationNames = controller.getAvailableStationNames(selectedScenarioIndex + 1);
             List<String> filteredStations = new ArrayList<>();
             for (int i = 0; i < stationNames.size(); i++) {
                 if (!usedStationIndices.contains(i)) {
@@ -77,78 +88,96 @@ public class AssignRouteGUI {
                 }
             }
             stationComboBox.setItems(FXCollections.observableArrayList(filteredStations));
+            stationComboBox.getSelectionModel().clearSelection();
+            cargoComboBox.getItems().clear();
         }
     }
 
-    private void updateCargoes(int stationIndex) {
+    private void updateCargoes(int realStationIndex) {
         if (selectedScenarioIndex >= 0) {
-            List<String> cargoNames = controller.getAvailableCargoNames(selectedScenarioIndex, stationIndex + 1);
+            List<String> cargoNames = controller.getAvailableCargoNames(selectedScenarioIndex + 1, realStationIndex + 1);
             cargoComboBox.setItems(FXCollections.observableArrayList(cargoNames));
+            cargoComboBox.getSelectionModel().clearSelection();
         }
     }
 
     private void updateLocomotives() {
         if (selectedScenarioIndex >= 0) {
-            List<String> locomotiveNames = controller.getAvailableLocomotiveNames(selectedScenarioIndex);
+            List<String> locomotiveNames = controller.getAvailableLocomotiveNames(selectedScenarioIndex + 1);
             locomotiveComboBox.setItems(FXCollections.observableArrayList(locomotiveNames));
+            locomotiveComboBox.getSelectionModel().clearSelection();
         }
     }
 
+    private int calculateRealStationIndex(int filteredIndex) {
+        // Map the filtered stationComboBox index back to the real station index in scenario
+        int realIndex = -1;
+        if (selectedScenarioIndex >= 0) {
+            List<String> stationNames = controller.getAvailableStationNames(selectedScenarioIndex + 1);
+            int count = -1;
+            for (int i = 0; i < stationNames.size(); i++) {
+                if (!usedStationIndices.contains(i)) {
+                    count++;
+                    if (count == filteredIndex) {
+                        realIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        return realIndex;
+    }
+
+    @FXML
     private void addPointOfRoute() {
-        int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
+        int stationIndexFiltered = stationComboBox.getSelectionModel().getSelectedIndex();
+        int cargoIndexSelected = cargoComboBox.getSelectionModel().getSelectedIndex(); // optional
         int cargoModeIndex = cargoModeComboBox.getSelectionModel().getSelectedIndex();
 
-        if (stationIndex < 0 || cargoModeIndex < 0) {
+        if (stationIndexFiltered < 0 || cargoModeIndex < 0) {
             feedbackLabel.setText("Select a station and cargo mode.");
             return;
         }
 
-        int realStationIndex = calculateRealStationIndex(stationIndex);
-        usedStationIndices.add(realStationIndex);
+        int realStationIndex = calculateRealStationIndex(stationIndexFiltered);
 
-        List<Integer> cargoIndices = new ArrayList<>();
-        int selectedCargoIndex = cargoComboBox.getSelectionModel().getSelectedIndex();
-        if (selectedCargoIndex >= 0) {
-            cargoIndices.add(selectedCargoIndex + 1); // 1-based
+        // Get Station domain object
+        Station station = controller.getStationByIndex(selectedScenarioIndex + 1, realStationIndex + 1);
+
+        // Get available cargo for this station (needed to map selected indices to Cargo objects)
+        List<Industry> industries = controller.getScenarioByIndex(selectedScenarioIndex + 1).getMap().getIndustries();
+        List<City> cities = controller.getScenarioByIndex(selectedScenarioIndex + 1).getMap().getCities();
+        List<Cargo> availableCargoList = station.getSuppliesOnly(industries, cities);
+
+        // Selected cargos from combo box
+        List<Integer> selectedCargoIndices = new ArrayList<>();
+        if (cargoIndexSelected >= 0) {
+            selectedCargoIndices.add(cargoIndexSelected + 1); // 1-based index for controller method
         }
 
-        controller.createPointOfRoute(
-                controller.getStationByIndex(selectedScenarioIndex, realStationIndex + 1),
-                controller.getSelectedCargoList(
-                        cargoIndices,
-                        controller.getStationByIndex(selectedScenarioIndex, realStationIndex + 1).getSupplies()
-                ),
-                controller.getCargoModeByIndex(cargoModeIndex)
-        );
+        List<Cargo> selectedCargoList = controller.getSelectedCargoList(selectedCargoIndices, availableCargoList);
 
+        // Get CargoMode domain object
+        CargoMode cargoMode = controller.getCargoModeByIndex(cargoModeIndex + 1);
+
+        // Add point to route
+        controller.createPointOfRoute(station, selectedCargoList, cargoMode);
+
+        // Mark this station as used
+        usedStationIndices.add(realStationIndex);
+
+        // Update route preview UI
         String stationName = stationComboBox.getSelectionModel().getSelectedItem();
         routePreview.add("→ " + stationName);
         refreshRoutePreview();
-        updateStations(); // to refresh unused stations
+
+        // Update stations and clear cargo selection
+        updateStations();
+        cargoComboBox.getItems().clear();
+        feedbackLabel.setText("");
     }
 
-    private int calculateRealStationIndex(int comboIndex) {
-        // Map visible index to real station index in original list
-        List<String> allStations = controller.getAvailableStationNames(selectedScenarioIndex);
-        int count = -1;
-        for (int i = 0; i < allStations.size(); i++) {
-            if (!usedStationIndices.contains(i)) {
-                count++;
-                if (count == comboIndex) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    private void refreshRoutePreview() {
-        routePreviewBox.getChildren().clear();
-        for (String routeStep : routePreview) {
-            routePreviewBox.getChildren().add(new Label(routeStep));
-        }
-    }
-
+    @FXML
     private void createFinalRoute() {
         int locoIndex = locomotiveComboBox.getSelectionModel().getSelectedIndex();
 
@@ -159,8 +188,8 @@ public class AssignRouteGUI {
 
         try {
             controller.createRoute(
-                    controller.getScenarioByIndex(selectedScenarioIndex),
-                    controller.getLocomotiveByIndex(selectedScenarioIndex, locoIndex),
+                    controller.getScenarioByIndex(selectedScenarioIndex + 1),
+                    controller.getLocomotiveByIndex(selectedScenarioIndex + 1, locoIndex + 1),
                     controller.getPointsOfRoute()
             );
             feedbackLabel.setStyle("-fx-text-fill: green;");
@@ -168,6 +197,14 @@ public class AssignRouteGUI {
         } catch (Exception ex) {
             feedbackLabel.setStyle("-fx-text-fill: red;");
             feedbackLabel.setText("Error: " + ex.getMessage());
+        }
+    }
+
+    private void refreshRoutePreview() {
+        routePreviewBox.getChildren().clear();
+        for (String point : routePreview) {
+            Label label = new Label(point);
+            routePreviewBox.getChildren().add(label);
         }
     }
 }

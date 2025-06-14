@@ -1,9 +1,11 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents a quantity of a specific resource type carried as cargo.
  */
-public class Cargo {
+public class Cargo implements Serializable {
 
     private ResourceType type;
     private int quantity;

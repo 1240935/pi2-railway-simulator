@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Enumeration representing various types of resources handled within the railway system.
  * <p>
@@ -10,7 +12,7 @@ package pt.ipp.isep.dei.domain;
  * <p>Examples of resource types include raw materials (e.g., COAL, IRON), manufactured goods (e.g., AUTOS, CHEMICALS),
  * agricultural products (e.g., GRAIN, DAIRY), and special cargo (e.g., PASSENGERS, TROOPS).</p>
  */
-public enum ResourceType {
+public enum ResourceType implements Serializable {
 
     ALUMINUM(35000),
     AUTOS(49000),

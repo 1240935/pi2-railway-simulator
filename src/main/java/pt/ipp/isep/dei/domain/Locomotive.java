@@ -1,9 +1,10 @@
 package pt.ipp.isep.dei.domain;
+import java.io.Serializable;
 
 /**
  * Represents a locomotive with a unique identifier and an associated locomotive model.
  */
-public class Locomotive {
+public class Locomotive implements Serializable {
 
     /** The unique identifier of the locomotive. */
     private final int id;

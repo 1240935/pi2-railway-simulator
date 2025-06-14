@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * and some have no imports but export resources.
  * The PORT industry type is special and defers to scenario-specific imports/exports.
  */
-public enum IndustryType {
+public enum IndustryType implements Serializable {
 
     ALUMINUM_MILL(ResourceType.BAUXITE, ResourceType.ALUMINUM),
     AUTO_PLANT(List.of(ResourceType.STEEL, ResourceType.TIRES), ResourceType.AUTOS),

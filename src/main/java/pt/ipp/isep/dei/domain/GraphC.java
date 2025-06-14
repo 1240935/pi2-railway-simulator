@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Represents a railway graph composed of stations (nodes) and lines (edges).
  * Provides methods to build and query the graph structure.
  */
-public class GraphC {
+public class GraphC implements Serializable {
     private List<Station> stations = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
 

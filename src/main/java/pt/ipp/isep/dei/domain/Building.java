@@ -1,11 +1,13 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents a Building associated with a Station in the railway system.
  * <p>
  * Each building has a type that describes its purpose.
  */
-public class Building {
+public class Building implements Serializable {
 
     /**
      * The type of the building.

@@ -1,8 +1,9 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PointOfRoute {
+public class PointOfRoute implements Serializable {
 
     private Station station;
     private List<Cargo> cargoList;

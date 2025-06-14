@@ -4,8 +4,9 @@ import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Simulator {
+public class Simulator implements Serializable {
 
     private List<Route> routes;
     private Player player;
@@ -250,5 +251,8 @@ public class Simulator {
             sb.append("Alert: ").append(alert).append("\n");
         }
         return sb.toString();
+    }
+    public String getName() {
+        return scenario.getMap().getName() + "-" + currentMonth;
     }
 }

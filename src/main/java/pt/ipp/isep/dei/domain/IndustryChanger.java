@@ -1,10 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents different types of industry changers,
  * each with an associated effect value.
  */
-public enum IndustryChanger {
+public enum IndustryChanger implements Serializable {
     // Types of industry changers with their effect values
     WAR(1),
     VACCINATION_CAMPAIGN(1),

@@ -1,4 +1,5 @@
 package pt.ipp.isep.dei.domain;
+import java.io.Serializable;
 
 /**
  * Enum representing different locomotive models with their respective characteristics.
@@ -26,7 +27,7 @@ package pt.ipp.isep.dei.domain;
  * </p>
  */
 
-public enum LocomotiveModel {
+public enum LocomotiveModel implements Serializable {
 
     TREVITHICK_1("EXTREMELY_POOR", "EXTREMELY_POOR", 10, 1800, 7543, 6000, 10000, LocomotiveType.STEAM),
     STEPHENSON_ROCKET("BELOW_AVERAGE", "EXTREMELY_POOR", 15, 1829, 7992, 6000, 16000, LocomotiveType.STEAM),

@@ -1,10 +1,10 @@
 package pt.ipp.isep.dei.domain;
-
+import java.io.Serializable;
 /**
  * Represents a player in the railway system.
  * A player has a username, a password, and a budget to use within the game.
  */
-public class Player {
+public class Player implements Serializable{
 
     private final String username;
     private final String password;

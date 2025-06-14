@@ -1,9 +1,11 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents the center position of a station.
  */
-public class StationCenter {
+public class StationCenter implements Serializable {
     private Position position;
 
     /**

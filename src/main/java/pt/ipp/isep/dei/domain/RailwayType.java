@@ -1,10 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Enumeration representing the types of railway lines.
  * Each type has an associated construction cost and electrification status.
  */
-public enum RailwayType {
+public enum RailwayType implements Serializable {
     /**
      * A single non-electrified railway line.
      */

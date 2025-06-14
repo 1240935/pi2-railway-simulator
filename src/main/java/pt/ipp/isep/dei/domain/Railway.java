@@ -1,6 +1,8 @@
 package pt.ipp.isep.dei.domain;
 
-public class Railway {
+import java.io.Serializable;
+
+public class Railway implements Serializable {
 
     private final Station start;
     private final Station end;

@@ -1,10 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents an editor in the railway system.
  * An editor is responsible for managing content such as maps, industries, cities, and scenarios.
  */
-public class Editor {
+public class Editor implements Serializable {
 
     private final String username;
     private final String password;

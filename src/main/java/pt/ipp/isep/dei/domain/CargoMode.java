@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
-public enum CargoMode {
+import java.io.Serializable;
+
+public enum CargoMode implements Serializable {
     FULL, HALF, AVAILABLE
 }

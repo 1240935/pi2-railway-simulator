@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Responsible for verifying if a valid travel path exists between stations
  * of a certain type, using a specific locomotive type, based on the railway graph.
  */
-public class PathVerifier {
+public class PathVerifier implements Serializable {
 
     /**
      * Verifies if a valid path exists between stations of the given type using the specified locomotive type.

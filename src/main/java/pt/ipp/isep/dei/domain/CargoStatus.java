@@ -1,5 +1,6 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * This class stores lists of cargo objects representing what is supplied and what is demanded
  * at or near a station.
  */
-public class CargoStatus {
+public class CargoStatus implements Serializable {
 
     /**
      * List of cargoes supplied by the station or nearby industries/cities.

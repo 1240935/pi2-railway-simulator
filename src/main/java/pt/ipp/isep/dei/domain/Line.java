@@ -1,11 +1,13 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents a railway line between two stations.
  * Contains information about the start and end stations,
  * whether the line is electrified, and the distance between stations.
  */
-public class Line {
+public class Line implements Serializable {
     private Station start;
     private Station end;
     private boolean isElectrified;

@@ -1,10 +1,12 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Enumeration representing the types of railway stations in the system.
  * Each type has an associated construction cost and influence radius.
  */
-public enum StationType {
+public enum StationType implements Serializable {
     /**
      * A depot station with lower cost and smaller influence radius.
      */

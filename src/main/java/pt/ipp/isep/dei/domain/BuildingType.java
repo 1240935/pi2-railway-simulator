@@ -1,11 +1,13 @@
 package pt.ipp.isep.dei.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents different types of buildings that can be constructed at a station.
  * Each building has a cost, an availability year, and may belong to an upgrade group.
  * Buildings in the same upgrade group are mutually exclusive.
  */
-public enum BuildingType {
+public enum BuildingType implements Serializable {
     TELEGRAPH(100, 1850, "COMMUNICATION"),
     TELEPHONE(150, 1910, "COMMUNICATION"),
 

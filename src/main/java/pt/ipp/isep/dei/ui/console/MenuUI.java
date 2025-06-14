@@ -117,6 +117,8 @@ public class MenuUI {
             System.out.println("12. Simulator");
             System.out.println("13. Train Route Verification");
             System.out.println("14. Railway Maintenance");
+            System.out.println("23. Save a Simulator");
+            System.out.println("24. Load a Simulator");
             System.out.println("27. Shortest Route Calculation");
             System.out.println("0. Exit");
 
@@ -132,6 +134,8 @@ public class MenuUI {
                 case "12" -> new SimulatorUI().start(player);
                 case "13" -> new VerifyTrainTravelUI().start();
                 case "14" -> new RailwayMaintenanceUI().start();
+                case "23" -> new SaveSimulatorUI().start();
+                case "24" -> new LoadSimulatorUI().start();
                 case "27" -> new ShortestPathUI().start();
                 case "0" -> {
                     System.out.println("Logging out...");

@@ -4,6 +4,7 @@ import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Represents a Station within the railway system.
@@ -12,7 +13,7 @@ import java.util.List;
  * building type, and cargo demands and supplies.
  * It can provide cargo status based on nearby industries and cities within its influence radius.
  */
-public class Station {
+public class Station implements Serializable {
     private String name;
 
     private StationCenter center;

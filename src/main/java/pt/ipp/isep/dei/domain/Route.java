@@ -2,8 +2,9 @@ package pt.ipp.isep.dei.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Route {
+public class Route implements Serializable {
 
     /**
      * The locomotive assigned to this route.

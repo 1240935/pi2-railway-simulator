@@ -13,8 +13,6 @@ public class SimulatorController {
     private List<Route> availableRoutes;
     private List<Route> selectedRoutes;
 
-    public SimulatorController() {}
-
     public void setPlayer(Player player) {
         this.player = player;
     }

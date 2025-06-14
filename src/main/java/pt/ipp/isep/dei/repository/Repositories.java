@@ -14,6 +14,11 @@ import java.util.List;
  * </p>
  */
 public class Repositories {
+    private final SimulatorRepository simulatorRepository = new SimulatorRepository();
+
+    public SimulatorRepository getSimulatorRepository() {
+        return simulatorRepository;
+    }
 
     /** Singleton instance of this class. */
     private static Repositories instance;

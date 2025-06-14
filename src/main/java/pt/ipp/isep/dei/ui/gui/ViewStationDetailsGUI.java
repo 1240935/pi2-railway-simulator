@@ -26,56 +26,63 @@ public class ViewStationDetailsGUI {
         loadScenarios();
 
         scenarioComboBox.setOnAction(event -> {
-            int selectedIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
-            if (selectedIndex >= 0) {
-                controller.setScenario(selectedIndex);
-                loadStations();
+            int selectedScenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
+            if (selectedScenarioIndex >= 0) {
+                loadStations(selectedScenarioIndex);
+            } else {
+                stationComboBox.getItems().clear();
+                detailsTextArea.clear();
             }
         });
     }
 
     private void loadScenarios() {
-        List<String> scenarios = controller.getAvailableScenarioDescriptions();
+        List<String> scenarios = controller.getAvailableScenarioNames();
         if (scenarios.isEmpty()) {
             showAlert("No scenarios available.");
+            scenarioComboBox.setDisable(true);
+            stationComboBox.setDisable(true);
             return;
         }
 
         scenarioComboBox.getItems().setAll(scenarios);
         scenarioComboBox.getSelectionModel().selectFirst();
-        controller.setScenario(0);
-        loadStations();
+        loadStations(0);  // Load stations for first scenario by default
     }
 
-    private void loadStations() {
-        List<String> stations = controller.getAvailableStationNames();
-        stationComboBox.getItems().setAll(stations);
-        if (!stations.isEmpty()) {
-            stationComboBox.getSelectionModel().selectFirst();
+    private void loadStations(int scenarioIndex) {
+        List<String> stations = controller.getAvailableStationNames(scenarioIndex);
+        if (stations.isEmpty()) {
+            stationComboBox.getItems().clear();
+            detailsTextArea.clear();
+            showAlert("No stations available for the selected scenario.");
+            return;
         }
+
+        stationComboBox.getItems().setAll(stations);
+        stationComboBox.getSelectionModel().selectFirst();
     }
 
     @FXML
     private void handleShowDetails() {
+        int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
         int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
-        if (stationIndex < 0) {
-            showAlert("Please select a valid station.");
+
+        if (scenarioIndex < 0 || stationIndex < 0) {
+            showAlert("Please select both a scenario and a station.");
             return;
         }
 
-        String buildingDetails = controller.getBuildingDetailsString(stationIndex);
-        String cargoInfo = controller.getCargoInfo(stationIndex);
+        String buildingDetails = controller.getBuildingDetailsString(stationIndex, scenarioIndex);
+        String cargoInfo = controller.getCargoInfo(stationIndex, scenarioIndex);
 
-        String displayedCargoInfo;
-        if (cargoInfo == null || cargoInfo.trim().isEmpty()) {
-            displayedCargoInfo = "No available cargo";
-        } else {
-            displayedCargoInfo = cargoInfo;
-        }
+        String displayedCargoInfo = (cargoInfo == null || cargoInfo.trim().isEmpty())
+                ? "No available cargo"
+                : cargoInfo;
 
-        detailsTextArea.setText("Building Details:\n" + buildingDetails + "\n\nCargo Information:\n" + displayedCargoInfo);
+        detailsTextArea.setText("Building Details:\n" + buildingDetails +
+                "\n\nCargo Information:\n" + displayedCargoInfo);
     }
-
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

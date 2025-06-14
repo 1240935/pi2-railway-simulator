@@ -68,20 +68,21 @@ public class AssignRouteController {
     }
 
     public CargoMode getCargoModeByIndex(int index) {
-        CargoMode[] modes = CargoMode.values();
-        if (index < 1 || index > modes.length) {
+        List<CargoMode> modes = Repositories.getInstance().getCargoModeRepository().getCargoModes();
+        if (index < 1 || index > modes.size()) {
             throw new IllegalArgumentException("Invalid cargo mode index.");
         }
-        return modes[index - 1];
+        return modes.get(index - 1);
     }
 
 
     public List<String> getCargoModeNames() {
-        List<String> modes = new ArrayList<>();
-        for (CargoMode mode : CargoMode.values()) {
-            modes.add(mode.name());
+        List<CargoMode> modes = Repositories.getInstance().getCargoModeRepository().getCargoModes();
+        List<String> names = new ArrayList<>();
+        for (CargoMode mode : modes) {
+            names.add(mode.name());
         }
-        return modes;
+        return names;
     }
 
 

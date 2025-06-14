@@ -21,6 +21,13 @@ public class Position implements Serializable {
         this.yCoordinate = yCoordinate;
     }
 
+    public static boolean isValid(Position position, int size) {
+        int x = position.getxCoordinate();
+        int y = position.getyCoordinate();
+        return x >= 0 && y >= 0 && x < size && y < size;
+    }
+
+
     public boolean checkPosition(Position position, int size){
         int x = position.getxCoordinate();
         int y = position.getyCoordinate();

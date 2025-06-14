@@ -30,7 +30,6 @@ public class UpgradeStationController {
      * Default constructor for UpgradeStationController.
      */
     public UpgradeStationController() {
-        // Empty constructor
     }
 
     /**
@@ -174,30 +173,6 @@ public class UpgradeStationController {
      */
     public void setPlayer(Player player){
         this.player = player;
-    }
-
-    /**
-     * Attempts to create a building of the selected type and assign it to the station.
-     * Deducts the cost from the player's budget if affordable.
-     * Adds the new building to the building repository.
-     *
-     * @return true if building was successfully created and assigned; false if player cannot afford
-     */
-    public boolean possibleBuilding(BuildingTypeDTO buildingTypeDTO, Station station) {
-        List<String> validUpgradeGroups = Arrays.asList("COMMUNICATION", "CAFE", "RESTAURANT", "HOTEL");
-
-        if (validUpgradeGroups.contains(buildingTypeDTO.getUpgradeGroup())) {
-            List<Building> buildings = station.getBuildings();
-
-            for (Building building : buildings) {
-                if ( building.getBuildingType().getCost() < buildingTypeDTO.getCost()) {
-                    return false;
-                }
-            }
-        }
-
-
-        return player.canAfford(buildingTypeDTO.getCost());
     }
 
     public void createBuilding(BuildingDTO buildingDTO, int stationIndex){

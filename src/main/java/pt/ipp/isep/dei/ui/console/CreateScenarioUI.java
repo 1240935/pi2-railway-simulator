@@ -79,6 +79,8 @@ public class CreateScenarioUI {
         }
         List<Integer> selectionsExportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):  \n Type ! for null. ");
 
+        controller.configurePorts(mapIndex, controller.chooseResourceTypes(selectionsImportation), controller.chooseResourceTypes(selectionsExportation));
+
         // Display industry changer types and select multiple by number
         System.out.println("Enter the industry changer value (1 - 200):");
         int changer = scanner.nextInt();
@@ -88,7 +90,7 @@ public class CreateScenarioUI {
         }
 
         ScenarioDTO scenarioDTO = new ScenarioDTO();
-        scenarioDTO.setMap(controller.selectMap(mapIndex));
+        scenarioDTO.setMap(controller.getMapByIndex(mapIndex));
         scenarioDTO.setYear(year);
         scenarioDTO.setLocomotiveTypes(controller.chooseLocomotiveTypes(selectionsLocomotiveTypes));
         scenarioDTO.setImportation(controller.chooseResourceTypes(selectionsImportation));

@@ -108,4 +108,16 @@ public class SimulatorController {
         }
         return simulator.getSimulationSummary(player);
     }
+
+    public String getCurrentSimulationDate() {
+        if (simulator == null) return "Simulation not started.";
+        return simulator.getCurrentSimulationDate();
+    }
+
+    public String getCurrentMonthSummary() {
+        if (simulator == null) {
+            return "Simulation not started.";
+        }
+        return simulator.getLastMonthSummary();
+    }
 }

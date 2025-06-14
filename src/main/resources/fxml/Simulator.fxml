@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="450" prefWidth="520" spacing="12" style="-fx-padding: 20; -fx-alignment: TOP_CENTER;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pt.ipp.isep.dei.ui.gui.SimulatorGUI">
+
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Simulation" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="480">
+        <Label text="Scenario:" minWidth="100" />
+        <ComboBox fx:id="scenarioComboBox" prefWidth="320" />
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="480">
+        <Label text="Routes:" minWidth="100" />
+        <ListView fx:id="routeListView" prefHeight="100" prefWidth="320" />
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="480">
+        <Label text="Years to simulate:" minWidth="100" />
+        <TextField fx:id="yearsField" prefWidth="60" />
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER" prefWidth="480">
+        <Button fx:id="simulateButton" text="Simulate" />
+        <Button fx:id="exitButton" text="Exit Simulation" />
+    </HBox>
+
+    <Label fx:id="feedbackLabel" style="-fx-text-fill: darkred;" wrapText="true" prefWidth="460" />
+
+    <HBox spacing="30" alignment="CENTER_LEFT" prefWidth="480" style="-fx-padding: 10 0 0 0;">
+        <Label fx:id="currentDateLabel" text="Current Date: N/A" minWidth="200" />
+        <Label fx:id="currentBudgetLabel" text="Budget: 0" minWidth="200" />
+    </HBox>
+
+</VBox>

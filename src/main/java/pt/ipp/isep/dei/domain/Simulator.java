@@ -13,9 +13,9 @@ public class Simulator implements Serializable {
     private Scenario scenario;
     private int currentMonth;
     private List<String> alerts;
+    private String lastMonthSummary;
 
     private List<LocomotiveModel> alertedModels = new ArrayList<>();
-
 
     public Simulator(List<Route> routes, Player player, Scenario scenario) {
         this.routes = routes;
@@ -43,9 +43,11 @@ public class Simulator implements Serializable {
             updateDemand();
         }
 
+        // Atualiza o resumo do mês anterior
+        lastMonthSummary = generateMonthlySummary();
+
         currentMonth++;
     }
-
 
     private void simulateDepartures() {
         for (Route route : routes) {
@@ -123,8 +125,6 @@ public class Simulator implements Serializable {
         }
     }
 
-
-
     private void checkNewLocomotivesAvailable() {
         List<LocomotiveModel> alertedModels = new ArrayList<>();
         int currentYear = scenario.getYear() + (currentMonth / 12);
@@ -192,14 +192,14 @@ public class Simulator implements Serializable {
 
             // Wait until departure condition is satisfied
             while (!canDepart(currentPoint, loadedCargo, totalCapacity)) {
-                // In a real simulation, advance time or handle waiting here
+                // Em uma simulação real, avançaria o tempo ou trataria espera aqui
                 System.out.println("Waiting to depart at " + currentPoint.getStation().getName() +
                         " with cargo mode " + currentPoint.getCargoMode());
-                // For demonstration, break to avoid infinite loop
+                // Para evitar loop infinito, sai aqui
                 break;
             }
 
-            // Depart to the next point (if any)
+            // Partir para o próximo ponto (se houver)
             if (i < points.size() - 1) {
                 PointOfRoute nextPoint = points.get(i + 1);
                 travelToNextPoint(loco, currentPoint, nextPoint);
@@ -242,6 +242,27 @@ public class Simulator implements Serializable {
                 from.getStation().getName() + " to " + to.getStation().getName());
     }
 
+    // Gera um resumo do mês atual
+    private String generateMonthlySummary() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Summary for Month ").append(currentMonth).append("\n");
+        sb.append("Player budget: ").append(player.getBudget()).append("\n");
+        sb.append("Alerts:\n");
+        for (String alert : alerts) {
+            sb.append(" - ").append(alert).append("\n");
+        }
+        // Aqui pode colocar mais detalhes, se desejar
+        return sb.toString();
+    }
+
+    // Retorna o resumo do último mês simulado
+    public String getLastMonthSummary() {
+        if (lastMonthSummary == null) {
+            return "No month simulated yet.";
+        }
+        return lastMonthSummary;
+    }
+
     public String getSimulationSummary(Player player) {
         StringBuilder sb = new StringBuilder();
         sb.append("Simulation Summary:\n");
@@ -254,5 +275,11 @@ public class Simulator implements Serializable {
     }
     public String getName() {
         return scenario.getMap().getName() + "-" + currentMonth;
+    }
+
+    public String getCurrentSimulationDate() {
+        int year = scenario.getYear() + (currentMonth - 1) / 12;
+        int month = ((currentMonth - 1) % 12) + 1;
+        return "Year " + year + ", Month " + month;
     }
 }

@@ -4,18 +4,15 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...           | Answer              | Justification (with patterns)                                                                                                                                                             |
-|----------------|-------------------------------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                       | CreateMapUI         | **Pure Fabrication**: Handles user interaction but is not part of domain; <br>**Low Coupling**: UI is decoupled from domain.                                                              |
-|                | ... coordinating the US?                              | CreateMapController | **Controller**: Manages the flow of the use case; <br>**High Cohesion**: Centralizes responsibilities related to map creation.                                                            |
-|                | ... knowing the user using the system?                | Editor              | **Information Expert**: Holds knowledge about itself (username, password).                                                                                                                |
-| Step 2         | ... requesting the map name and size?                 | CreateMapUI         | **Information Expert**: Manages interaction logic; <br>**High Cohesion**: All input-related logic kept in UI.                                                                             |
-| Step 3         | ... saving the inputted map data (name and size)?     | CreateMapDTO        | **Pure Fabrication**: DTO is not domain, used for data transport; <br>**Low Coupling**: Decouples UI and domain.                                                                          |
-| Step 4         | ... confirming user input and submitting the request? | CreateMapUI         | **Information Expert**: Has full control over data flow to controller; <br>**High Cohesion**: Manages all user input flow.                                                                |
-| Step 5         | ... checking if a map name already exists?            | MapRepository       | **Information Expert**: Owns knowledge of stored maps; <br>**Protected Variation**: Accessed through interface.                                                                           |
-| Step 6         | ... creating a new Map?                               | CreateMapMapper     | **Creator**: Responsible for creating Map objects from DTOs; <br>**Pure Fabrication**: Decouples transformation logic; <br>**Low Coupling**: Keeps controller free of construction logic. |
-| Step 7         | ... saving the newly created Map?                     | MapRepository       | **Information Expert**: Manages domain persistence; <br>**Protected Variation**: Insulates controller from storage logic.                                                                 |
-| Step 8         | ... informing operation success?                      | CreateMapUI         | **Information Expert**: Knows how to present status to the user; <br>**High Cohesion**: Consolidates all user-facing actions.                                                             |
+| **Interaction ID** | **Question: Which class is responsible for...**                     | **Answer**                      | **Justification (with patterns)**                                                                   |
+|--------------------|---------------------------------------------------------------------|---------------------------------|-----------------------------------------------------------------------------------------------------|
+| 2                  | Handling the user’s request to create a map?                        | `:CreateMapController`          | **Controller** – Coordinates system operations, separates UI from logic.                            |
+| 15                 | Extracting data from the DTO to create a domain object?             | `:MapMapper`                    | **Information Expert**, **Pure Fabrication** – Knows both DTO and domain; added to reduce coupling. |
+| 16–22              | Providing access to size, name, and scale attributes?               | `:MapDTO`                       | **Information Expert** – Holds and provides its own data.                                           |
+| 25–34              | Validating the size, name, and scale of the map?                    | `map : Map`                     | **Information Expert**, **Controller** – Owns and validates its data internally.                    |
+| 24                 | Creating the `Map` object from raw parameters?                      | `mapRepository : MapRepository` | **Creator** – Aggregates maps; responsible for creating and storing them.                           |
+| 1–14               | Interacting with the user to collect map input (size, name, scale)? | `:CreateMapUI`                  | **Low Coupling** – Delegates logic to the controller, interacts only with UI inputs.                |
+| 15                 | Converting a `MapDTO` into a `Map` domain object?                   | `:MapMapper`                    | **High Cohesion**, **Pure Fabrication** – Dedicated to transformation logic.                        |
 
 ### Systematization ##
 
@@ -27,8 +24,8 @@ Other software classes (i.e. Pure Fabrication) identified:
 
 * CreateMapUI
 * CreateMapController
-* CreateMapMapper
-* CreateMapDTO
+* MapDTO
+* MapMapper
 * Repositories
 * MapRepository
 

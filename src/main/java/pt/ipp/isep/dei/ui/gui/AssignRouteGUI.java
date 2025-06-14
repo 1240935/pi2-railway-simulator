@@ -3,10 +3,15 @@ package pt.ipp.isep.dei.ui.gui;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import pt.ipp.isep.dei.controller.AssignRouteController;
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.PointOfRouteDTO;
+import pt.ipp.isep.dei.dto.RouteDTO;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,7 +166,11 @@ public class AssignRouteGUI {
         CargoMode cargoMode = controller.getCargoModeByIndex(cargoModeIndex + 1);
 
         // Add point to route
-        controller.createPointOfRoute(station, selectedCargoList, cargoMode);
+        PointOfRouteDTO pointOfRouteDTO = new PointOfRouteDTO();
+        pointOfRouteDTO.setStation(controller.getStationByIndex(selectedScenarioIndex, stationIndexFiltered));
+        pointOfRouteDTO.setCargo(controller.getSelectedCargoList(selectedCargoIndices, availableCargoList));
+        pointOfRouteDTO.setCargoMode(controller.getCargoModeByIndex(cargoModeIndex));
+        controller.createPointOfRoute(pointOfRouteDTO);
 
         // Mark this station as used
         usedStationIndices.add(realStationIndex);
@@ -187,11 +196,10 @@ public class AssignRouteGUI {
         }
 
         try {
-            controller.createRoute(
-                    controller.getScenarioByIndex(selectedScenarioIndex + 1),
-                    controller.getLocomotiveByIndex(selectedScenarioIndex + 1, locoIndex + 1),
-                    controller.getPointsOfRoute()
-            );
+            RouteDTO routeDTO = new RouteDTO();
+            routeDTO.setLocomotive(controller.getLocomotiveByIndex(selectedScenarioIndex, locoIndex));
+            routeDTO.setPointsOfRoute(controller.getPointsOfRoute());
+            controller.createRoute(routeDTO, selectedScenarioIndex);
             feedbackLabel.setStyle("-fx-text-fill: green;");
             feedbackLabel.setText("Route assigned successfully!");
         } catch (Exception ex) {

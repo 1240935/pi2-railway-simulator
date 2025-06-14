@@ -4,41 +4,42 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...       | Answer                   | Justification (with patterns)                                                                        |
-|:---------------|:--------------------------------------------------|:-------------------------|:-----------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                   | CreateIndustryUI         | Pure Fabrication: UI handles user interaction but is not a domain class.                             |
-|                | ... coordinating the US?                          | CreateIndustryController | Controller: Coordinates the use case by delegating responsibilities to domain or fabricated classes. |
-|                | ... knowing the user using the system?            | Editor                   | IE: knows its own data (e.g. username, password).                                                    |
-| Step 2         | ... knowing all existing maps to show?            | MapRepositories          | IE: Access point to all maps.                                                                        |
-| Step 3         | ... saving the selected map?                      | CreateIndustryUI         | IE : Stores temporary user input.                                                                    |
-| Step 4         | ... requesting coordinate input?                  | CreateIndustryUI         | IE: Responsible for handling user interactions.                                                      |
-| Step 5         | ... saving the coordinates?                       | CreateIndustryUI         | IE: Temporarily stores input for further use.                                                        |
-| Step 6         | ... validating coordinates?                       | Map                      | IE: Owns map data and knows which coordinates are valid.                                             |
-| Step 7         | ... knowing all industry types?                   | IndustryType             | IE: Enum holds all predefined types; behavior is fixed and central.                                  |
-| Step 8         | ... saving the selected industry type?            | CreateIndustryUI         | IE: Temporarily holds input from user.                                                               |
-| Step 9         | ... knowing all resource types?                   | ResourceType             | IE: Enum represents a fixed list of options, centralizing responsibility.                            |
-| Step 10        | ... saving the selected resource type?            | CreateIndustryUI         | IE: Responsible for holding the resource type selected by the user.                                  |
-| Step 11        | ... showing all data and requesting confirmation? | CreateIndustryUI         | IE: Responsible for interacting with the actor.                                                      |
-| Step 12        | ... instantiating a new Industry?                 | Industry                 | Creator: Industry class is the best candidate to create its instances.                               |
-|                | ... saving the created industry?                  | Map                      | IE: Map aggregates Industries and is responsible for managing them.                                  |
-| Step 13        | ... informing operation success?                  | CreateIndustryUI         | IE: Responsible for feedback to the user.                                                            |
+| **Interaction ID**  | **Question: Which class is responsible for...**                             | **Answer**                                                  | **Justification (with patterns)**                                                            |
+|---------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| 1–7                 | Handling user interactions for adding an industry                           | `:CreateIndustryUI`                                         | **Controller** – Manages UI interactions and delegates business logic to controller.         |
+| 8–38                | Coordinating industry creation workflow, including fetching data and saving | `:CreateIndustryController`                                 | **Controller** – Orchestrates use case, interacts with repositories and mappers.             |
+| 9, 14, 26, 39–44    | Providing access to repositories singleton                                  | `Repositories`                                              | **Pure Fabrication** – Centralized singleton providing repository access to reduce coupling. |
+| 10, 16, 28, 40      | Managing and storing Map domain objects                                     | `mapRepository : MapRepository`                             | **Creator** – Responsible for creating and managing map domain objects.                      |
+| 17, 29, 41          | Managing IndustryType domain objects                                        | `industryTypeRepository : IndustryTypeRepository`           | **Creator** – Creates and manages IndustryType domain objects.                               |
+| 19, 31, 43          | Managing Industry domain objects                                            | `industryRepository : IndustryRepository`                   | **Creator** – Responsible for creating and storing Industry objects.                         |
+| 11–21, 30–33, 42–45 | Mapping between DTOs and domain objects                                     | `MapListMapper`, `IndustryTypeListMapper`, `IndustryMapper` | **Pure Fabrication**, **Information Expert** – Handles conversion to reduce coupling.        |
+| 34–38               | Validating industry position and type                                       | `industry : Industry`                                       | **Information Expert** – Holds business logic related to Industry validity.                  |
+| 35                  | Creating Position objects                                                   | `position : Position`                                       | **Information Expert** – Knows position data and creation logic.                             |
+| 12, 22, 32          | Holding and providing data for MapDTO, IndustryTypeDTO, IndustryDTO         | `MapDTO`, `IndustryTypeDTO`, `IndustryDTO`                  | **Information Expert** – Owns the data it represents.                                        |
 
 ### Systematization ##
 
 According to the taken rationale, the conceptual classes promoted to software classes are: 
 
 * Map
+* IndustryType
 * Industry
 * Position
-* Industry Type
-* Resource Type
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
-* CreateIndustryUI  
+* CreateIndustryUI
 * CreateIndustryController
 * Repositories
 * MapRepository
+* IndustryTypeRepository
+* IndustryRepository
+* MapListMapper
+* IndustryTypeListMapper
+* IndustryMapper
+* MapDTO
+* IndustryTypeDTO
+* IndustryDTO
 
 ## 3.2. Sequence Diagram (SD)
 

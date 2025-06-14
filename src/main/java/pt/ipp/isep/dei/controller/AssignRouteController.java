@@ -137,7 +137,7 @@ public class AssignRouteController {
     }
 
     public void createRoute(RouteDTO routeDTO, int scenarioIndex) {
-       RouteMapper routeMapper = new RouteMapper();
+        RouteMapper routeMapper = new RouteMapper();
         Route route = routeMapper.toRoute(routeDTO);
         Scenario scenario = getScenarioByIndex(scenarioIndex);
         scenario.addRoute(route);

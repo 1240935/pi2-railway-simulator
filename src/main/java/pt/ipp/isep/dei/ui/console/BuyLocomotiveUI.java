@@ -2,6 +2,7 @@ package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.BuyLocomotiveController;
 import pt.ipp.isep.dei.domain.Player;
+import pt.ipp.isep.dei.dto.LocomotiveDTO;
 
 import java.util.List;
 import java.util.Scanner;
@@ -34,8 +35,9 @@ public class BuyLocomotiveUI {
     public void start(Player player) {
         // Set player in the controller for budget management
         controller.setPlayer(player);
+        LocomotiveDTO locomotiveDTO = new LocomotiveDTO();
 
-        List<String> scenarios = controller.getAvailableScenarioDescriptions();
+        List<String> scenarios = controller.getAvailableScenarioNames();
         if (scenarios.isEmpty()) {
             System.out.println("No scenarios available.");
             return;
@@ -93,11 +95,8 @@ public class BuyLocomotiveUI {
             System.out.println("Purchase cancelled.");
             return;
         }
-
-        controller.createLocomotive(
-                controller.getModelByIndex(modelIndex - 1, scenarioIndex - 1),
-                controller.getScenarioByIndex(scenarioIndex - 1)
-        );
+        locomotiveDTO.setLocomotiveModel(controller.getModelByIndex(modelIndex - 1, scenarioIndex - 1));
+        controller.createLocomotive(locomotiveDTO, scenarioIndex - 1);
 
     }
 }

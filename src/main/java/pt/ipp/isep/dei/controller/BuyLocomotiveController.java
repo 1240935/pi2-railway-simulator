@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.*;
+import pt.ipp.isep.dei.dto.*;
 import pt.ipp.isep.dei.repository.Repositories;
 
 import java.util.ArrayList;
@@ -36,12 +37,17 @@ public class BuyLocomotiveController {
      *
      * @return List of scenario descriptions.
      */
-    public List<String> getAvailableScenarioDescriptions() {
-        List<String> descriptions = new ArrayList<>();
-        for (Scenario s : getAvailableScenarios()) {
-            descriptions.add("Map: " + s.getMap().getName() + ", Year: " + s.getYear());
+    public List<String> getAvailableScenarioNames() {
+        ScenarioListMapper scenarioListMapper = new ScenarioListMapper();
+        List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+        List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
+
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < scenarioDTOS.size(); i++) {
+            names.add(scenarioDTOS.get(i).toString());
         }
-        return descriptions;
+
+        return names;
     }
 
     public Scenario getScenarioByIndex(int index) {
@@ -64,13 +70,14 @@ public class BuyLocomotiveController {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public LocomotiveModel getModelByIndex(int index, int scenarioIndex) {
-        List<LocomotiveModel> models = getAvailableLocomotiveModels(scenarioIndex);
+        List<LocomotiveModelDTO> models = getAvailableLocomotiveModels(scenarioIndex);
 
         if (index < 0 || index >= models.size()) {
             throw new IndexOutOfBoundsException("Invalid locomotive model index: " + index);
         }
 
-        return models.get(index);
+        LocomotiveModelDTO chosenDTO = models.get(index);
+        return LocomotiveModel.valueOf(chosenDTO.getName());
     }
 
 
@@ -80,11 +87,11 @@ public class BuyLocomotiveController {
      *
      * @return List of locomotive models available for purchase.
      */
-    public List<LocomotiveModel> getAvailableLocomotiveModels(int scenarioIndex) {
+    public List<LocomotiveModelDTO> getAvailableLocomotiveModels(int scenarioIndex) {
+        LocomotiveModelListMapper locomotiveModelListMapper = new LocomotiveModelListMapper();
         List<LocomotiveModel> allModels = Repositories.getInstance()
                 .getLocomotiveModelRepository()
                 .getLocomotiveModels();
-
 
 
         List<LocomotiveModel> available = new ArrayList<>();
@@ -98,7 +105,7 @@ public class BuyLocomotiveController {
                 available.add(model);
             }
         }
-        return available;
+        return locomotiveModelListMapper.toDTO(available);
     }
 
     /**
@@ -118,16 +125,16 @@ public class BuyLocomotiveController {
      */
     public List<String> getAvailableModelDescriptions(int scenarioIndex) {
         List<String> descriptions = new ArrayList<>();
-        for (LocomotiveModel model : getAvailableLocomotiveModels(scenarioIndex)) {
-            String desc = model.name() +
+        for (LocomotiveModelDTO model : getAvailableLocomotiveModels(scenarioIndex)) {
+            String desc = model.getName() +
                     " | Power: " + model.getPower() +
                     " | Acceleration: " + model.getAcceleration() +
                     " | Top Speed: " + model.getTopSpeed() +
-                    " | Year: " + model.getStartYear() +
+                    " | Year: " + model.getOperationStartYear() +
                     " | Fuel Cost: " + model.getFuelCost() +
                     " | Maintenance/Year: " + model.getMaintenancePYear() +
                     " | Cost: " + model.getCost() +
-                    " | Type: " + model.getType();
+                    " | Type: " + model.getLocomotiveType();
             descriptions.add(desc);
         }
         return descriptions;
@@ -139,10 +146,12 @@ public class BuyLocomotiveController {
      *
      * @return true if locomotive was successfully created and purchased, false if budget is insufficient.
      */
-    public void createLocomotive(LocomotiveModel locomotiveModel, Scenario scenario) {
+    public void createLocomotive(LocomotiveDTO locomotiveDTO, int scenarioIndex) {
+        LocomotiveMapper locomotiveMapper = new LocomotiveMapper();
         int iD = Repositories.getInstance().getLocomotiveRepository().nextID();
-        Locomotive locomotive = Repositories.getInstance().getLocomotiveRepository().createLocomotive(locomotiveModel, iD);
-        player.deductBudget(locomotiveModel.getCost());
+        Locomotive locomotive = locomotiveMapper.toLocomotive(locomotiveDTO, iD);
+        player.deductBudget(locomotiveDTO.getLocomotiveModel().getCost());
+        Scenario scenario = getScenarioByIndex(scenarioIndex);
         scenario.addLocomotive(locomotive);
         Repositories.getInstance().getLocomotiveRepository().addLocomotive(locomotive);
     }

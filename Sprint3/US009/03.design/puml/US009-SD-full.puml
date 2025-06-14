@@ -151,7 +151,7 @@ deactivate UI
 PLAYER -> UI : selects a locomotive model
 activate UI
 
-    UI -> CTRL : createLocomotive(dto)
+    UI -> CTRL : createLocomotive(dto, scenarioIndex)
     activate CTRL
 
    CTRL -> REPOS : getInstance()

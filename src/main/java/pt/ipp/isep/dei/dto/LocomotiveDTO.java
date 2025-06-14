@@ -18,4 +18,5 @@ public class LocomotiveDTO {
     public void setLocomotiveModel(LocomotiveModel locomotiveModel) {
         this.locomotiveModel = locomotiveModel;
     }
+
 }

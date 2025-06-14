@@ -1,6 +1,8 @@
 package pt.ipp.isep.dei.ui.console;
 
 import pt.ipp.isep.dei.controller.AssignRouteController;
+import pt.ipp.isep.dei.dto.PointOfRouteDTO;
+import pt.ipp.isep.dei.dto.RouteDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ public class AssignRouteUI {
     }
 
     public void start() {
+        RouteDTO routeDTO = new RouteDTO();
+        PointOfRouteDTO pointOfRouteDTO = new PointOfRouteDTO();
         // 1. Select Scenario
         List<String> scenarioNames = controller.getAvailableScenarioNames();
         System.out.println("Available scenarios:");
@@ -107,15 +111,14 @@ public class AssignRouteUI {
             int modeIndex = scanner.nextInt();
             scanner.nextLine();
 
-            // 2.4. Add Point of Route
-            controller.createPointOfRoute(
-                    controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1),
-                    controller.getSelectedCargoList(
-                            selectedCargoIndices,
-                            controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1).getSupplies()
-                    ),
-                    controller.getCargoModeByIndex(modeIndex)
-            );
+            pointOfRouteDTO.setCargo(controller.getSelectedCargoList(selectedCargoIndices,
+                    controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1).getSupplies()));
+
+            pointOfRouteDTO.setStation(controller.getStationByIndex(scenarioIndex, zeroBasedStationIndex + 1));
+
+            pointOfRouteDTO.setCargoMode(controller.getCargoModeByIndex(modeIndex));
+
+            controller.createPointOfRoute(pointOfRouteDTO);
         }
 
         // 3. Select Locomotive
@@ -130,6 +133,8 @@ public class AssignRouteUI {
         scanner.nextLine();
 
         // 4. Create Route
-        controller.createRoute(controller.getScenarioByIndex(scenarioIndex), controller.getLocomotiveByIndex(scenarioIndex, locoIndex), controller.getPointsOfRoute());
+        routeDTO.setPointsOfRoute(controller.getPointsOfRoute());
+        routeDTO.setLocomotive(controller.getLocomotiveByIndex(scenarioIndex, locoIndex));
+        controller.createRoute(routeDTO, scenarioIndex);
     }
 }

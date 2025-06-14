@@ -1,6 +1,6 @@
 package pt.ipp.isep.dei.ui.console;
 
-import pt.ipp.isep.dei.controller.ViewStationController;
+import pt.ipp.isep.dei.controller.ViewStationDetailsController;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,11 +15,11 @@ import java.util.Scanner;
  *   <li>Display detailed information about the selected station, including building and cargo data.</li>
  * </ul>
  *
- * <p>It relies on the {@link ViewStationController} to retrieve and manage data.
+ * <p>It relies on the {@link ViewStationDetailsController} to retrieve and manage data.
  */
 public class ViewStationDetailsUI {
 
-    private final ViewStationController controller = new ViewStationController();
+    private final ViewStationDetailsController controller = new ViewStationDetailsController();
 
     /**
      * Starts the UI interaction process.

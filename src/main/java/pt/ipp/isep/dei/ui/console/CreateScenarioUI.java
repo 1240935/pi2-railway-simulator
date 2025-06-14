@@ -70,14 +70,14 @@ public class CreateScenarioUI {
         for (int i = 0; i < impor_exportypes.size(); i++) {
             System.out.println((i + 1) + ": " + impor_exportypes.get(i));
         }
-        List<Integer> selectionsImportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):  \n Type ! for null. ");
+        List<Integer> selectionsImportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):\nType ! for null. ");
 
         // Display resource types for exportation and select multiple by number
         System.out.println("Available resource types (exportation):");
         for (int i = 0; i < impor_exportypes.size(); i++) {
             System.out.println((i + 1) + ": " + impor_exportypes.get(i));
         }
-        List<Integer> selectionsExportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):  \n Type ! for null. ");
+        List<Integer> selectionsExportation = controller.readIntegerSelections("Enter resource types numbers (separated by space):");
 
         controller.configurePorts(mapIndex, controller.chooseResourceTypes(selectionsImportation), controller.chooseResourceTypes(selectionsExportation));
 

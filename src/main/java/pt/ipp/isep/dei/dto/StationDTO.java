@@ -89,4 +89,9 @@ public class StationDTO {
     public void setMap(Map map) {
         this.map = map;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -13,6 +13,7 @@ public class BuildingTypeListMapper {
             dto.setCost(type.getCost());
             dto.setAvailabilityYear(type.getAvailabilityYear());
             dto.setUpgradeGroup(type.getUpgradeGroup());
+            dto.setName(type.name());
             result.add(dto);
         }
         return result;

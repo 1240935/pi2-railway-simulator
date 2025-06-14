@@ -21,12 +21,12 @@ import java.util.List;
  * This controller interacts with repositories to fetch domain data,
  * and supports UI components by providing relevant information in simple formats.
  */
-public class ViewStationController {
+public class ViewStationDetailsController {
 
     /**
      * Default constructor for the ViewStationController.
      */
-    public ViewStationController() {
+    public ViewStationDetailsController() {
     }
 
     /**
@@ -95,12 +95,10 @@ public class ViewStationController {
     public List<Building> getBuildingDetails(int stationIndex, int scenarioIndex) {
         Station station = getStationByIndex(stationIndex, scenarioIndex);
         if (station != null) {
-            return station.getBuildings(); // assuming getBuildings() returns List<Building>
+            return station.getBuildings();
         }
         return null;
     }
-
-
 
     public String getBuildingDetailsString(int stationIndex, int scenarioIndex) {
         List<Building> buildings = getBuildingDetails(stationIndex, scenarioIndex);
@@ -113,7 +111,6 @@ public class ViewStationController {
         }
         return "No building details available.";
     }
-
 
     public String getCargoInfo(int stationIndex, int scenarioIndex) {
         Station station = getStationByIndex(stationIndex, scenarioIndex);

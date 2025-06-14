@@ -99,7 +99,7 @@ public class BuildStationController {
      * @return List of station type names.
      */
     public List<String> getAvailableStationTypes() {
-        StationTypeMapper stationTypeMapper = new StationTypeMapper();
+        StationTypeListMapper stationTypeMapper = new StationTypeListMapper();
             List<StationType> types = Repositories.getInstance().getStationTypeRepository().getStationTypes();
             List<StationTypeDTO> dtos = stationTypeMapper.toDTOList(types);
 

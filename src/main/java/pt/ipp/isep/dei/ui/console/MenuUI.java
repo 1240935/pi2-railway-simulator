@@ -209,8 +209,11 @@ public class MenuUI {
         System.out.println("1. Console UI");
         System.out.println("2. Graphical UI (JavaFX)");
         System.out.print("Enter option: ");
-        return scanner.nextInt();
+        int option = scanner.nextInt();
+        scanner.nextLine();
+        return option;
     }
+
 
 
     /**

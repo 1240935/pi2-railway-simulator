@@ -29,7 +29,6 @@ public class UpgradeStationUI {
      */
     public void start(Player player) {
         controller.setPlayer(player);
-        BuildingTypeDTO buildingTypeDTO = new BuildingTypeDTO();
         BuildingDTO buildingDTO = new BuildingDTO();
 
         // 1. Show scenarios and get player selection
@@ -52,6 +51,7 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
+        scenarioIndex -= 1;
 
         // 2. Show stations and get player selection
         List<String> stationNames = controller.getAvailableStationNames(scenarioIndex);
@@ -73,6 +73,7 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
+        stationIndex -= 1;
 
         // 3. Show available building types and get player selection
         List<String> buildingNames = controller.getAvailableBuildingTypeNames(scenarioIndex, stationIndex);
@@ -94,15 +95,10 @@ public class UpgradeStationUI {
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        buildingTypeDTO.setAvailabilityYear(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getAvailabilityYear());
-
-        buildingTypeDTO.setUpgradeGroup(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getUpgradeGroup());
-
-        buildingTypeDTO.setCost(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getCost());
-
+        buildingTypeIndex -= 1;
 
         System.out.println("Player budget: " + player.getBudget());
-        System.out.println("Building cost: " + buildingTypeDTO.getCost());
+        System.out.println("Building cost: " + controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex).getCost());
         System.out.print("Do you want to proceed with the purchase? (y/n): ");
         String confirmation = scanner.nextLine().trim().toLowerCase();
         if (!confirmation.equals("y")) {
@@ -110,6 +106,7 @@ public class UpgradeStationUI {
             return;
         }
 
+        buildingDTO.setBuildingType(controller.getBuildingTypeByIndex(scenarioIndex, stationIndex, buildingTypeIndex));
         controller.createBuilding(buildingDTO, stationIndex);
 
     }

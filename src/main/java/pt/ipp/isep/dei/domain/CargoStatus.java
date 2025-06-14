@@ -60,7 +60,7 @@ public class CargoStatus {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Supplied Cargoes:\n");
+        sb.append(" - Supplied Cargoes:\n");
         if (noSupplied) {
             sb.append("  No cargo supplied.\n");
         } else {
@@ -69,7 +69,7 @@ public class CargoStatus {
             }
         }
 
-        sb.append("Demanded Cargoes:\n");
+        sb.append(" - Demanded Cargoes:\n");
         if (noDemanded) {
             sb.append("  No cargo demanded.\n");
         } else {

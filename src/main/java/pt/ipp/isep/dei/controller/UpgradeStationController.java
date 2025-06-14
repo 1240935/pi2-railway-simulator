@@ -5,7 +5,6 @@ import pt.ipp.isep.dei.dto.*;
 import pt.ipp.isep.dei.repository.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,7 +63,7 @@ public class UpgradeStationController {
     public BuildingType getBuildingTypeByIndex(int scenarioIndex, int stationIndex, int buildingTypeIndex) {
         List<BuildingType> buildingTypes = getAvailableBuildingTypes(scenarioIndex, stationIndex);
         if (buildingTypeIndex < 0 || buildingTypeIndex >= buildingTypes.size()) {
-            throw new IndexOutOfBoundsException("Invalid scenario index: " + buildingTypeIndex);
+            throw new IndexOutOfBoundsException("Invalid Building Type index: " + buildingTypeIndex);
         }
 
         return buildingTypes.get(buildingTypeIndex);
@@ -137,8 +136,18 @@ public class UpgradeStationController {
 
         List<BuildingType> result = new ArrayList<>();
 
+        boolean telephoneAvailable = false;
+        for (BuildingType buildingType : availableTypes) {
+            if ("Telephone".equalsIgnoreCase(buildingType.name()) && buildingType.getAvailabilityYear() <= year) {
+                telephoneAvailable = true;
+                break;
+            }
+        }
+
         for (BuildingType candidate : availableTypes) {
             if (candidate.getAvailabilityYear() > year) continue;
+
+            if (telephoneAvailable && "Telegraph".equalsIgnoreCase(candidate.name())) continue;
 
             boolean isExclusive = false;
             for (Building existing : existingBuildings) {
@@ -155,7 +164,6 @@ public class UpgradeStationController {
 
         return result;
     }
-
 
     /**
      * Retrieves the current player performing the upgrade operation.

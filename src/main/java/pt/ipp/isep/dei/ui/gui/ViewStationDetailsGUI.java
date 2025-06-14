@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert;
-import pt.ipp.isep.dei.controller.ViewStationController;
+import pt.ipp.isep.dei.controller.ViewStationDetailsController;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class ViewStationDetailsGUI {
     @FXML
     private TextArea detailsTextArea;
 
-    private final ViewStationController controller = new ViewStationController();
+    private final ViewStationDetailsController controller = new ViewStationDetailsController();
 
     @FXML
     public void initialize() {

@@ -8,17 +8,17 @@ public enum StationType {
     /**
      * A depot station with lower cost and smaller influence radius.
      */
-    DEPOT(50000, 3),
+    DEPOT(50, 3),
 
     /**
      * A standard station with medium cost and radius.
      */
-    STATION(100000, 4),
+    STATION(100, 4),
 
     /**
      * A terminal station with higher cost and larger radius.
      */
-    TERMINAL(200000, 5);
+    TERMINAL(200, 5);
 
     private final int cost;
     private final int radius;

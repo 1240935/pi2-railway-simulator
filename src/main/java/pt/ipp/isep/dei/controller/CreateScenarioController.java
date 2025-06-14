@@ -40,8 +40,6 @@ public class CreateScenarioController {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         return maps.get(index).getSize();
     }
-
-
   
     public List<String> getAvailableResourceTypeNames() {
         ResourceTypeListMapper resourceTypeListMapper = new ResourceTypeListMapper();
@@ -49,8 +47,8 @@ public class CreateScenarioController {
         List<ResourceTypeDTO> dtos = resourceTypeListMapper.toDTOList(types);
 
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < dtos.size(); i++) {
-            names.add(types.get(i).toString() +" " +dtos.get(i).toString());
+        for (ResourceTypeDTO dto : dtos) {
+            names.add(dto.toString());
         }
 
         return names;
@@ -100,8 +98,6 @@ public class CreateScenarioController {
         }
         return names;
     }
-
-
 
     public List<LocomotiveType> chooseLocomotiveTypes(List<Integer> choices) {
         List<LocomotiveType> types = getAvailableLocomotivesTypes();

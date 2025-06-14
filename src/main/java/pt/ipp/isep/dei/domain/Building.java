@@ -49,5 +49,8 @@ public class Building {
      * @return a string in the format: Building : 'type'
      */
     @Override
-    public String toString() { return "Building : '" + buildingType + "'"; }
+    public String toString() {
+        return buildingType.name();
+    }
+
 }

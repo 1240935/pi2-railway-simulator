@@ -2,115 +2,106 @@ package pt.ipp.isep.dei.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class RouteTest {
 
-    private Station startStation;
-    private Station endStation;
-    private List<Station> stops;
     private Locomotive locomotive;
-    private List<Cargo> cargo;
     private Route route;
+    private List<PointOfRoute> pointsOfRoute;
 
     @BeforeEach
     void setUp() {
-        startStation = new Station("StartStation", StationType.DEPOT);
-        endStation = new Station("EndStation", StationType.TERMINAL);
-        stops = new ArrayList<>(List.of(
-                new Station("Stop1", StationType.STATION),
-                new Station("Stop2", StationType.STATION)
-        ));
-        locomotive = new Locomotive(0, LocomotiveModel.GG1);
-        cargo = new ArrayList<>();
-        cargo.add(new Cargo(ResourceType.COAL, 100));
-        cargo.add(new Cargo(ResourceType.STEEL, 50));
+        Station station1 = new Station("Station1", StationType.STATION);
+        Station station2 = new Station("Station2", StationType.STATION);
+        List<Cargo> cargoList1 = List.of(new Cargo(ResourceType.COAL, 100));
+        List<Cargo> cargoList2 = List.of(new Cargo(ResourceType.STEEL, 50));
 
-        route = new Route();
-        route.setStartingStation(startStation);
-        route.setEndingStation(endStation);
-        route.setStops(stops);
-        route.setLocomotive(locomotive);
-        route.setCargo(cargo);
+        PointOfRoute point1 = new PointOfRoute(station1, cargoList1, CargoMode.FULL);
+        PointOfRoute point2 = new PointOfRoute(station2, cargoList2, CargoMode.AVAILABLE);
+
+        pointsOfRoute = List.of(point1, point2);
+        locomotive = new Locomotive(1, LocomotiveModel.GG1);
+        route = new Route(locomotive, pointsOfRoute);
     }
 
+    // Testa se o getLocomotive retorna a locomotiva correta
     @Test
-    void getStartingStation() {
-        assertEquals(startStation, route.getStartingStation());
-    }
-
-    @Test
-    void setStartingStation() {
-        Station newStart = new Station("NewStart", StationType.DEPOT);
-        route.setStartingStation(newStart);
-        assertEquals(newStart, route.getStartingStation());
-    }
-
-    @Test
-    void getEndingStation() {
-        assertEquals(endStation, route.getEndingStation());
-    }
-
-    @Test
-    void setEndingStation() {
-        Station newEnd = new Station("NewEnd", StationType.TERMINAL);
-        route.setEndingStation(newEnd);
-        assertEquals(newEnd, route.getEndingStation());
-    }
-
-    @Test
-    void getStops() {
-        assertEquals(stops, route.getStops());
-    }
-
-    @Test
-    void setStops() {
-        List<Station> newStops = List.of(new Station("NewStop", StationType.STATION));
-        route.setStops(newStops);
-        assertEquals(newStops, route.getStops());
-    }
-
-    @Test
-    void getLocomotive() {
+    void testGetLocomotive() {
         assertEquals(locomotive, route.getLocomotive());
     }
 
+    // Testa se setLocomotive atualiza corretamente a locomotiva
     @Test
-    void setLocomotive() {
-        Locomotive newLoco = new Locomotive(2, LocomotiveModel.MIKADO);
-        route.setLocomotive(newLoco);
-        assertEquals(newLoco, route.getLocomotive());
+    void testSetLocomotive() {
+        Locomotive newLocomotive = new Locomotive(2, LocomotiveModel.JOHN_BULL);
+        route.setLocomotive(newLocomotive);
+        assertEquals(newLocomotive, route.getLocomotive());
     }
 
+    // Testa se getPointsOfRoute retorna corretamente os pontos da rota
     @Test
-    void getCargo() {
-        assertEquals(cargo, route.getCargo());
+    void testGetPointsOfRoute() {
+        assertEquals(pointsOfRoute, route.getPointsOfRoute());
     }
 
+    // Testa se setPointsOfRoute atualiza corretamente os pontos da rota
     @Test
-    void setCargo() {
-        List<Cargo> newCargo = List.of(new Cargo(ResourceType.IRON, 75));
-        route.setCargo(newCargo);
-        assertEquals(newCargo, route.getCargo());
+    void testSetPointsOfRoute() {
+        Station newStation = new Station("Station3", StationType.TERMINAL);
+        List<Cargo> newCargoList = List.of(new Cargo(ResourceType.IRON, 75));
+        PointOfRoute newPoint = new PointOfRoute(newStation, newCargoList, CargoMode.HALF);
+
+        List<PointOfRoute> newPoints = List.of(newPoint);
+        route.setPointsOfRoute(newPoints);
+        assertEquals(newPoints, route.getPointsOfRoute());
     }
 
+    // Testa se checkPointsOfRoute retorna true para lista válida
     @Test
-    void getRouteStations() {
-        List<Station> expected = new ArrayList<>();
-        expected.add(startStation);
-        expected.addAll(stops);
-        expected.add(endStation);
-        assertEquals(expected, route.getRouteStations());
+    void testCheckPointsOfRoute_Valid() {
+        assertTrue(route.checkPointsOfRoute(pointsOfRoute));
     }
 
+    // Testa se checkPointsOfRoute retorna false para lista nula
     @Test
-    void testToString() {
-        String str = route.toString();
-        assertNotNull(str);
-        assertTrue(str.contains("StartStation"));
-        assertTrue(str.contains("EndStation"));
+    void testCheckPointsOfRoute_Invalid_NullList() {
+        assertFalse(route.checkPointsOfRoute(null));
+    }
+
+    // Testa se checkPointsOfRoute retorna false para lista vazia
+    @Test
+    void testCheckPointsOfRoute_Invalid_EmptyList() {
+        assertFalse(route.checkPointsOfRoute(new ArrayList<>()));
+    }
+
+    // Testa se checkLocomotive retorna true para uma locomotiva válida
+    @Test
+    void testCheckLocomotive_Valid() {
+        assertTrue(route.checkLocomotive(locomotive));
+    }
+
+    // Testa se checkLocomotive retorna false para uma locomotiva nula
+    @Test
+    void testCheckLocomotive_Invalid_Null() {
+        assertFalse(route.checkLocomotive(null));
+    }
+
+    // Testa se o método toString inclui as informações principais da rota
+    @Test
+    void testToStringContainsExpectedInfo() {
+        String result = route.toString();
+        assertTrue(result.contains("Route:"));
+        assertTrue(result.contains("Locomotive"));
+        assertTrue(result.contains("Points of Route"));
+    }
+
+    // Testa se checkPointsOfRoute retorna false quando há um ponto nulo na lista
+    @Test
+    void testCheckPointsOfRoute_InvalidPoint() {
+        List<PointOfRoute> invalidPoints = new ArrayList<>(pointsOfRoute);
+        invalidPoints.set(0, null);
+        assertFalse(route.checkPointsOfRoute(invalidPoints));
     }
 }

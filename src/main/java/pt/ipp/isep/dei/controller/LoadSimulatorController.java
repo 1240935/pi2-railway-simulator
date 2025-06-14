@@ -2,31 +2,17 @@ package pt.ipp.isep.dei.controller;
 
 import pt.ipp.isep.dei.domain.Simulator;
 import pt.ipp.isep.dei.repository.Repositories;
+import pt.ipp.isep.dei.repository.*;
 
 public class LoadSimulatorController {
+    private final SimulatorRepository repository;
 
-    public boolean loadSerializedSimulator(String filePath) {
-        Simulator simulator = Repositories.getInstance().getSimulatorRepository().loadSimulatorFromFile(filePath);
-        if (simulator == null) {
-            System.out.println("Failed to load simulator from file.");
-            return false;
-        }
-
-        if (simulatorExists(simulator.getName())) {
-            System.out.println("A simulator with the name '" + simulator.getName() + "' already exists.");
-            return false;
-        }
-
-        Repositories.getInstance().getSimulatorRepository().addSimulator(simulator);
-        System.out.println("Simulator loaded successfully from file.");
-        return true;
+    public LoadSimulatorController() {
+        this.repository = Repositories.getInstance().getSimulatorRepository();
     }
 
-    private boolean simulatorExists(String name) {
-        return Repositories.getInstance()
-                .getSimulatorRepository()
-                .getSimulators()
-                .stream()
-                .anyMatch(s -> s.getName().equalsIgnoreCase(name));
+    public boolean loadSerializedSimulator(String filePath) {
+        Simulator simulator = repository.loadSimulatorFromFile(filePath);
+        return simulator != null;
     }
 }

@@ -88,6 +88,9 @@ public class SimulatorController {
             selectedRoutes = selectedScenario.getRoutes();
         }
         this.simulator = new Simulator(selectedRoutes, player, selectedScenario);
+
+        // Definir como simulador ativo no repositório
+        Repositories.getInstance().getSimulatorRepository().setActiveSimulator(this.simulator);
     }
 
     public void simulateMonths(int months) {

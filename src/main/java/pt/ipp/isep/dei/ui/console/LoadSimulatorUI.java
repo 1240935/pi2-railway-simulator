@@ -5,7 +5,6 @@ import pt.ipp.isep.dei.controller.LoadSimulatorController;
 import java.util.Scanner;
 
 public class LoadSimulatorUI {
-
     private final LoadSimulatorController controller = new LoadSimulatorController();
 
     public void start() {
@@ -15,7 +14,7 @@ public class LoadSimulatorUI {
 
         boolean success = controller.loadSerializedSimulator(filePath);
         if (success) {
-            System.out.println("Simulator loaded successfully.");
+            System.out.println("Simulator loaded successfully and set as active.");
         } else {
             System.out.println("Error loading simulator.");
         }

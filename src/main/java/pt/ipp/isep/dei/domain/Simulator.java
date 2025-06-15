@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe principal do simulador que gere a simulação mensal de rotas, receitas, custos
- * e eventos relacionados com comboios, estações e cenários.
+ * Main class of the simulator that manages the monthly simulation of routes, revenues, costs,
+ * and events related to trains, stations, and scenarios.
  */
 public class Simulator implements Serializable {
 
@@ -36,8 +36,8 @@ public class Simulator implements Serializable {
     }
 
     /**
-     * Executa a simulação de um mês, atualizando partidas, chegadas, cargas,
-     * manutenção, receitas e mensagens de alerta.
+     * Executes the simulation of one month, updating departures, arrivals, cargo,
+     * maintenance, revenues, and alert messages.
      */
     public void simulateMonth() {
         System.out.println("=== Month " + currentMonth + " ===");
@@ -67,7 +67,7 @@ public class Simulator implements Serializable {
         currentMonth++;
     }
 
-    /** Reinicia os valores financeiros anuais. */
+    /** Resets the yearly financial values. */
     private void resetYearlyFinancials() {
         yearlyRevenue = 0;
         yearlyTrackMaintenance = 0;
@@ -76,7 +76,7 @@ public class Simulator implements Serializable {
         locomotiveDistanceMap.clear();
     }
 
-    /** Simula o tempo estimado entre pontos da rota com base na velocidade e carga. */
+    /** Simulates the estimated time between route points based on speed and cargo. */
     private void simulateDepartures() {
         for (Route route : routes) {
             Locomotive loco = route.getLocomotive();
@@ -105,7 +105,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Simula a entrega de cargas e lucro com base nas entregas efetuadas. */
+    /** Simulates the delivery of cargo and profit based on deliveries made. */
     private void simulateArrivals(Route route) {
         List<PointOfRoute> points = route.getPointsOfRoute();
         int totalDelivered = 0;
@@ -171,7 +171,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Verifica se há novos modelos de locomotiva disponíveis para o ano atual. */
+    /** Checks if there are new locomotive models available for the current year. */
     private void checkNewLocomotivesAvailable() {
         int currentYear = scenario.getYear() + (currentMonth / 12);
         List<LocomotiveModel> models = Repositories.getInstance().getLocomotiveModelRepository().getLocomotiveModels();
@@ -186,7 +186,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Gera novas unidades de carga em função do mês e modificadores da indústria. */
+    /** Generates new cargo units according to the month and industry modifiers. */
     private void generateCargoes() {
         int industryChanger = scenario.getIndustryChanger();
         int baseInterval = 2;
@@ -205,7 +205,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Atualiza a procura nas estações com base em entregas e ajusta os valores dos recursos. */
+    /** Updates demand at stations based on deliveries and adjusts resource values. */
     private void updateDemand() {
         for (Route route : routes) {
             for (PointOfRoute point : route.getPointsOfRoute()) {
@@ -231,7 +231,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Simula o percurso de uma locomotiva por sua rota. */
+    /** Simulates the path of a locomotive through its route. */
     public void simulateRoute(Route route, Locomotive loco) {
         List<PointOfRoute> points = route.getPointsOfRoute();
         int totalCapacity = 24;
@@ -256,7 +256,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Verifica se há condições para partir do ponto atual com base no modo de carga. */
+    /** Checks if there are conditions to depart from the current point based on cargo mode. */
     private boolean canDepart(PointOfRoute point, int loadedCargo, int totalCapacity) {
         CargoMode mode = point.getCargoMode();
         switch (mode) {
@@ -267,7 +267,7 @@ public class Simulator implements Serializable {
         }
     }
 
-    /** Carrega a carga disponível no ponto. */
+    /** Loads available cargo at the point. */
     private int loadCargoFromStation(PointOfRoute point) {
         List<Cargo> selectedToLoad = point.getCargoList();
         point.getCargoList().clear();
@@ -283,7 +283,7 @@ public class Simulator implements Serializable {
         return totalLoaded;
     }
 
-    /** Simula o deslocamento da locomotiva entre dois pontos. */
+    /** Simulates the movement of the locomotive between two points. */
     private void travelToNextPoint(Locomotive loco, PointOfRoute from, PointOfRoute to) {
         Railway railway = new Railway(from.getStation(), to.getStation(), RailwayType.DOUBLE, from.getStation().getPosition().euclideanDistance(to.getStation().getPosition()));
         double distance = railway.getDistance();
@@ -293,7 +293,7 @@ public class Simulator implements Serializable {
                 from.getStation().getName() + " to " + to.getStation().getName());
     }
 
-    /** Gera o relatório financeiro do ano. */
+    /** Generates the financial report of the year. */
     public String generateFinancialReport() {
         yearlyTrackMaintenance = calculateTrackMaintenance();
         yearlyTrainMaintenance = calculateTrainMaintenance();
@@ -318,7 +318,7 @@ public class Simulator implements Serializable {
         return sb.toString();
     }
 
-    /** Calcula o custo de manutenção dos comboios. */
+    /** Calculates the maintenance cost of trains. */
     private double calculateTrainMaintenance() {
         double total = 0;
         for (Route route : routes) {
@@ -330,7 +330,7 @@ public class Simulator implements Serializable {
         return total;
     }
 
-    /** Calcula o custo de combustível com base na distância percorrida e tipo de locomotiva. */
+    /** Calculates fuel cost based on distance traveled and locomotive type. */
     private double calculateFuelCost() {
         double total = 0;
         for (java.util.Map.Entry<Locomotive, Double> entry : locomotiveDistanceMap.entrySet()) {
@@ -349,7 +349,7 @@ public class Simulator implements Serializable {
         return total;
     }
 
-    /** Calcula o custo de manutenção das vias férreas usadas. */
+    /** Calculates the maintenance cost of the used railways. */
     private double calculateTrackMaintenance() {
         double totalCost = 0;
         List<Railway> uniqueRailways = new ArrayList<>();
@@ -374,7 +374,7 @@ public class Simulator implements Serializable {
         return totalCost;
     }
 
-    /** Gera resumo textual do mês simulado. */
+    /** Generates a textual summary of the simulated month. */
     private String generateMonthlySummary() {
         StringBuilder sb = new StringBuilder();
         sb.append("Summary for Month ").append(currentMonth).append("\n");
@@ -395,7 +395,7 @@ public class Simulator implements Serializable {
     public List<String> getAlerts() { return alerts; }
     public String getName() { return scenario.getMap().getName() + "-" + currentMonth; }
 
-    /** Retorna a data atual da simulação (ano e mês). */
+    /** Returns the current date of the simulation (year and month). */
     public String getCurrentSimulationDate() {
         int year = scenario.getYear() + (currentMonth - 1) / 12;
         int month = ((currentMonth - 1) % 12) + 1;

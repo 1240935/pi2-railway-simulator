@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Representa um ponto de uma rota, contendo uma estação,
- * uma lista de cargas, o modo de carga e o tempo estimado
- * até à próxima chegada.
+ * Represents a point in a route, containing a station,
+ * a list of cargos, the cargo transport mode,
+ * and the estimated time until the next arrival.
  */
 public class PointOfRoute implements Serializable {
 
@@ -16,11 +16,11 @@ public class PointOfRoute implements Serializable {
     private double estimatedTimeToNextArrival;
 
     /**
-     * Construtor principal da classe.
+     * Main constructor of the class.
      *
-     * @param station   estação associada ao ponto
-     * @param cargoList lista de cargas no ponto
-     * @param cargoMode modo de transporte da carga
+     * @param station   the station associated with the point
+     * @param cargoList list of cargos at the point
+     * @param cargoMode cargo transport mode
      */
     public PointOfRoute(Station station, List<Cargo> cargoList, CargoMode cargoMode) {
         this.station = station;
@@ -53,20 +53,20 @@ public class PointOfRoute implements Serializable {
     }
 
     /**
-     * Verifica se a estação é válida (nome não nulo e apenas letras/espaços).
+     * Checks if the station is valid (non-null name with only letters and spaces).
      *
-     * @param station estação a validar
-     * @return true se válida, false caso contrário
+     * @param station the station to validate
+     * @return true if valid, false otherwise
      */
     public boolean checkStation(Station station) {
         return station != null && station.getName() != null && station.getName().matches("^[a-zA-Z\\s]+$");
     }
 
     /**
-     * Verifica se a lista de cargas é válida (tipo definido e quantidade ≥ 0).
+     * Checks if the cargo list is valid (type defined and quantity ≥ 0).
      *
-     * @param cargoList lista de cargas a validar
-     * @return true se válida, false caso contrário
+     * @param cargoList the list of cargos to validate
+     * @return true if valid, false otherwise
      */
     public boolean checkCargo(List<Cargo> cargoList) {
         for (Cargo cargo : cargoList) {
@@ -78,28 +78,28 @@ public class PointOfRoute implements Serializable {
     }
 
     /**
-     * Verifica se o modo de carga é válido (não nulo).
+     * Checks if the cargo mode is valid (non-null).
      *
-     * @param mode modo de carga
-     * @return true se válido, false caso contrário
+     * @param mode the cargo mode to validate
+     * @return true if valid, false otherwise
      */
     public boolean checkCargoMode(CargoMode mode) {
         return mode != null;
     }
 
     /**
-     * Define o tempo estimado até à próxima chegada (em horas).
+     * Sets the estimated time until the next arrival (in hours).
      *
-     * @param timeHours tempo em horas
+     * @param timeHours time in hours
      */
     public void setEstimatedTimeToNextArrival(double timeHours) {
         this.estimatedTimeToNextArrival = timeHours;
     }
 
     /**
-     * Representação textual do ponto de rota.
+     * Textual representation of the route point.
      *
-     * @return string com nome da estação, modo de carga e tipos de carga
+     * @return string with station name, cargo mode, and cargo types
      */
     @Override
     public String toString() {

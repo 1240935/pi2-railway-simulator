@@ -20,55 +20,89 @@ public class Repositories {
         return simulatorRepository;
     }
 
-    /** Singleton instance of this class. */
+    /**
+     * Singleton instance of this class.
+     */
     private static Repositories instance;
 
-    /** Repository for map data. */
+    /**
+     * Repository for map data.
+     */
     private MapRepository mapRepository;
 
-    /** Repository for scenarios. */
+    /**
+     * Repository for scenarios.
+     */
     private ScenarioRepository scenarioRepo;
 
-    /** Repository for railway lines. */
+    /**
+     * Repository for railway lines.
+     */
     private LineRepository lineRepository;
 
-    /** Repository for stations. */
+    /**
+     * Repository for stations.
+     */
     private StationRepository stationRepository;
 
-    /** Repository for industries. */
+    /**
+     * Repository for industries.
+     */
     private IndustryRepository industryRepository;
 
-    /** Repository for building types. */
+    /**
+     * Repository for building types.
+     */
     private BuildingTypeRepository buildingTypeRepository;
 
-    /** Repository for industry changers. */
+    /**
+     * Repository for industry changers.
+     */
     private IndustryChangerRepository industryChangerRepository;
 
-    /** Repository for industry types. */
+    /**
+     * Repository for industry types.
+     */
     private IndustryTypeRepository industryTypeRepository;
 
-    /** Repository for locomotives. */
+    /**
+     * Repository for locomotives.
+     */
     private LocomotiveRepository locomotiveRepository;
 
-    /** Repository for locomotive types. */
+    /**
+     * Repository for locomotive types.
+     */
     private LocomotiveTypeRepository locomotiveTypeRepository;
 
-    /** Repository for resource types. */
+    /**
+     * Repository for resource types.
+     */
     private ResourceTypeRepository resourceTypeRepository;
 
-    /** Repository for cities. */
+    /**
+     * Repository for cities.
+     */
     private CityRepository cityRepository;
 
-    /** Repository for locomotive models. */
+    /**
+     * Repository for locomotive models.
+     */
     private LocomotiveModelRepository locomotiveModelRepository;
 
-    /** Repository for cargo. */
+    /**
+     * Repository for cargo.
+     */
     private CargoRepository cargoRepository;
 
-    /** Repository for buildings. */
+    /**
+     * Repository for buildings.
+     */
     private BuildingRepository buildingRepository;
 
-    /** Repository for routes. */
+    /**
+     * Repository for routes.
+     */
     private RouteRepository routeRepository;
 
     private CityBlockRepository cityBlockRepository;
@@ -125,7 +159,7 @@ public class Repositories {
      * This constructor is private to enforce singleton pattern.
      *
      * @param stationFile path to the file containing station data
-     * @param lineFile path to the file containing line data
+     * @param lineFile    path to the file containing line data
      */
     private Repositories(String stationFile, String lineFile) {
         stationRepository = new StationRepository();
@@ -138,7 +172,7 @@ public class Repositories {
      * Returns the singleton instance, initializing it with station and line files if not already created.
      *
      * @param stationFile path to the station data file
-     * @param lineFile path to the line data file
+     * @param lineFile    path to the line data file
      * @return the singleton {@link Repositories} instance
      */
     public static Repositories getInstance(String stationFile, String lineFile) {
@@ -289,16 +323,49 @@ public class Repositories {
      *
      * @return the {@link RouteRepository} instance
      */
+    /**
+     * Obtém o repositório de rotas.
+     *
+     * @return instância do RouteRepository
+     */
     public RouteRepository getRouteRepository() {
         return routeRepository;
     }
 
-    public CityBlockRepository getCityBlockRepository(){ return cityBlockRepository;}
+    /**
+     * Obtém o repositório de blocos de cidade.
+     *
+     * @return instância do CityBlockRepository
+     */
+    public CityBlockRepository getCityBlockRepository() {
+        return cityBlockRepository;
+    }
 
-    public PointOfRouteRepository getPointOfRouteRepository(){ return pointOfRouteRepository;}
+    /**
+     * Obtém o repositório de pontos de rota.
+     *
+     * @return instância do PointOfRouteRepository
+     */
+    public PointOfRouteRepository getPointOfRouteRepository() {
+        return pointOfRouteRepository;
+    }
 
-    public StationTypeRepository getStationTypeRepository(){ return stationTypeRepository;}
+    /**
+     * Obtém o repositório de tipos de estação.
+     *
+     * @return instância do StationTypeRepository
+     */
+    public StationTypeRepository getStationTypeRepository() {
+        return stationTypeRepository;
+    }
 
-    public CargoModeRepository getCargoModeRepository(){ return cargoModeRepository;}
+    /**
+     * Obtém o repositório de modos de carga.
+     *
+     * @return instância do CargoModeRepository
+     */
+    public CargoModeRepository getCargoModeRepository() {
+        return cargoModeRepository;
+    }
 }
 

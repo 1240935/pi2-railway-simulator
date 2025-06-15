@@ -103,8 +103,8 @@ public class AssignRouteController {
         List<Cargo> cargoList = getStationByIndex(scenarioIndex, stationIndex).getSuppliesOnly(industries, cities);
         List<String> names = new ArrayList<>();
         List<CargoDTO> cargoDTOS = cargoListMapper.toDTOList(cargoList);
-        for (int i = 0; i < cargoDTOS.size(); i++) {
-            names.add(cargoDTOS.get(i).toString());
+        for (CargoDTO cargoDTO : cargoDTOS) {
+            names.add(cargoDTO.toString());
         }
 
         return names;

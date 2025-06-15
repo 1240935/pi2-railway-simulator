@@ -121,6 +121,6 @@ class ScenarioTest {
                 List.of(ResourceType.OIL),
                 List.of(ResourceType.STEEL),
                 3);
-        assertEquals("EuropeMap (1980)", anotherScenario.toString()); // <-- Corrige o nome esperado se necessário
+        assertEquals("SecondMap (1980)", anotherScenario.toString());
     }
 }

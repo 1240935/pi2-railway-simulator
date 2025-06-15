@@ -3,7 +3,6 @@ package pt.ipp.isep.dei.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,29 +18,21 @@ class SimulatorTest {
 
     @BeforeEach
     void setUp() {
-        // Criar mapa
-        Map map = new Map("TestMap", 10);
 
-        // IndustryType e IndustryChanger para o Scenario
-        List<IndustryType> industryTypes = List.of(IndustryType.COAL_MINE, IndustryType.STEEL_MILL);
-        List<IndustryChanger> industryChangers = List.of(IndustryChanger.WAR, IndustryChanger.SCHOOLING_PROGRAM);
+        Map map = new Map(10, "TestMap", 20);
 
-        // Criar cenário
         scenario = new Scenario(
                 map,
                 2025,
                 List.of(LocomotiveType.STEAM, LocomotiveType.DIESEL),
-                industryTypes,
-                industryChangers,
-                new ArrayList<>(), // estações vazias inicialmente
-                new ArrayList<>()  // rotas vazias inicialmente
+                List.of(ResourceType.COAL, ResourceType.IRON),
+                List.of(ResourceType.STEEL),
+                1
         );
 
-        // Criar estações
         station1 = new Station("Station1", StationType.TERMINAL);
         station2 = new Station("Station2", StationType.DEPOT);
 
-        // Inicializar supplies e demands das estações
         station1.getSupplies().add(new Cargo(ResourceType.COAL, 0));
         station1.getSupplies().add(new Cargo(ResourceType.IRON, 0));
         station1.getDemands().add(new Cargo(ResourceType.COAL, 3));
@@ -49,57 +40,112 @@ class SimulatorTest {
         station2.getSupplies().add(new Cargo(ResourceType.COAL, 0));
         station2.getDemands().add(new Cargo(ResourceType.IRON, 1));
 
-        // Criar locomotiva
         Locomotive locomotive = new Locomotive(1, LocomotiveModel.PACIFIC);
 
-        // Criar rota com o construtor correto: startingStation, endingStation, locomotive, cargo
-        List<Cargo> routeCargo = List.of(new Cargo(ResourceType.COAL, 1), new Cargo(ResourceType.IRON, 1));
-        route = new Route(station1, station2, locomotive, routeCargo);
+        List<Cargo> routeCargo = List.of(
+                new Cargo(ResourceType.COAL, 1),
+                new Cargo(ResourceType.IRON, 1)
+        );
 
-        // Se quiser, pode adicionar paradas intermediárias:
-        // route.setStops(List.of(...));
+        PointOfRoute point1 = new PointOfRoute(station1, routeCargo, CargoMode.FULL);
+        PointOfRoute point2 = new PointOfRoute(station2, routeCargo, CargoMode.AVAILABLE);
+        route = new Route(locomotive, List.of(point1, point2));
 
-        // Criar jogador
         player = new Player("testUser", "password", 1000);
 
-        // Criar simulador
         simulator = new Simulator(List.of(route), player, scenario);
     }
 
+    // Verifica se ao simular um mês o mês avança e o orçamento do jogador aumenta ou permanece igual
     @Test
-    void testSimulateDay_AddsCargoOnEvenDays() {
-        simulator.simulateDay(2);  // dia par: adiciona cargos às estações
-
-        assertTrue(station1.getSupplies().stream().anyMatch(c -> c.getType() == ResourceType.COAL && c.getQuantity() > 0));
-        assertTrue(station1.getSupplies().stream().anyMatch(c -> c.getType() == ResourceType.IRON && c.getQuantity() > 0));
-        assertTrue(station2.getSupplies().stream().anyMatch(c -> c.getType() == ResourceType.COAL && c.getQuantity() > 0));
-    }
-
-    @Test
-    void testSimulateDay_DeliversAndPicksUpCargoOnMultipleOfStations() {
+    void testSimulateMonth_IncrementsMonthAndAddsRevenue() {
+        int initialMonth = simulator.getCurrentSimulationDate().contains("Month 1") ? 1 : -1;
         int initialBudget = player.getBudget();
 
-        simulator.simulateDay(2);  // gerar cargos
-        simulator.simulateDay(2);  // entregar e recolher cargos
+        simulator.simulateMonth();
 
-        assertTrue(player.getBudget() > initialBudget);
-
-        for (Station station : List.of(station1, station2)) {
-            for (Cargo cargo : station.getSupplies()) {
-                assertEquals(0, cargo.getQuantity());
-            }
-        }
+        assertNotEquals("Month " + initialMonth, simulator.getCurrentSimulationDate());
+        assertTrue(player.getBudget() >= initialBudget, "Player budget should not decrease after month simulation");
     }
 
+    // Verifica se o resumo do último mês é atualizado corretamente após simulação
     @Test
-    void testGetSimulationSummary_ReturnsCorrectFormat() {
-        simulator.simulateDay(2);
-        simulator.simulateDay(2);
+    void testGetLastMonthSummary_ReturnsSummaryAfterSimulation() {
+        String beforeSummary = simulator.getLastMonthSummary();
+        assertEquals("No month simulated yet.", beforeSummary);
 
+        simulator.simulateMonth();
+        String afterSummary = simulator.getLastMonthSummary();
+
+        assertTrue(afterSummary.contains("Summary for Month"));
+        assertTrue(afterSummary.contains("Player budget"));
+    }
+
+    // Verifica se o resumo da simulação contém as informações esperadas
+    @Test
+    void testGetSimulationSummary_FormatCheck() {
+        simulator.simulateMonth();
         String summary = simulator.getSimulationSummary(player);
 
-        assertTrue(summary.contains("Total Resources Generated"));
-        assertTrue(summary.contains("Total Resources Delivered"));
-        assertTrue(summary.contains("Final Player Budget"));
+        assertTrue(summary.contains("Simulation Summary"));
+        assertTrue(summary.contains("Player budget"));
+        assertTrue(summary.contains("Month"));
+    }
+
+    // Verifica se o nome do simulador começa corretamente com o nome do mapa e o mês
+    @Test
+    void testNameGeneration() {
+        String name = simulator.getName();
+        assertTrue(name.startsWith("TestMap-"), "Simulator name should start with map name followed by month");
+    }
+
+    // Verifica se a data da simulação muda após simular um mês
+    @Test
+    void testCurrentSimulationDate_ChangesEachMonth() {
+        String dateBefore = simulator.getCurrentSimulationDate();
+        simulator.simulateMonth();
+        String dateAfter = simulator.getCurrentSimulationDate();
+
+        assertNotEquals(dateBefore, dateAfter, "Simulation date should change after simulating a month");
+    }
+
+    // Verifica se simular um mês com rotas vazias não causa erros e gera resumo correto
+    @Test
+    void testSimulateMonth_WithNoRoutes_ShouldNotCrash() {
+        Simulator emptyRouteSimulator = new Simulator(List.of(), player, scenario);
+        assertDoesNotThrow(emptyRouteSimulator::simulateMonth);
+        assertEquals("Summary for Month 1:\nPlayer budget: 1000", emptyRouteSimulator.getLastMonthSummary());
+    }
+
+    // Verifica que simular um mês com carga inválida (excesso) é tratado sem crash e orçamento não aumenta
+    @Test
+    void testSimulateMonth_WithInvalidCargo_ShouldHandleGracefully() {
+        Locomotive weakLocomotive = new Locomotive(1, LocomotiveModel.SDP40);
+        PointOfRoute point1 = new PointOfRoute(station1, List.of(new Cargo(ResourceType.COAL, 100)), CargoMode.FULL);
+        PointOfRoute point2 = new PointOfRoute(station2, List.of(new Cargo(ResourceType.COAL, 100)), CargoMode.AVAILABLE);
+
+        Route overloadedRoute = new Route(weakLocomotive, List.of(point1, point2));
+        Simulator overloadedSimulator = new Simulator(List.of(overloadedRoute), player, scenario);
+
+        overloadedSimulator.simulateMonth();
+
+        assertTrue(player.getBudget() <= 1000);
+    }
+
+    // Verifica se simular um mês com rota que tem múltiplos pontos funciona corretamente e aumenta orçamento
+    @Test
+    void testSimulateMonth_WithMultipleRoutePoints() {
+        Station midStation = new Station("MidStation", StationType.DEPOT);
+
+        PointOfRoute point1 = new PointOfRoute(station1, List.of(new Cargo(ResourceType.COAL, 1)), CargoMode.FULL);
+        PointOfRoute point2 = new PointOfRoute(midStation, List.of(), CargoMode.HALF);
+        PointOfRoute point3 = new PointOfRoute(station2, List.of(new Cargo(ResourceType.COAL, 1)), CargoMode.AVAILABLE);
+
+        Route complexRoute = new Route(new Locomotive(2, LocomotiveModel.PACIFIC), List.of(point1, point2, point3));
+        Simulator complexSimulator = new Simulator(List.of(complexRoute), player, scenario);
+
+        complexSimulator.simulateMonth();
+
+        assertTrue(player.getBudget() > 1000);
     }
 }

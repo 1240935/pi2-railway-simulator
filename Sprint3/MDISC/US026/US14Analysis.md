@@ -102,22 +102,18 @@ Sejam:
 #### Expressão completa:
 
 ```
-
 findEulerianPath:
 O(n) + O(m)
 
 O(n × m) ← contar grau de cada estação
 
 O(n) ← verificar grau ímpar
-
 ```
 
 Descartando os termos menos significativos:
 
 ```
-
 O(n + m + n × m) → O(n × m)
-
 ```
 
 ### Complexidade Pior Caso

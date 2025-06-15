@@ -111,9 +111,13 @@ class Route {
 
 class Simulator{
     status
-    totalGenerated
-    totalSupplied
-    totalDelivered
+    currentMonth
+    alerts
+    lastMonthSummary
+    yearlyRevenue
+    yearlyTrackMaintenance
+    yearlyTrainMaintenance
+    yearlyFuelCost
 }
 
 class Train {

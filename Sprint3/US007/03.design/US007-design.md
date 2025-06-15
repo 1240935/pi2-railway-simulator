@@ -4,21 +4,21 @@
 
 ### 3.1. Rationale
 
-| **Interaction ID** | **Question: Which class is responsible for...**                  | **Answer**                                 | **Justification (with patterns)**                                                      |
-|--------------------|------------------------------------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------|
-| 1–4                | Handling user input and initiating the use case                  | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures input and drives the interaction with the player. |
-| 5–23               | Coordinating scenario retrieval and sending scenario names to UI | `:ViewStationDetailsController`            | **Controller** – Manages use case logic and repository access.                         |
-| 6, 12              | Providing singleton access to repositories                       | `Repositories`                             | **Pure Fabrication (Singleton)** – Provides access to repositories.                    |
-| 8                  | Accessing list of scenarios                                      | `ScenarioRepository`                       | **Information Expert** – Knows how to retrieve Scenario objects.                       |
-| 9–21               | Mapping Scenarios to DTOs                                        | `ScenarioListMapper`                       | **Pure Fabrication** – Converts domain objects to UI-ready DTOs.                       |
-| 24–26              | Handling user selection of a scenario                            | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures scenario selection.                               |
-| 27–53              | Coordinating station retrieval and sending station names to UI   | `:ViewStationDetailsController`            | **Controller** – Retrieves and maps station data.                                      |
-| 29, 35             | Accessing Station repository                                     | `Repositories`, `StationRepository`        | **Pure Fabrication** and **Information Expert** – Provides access to station data.     |
-| 36–50              | Mapping Stations to DTOs                                         | `StationListMapper`                        | **Pure Fabrication** – Transforms domain to DTO.                                       |
-| 54–55              | Handling player’s station selection                              | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Handles player interaction.                                |
-| 56–60              | Retrieving and returning building details                        | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Station knows its buildings.                 |
-| 61–65              | Retrieving and returning cargo details                           | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Station knows its cargo.                     |
-| 66                 | Displaying full station details                                  | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Presents results to the player.                            |
+| **Interaction ID(s)** | **Question: Which class is responsible for...**                       | **Answer**                                 | **Justification (with GRASP and Design Patterns)**                                               |
+|-----------------------|-----------------------------------------------------------------------|--------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 1–4                   | Handling user input and initiating the use case                       | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures user input and starts interaction.                          |
+| 5–23                  | Coordinating scenario retrieval and sending scenario names to UI      | `:ViewStationDetailsController`            | **Controller** – Orchestrates the retrieval, mapping, and return of scenario data.               |
+| 6, 12                 | Providing singleton access to repositories                            | `Repositories`                             | **Pure Fabrication** (Singleton) – Centralized factory/provider for domain repositories.         |
+| 8                     | Retrieving all scenarios from storage                                 | `ScenarioRepository`                       | **Information Expert** – Knows how to access and manage `Scenario` objects.                      |
+| 9–21                  | Mapping `Scenario` objects to `ScenarioDTO`                           | `ScenarioListMapper`                       | **Pure Fabrication** – Responsible for transforming domain objects into DTOs.                    |
+| 24–26                 | Handling the player’s selection of a scenario                         | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures and forwards scenario choice.                               |
+| 27–53                 | Coordinating station retrieval and returning station names to UI      | `:ViewStationDetailsController`            | **Controller** – Retrieves station data for selected scenario and maps it.                       |
+| 29, 35                | Accessing the station repository                                      | `Repositories`, `StationRepository`        | **Pure Fabrication** + **Information Expert** – Provides access to station data.                 |
+| 36–50                 | Mapping `Station` domain objects to `StationDTO`                      | `StationListMapper`                        | **Pure Fabrication** – Handles transformation from domain model to DTO.                          |
+| 54–55                 | Handling the player’s selection of a station                          | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures and forwards user’s station selection.                      |
+| 56–60                 | Retrieving and returning building details of the selected station     | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Controller coordinates; `Station` knows its buildings. |
+| 61–65                 | Retrieving and returning cargo details of the selected station        | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Controller coordinates; `Station` knows its cargo.     |
+| 66                    | Displaying complete station details (buildings + cargo) to the player | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Presents result back to the player.                                  |
 
 ### Systematization ##
 

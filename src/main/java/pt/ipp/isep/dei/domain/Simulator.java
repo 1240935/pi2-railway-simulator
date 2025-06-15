@@ -377,15 +377,15 @@ public class Simulator implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("\n=== Year ").append(scenario.getYear() + (currentMonth - 1) / 12).append(" Financial Results ===\n");
 
-        sb.append(String.format("Revenues (Cargo Deliveries): $%,.2f%n", yearlyRevenue));
+        sb.append(String.format("Revenues (Cargo Deliveries): %,.2f%n", yearlyRevenue));
         sb.append("\nExpenses:\n");
-        sb.append(String.format("  - Track Maintenance: $%,.2f%n", yearlyTrackMaintenance));
-        sb.append(String.format("  - Train Maintenance: $%,.2f%n", yearlyTrainMaintenance));
-        sb.append(String.format("  - Fuel: $%,.2f%n", yearlyFuelCost));
+        sb.append(String.format("  - Track Maintenance: %,.2f%n", yearlyTrackMaintenance));
+        sb.append(String.format("  - Train Maintenance: %,.2f%n", yearlyTrainMaintenance));
+        sb.append(String.format("  - Fuel: %,.2f%n", yearlyFuelCost));
 
         double totalExpenses = yearlyTrackMaintenance + yearlyTrainMaintenance + yearlyFuelCost;
         double net = yearlyRevenue - totalExpenses;
-        sb.append(String.format("Net Result: $%,.2f%n", net));
+        sb.append(String.format("Net Result: %,.2f%n", net));
 
         return sb.toString();
     }

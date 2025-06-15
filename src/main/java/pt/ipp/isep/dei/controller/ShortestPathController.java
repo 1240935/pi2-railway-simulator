@@ -26,6 +26,9 @@ public class ShortestPathController {
     private String endStationName;
     private List<String> waypointsNames;
 
+    /**
+     * Default constructor initializes repositories and graph structure.
+     */
     public ShortestPathController() {
         this.stationRepo = Repositories.getInstance().getStationRepository();
         this.lineRepo = Repositories.getInstance().getLineRepository();
@@ -33,6 +36,12 @@ public class ShortestPathController {
         this.waypointsNames = new ArrayList<>();
     }
 
+    /**
+     * Loads a route from a file containing station names separated by semicolons.
+     * The first station is treated as start, the last as end, and any stations in between as waypoints.
+     *
+     * @param filePath path to the route file
+     */
     public void loadRouteFromFile(String filePath) {
         startStationName = null;
         endStationName = null;
@@ -51,29 +60,57 @@ public class ShortestPathController {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace(); // follows your existing loadStations style
+            e.printStackTrace(); // Follow your existing loadStations style for error handling
         }
     }
 
-
+    /**
+     * Returns the name of the start station from the loaded route.
+     *
+     * @return start station name
+     */
     public String getStartStation() {
         return this.startStationName;
     }
 
+    /**
+     * Returns the name of the end station from the loaded route.
+     *
+     * @return end station name
+     */
     public String getEndStation() {
         return this.endStationName;
     }
 
+    /**
+     * Returns the list of waypoint station names from the loaded route.
+     *
+     * @return list of waypoint names
+     */
     public List<String> getWaypoints() {
         return this.waypointsNames;
     }
 
+    /**
+     * Loads station and line data from specified files and builds the graph representation.
+     *
+     * @param stationsFile path to stations file
+     * @param linesFile    path to lines file
+     */
     public void setFiles(String stationsFile, String linesFile) {
         this.stations = stationRepo.loadStations(stationsFile);
         this.lines = lineRepo.loadLines(linesFile, stations);
         graph.buildGraph(stations, lines);
     }
 
+    /**
+     * Finds the shortest path from start station to end station passing through all waypoints in order.
+     *
+     * @param startName     name of start station
+     * @param endName       name of end station
+     * @param waypointNames list of waypoint station names
+     * @return list of stations representing the full path; empty if path not found
+     */
     public List<Station> findShortestPathWithWaypoints(String startName, String endName, List<String> waypointNames) {
         Station start = getStationByName(startName);
         Station end = getStationByName(endName);
@@ -92,7 +129,7 @@ public class ShortestPathController {
             Station next = (i < waypoints.size()) ? waypoints.get(i) : end;
             List<Station> segment = dijkstra(current, next);
             if (segment.isEmpty()) return new ArrayList<>();
-            if (!fullPath.isEmpty()) segment.remove(0); // avoid duplication
+            if (!fullPath.isEmpty()) segment.remove(0); // avoid duplication between segments
             fullPath.addAll(segment);
             current = next;
         }
@@ -100,6 +137,14 @@ public class ShortestPathController {
         return fullPath;
     }
 
+    /**
+     * Returns the shortest path as a list of station names and calculates total path cost.
+     *
+     * @param start     start station name
+     * @param end       end station name
+     * @param waypoints list of waypoint station names
+     * @return list of station names representing the shortest path
+     */
     public List<String> getShortestPathAsNames(String start, String end, List<String> waypoints) {
         List<Station> path = findShortestPathWithWaypoints(start, end, waypoints);
         List<String> names = new ArrayList<>();
@@ -119,6 +164,13 @@ public class ShortestPathController {
         return names;
     }
 
+    /**
+     * Implements Dijkstra's algorithm to find the shortest path between two stations.
+     *
+     * @param start start station
+     * @param end   end station
+     * @return list of stations representing the shortest path; empty if no path found
+     */
     public List<Station> dijkstra(Station start, Station end) {
         List<Station> visited = new ArrayList<>();
         List<Station> unvisited = new ArrayList<>();
@@ -161,6 +213,14 @@ public class ShortestPathController {
         return reconstructPath(previous, start, end);
     }
 
+    /**
+     * Reconstructs the shortest path from the 'previous' list created by Dijkstra.
+     *
+     * @param prev  list of previous stations for each node
+     * @param start starting station
+     * @param end   destination station
+     * @return list of stations representing the shortest path; empty if no path found
+     */
     public List<Station> reconstructPath(List<Station> prev, Station start, Station end) {
         List<Station> path = new ArrayList<>();
         Station step = end;
@@ -175,6 +235,13 @@ public class ShortestPathController {
         return path;
     }
 
+    /**
+     * Finds the index of the unvisited station with the smallest current distance estimate.
+     *
+     * @param unvisited list of unvisited stations
+     * @param distances list of distance estimates for all stations
+     * @return index of the unvisited station with minimum distance; -1 if none found
+     */
     public int getMinDistanceIndex(List<Station> unvisited, List<Integer> distances) {
         int min = Integer.MAX_VALUE;
         int minIndex = -1;
@@ -191,6 +258,12 @@ public class ShortestPathController {
         return minIndex;
     }
 
+    /**
+     * Finds a Station object by its name, case-insensitive.
+     *
+     * @param name station name to search for
+     * @return Station object if found, else null
+     */
     public Station getStationByName(String name) {
         for (Station s : stations) {
             if (s.getName().equalsIgnoreCase(name.trim())) return s;
@@ -198,17 +271,28 @@ public class ShortestPathController {
         return null;
     }
 
+    /**
+     * Returns the list of currently loaded stations.
+     *
+     * @return list of stations
+     */
     public List<Station> getStations() {
         return this.stations;
     }
 
+    /**
+     * Returns the total cost (distance) of the last calculated shortest path.
+     *
+     * @return cost of last path
+     */
     public int getLastPathCost() {
         return lastPathCost;
     }
 
     /**
      * Visualizes the railway graph using the GraphStream library.
-     * Stations are shown as nodes and lines as edges, with electrified lines colored red.
+     * Stations are shown as nodes and lines as edges.
+     * Electrified lines are colored red, non-electrified in black.
      */
     public void visualizeGraph() {
         if (stations == null || lines == null) {
@@ -254,6 +338,4 @@ public class ShortestPathController {
         visualGraph.display();
     }
 
-
 }
-

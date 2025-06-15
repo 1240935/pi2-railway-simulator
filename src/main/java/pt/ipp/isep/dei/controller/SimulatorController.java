@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Controlador responsável por gerir a configuração e execução de simulações.
+ * Controller responsible for managing the configuration and execution of simulations.
  */
 public class SimulatorController {
     private Simulator simulator;
@@ -17,21 +17,27 @@ public class SimulatorController {
     private List<Route> selectedRoutes;
 
     /**
-     * Define o jogador para a simulação.
+     * Sets the player for the simulation.
+     *
+     * @param player the player object
      */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
     /**
-     * Obtém todos os cenários disponíveis no repositório.
+     * Retrieves all available scenarios from the repository.
+     *
+     * @return list of available scenarios
      */
     public List<Scenario> getAvailableScenarios() {
         return Repositories.getInstance().getScenarioRepository().getScenarios();
     }
 
     /**
-     * Retorna uma lista de descrições dos cenários disponíveis.
+     * Returns a list of descriptions for the available scenarios.
+     *
+     * @return list of scenario descriptions
      */
     public List<String> getAvailableScenarioDescriptions() {
         List<String> descriptions = new ArrayList<>();
@@ -42,8 +48,11 @@ public class SimulatorController {
     }
 
     /**
-     * Define o cenário a ser usado na simulação com base no índice.
-     * Também reinicia as quantidades de carga em todas as estações.
+     * Sets the scenario to be used in the simulation based on the given index.
+     * Also resets the cargo quantities at all stations in the scenario's routes.
+     *
+     * @param index the index of the scenario to select
+     * @return true if the scenario was successfully set; false otherwise
      */
     public boolean setScenario(int index) {
         List<Scenario> scenarios = getAvailableScenarios();
@@ -51,7 +60,7 @@ public class SimulatorController {
             this.selectedScenario = scenarios.get(index);
             this.availableRoutes = selectedScenario.getRoutes();
 
-            // Reinicia quantidades de carga para todas as estações nas rotas
+            // Reset cargo quantities for all stations in the routes
             for (Route route : availableRoutes) {
                 for (PointOfRoute point : route.getPointsOfRoute()) {
                     if (point.getStation().getSupplies() != null) {
@@ -72,7 +81,9 @@ public class SimulatorController {
     }
 
     /**
-     * Retorna uma lista de descrições das rotas disponíveis no cenário selecionado.
+     * Returns a list of descriptions for the available routes in the selected scenario.
+     *
+     * @return list of route descriptions
      */
     public List<String> getAvailableRouteDescriptions() {
         List<String> descriptions = new ArrayList<>();
@@ -86,7 +97,9 @@ public class SimulatorController {
     }
 
     /**
-     * Seleciona rotas com base nos índices fornecidos.
+     * Selects routes based on the provided list of indexes.
+     *
+     * @param indexes list of indexes corresponding to routes to select
      */
     public void selectRoutesByIndexes(List<Integer> indexes) {
         if (availableRoutes == null || availableRoutes.isEmpty()) {
@@ -105,7 +118,9 @@ public class SimulatorController {
     }
 
     /**
-     * Inicia a simulação com o jogador, cenário e rotas definidos.
+     * Starts the simulation using the defined player, scenario, and selected routes.
+     *
+     * @throws IllegalStateException if scenario or player are not set
      */
     public void startSimulation() {
         if (selectedScenario == null) throw new IllegalStateException("Scenario not selected");
@@ -115,12 +130,15 @@ public class SimulatorController {
         }
         this.simulator = new Simulator(selectedRoutes, player, selectedScenario);
 
-        // Guarda o simulador como o ativo no repositório
+        // Save the simulator as active in the repository
         Repositories.getInstance().getSimulatorRepository().setActiveSimulator(this.simulator);
     }
 
     /**
-     * Simula a quantidade especificada de meses.
+     * Simulates the specified number of months.
+     *
+     * @param months number of months to simulate
+     * @throws IllegalStateException if the simulation has not been started
      */
     public void simulateMonths(int months) {
         if (simulator == null) {
@@ -132,7 +150,9 @@ public class SimulatorController {
     }
 
     /**
-     * Retorna o resumo do último mês simulado.
+     * Returns the summary of the last simulated month.
+     *
+     * @return summary string of the last month simulated
      */
     public String getSimulationSummary() {
         if (simulator == null) {
@@ -142,7 +162,9 @@ public class SimulatorController {
     }
 
     /**
-     * Retorna a data atual da simulação (formato textual).
+     * Returns the current date of the simulation in textual format.
+     *
+     * @return current simulation date string
      */
     public String getCurrentSimulationDate() {
         if (simulator == null) return "Simulation not started.";
@@ -150,7 +172,9 @@ public class SimulatorController {
     }
 
     /**
-     * Retorna o resumo do mês atual da simulação.
+     * Returns the summary of the current simulation month.
+     *
+     * @return current month summary string
      */
     public String getCurrentMonthSummary() {
         if (simulator == null) {
@@ -160,14 +184,18 @@ public class SimulatorController {
     }
 
     /**
-     * Retorna o simulador atual.
+     * Returns the current Simulator instance.
+     *
+     * @return the current simulator
      */
     public Simulator getSimulator() {
         return simulator;
     }
 
     /**
-     * Define o simulador atual e atualiza jogador, cenário e rotas a partir dele.
+     * Sets the current Simulator and updates the player, scenario, and selected routes accordingly.
+     *
+     * @param simulator the simulator instance to set
      */
     public void setSimulator(Simulator simulator) {
         this.simulator = simulator;

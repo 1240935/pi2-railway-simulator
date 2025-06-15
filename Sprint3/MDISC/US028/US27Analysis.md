@@ -102,6 +102,43 @@ Sejam:
 | 10–21      | –                                        | nC (iterações queue) + mC (arestas total no grafo) |
 | 22         | –                                        | O(n) (construção caminho invertido)                |
 
+### Cálculo da Complexidade
+
+#### Etapas:
+
+1. **Chamada de Dijkstra para cada segmento (entre waypoints)**
+  - O algoritmo chama `dijkstra(...)` para cada par consecutivo entre:
+    - `start → waypoint1`
+    - `waypoint1 → waypoint2`
+    - ...
+    - `último waypoint → end`
+  - No total: `k + 1` chamadas a `dijkstra` (sendo `k` o número de pontos intermédios)
+
+2. **Dijkstra**
+  - Para cada chamada:
+    - Inicializa `distances[]`, `previous[]`, `visited[]` → `O(n)`
+    - Processa até `n` vértices, e percorre até `m` arestas no total → `O(n + m)`
+  - Cada chamada a `dijkstra(...)` custa `O(n + m)`
+
+#### Expressão completa:
+
+```
+findShortestPathWithWaypoints:
+(k + 1) × O(n + m)
+```
+
+Substituindo por notação assintótica:
+
+```
+O((k + 1)(n + m))
+```
+
+Sabendo que `k ≤ n`, a expressão também pode ser reescrita como:
+
+```
+O(n(n + m))
+```
+
 ### Complexidade Pior Caso
 
 **findShortestPathWithWaypoints:** `O((k + 1)(n + m))`  

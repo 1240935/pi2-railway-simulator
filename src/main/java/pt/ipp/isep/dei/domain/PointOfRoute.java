@@ -65,10 +65,22 @@ public class PointOfRoute implements Serializable {
 
     @Override
     public String toString() {
-        return "PointOfRoute{" +
-                "station=" + station +
-                ", cargoList=" + cargoList +
-                ", cargoMode=" + cargoMode +
-                '}';
+        String stationName = (station != null) ? station.getName() : "N/A";
+        String modeName = (cargoMode != null) ? cargoMode.name() : "N/A";
+
+        StringBuilder cargosBuilder = new StringBuilder();
+        if (cargoList != null && !cargoList.isEmpty()) {
+            for (int i = 0; i < cargoList.size(); i++) {
+                cargosBuilder.append(cargoList.get(i).getType().name());
+                if (i < cargoList.size() - 1) {
+                    cargosBuilder.append(", ");
+                }
+            }
+        } else {
+            cargosBuilder.append("No cargo");
+        }
+
+        return "Station: " + stationName + " | Mode: " + modeName + " | Cargo: [" + cargosBuilder + "]";
     }
+
 }

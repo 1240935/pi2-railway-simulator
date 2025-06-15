@@ -42,8 +42,8 @@ public class SimulatorUI {
         }
 
         System.out.println("Available Routes:");
-        for (int i = 0; i < routeDescriptions.size(); i++) {
-            System.out.println((i + 1) + ". " + routeDescriptions.get(i));
+        for (String routeDescription : routeDescriptions) {
+            System.out.println(routeDescription);
         }
 
         System.out.print("Select one or more routes by number (separated by space), or press Enter to select all: ");

@@ -119,8 +119,37 @@ Sejam:
 | 27–28      | –                                            | até 2mA (inserções em `visited` e `queue`)                 |
 
 
-#### Total:
-- verifyPath: `O(k(n + m))` ⟶ como `k ≤ n` → `O(n(n + m))`
+### Cálculo da Complexidade
+
+#### Etapas:
+
+1. **Filtrar Estações por Tipo**
+    - `for s in stations`: percorre `n` estações → `O(n)`
+    - Cria uma lista `candidateStations` com até `k ≤ n` estações
+
+2. **Chamar BFS para cada estação candidata**
+    - No pior caso, nenhuma das chamadas de `bfs(...)` encontra um caminho ⇒ todas as `k` chamadas são feitas
+    - Cada chamada a `bfs` percorre no máximo `n` nós e `m` arestas ⇒ `O(n + m)` por chamada
+
+#### Expressão completa:
+
+```
+verifyPath:
+  O(n)            ← filtrar estações
++ k × O(n + m)    ← até k chamadas a bfs
+```
+
+Sabendo que `k ≤ n`, substituímos:
+
+```
+O(n) + n × O(n + m) = O(n + n² + n·m)
+```
+
+Descartando termos menos significativos:
+
+```
+O(n + n² + n·m) → O(n(n + m))
+```
 
 ### Complexidade Pior Caso
 

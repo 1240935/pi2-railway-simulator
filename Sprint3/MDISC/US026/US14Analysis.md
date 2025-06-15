@@ -73,9 +73,52 @@ Sejam:
 | 23         | 1R (retorna esses dois vértices para o caminho semi-Euleriano)         |
 | 24         | 1R (senão, devolve nulo: grafo não admite caminho Euleriano)           |
 
+### Cálculo da Complexidade
 
-#### Total:
-- Custo total: `O(n × m)`
+#### Etapas:
+
+1. **Obter listas de estações e linhas**
+    - `stations ← obter estações do grafo`: `O(n)`
+    - `lines ← obter linhas do grafo`: `O(m)`
+
+2. **Contar o grau de cada estação**
+    - Loop externo percorre `n` estações
+    - Para cada estação:
+        - Loop interno percorre `m` linhas
+        - Verifica se a linha liga à estação atual (2 comparações por linha)
+        - Incrementa grau se for o caso
+
+    - Total do passo: `O(n × m)`
+
+3. **Verificar se o grafo é Euleriano**
+    - Verifica paridade do grau de cada estação: `O(n)`
+    - Dependendo do número de estações com grau ímpar:
+        - 0 → grafo Euleriano (retorna todas as estações)
+        - 2 → semi-Euleriano (retorna as duas estações com grau ímpar)
+        - outro → retorna `null`
+
+    - Total deste passo: `O(1)` ou no máximo `O(n)`
+
+#### Expressão completa:
+
+```
+
+findEulerianPath:
+O(n) + O(m)
+
+O(n × m) ← contar grau de cada estação
+
+O(n) ← verificar grau ímpar
+
+```
+
+Descartando os termos menos significativos:
+
+```
+
+O(n + m + n × m) → O(n × m)
+
+```
 
 ### Complexidade Pior Caso
 

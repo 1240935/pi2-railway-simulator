@@ -6,10 +6,19 @@ import pt.ipp.isep.dei.dto.IndustryDTO;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Interface de consola para criação de uma indústria.
+ * Permite ao utilizador escolher um mapa, definir coordenadas e tipo de indústria.
+ */
 public class CreateIndustryUI {
 
     private final CreateIndustryController controller = new CreateIndustryController();
 
+    /**
+     * Inicia o fluxo para criar uma indústria.
+     * Solicita seleção do mapa, coordenadas e tipo de indústria ao utilizador,
+     * depois envia os dados ao controlador para criação.
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
@@ -21,9 +30,12 @@ public class CreateIndustryUI {
 
         System.out.print("Select map by number: ");
         int mapIndex = scanner.nextInt() - 1;
+
         int size = controller.getMapSizeByIndex(mapIndex);
+
         System.out.print("Enter X coordinate: ");
         int x = scanner.nextInt();
+
         System.out.print("Enter Y coordinate: ");
         int y = scanner.nextInt();
 
@@ -42,6 +54,6 @@ public class CreateIndustryUI {
         dto.setyCoordinate(y);
         dto.setSize(size);
 
-        controller.createIndustry(dto,mapIndex);
+        controller.createIndustry(dto, mapIndex);
     }
 }

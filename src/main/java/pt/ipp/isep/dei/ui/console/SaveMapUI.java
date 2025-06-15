@@ -5,10 +5,18 @@ import pt.ipp.isep.dei.controller.SaveMapController;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Interface de consola para salvar mapas serializados.
+ * Permite ao utilizador escolher um mapa disponível e guardar num ficheiro.
+ */
 public class SaveMapUI {
 
     private final SaveMapController controller = new SaveMapController();
 
+    /**
+     * Inicia o processo de salvar um mapa.
+     * Lista os mapas disponíveis, pede ao utilizador para escolher um e o nome do ficheiro de destino.
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
 

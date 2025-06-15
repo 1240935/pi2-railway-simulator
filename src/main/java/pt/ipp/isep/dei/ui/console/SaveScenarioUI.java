@@ -5,10 +5,18 @@ import pt.ipp.isep.dei.controller.SaveScenarioController;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Interface de consola para salvar um cenário selecionado em ficheiro serializado.
+ */
 public class SaveScenarioUI {
 
     private final SaveScenarioController controller = new SaveScenarioController();
 
+    /**
+     * Inicia o processo de salvar um cenário.
+     * Mostra os cenários disponíveis, permite a seleção por número,
+     * e solicita o nome do ficheiro para salvar o cenário.
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
 

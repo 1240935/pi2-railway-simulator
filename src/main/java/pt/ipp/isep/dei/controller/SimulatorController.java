@@ -6,6 +6,9 @@ import pt.ipp.isep.dei.repository.Repositories;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador responsável por gerir a configuração e execução de simulações.
+ */
 public class SimulatorController {
     private Simulator simulator;
     private Player player;
@@ -13,14 +16,23 @@ public class SimulatorController {
     private List<Route> availableRoutes;
     private List<Route> selectedRoutes;
 
+    /**
+     * Define o jogador para a simulação.
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Obtém todos os cenários disponíveis no repositório.
+     */
     public List<Scenario> getAvailableScenarios() {
         return Repositories.getInstance().getScenarioRepository().getScenarios();
     }
 
+    /**
+     * Retorna uma lista de descrições dos cenários disponíveis.
+     */
     public List<String> getAvailableScenarioDescriptions() {
         List<String> descriptions = new ArrayList<>();
         for (Scenario s : getAvailableScenarios()) {
@@ -29,13 +41,17 @@ public class SimulatorController {
         return descriptions;
     }
 
+    /**
+     * Define o cenário a ser usado na simulação com base no índice.
+     * Também reinicia as quantidades de carga em todas as estações.
+     */
     public boolean setScenario(int index) {
         List<Scenario> scenarios = getAvailableScenarios();
         if (index >= 0 && index < scenarios.size()) {
             this.selectedScenario = scenarios.get(index);
             this.availableRoutes = selectedScenario.getRoutes();
 
-            // Reset quantities on supplies and demands for all stations on all routes
+            // Reinicia quantidades de carga para todas as estações nas rotas
             for (Route route : availableRoutes) {
                 for (PointOfRoute point : route.getPointsOfRoute()) {
                     if (point.getStation().getSupplies() != null) {
@@ -55,10 +71,13 @@ public class SimulatorController {
         return false;
     }
 
+    /**
+     * Retorna uma lista de descrições das rotas disponíveis no cenário selecionado.
+     */
     public List<String> getAvailableRouteDescriptions() {
         List<String> descriptions = new ArrayList<>();
         if (availableRoutes == null) return descriptions;
-        int index = 1; // If you want 1-based for UI, otherwise use 0-based
+        int index = 1;
         for (Route route : availableRoutes) {
             descriptions.add(index + ": " + route.toString());
             index++;
@@ -66,6 +85,9 @@ public class SimulatorController {
         return descriptions;
     }
 
+    /**
+     * Seleciona rotas com base nos índices fornecidos.
+     */
     public void selectRoutesByIndexes(List<Integer> indexes) {
         if (availableRoutes == null || availableRoutes.isEmpty()) {
             System.out.println("No available routes to select from.");
@@ -82,6 +104,9 @@ public class SimulatorController {
         this.selectedRoutes = selected;
     }
 
+    /**
+     * Inicia a simulação com o jogador, cenário e rotas definidos.
+     */
     public void startSimulation() {
         if (selectedScenario == null) throw new IllegalStateException("Scenario not selected");
         if (player == null) throw new IllegalStateException("Player not set");
@@ -90,10 +115,13 @@ public class SimulatorController {
         }
         this.simulator = new Simulator(selectedRoutes, player, selectedScenario);
 
-        // Set active simulator in repository
+        // Guarda o simulador como o ativo no repositório
         Repositories.getInstance().getSimulatorRepository().setActiveSimulator(this.simulator);
     }
 
+    /**
+     * Simula a quantidade especificada de meses.
+     */
     public void simulateMonths(int months) {
         if (simulator == null) {
             throw new IllegalStateException("Simulation not started. Call startSimulation() first.");
@@ -103,22 +131,27 @@ public class SimulatorController {
         }
     }
 
-    // Since Simulator class does not implement getSimulationSummary(), return lastMonthSummary or stub message
+    /**
+     * Retorna o resumo do último mês simulado.
+     */
     public String getSimulationSummary() {
         if (simulator == null) {
             return "Simulation not started.";
         }
-        // You could extend Simulator with a getSimulationSummary() method if needed
         return simulator.getLastMonthSummary();
     }
 
-    // The Simulator class doesn't have getCurrentSimulationDate() implemented yet - stub here
+    /**
+     * Retorna a data atual da simulação (formato textual).
+     */
     public String getCurrentSimulationDate() {
         if (simulator == null) return "Simulation not started.";
-        // Could return something like: "Month X, Year Y"
-        return "Month " + simulator.getCurrentMonth(); // You would need to add getCurrentMonth() getter to Simulator
+        return "Month " + simulator.getCurrentMonth();
     }
 
+    /**
+     * Retorna o resumo do mês atual da simulação.
+     */
     public String getCurrentMonthSummary() {
         if (simulator == null) {
             return "Simulation not started.";
@@ -126,10 +159,16 @@ public class SimulatorController {
         return simulator.getLastMonthSummary();
     }
 
+    /**
+     * Retorna o simulador atual.
+     */
     public Simulator getSimulator() {
         return simulator;
     }
 
+    /**
+     * Define o simulador atual e atualiza jogador, cenário e rotas a partir dele.
+     */
     public void setSimulator(Simulator simulator) {
         this.simulator = simulator;
         this.player = simulator.getPlayer();

@@ -60,14 +60,29 @@ public class SimulatorRepository {
                 .orElse(null);
     }
 
+    /**
+     * Define o simulador ativo atual.
+     *
+     * @param simulator simulador a ser definido como ativo
+     */
     public void setActiveSimulator(Simulator simulator) {
         activeSimulator = simulator;
     }
 
+    /**
+     * Retorna o simulador atualmente ativo.
+     *
+     * @return simulador ativo ou null se nenhum estiver definido
+     */
     public Simulator getActiveSimulator() {
         return activeSimulator;
     }
 
+    /**
+     * Verifica se existe um simulador ativo.
+     *
+     * @return true se houver um simulador ativo, false caso contrário
+     */
     public boolean hasActiveSimulator() {
         return activeSimulator != null;
     }

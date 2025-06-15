@@ -3,9 +3,16 @@ package pt.ipp.isep.dei.ui.console;
 import pt.ipp.isep.dei.controller.SaveSimulatorController;
 import java.util.Scanner;
 
+/**
+ * Interface de consola para salvar o simulador ativo em um ficheiro serializado.
+ */
 public class SaveSimulatorUI {
     private final SaveSimulatorController controller = new SaveSimulatorController();
 
+    /**
+     * Inicia o processo de salvamento do simulador ativo,
+     * solicitando o nome do ficheiro para armazenamento.
+     */
     public void start() {
         if (!controller.hasActiveSimulator()) {
             System.out.println("No active simulator to save.");

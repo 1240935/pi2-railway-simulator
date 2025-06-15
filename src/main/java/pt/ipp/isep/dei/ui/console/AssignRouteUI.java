@@ -18,10 +18,16 @@ public class AssignRouteUI {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Inicia o processo de atribuição de uma rota.
+     * Permite ao utilizador selecionar cenário, pontos de rota, cargas, modos de carga,
+     * locomotiva e cria a rota associada.
+     */
     public void start() {
         RouteDTO routeDTO = new RouteDTO();
         PointOfRouteDTO pointOfRouteDTO = new PointOfRouteDTO();
-        // 1. Select Scenario
+
+        // Seleção do cenário disponível
         List<String> scenarioNames = controller.getAvailableScenarioNames();
         System.out.println("Available scenarios:");
         for (int i = 0; i < scenarioNames.size(); i++) {
@@ -31,7 +37,7 @@ public class AssignRouteUI {
         int scenarioIndex = scanner.nextInt();
         scanner.nextLine();
 
-        // 2. Add Points of Route
+        // Definição dos pontos da rota, evitando repetição de estações
         System.out.print("Enter number of points in the route: ");
         int numPoints = scanner.nextInt();
         scanner.nextLine();
@@ -41,16 +47,14 @@ public class AssignRouteUI {
         for (int i = 0; i < numPoints; i++) {
             System.out.println("\n--- Point of Route #" + (i + 1) + " ---");
 
-            // Get all stations names
             List<String> allStationNames = controller.getAvailableStationNames(scenarioIndex);
             List<Integer> availableIndices = new ArrayList<>();
             int displayIndex = 1;
 
-            // Show only unused stations
             for (int j = 0; j < allStationNames.size(); j++) {
-                if (!usedStationIndices.contains(j)) {  // j is zero-based
+                if (!usedStationIndices.contains(j)) {
                     System.out.println(displayIndex + ": " + allStationNames.get(j));
-                    availableIndices.add(j);  // zero-based index
+                    availableIndices.add(j);
                     displayIndex++;
                 }
             }
@@ -69,11 +73,12 @@ public class AssignRouteUI {
                 return;
             }
 
-            int zeroBasedStationIndex = availableIndices.get(stationChoice - 1); // zero-based index
-            usedStationIndices.add(zeroBasedStationIndex); // store zero-based
+            int zeroBasedStationIndex = availableIndices.get(stationChoice - 1);
+            usedStationIndices.add(zeroBasedStationIndex);
 
             int oneBasedStationIndex = zeroBasedStationIndex + 1;
 
+            // Seleção de cargas disponíveis na estação
             List<String> cargoNames = controller.getAvailableCargoNames(scenarioIndex, oneBasedStationIndex);
             List<Integer> selectedCargoIndices = new ArrayList<>();
 
@@ -101,7 +106,7 @@ public class AssignRouteUI {
                 System.out.println("No cargo available at this station.");
             }
 
-            // 2.3. Select Cargo Mode
+            // Seleção do modo de carga para o ponto de rota
             List<String> cargoModes = controller.getCargoModeNames();
             System.out.println("Select cargo mode:");
             for (int j = 0; j < cargoModes.size(); j++) {
@@ -121,7 +126,7 @@ public class AssignRouteUI {
             controller.createPointOfRoute(pointOfRouteDTO);
         }
 
-        // 3. Select Locomotive
+        // Seleção da locomotiva para a rota
         List<String> locomotiveNames = controller.getAvailableLocomotiveNames(scenarioIndex);
         System.out.println("\nAvailable Locomotives:");
         for (String locomotiveName : locomotiveNames) {
@@ -132,7 +137,7 @@ public class AssignRouteUI {
         int locoIndex = scanner.nextInt();
         scanner.nextLine();
 
-        // 4. Create Route
+        // Criação final da rota com os pontos e locomotiva selecionados
         routeDTO.setPointsOfRoute(controller.getPointsOfRoute());
         routeDTO.setLocomotive(controller.getLocomotiveByIndex(scenarioIndex, locoIndex));
         controller.createRoute(routeDTO, scenarioIndex);

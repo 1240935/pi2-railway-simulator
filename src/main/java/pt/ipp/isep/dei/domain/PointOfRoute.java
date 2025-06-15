@@ -3,6 +3,11 @@ package pt.ipp.isep.dei.domain;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Representa um ponto de uma rota, contendo uma estação,
+ * uma lista de cargas, o modo de carga e o tempo estimado
+ * até à próxima chegada.
+ */
 public class PointOfRoute implements Serializable {
 
     private Station station;
@@ -10,7 +15,13 @@ public class PointOfRoute implements Serializable {
     private CargoMode cargoMode;
     private double estimatedTimeToNextArrival;
 
-
+    /**
+     * Construtor principal da classe.
+     *
+     * @param station   estação associada ao ponto
+     * @param cargoList lista de cargas no ponto
+     * @param cargoMode modo de transporte da carga
+     */
     public PointOfRoute(Station station, List<Cargo> cargoList, CargoMode cargoMode) {
         this.station = station;
         this.cargoList = cargoList;
@@ -41,10 +52,22 @@ public class PointOfRoute implements Serializable {
         this.cargoMode = cargoMode;
     }
 
+    /**
+     * Verifica se a estação é válida (nome não nulo e apenas letras/espaços).
+     *
+     * @param station estação a validar
+     * @return true se válida, false caso contrário
+     */
     public boolean checkStation(Station station) {
         return station != null && station.getName() != null && station.getName().matches("^[a-zA-Z\\s]+$");
     }
 
+    /**
+     * Verifica se a lista de cargas é válida (tipo definido e quantidade ≥ 0).
+     *
+     * @param cargoList lista de cargas a validar
+     * @return true se válida, false caso contrário
+     */
     public boolean checkCargo(List<Cargo> cargoList) {
         for (Cargo cargo : cargoList) {
             if (cargo.getType() == null || cargo.getQuantity() < 0) {
@@ -54,15 +77,30 @@ public class PointOfRoute implements Serializable {
         return true;
     }
 
+    /**
+     * Verifica se o modo de carga é válido (não nulo).
+     *
+     * @param mode modo de carga
+     * @return true se válido, false caso contrário
+     */
     public boolean checkCargoMode(CargoMode mode) {
         return mode != null;
     }
 
+    /**
+     * Define o tempo estimado até à próxima chegada (em horas).
+     *
+     * @param timeHours tempo em horas
+     */
     public void setEstimatedTimeToNextArrival(double timeHours) {
         this.estimatedTimeToNextArrival = timeHours;
     }
 
-
+    /**
+     * Representação textual do ponto de rota.
+     *
+     * @return string com nome da estação, modo de carga e tipos de carga
+     */
     @Override
     public String toString() {
         String stationName = (station != null) ? station.getName() : "N/A";
@@ -82,5 +120,4 @@ public class PointOfRoute implements Serializable {
 
         return "Station: " + stationName + " | Mode: " + modeName + " | Cargo: [" + cargosBuilder + "]";
     }
-
 }

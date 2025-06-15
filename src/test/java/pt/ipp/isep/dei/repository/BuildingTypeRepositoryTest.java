@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import pt.ipp.isep.dei.domain.BuildingType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,12 +17,14 @@ class BuildingTypeRepositoryTest {
         repository = new BuildingTypeRepository();
     }
 
+    // Testa se o método não retorna null
     @Test
     void testGetAvailableBuildingTypes_NotNull() {
         ArrayList<BuildingType> types = repository.getAvailableBuildingTypes();
         assertNotNull(types, "The returned list should not be null");
     }
 
+    // Testa se todos os valores do enum estão presentes na lista retornada
     @Test
     void testGetAvailableBuildingTypes_ContainsAllEnumValues() {
         ArrayList<BuildingType> types = repository.getAvailableBuildingTypes();
@@ -36,14 +37,26 @@ class BuildingTypeRepositoryTest {
         }
     }
 
+    // Testa se a lista retornada é uma nova instância a cada chamada
     @Test
     void testGetAvailableBuildingTypes_ReturnsNewList() {
         ArrayList<BuildingType> types = repository.getAvailableBuildingTypes();
-        types.clear(); // Try modifying it
+        types.clear(); // Tenta modificar a lista
 
         ArrayList<BuildingType> secondCall = repository.getAvailableBuildingTypes();
 
         assertFalse(secondCall.isEmpty(), "Modifying the returned list should not affect future calls");
         assertEquals(BuildingType.values().length, secondCall.size(), "Subsequent calls should return full list again");
+    }
+
+    // Extra: Testa se os elementos retornados são exatamente os mesmos (mesma ordem do enum)
+    @Test
+    void testGetAvailableBuildingTypes_OrderMatchesEnum() {
+        ArrayList<BuildingType> types = repository.getAvailableBuildingTypes();
+        BuildingType[] expected = BuildingType.values();
+
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], types.get(i), "Element at index " + i + " should match enum order");
+        }
     }
 }

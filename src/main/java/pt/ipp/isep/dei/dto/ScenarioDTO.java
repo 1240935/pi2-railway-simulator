@@ -6,6 +6,12 @@ import pt.ipp.isep.dei.domain.ResourceType;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object representing a scenario in the system.
+ * It contains information about the map, the year of the scenario,
+ * lists of locomotive types, import and export resource types,
+ * and a changer value.
+ */
 public class ScenarioDTO {
     private Map map;
     private int year;
@@ -13,7 +19,6 @@ public class ScenarioDTO {
     private List<ResourceType> importation;
     private List<ResourceType> exportation;
     private int changer;
-
 
     public Map getMap() { return map; }
     public int getYear() { return year; }

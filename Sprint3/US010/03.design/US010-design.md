@@ -30,6 +30,9 @@ According to the taken rationale, the conceptual classes promoted to software cl
 
 * Scenario
 * Station
+* Cargo
+* CargoMode
+* PointsOfRoute
 * Route
 * Locomotive
 
@@ -40,7 +43,24 @@ Other software classes (i.e. Pure Fabrication) identified:
 * Repositories
 * ScenarioRepository
 * StationRepository
+* CargoRepository
+* CargoModeRepository
+* PointsOfRouteRepository
 * LocomotiveRepository
+* RouteRepository
+* ScenarioListMapper
+* StationListMapper
+* CargoListMapper
+* CargoModeListMapper
+* PointsOfRouteListMapper
+* RouteListMapper
+* ScenarioDTO
+* StationDTO
+* CargoDTO
+* CargoModeDTO
+* PointsOfRouteDTO
+* LocomotiveDTO
+* RouteDTO
 
 
 ## 3.2. Sequence Diagram (SD)

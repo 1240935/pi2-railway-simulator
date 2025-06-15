@@ -36,13 +36,6 @@ class BuildingType {
 }
 
 class Scenario {
-    importation
-    exportation
- }
-
-class Map {
-    size
-    name
 }
 
 class Position{
@@ -56,14 +49,14 @@ class TimeRestriction{
 
 
 Player "1" -- "*" Station: builds >
+Player "1" -- "*" Building: builds >
 Player "*" -- "1" Scenario : selects >
 Station "*" -- "1 "Building:  upgrades with  >
 Station "1" -- "1" StationType: has >
+Station "*" -- "1" Position: has >
 Building "1" -- "1" BuildingType : has >
-Position "1" -- "1" Station: has <
-Scenario "*" -- "1" Map : uses >
-Map "1" -- "*" Building: contains >
-Map "1" -- "*" Station : contains >
+Scenario "1" -- "*" Building: contains >
+Scenario "1" -- "*" Station : contains >
 Scenario "1" -- "*" TimeRestriction: includes >
 TimeRestriction "1" -- "*" BuildingType: affects >
 

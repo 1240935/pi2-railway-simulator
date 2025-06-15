@@ -1,4 +1,4 @@
-\# US002 - Place an Industry
+# US002 - Place an Industry
 
 ## 1. Requirements Engineering
 
@@ -55,6 +55,7 @@ available industries) in a position XY of the selected (current) map.
 ### 1.6. System Sequence Diagram (SSD)
 
 ![System Sequence Diagram](svg/US002-SSD.svg)
+
 **_Other alternatives might exist._**
 
 

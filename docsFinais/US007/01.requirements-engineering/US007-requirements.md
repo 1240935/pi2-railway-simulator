@@ -34,6 +34,7 @@ There's no Acceptance Criteria for this US.
   * the request
 
 * Selected data:
+  * a scenario 
   * a station
 
 **Output Data:**

@@ -7,70 +7,107 @@ autonumber
 
 'hide footbox
 
-    actor "Editor" as EDITOR
-    participant ":CreateMapUI" as UI
-    participant ":CreateMapController" as CTRL
-    participant "Repositories" as REPOS
-    participant ":MapRepository" as MAP_REPO
-    participant "Map" as MAP
+actor "Editor" as EDITOR
+participant ":CreateMapUI" as UI
+participant ":CreateMapController" as CTRL
+participant "Repositories" as REPOS
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "mapRepository \n :MapRepository" as MAP_REPO
+participant ":MapMapper" as MAPPER
+participant ":MapDTO" as DTO
+participant "map \n :Map" as MAP
 
-    activate EDITOR
+activate EDITOR
 
-        EDITOR -> UI : asks to create a map
-        activate UI
-            UI --> CTRL** : create()
+EDITOR -> UI : asks to create a map
+activate UI
 
-            UI -> CTRL : getMap()
-            activate CTRL
-              CTRL -> REPOS : getInstance()
-              activate REPOS
-                REPOS --> CTRL: repositories
-              deactivate REPOS
-                CTRL -> MAP_REPO : getMapRepository()
-              activate MAP_REPO
-                MAP_REPO --> CTRL: mapRepository
-              deactivate MAP_REPO
-                CTRL --> UI : mapRepository
-            deactivate CTRL
+    UI -> CTRL** : create()
+    UI --> EDITOR : asks for a size
+deactivate UI
 
-            UI --> EDITOR : asks for a size and a name
-        deactivate UI
+EDITOR -> UI : types a size
+activate UI
 
-        EDITOR -> UI :  types a size and a name
-        activate UI
+    UI --> EDITOR : asks for a name
+deactivate UI
 
-            UI -> CTRL: checkSize(size)
-            activate CTRL
-                CTRL --> UI : valid size
-                deactivate CTRL
-            UI -> CTRL: setSize(size)
-            activate CTRL
-                CTRL --> UI : size
-            deactivate CTRL
-            UI -> CTRL: checkName(name)
-            activate CTRL
-                CTRL --> UI : valid name
-            deactivate CTRL
-            UI -> CTRL: setName(name)
-            activate CTRL
-            CTRL --> UI: name
-            deactivate CTRL
+EDITOR -> UI :  types a name
+activate UI
 
-            UI --> EDITOR : displays the data and asks for confirmation
+UI --> EDITOR : asks for a scale
+deactivate UI
 
-        deactivate UI
+EDITOR -> UI :  types a scale
+activate UI
 
-        EDITOR -> UI : confirms data
-        activate UI
+UI -> CTRL : createMap(dto)
+activate CTRL
 
-            UI -> CTRL : createMap(size, name)
-            activate CTRL
-                CTRL -> MAP**: create(size, name)
+CTRL -> REPOS : getInstance()
+activate REPOS
 
-                CTRL --> UI : map
-                deactivate CTRL
-            UI --> EDITOR : displays operation success
-        deactivate UI
+    REPOS --> CTRL : repositories
+deactivate REPOS
 
-    deactivate EDITOR
-    @enduml
+CTRL -> REPO_SINGLETON : getMapRepository()
+activate REPO_SINGLETON
+REPO_SINGLETON --> CTRL: mapRepository
+deactivate REPO_SINGLETON
+CTRL -> MAP_REPO: createMap(dto)
+activate MAP_REPO
+
+MAP_REPO -> MAPPER : toMap(dto)
+activate MAPPER
+
+MAPPER -> DTO: getSize()
+activate DTO
+
+DTO --> MAPPER: size
+deactivate DTO
+MAPPER -> DTO: getName()
+activate DTO
+
+DTO --> MAPPER: name
+deactivate DTO
+MAPPER -> DTO: getScale()
+activate DTO
+
+DTO --> MAPPER: scale
+deactivate DTO
+MAPPER --> MAP_REPO: size, name, scale
+deactivate MAPPER
+
+MAP_REPO -> MAP: createMap(size, name, scale);
+    activate MAP
+        MAP -> MAP : checkSize(size)
+        activate MAP
+        MAP --> MAP : valid
+        deactivate MAP
+
+        MAP -> MAP : checkName(name)
+        activate MAP
+        MAP --> MAP : valid
+        deactivate MAP
+
+        MAP -> MAP : checkScale(scale)
+                activate MAP
+                MAP --> MAP : valid
+                deactivate MAP
+
+        MAP --> MAP_REPO : map
+    deactivate MAP
+
+    MAP_REPO -> MAP_REPO : addMap(map)
+    activate MAP_REPO
+    MAP_REPO --> MAP_REPO: success
+    deactivate MAP_REPO
+    MAP_REPO --> CTRL : success
+deactivate MAP_REPO
+
+CTRL --> UI : success
+deactivate CTRL
+UI --> EDITOR : displays operation success
+deactivate UI
+deactivate EDITOR
+@enduml

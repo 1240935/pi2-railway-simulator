@@ -7,9 +7,9 @@
 As a Player, I want to build a station (can be a depot, a station
 or a terminal) with a location in the current map. The system should
 propose a name for the station based on the closest city and the station
-(e.g., Porto Terminal, Ovar Station or Silvalde Depot). In case of Depot
+(e.g., Porto Terminal, Ovar Station or Silvalde Depot). In the case of Depot
 and Terminal, the center is the geometric one, in the case of Station,
-the center should be defined by the Player (NE,SE,NW,SW).
+the center should be defined by the Player (NE, SE, NW, SW).
 
 ### 1.2. Customer Specifications and Clarifications 
 

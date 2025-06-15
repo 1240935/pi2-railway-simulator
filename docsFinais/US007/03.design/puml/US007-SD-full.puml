@@ -6,79 +6,170 @@ skinparam shadowing false
 autonumber
 
 actor "Player" as PLAYER
-participant ":StationListUI" as UI
-participant ":StationListController" as CTRL
+participant ":ViewStationDetailsUI" as UI
+participant ":ViewStationDetailsController" as CTRL
 participant "Repositories" as REPOS
-participant ":ScenarioRepository" as SCEN_REPOS
-participant ":MapRepository" as MAP_REPOS
-participant "Map" as MAP
-participant "Station" as STATION
-participant "StationDetails" as DETAILS
-participant "Building" as BUILDING
-participant "CargoInfo" as CARGOINFO
-participant "Cargo" as CARGO
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
+participant ":ScenarioListMapper" as SMAPPER
+participant ":List<Scenario>" as LIST_SCENARIO
+participant ":List<ScenarioDTO>" as SLDTO
+participant ":ScenarioDTO" as SDTO
+participant "stationRepository \n :StationRepository" as STATION_REPOS
+participant ":StationListMapper" as STATIONMAPPER
+participant ":List<Station>" as LIST_STATION
+participant ":List<StationDTO>" as STATIONLDTO
+participant ":StationDTO" as STATIONDTO
+participant "station \n :Station" as STATION
+
 
 activate PLAYER
 
     PLAYER -> UI : asks to see stations
     activate UI
+
         UI --> CTRL** : create()
-        UI -> CTRL : getAvailableScenarioDescriptions()
-            activate CTRL
-            CTRL -> REPOS : getInstance()
-                activate REPOS
-                REPOS --> CTRL : repositories
-                deactivate REPOS
-            CTRL -> SCEN_REPOS : getScenarioList()
-                activate SCEN_REPOS
-                SCEN_REPOS --> CTRL : list of scenarios
-                deactivate SCEN_REPOS
-            CTRL --> UI : availableScenarios
-            deactivate CTRL
 
-        UI --> PLAYER : shows available scenarios
-    deactivate UI
+            UI -> CTRL : getAvailableScenarioNames()
+           activate CTRL
 
-    PLAYER -> UI : selects a scenario
-    activate UI
-        UI -> CTRL : setScenario(Index)
-        activate CTRL
-        CTRL -> MAP_REPOS : getMapRepository()
-            activate MAP_REPOS
-            MAP_REPOS --> CTRL : mapRepository
-            deactivate MAP_REPOS
-        CTRL -> MAP : getAvailableStationNames()
-            activate MAP
-            MAP --> CTRL : stations
-            deactivate MAP
-        CTRL --> UI : list of stations
-        deactivate CTRL
-        UI --> PLAYER : shows list of stations
-    deactivate UI
+                       CTRL -> REPOS : getInstance()
+                       activate REPOS
+
+                       REPOS --> CTRL : repositories
+                       deactivate REPOS
+
+                       CTRL -> REPO_SINGLETON : getScenarioRepository()
+                       activate REPO_SINGLETON
+                       REPO_SINGLETON --> CTRL : scenarioRepository
+                       deactivate REPO_SINGLETON
+
+                       CTRL -> SCEN_REPOS : getScenarios()
+                       activate SCEN_REPOS
+                       SCEN_REPOS --> CTRL : scenarioList
+                       deactivate SCEN_REPOS
+
+                       CTRL -> SMAPPER : toDTO(scenarioList)
+                       activate SMAPPER
+
+                       SMAPPER --> SLDTO** : create()
+
+                       loop for each scenario
+                           SMAPPER -> LIST_SCENARIO : getScenario()
+                           activate LIST_SCENARIO
+                           LIST_SCENARIO --> SMAPPER : scenario
+                           deactivate LIST_SCENARIO
+
+                           SMAPPER -> SMAPPER : toDTO(scenario)
+                           activate SMAPPER
+
+                           SMAPPER --> SDTO** : create(map, year, locomotiveTypes, importation, exportation, changer)
+                           deactivate SMAPPER
+
+                           SMAPPER -> SLDTO : addScenario(scenario)
+                           activate SLDTO
+                           deactivate SLDTO
+                       end loop
+
+                       SMAPPER --> CTRL : scenarioListDTO
+                       deactivate SMAPPER
+
+                       CTRL -> SLDTO : getAvailableScenarioNames(scenarioListDTO)
+                       activate SLDTO
+
+                       SLDTO --> CTRL : scenario names
+                       deactivate SLDTO
+
+                       CTRL --> UI : scenario names
+           deactivate CTRL
+
+           UI --> PLAYER : shows the list of scenarios
+        deactivate UI
+
+            PLAYER -> UI : selects a scenario
+        activate UI
+
+            UI -> CTRL : getAvailableStationNames()
+                 activate CTRL
+
+                                      CTRL -> REPOS : getInstance()
+                                      activate REPOS
+
+                                      REPOS --> CTRL : repositories
+                                      deactivate REPOS
+
+                                      CTRL -> REPO_SINGLETON : getStationRepository()
+                                      activate REPO_SINGLETON
+                                      REPO_SINGLETON --> CTRL : stationRepository
+                                      deactivate REPO_SINGLETON
+
+                                      CTRL -> STATION_REPOS : getStations()
+                                      activate STATION_REPOS
+                                      STATION_REPOS --> CTRL : stationList
+                                      deactivate STATION_REPOS
+
+                                      CTRL -> STATIONMAPPER : toDTO(stationList)
+                                      activate STATIONMAPPER
+
+                                      STATIONMAPPER --> STATIONLDTO** : create()
+
+                                      loop for each station
+                                          STATIONMAPPER -> LIST_STATION : getStation()
+                                          activate LIST_STATION
+                                          LIST_STATION --> STATIONMAPPER : station
+                                          deactivate LIST_STATION
+
+                                          STATIONMAPPER -> STATIONMAPPER : toDTO(station)
+                                          activate STATIONMAPPER
+
+                                          STATIONMAPPER --> STATIONDTO** : create(stationType, position, name, center, demandedCargo, suppliedCargo)
+                                          deactivate STATIONMAPPER
+
+                                          STATIONMAPPER -> STATIONLDTO : addStation(stationDTO)
+                                          activate STATIONLDTO
+                                          deactivate STATIONLDTO
+                                      end loop
+
+                                      STATIONMAPPER --> CTRL : stationListDTO
+                                      deactivate STATIONMAPPER
+
+                                      CTRL -> STATIONLDTO : getAvailableStationNames(stationListDTO)
+                                      activate STATIONLDTO
+
+                                      STATIONLDTO --> CTRL : station names
+                                      deactivate STATIONLDTO
+
+                                      CTRL --> UI : station names
+                 deactivate CTRL
+
+                UI --> PLAYER : shows the list of stations
+        deactivate UI
 
     PLAYER -> UI : selects a station
-    activate UI
-        UI -> CTRL : setStation(stationId)
+        activate UI
+
+        UI -> CTRL : getBuildingDetailsString(stationIndex)
         activate CTRL
-        CTRL -> MAP : getStations()
-            activate MAP
-            MAP --> CTRL : stations
-            deactivate MAP
-        CTRL -> STATION : getDetails()
-        activate STATION
-        STATION -> BUILDING : getBuildingDetailsString(index)
-        STATION -> CARGOINFO : getCargoInfo(index)
-        activate CARGOINFO
-        CARGOINFO -> CARGO : getDemand()
-        CARGOINFO -> CARGO : getSupply()
-        deactivate CARGOINFO
-        STATION --> CTRL : station details
+
+        STATION --> CTRL: buildingDetails
         deactivate STATION
-        CTRL -> DETAILS** : create(station)
-        CTRL --> UI : station details
+
+               CTRL --> UI : buildingDetails
         deactivate CTRL
 
-        UI --> PLAYER : shows station details and success
+               UI -> CTRL : getCargoInfo(stationIndex)
+        activate CTRL
+
+        CTRL -> STATION: getCargoInfo(index)
+                activate STATION
+
+                STATION --> CTRL: cargoInfo
+                deactivate STATION
+
+                CTRL --> UI : cargoInfo
+        deactivate CTRL
+
+        UI --> PLAYER : shows station details
     deactivate UI
 
 deactivate PLAYER

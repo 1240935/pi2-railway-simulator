@@ -9,11 +9,28 @@ autonumber
     participant ":UpgradeStationUI" as UI
     participant ":UpgradeStationController" as CTRL
     participant "Repositories" as REPOS
-    participant "ScenarioRepository" as SREPOS
-    participant "StationRepository" as STREPOS
-    participant "BuildingTypeRepository" as BTYPEREPOS
-    participant "Building" as BUILDING
-    participant "Station" as STATION
+    participant "repositories \n :Repositories" as REPO_SINGLETON
+    participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
+    participant ":ScenarioListMapper" as SMAPPER
+    participant ":List<Scenario>" as LIST_SCENARIO
+    participant ":List<ScenarioDTO>" as SLDTO
+    participant ":ScenarioDTO" as SDTO
+    participant "stationRepository \n :StationRepository" as STATION_REPOS
+    participant ":StationListMapper" as STATIONMAPPER
+    participant ":List<Station>" as LIST_STATION
+    participant ":List<StationDTO>" as STATIONLDTO
+    participant ":StationDTO" as STATIONDTO
+    participant "station \n :Station" as STATION
+    participant "buildingTypeRepository \n :BuildingTypeRepository" as BTYPE_REPOS
+    participant ":BuildingTypeListMapper" as BTYPEMAPPER
+    participant ":List<BuildingType>" as LIST_BTYPE
+    participant ":List<BuildingTypeDTO>" as BTYPELDTO
+    participant ":BuildingTypeDTO" as BTYPEDTO
+    participant "buildingRepository \n :BuildingRepository" as BUILD_REPOS
+    participant ":BuildingMapper" as BMAPPER
+    participant ":BuildingDTO" as BDTO
+    participant "building \n :Building" as BUILDING
+    participant "player \n :Player" as PLR
 
     activate PLAYER
 
@@ -23,23 +40,57 @@ autonumber
     UI --> CTRL** : create()
 
     UI -> CTRL : getAvailableScenarioNames()
-    activate CTRL
+   activate CTRL
 
-    CTRL -> REPOS : getInstance()
-    activate REPOS
+               CTRL -> REPOS : getInstance()
+               activate REPOS
 
-    REPOS --> CTRL: repositories
+               REPOS --> CTRL : repositories
+               deactivate REPOS
 
-    deactivate REPOS
+               CTRL -> REPO_SINGLETON : getScenarioRepository()
+               activate REPO_SINGLETON
+               REPO_SINGLETON --> CTRL : scenarioRepository
+               deactivate REPO_SINGLETON
 
-    CTRL -> SREPOS : getScenarios()
-    activate SREPOS
+               CTRL -> SCEN_REPOS : getScenarios()
+               activate SCEN_REPOS
+               SCEN_REPOS --> CTRL : scenarioList
+               deactivate SCEN_REPOS
 
-    SREPOS --> CTRL : list of scenarios
+               CTRL -> SMAPPER : toDTO(scenarioList)
+               activate SMAPPER
 
-    deactivate SREPOS
-    CTRL --> UI : list of scenarios
-    deactivate CTRL
+               SMAPPER --> SLDTO** : create()
+
+               loop for each scenario
+                   SMAPPER -> LIST_SCENARIO : getScenario()
+                   activate LIST_SCENARIO
+                   LIST_SCENARIO --> SMAPPER : scenario
+                   deactivate LIST_SCENARIO
+
+                   SMAPPER -> SMAPPER : toDTO(scenario)
+                   activate SMAPPER
+
+                   SMAPPER --> SDTO** : create(map, year, locomotiveTypes, importation, exportation, changer)
+                   deactivate SMAPPER
+
+                   SMAPPER -> SLDTO : addScenario(scenario)
+                   activate SLDTO
+                   deactivate SLDTO
+               end loop
+
+               SMAPPER --> CTRL : scenarioListDTO
+               deactivate SMAPPER
+
+               CTRL -> SLDTO : getAvailableScenarioNames(scenarioListDTO)
+               activate SLDTO
+
+               SLDTO --> CTRL : scenario names
+               deactivate SLDTO
+
+               CTRL --> UI : scenario names
+               deactivate CTRL
 
     UI --> PLAYER : shows the list of scenarios
     deactivate UI
@@ -47,33 +98,58 @@ autonumber
     PLAYER -> UI : selects a scenario
     activate UI
 
-    UI -> CTRL :setScenarioByIndex(index)
+         UI -> CTRL : getAvailableStationNames()
+         activate CTRL
 
-    activate CTRL
+                              CTRL -> REPOS : getInstance()
+                              activate REPOS
 
-    CTRL --> UI : scenario selected
+                              REPOS --> CTRL : repositories
+                              deactivate REPOS
 
-    deactivate CTRL
+                              CTRL -> REPO_SINGLETON : getStationRepository()
+                              activate REPO_SINGLETON
+                              REPO_SINGLETON --> CTRL : stationRepository
+                              deactivate REPO_SINGLETON
 
+                              CTRL -> STATION_REPOS : getStations()
+                              activate STATION_REPOS
+                              STATION_REPOS --> CTRL : stationList
+                              deactivate STATION_REPOS
 
-        UI -> CTRL : getAvailableStationNames()
-        activate CTRL
+                              CTRL -> STATIONMAPPER : toDTO(stationList)
+                              activate STATIONMAPPER
 
-        CTRL -> REPOS : getInstance()
-        activate REPOS
+                              STATIONMAPPER --> STATIONLDTO** : create()
 
-        REPOS --> CTRL: repositories
+                              loop for each station
+                                  STATIONMAPPER -> LIST_STATION : getStation()
+                                  activate LIST_STATION
+                                  LIST_STATION --> STATIONMAPPER : station
+                                  deactivate LIST_STATION
 
-        deactivate REPOS
+                                  STATIONMAPPER -> STATIONMAPPER : toDTO(station)
+                                  activate STATIONMAPPER
 
-        CTRL -> STREPOS : getStations()
-        activate STREPOS
+                                  STATIONMAPPER --> STATIONDTO** : create(stationType, position, name, center, demandedCargo, suppliedCargo)
+                                  deactivate STATIONMAPPER
 
-        STREPOS --> CTRL : list of stations
+                                  STATIONMAPPER -> STATIONLDTO : addStation(stationDTO)
+                                  activate STATIONLDTO
+                                  deactivate STATIONLDTO
+                              end loop
 
-        deactivate STREPOS
-        CTRL --> UI : list of stations
-        deactivate CTRL
+                              STATIONMAPPER --> CTRL : stationListDTO
+                              deactivate STATIONMAPPER
+
+                              CTRL -> STATIONLDTO : getAvailableStationNames(stationListDTO)
+                              activate STATIONLDTO
+
+                              STATIONLDTO --> CTRL : station names
+                              deactivate STATIONLDTO
+
+                              CTRL --> UI : station names
+                              deactivate CTRL
 
         UI --> PLAYER : shows the list of stations
         deactivate UI
@@ -81,62 +157,136 @@ autonumber
         PLAYER -> UI : selects a station
         activate UI
 
-        UI -> CTRL :setStationByIndex(index)
-
-        activate CTRL
-
-        CTRL --> UI : station selected
-
-        deactivate CTRL
-
         UI -> CTRL : getAvailableBuildingNames()
 
+            activate CTRL
 
-                activate CTRL
+                      CTRL -> REPOS : getInstance()
+                      activate REPOS
 
-                        CTRL -> REPOS : getInstance()
-                        activate REPOS
+                      REPOS --> CTRL : repositories
+                      deactivate REPOS
 
-                        REPOS --> CTRL: repositories
+                      CTRL -> REPO_SINGLETON : getBuildingTypeRepository()
+                      activate REPO_SINGLETON
+                      REPO_SINGLETON --> CTRL : buildingTypeRepository
+                      deactivate REPO_SINGLETON
 
-                        deactivate REPOS
+                      CTRL -> BTYPE_REPOS : getBuildingType()
+                      activate BTYPE_REPOS
+                      BTYPE_REPOS --> CTRL : buildingTypeList
+                      deactivate BTYPE_REPOS
 
-                CTRL -> BTYPEREPOS : getAvailableBuildingTypes()
-                activate BTYPEREPOS
+                      CTRL -> BTYPEMAPPER : toDTO(buildingTypeList)
+                      activate BTYPEMAPPER
 
-                BTYPEREPOS --> CTRL : list of building types
+                      BTYPEMAPPER --> BTYPELDTO** : create()
 
-                deactivate BTYPEREPOS
-                CTRL --> UI : list of building types
-                deactivate CTRL
+                      loop for each builidngType
+                          BTYPEMAPPER -> LIST_BTYPE : getBuildingType()
+                          activate LIST_BTYPE
+                          LIST_BTYPE --> BTYPEMAPPER : buildingType
+                          deactivate LIST_BTYPE
 
-                UI --> PLAYER : shows the list of building types
-                deactivate UI
+                          BTYPEMAPPER -> BTYPEMAPPER : toDTO(buildingType)
+                          activate BTYPEMAPPER
 
-                PLAYER -> UI : selects a building type
-                activate UI
+                          BTYPEMAPPER --> BTYPEDTO** : create(cost, availabilityYear, upgradeGroup)
+                          deactivate BTYPEMAPPER
 
-                UI -> CTRL :setBuildingTypeByIndex(index)
+                          BTYPEMAPPER -> BTYPELDTO : addBuildingType(buildingTypeDTO)
+                          activate BTYPELDTO
+                          deactivate BTYPELDTO
+                      end loop
 
-                activate CTRL
+                      BTYPEMAPPER --> CTRL : buildingTypeListDTO
+                      deactivate BTYPEMAPPER
 
-                CTRL --> UI : type selected
+                      CTRL -> BTYPELDTO : getAvailableBuildingTypeNames(buildingTypeListDTO)
+                      activate BTYPELDTO
 
-                deactivate CTRL
+                      BTYPELDTO --> CTRL : buildingType names
+                      deactivate BTYPELDTO
 
-    UI --> PLAYER: shows all data and requests \n for confirmation
+                      CTRL --> UI : buildingType names
+                      deactivate CTRL
+
+    UI --> PLAYER: shows the available buildings
     deactivate UI
 
-    PLAYER --> UI: confirms data
+    PLAYER -> UI: selects a building
     activate UI
 
-    UI -> CTRL : createAndSetBuilding()
+    UI -> CTRL : createBuilding(dto)
     activate CTRL
+    CTRL -> REPOS : getInstance()
+        activate REPOS
 
-    CTRL -> BUILDING** : create()
+            REPOS --> CTRL : repositories
+        deactivate REPOS
 
-    CTRL --> UI : building
-    deactivate CTRL
+        CTRL -> REPO_SINGLETON : getBuildingRepository()
+        activate REPO_SINGLETON
+        REPO_SINGLETON --> CTRL: buildingRepository
+        deactivate REPO_SINGLETON
+        CTRL -> BUILD_REPOS: createBuilding(dto)
+        activate BUILD_REPOS
+
+        BUILD_REPOS -> BMAPPER : toBuilding(dto)
+        activate BMAPPER
+
+        BMAPPER -> BDTO: getBuildingType()
+        activate BDTO
+
+        BDTO --> BMAPPER: buildingType
+        deactivate BDTO
+        BMAPPER -> BDTO: getStation()
+        activate BDTO
+
+        BDTO --> BMAPPER: station
+        deactivate BDTO
+
+        BMAPPER --> BUILD_REPOS: buildingType, station
+        deactivate BMAPPER
+
+        BUILD_REPOS -> BUILDING: createBuilding(buildingType, station)
+        activate BUILDING
+
+        BUILDING -> BUILDING: checkBuildingType(buildingType)
+            activate BUILDING
+
+            BUILDING --> BUILDING: valid
+            deactivate BUILDING
+
+        BUILDING --> BUILD_REPOS: building
+        deactivate BUILDING
+
+        BUILD_REPOS -> BUILD_REPOS: addBuilding(building)
+        activate BUILD_REPOS
+
+        BUILD_REPOS --> BUILD_REPOS: success
+        deactivate BUILD_REPOS
+
+         BUILD_REPOS -> STATION: building
+         deactivate BUILD_REPOS
+
+         activate STATION
+
+            STATION -> STATION: addBuilding(building)
+            activate STATION
+
+            STATION --> STATION: success
+            deactivate STATION
+
+            STATION --> CTRL: success
+            deactivate STATION
+
+            CTRL -> PLR: deductBudget(buildingType)
+
+
+        CTRL --> UI: success
+        deactivate CTRL
+
 
     UI --> PLAYER : displays operation success
     deactivate UI

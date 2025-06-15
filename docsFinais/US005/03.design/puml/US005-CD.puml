@@ -7,103 +7,155 @@ skinparam linetype polyline
 
 skinparam classAttributeIconSize 0
 
-'left to right direction
-
-class BuildStationUI {
-}
+class BuildStationUI
 
 class BuildStationController {
-  +BuildStationController()
-  +getAvailableScenarios()
-  +getAvailableScenariosDescriptions()
-  +setScenario(scenario)
-  +createPosition(xCoordinate, yCoordinate)
-  +getMap(Scenario)
-  +checkCoordinates(xCoordinate, yCoordinate)
-  +getClosestCity(position)
-  +getRecommendedName(xCoordinate, yCoordinate)
-  +getAvailableStationTypes()
-  +setType(type)
-  +isSelectedTypeStation()
-  +getName(city)
-  +setName(name)
-  +determineStationCargoes(xCoordinate, yCoordinate)
-  +setGeometricCenter()
-  +setCompassCenter(compassCoord)
-  +setPosition(xCoordinate, yCoordinate)
-  +getPlayer()
-  +setPlayer(player)
-  +getSelectedType()
-  +createStation(xCoordinate, yCoordinate)
-}
-
-class Repositories {
-      - Repositories()
-      + getInstance()
-      + getScenarioRepository()
- }
-
-class City {
-  - position: Position
-  - name: String
-  - blocks: List <CityBlocks>
-  +getName()
-  +getPosition()
+    + BuildStationController()
+    + getAvailableScenarioNames()
+    + getAvailableStationTypeNames()
+    + getRecommendedName(x, y, scenarioIdx, typeIdx)
+    + createStation(dto)
 }
 
 class Scenario {
-       -map: Map
-       -year: int
-       -locomotiveTypes: List<LocomotiveType>
-       -industryTypes: List<IndustryType>
-       -importation: List<ResourceType>
-       -exportation: List<ResourceType>
-       -changers: List<IndustryChanger>
+    - map: Map
+    - year: int
+    - locomotiveTypes: List<LocomotiveType>
+    - importation: List<ResourceType>
+    - exportation: List<ResourceType>
+    - changer: int
+    + getClosestCity(x, y)
+    + addStation(station)
+}
+
+class City {
+    -name: String
+    -position: Position
+    -cityBlocks: List <CityBlock>
+    + getName()
+}
+
+class Station {
+    -name: String
+    -center: StationCenter
+    -position: Position
+    -stationType: StationType
+    -demandedCargo: List<Cargo>
+    -suppliedCargo: List<Cargo>
+    + checkPosition(position, map)
+    + checkStationType(stationType)
+    + checkOverbuilding(position, map, scenario)
+    + checkCenter(center)
 }
 
 class Position {
-  -xCoordinate : int
-  -yCoordinate : int
-  +Position(xCoordinate, yCoordinate)
+    -xCoordinate: int
+    -yCoordinate: int
 }
 
-enum StationType {
-  Depot
-  Terminal
-  Station
-  --
-  radius : int
-  cost : int
+class Player {
+    - username: String
+    - password: String
+    - budget: int
+    + deductBudget(stationType)
 }
 
 class ScenarioRepository {
-  +getScenarioRepository()
-  +getScenario(scenario)
+    + getScenarios()
 }
 
-class Station{
-    -name : String
-    -position : Position
-    -type : StationType
-    -center : StationCenter
-    -building: Building
-    -demands: List<Cargo>
-    -supplies: List<Cargo>
-    +Station(name,position,type,center)
+class StationTypeRepository {
+    + getStationTypes()
+}
+class StationRepository {
+    + createStation(dto)
+    + addStation(station)
+}
+
+class ScenarioListMapper {
+    + toDTO(List<Scenario>)
+}
+
+class StationTypeListMapper {
+    + toDTO(List<StationType>)
+}
+
+class StationMapper {
+    + toStation(dto)
+}
+
+class ScenarioDTO{
+    -map: Map
+    -year: int
+    -locomotiveTypes: List<LocomotiveType>
+    -importation: List<ResourceType>
+    -exportation: List<ResourceType>
+    -changer: int
+}
+
+class StationTypeDTO{
+}
+
+class StationDTO {
+    - stationType: StationType
+    - xCoordinate: int
+    - yCoordinate: int
+    - name: String
+    - center: StationCenter
+    - demandedCargo: List<Cargo>
+    - suppliedCargo: List<Cargo>
+    - scenarioIndex: int
+    - stationTypeIndex: int
+    - map: Map
+    - scenario: Scenario
+}
+
+enum StationType{
+    STATION
+    DEPOT
+    TERMINAL
+    --
+    -cost: int
+    -radius: int
+}
+
+class Repositories {
+  -Repositories()
+  +getInstance()
+  +getScenarioRepository()
+  +getCityBlockRepository()
+  +getCityRepository()
 }
 
 BuildStationUI ..> BuildStationController
-BuildStationController ..> ScenarioRepository
-BuildStationController ..> Scenario
-BuildStationController ..> StationType
-BuildStationController ..> Repositories
-Repositories --> "1" ScenarioRepository : scenario repository
+
+BuildStationController..> Repositories
+
 Repositories -> "1" Repositories : instance
-ScenarioRepository --> "1..*" Scenario  : scenario
-Scenario --> "1..*" City : city
-Scenario --> "*" Station : station
-City --> "1" Position : position
-Station --> "1" Position : position
-Station --> "1" StationType : station type
+Repositories --> "1" ScenarioRepository: scenarioRepository
+Repositories --> "1" StationTypeRepository: stationTypeRepository
+Repositories --> "1" StationRepository: stationRepository
+
+BuildStationController ..> ScenarioListMapper
+BuildStationController ..> StationTypeListMapper
+BuildStationController ..> StationMapper
+BuildStationController ..> Player
+BuildStationController ..> ScenarioRepository
+BuildStationController ..> StationRepository
+BuildStationController ..> StationTypeRepository
+
+ScenarioRepository --> "1..*" Scenario: scenario
+StationTypeRepository --> "3" StationType: stationType
+StationRepository --> "*" Station: station
+
+ScenarioListMapper --> "1" ScenarioDTO: scenarioDTO
+ScenarioListMapper --> "1..*" Scenario: scenario
+StationTypeListMapper --> "1" StationTypeDTO: stationTypeDTO
+StationTypeListMapper --> "1..*" StationType
+StationMapper --> "1..*" Station: station
+StationMapper --> "1" StationDTO: stationDTO
+
+Scenario --> "*" City: city
+Station --> "1" Position: position
 
 @enduml

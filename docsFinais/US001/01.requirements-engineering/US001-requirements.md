@@ -40,9 +40,11 @@ For example, an entire map of Europe."
 
 ### 1.3. Acceptance Criteria
 
-* AC1: The maps dimensions are positive integers
-* AC2: Map name should be a valid file name
-* AC3: Map name should be unique
+* AC01: The map's dimensions are positive integers
+* AC02: Map name should be a valid file name
+* AC03: The maps should have a scale that states the size of cell map in
+  kms.
+* AC04: Map name should be unique
 
 
 ### 1.4. Found out Dependencies
@@ -57,6 +59,7 @@ There are no dependencies in this user story.
     * the request
     * a size
     * a name
+    * a scale
 
 * Selected data:
 

@@ -24,6 +24,7 @@ class Editor {
 class Map {
     size
     name
+    scale
 }
 
 class Position{
@@ -63,8 +64,6 @@ class ResourceType{
 }
 
 class Scenario {
-    importation
-    exportation
 }
 
 class City {
@@ -112,9 +111,13 @@ class Route {
 
 class Simulator{
     status
-    totalGenerated
-    totalSupplied
-    totalDelivered
+    currentMonth
+    alerts
+    lastMonthSummary
+    yearlyRevenue
+    yearlyTrackMaintenance
+    yearlyTrainMaintenance
+    yearlyFuelCost
 }
 
 class Train {
@@ -142,12 +145,26 @@ class CargoStatus{
     demand
 }
 
+class PointOfRoute{
+}
+
+class PortsBehaviour{
+    importation
+    exportation
+}
+
+class CargoMode{
+}
+
 
 Editor "1" -- "*" Map : creates >
+Editor "1" -- "*" Industry: places >
+Editor "1" -- "*" City: adds >
 Editor "1" -- "*" Scenario : creates >
 
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
+Player "1" -- "*" Building: builds >
 Player "1" -- "*" Route : creates >
 Player "1" -- "*" Railway : builds >
 Player "1" -- "*"  Cargo : selects >
@@ -156,22 +173,19 @@ Player "1" -- "1" Simulator: controls >
 
 Simulator "1" -- "*" Cargo: generates >
 Simulator "1" -- "1..*" Route: has >
-Simulator "1" -- "1" Scenario: has >
+Simulator "1" -- "1" Scenario: uses >
 
-Map "1" -- "*" Station : contains >
 Map "1" -- "*" Industry : contains >
 Map "1" -- "*" City : contains >
-Map "1" -- "*" Railway: contains >
-Map "1" -- "*" Building: contains >
 
 Position "1" -- "1" City: has <
 Position "1" -- "1" Industry: has <
 Position "1" -- "1" Station: has <
-Position "1" -- "1" Railway: has <
 Position "1" -- "1" CityBlock: has <
 
 City "1" -- "1..*" CityBlock: contains >
-City "1" -- "*" Cargo: consumes >
+
+CityBlock "1" -- "*" Cargo: consumes >
 
 Industry "1" -- "1" IndustryType: has >
 Industry "1" -- "1" ResourceType: has >
@@ -181,14 +195,16 @@ Scenario "*" -- "1" Map : uses >
 Scenario "1" -- "*" HistoricalRestriction: includes >
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
-Scenario "1" -- "*" IndustryType: affects >
-Scenario "1" -- "*" Station: has >
-Scenario "1" -- "*" Route: has >
-Scenario "1" -- "*"Locomotive: has >
-
+Scenario "1" -- "1" PortsBehaviour: includes >
+Scenario "1" -- "*" Station: contains >
+Scenario "1" -- "*" Building: contains >
+Scenario "1" -- "*" Route: contains >
+Scenario "1" -- "*" Locomotive: contains >
 
 HistoricalRestriction "1" -- "*" IndustryChanger: has >
 IndustryChanger "1" -- "*" Industry: affects >
+PortsBehaviour "1" -- "2..*" ResourceType: has >
+PortsBehaviour "1" -- "*" IndustryType: affects >
 
 TimeRestriction "1" -- "*" BuildingType: affects >
 TimeRestriction "1" -- "*" LocomotiveModel: affects >
@@ -198,7 +214,6 @@ TechnologicalRestriction "1" -- "*" IndustryType: affects >
 
 Station "1" -- "*" Building : upgrades with >
 Station "1" -- "*" Cargo : stores >
-Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
 
 Building "1" -- "1" BuildingType : has >
@@ -213,13 +228,19 @@ LocomotiveModel "1..*" -- "1" LocomotiveType: has >
 
 Carriage "1..*" -- "*" Cargo: transports >
 
-Railway "1" -- "1..*" Route: requires <
+Route "*" -- "1..*" Railway: requires >
+Route "1" -- "2..*" PointOfRoute: has >
+
 Railway "1..*" -- "2..*" Industry : connects >
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
 Cargo "1" -- "1" ResourceType: has >
 Cargo "1" -- "1" CargoStatus: has >
+
+PointOfRoute "1" -- "1" CargoMode: includes >
+PointOfRoute "1" -- "1..*" Cargo: includes >
+PointOfRoute "1" -- "2..*" Station: includes >
 
 
 

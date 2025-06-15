@@ -1,178 +1,179 @@
-    @startuml
-    'skinparam monochrome true
-    skinparam packageStyle rectangle
-    skinparam shadowing false
-    skinparam linetype polyline
-    'skinparam linetype orto
+@startuml
+'skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+'skinparam linetype orto
 
-    skinparam classAttributeIconSize 0
+skinparam classAttributeIconSize 0
 
-    'left to right direction
+'left to right direction
 
-    class CreateScenarioUI{
-    }
-
+    class CreateScenarioUI
     class CreateScenarioController {
         +CreateScenarioController()
-        +getAvailableMaps()
-        +getAvailableResourceType()
-        +getAvailableIndustryTypes()
-        +getAvailableLocomotiveTypes()
-        +getAvailableLocomotiveTypeNames()
         +getAvailableMapNames()
-        +getAvailableIndustryTypeNames()
-        +getAvailableImpor_ExportationNames()
-        +getAvailableIndustryChangerNames()
-        +chooseMap(maps,choice)
-        +chooseLocomotiveTypes
-        +getExportation()
-        +getImportation()
-        +getChangers()
-        +chooseIndustryTypes(types,choices)
-        +chooseIndustryChanger(types,choices)
-        +chooseImportation(types,choices)
-        +chooseExportation(types,choices)
-        +setMap(Map)
-        +setYear(year)
-        +getLocomotiveTypes()
-        +setLocomotiveTypes(types)
-        +getIndustryTypes()
-        +setIndustryTypes(types)
-        +setImportation(importation)
-        +setExportation(exportation)
-        +setChangers(changers)
-        +readIntegerSelections(prompt)
-        +createScenario()
-
+        +getAvailableLocomotiveTypeNames()
+        +getAvailableResourceTypeNames()
+        +createScenario(dto)
     }
 
     class Repositories {
-            -Repositories()
-            +getInstance()
-            +getMapRepository()
-            +getLocomotiveTypeRepository()
-            +getIndustryTypeRepository()
-            +getIndustryChangerRepository()
+        -Repositories()
+        +getInstance()
+        + getMapRepository()
+        + getLocomotiveTypeRepository()
+        + getResourceTypeRepository()
+        + getScenarioRepository()
     }
 
     class MapRepository {
-            +getAvailableMaps()
-        }
-
+        + getMaps()
+    }
     class LocomotiveTypeRepository {
-          +getLocomotiveTypes()
+        + getLocomotiveTypes()
+    }
+    class ResourceTypeRepository {
+        + getResourceTypes()
+    }
+    class ScenarioRepository {
+        + createScenario(dto)
+        + addScenario(scenario)
     }
 
-    class IndustryTypeRepository {
-          +getIndustryTypes()
-    }
-
-    class IndustryChangerRepository {
-          +getIndustryChangers()
-    }
-
-     class Scenario {
-       -map: Map
-       -year: int
-       -locomotiveTypes: List<LocomotiveType>
-       -industryTypes: List<IndustryType>
-       -importation: List<ResourceType>
-       -exportation: List<ResourceType>
-       -changers: List<IndustryChanger>
-       +Scenario(map, year, locomotiveTypes, industryTypes, importation, exportation, changers)
-     }
-
-        class Map{
+    class Map {
         - size : int
-        - name : String
-        - industries : List<Industry>
-        - cities : List<City>
-        }
+            - name : String
+            - scale : int
+            - industries : List<Industry>
+            - cities : List<City>
+    }
+    enum LocomotiveType {
+        STEAM
+        DIESEL
+        ELECTRIC
+    }
+    enum ResourceType {
+        ALUMINUM
+        AUTOS
+        BAUXITE
+        CATTLE
+        CEMENT
+        CHEMICALS
+        COAL
+        COFFEE
+        COTTON
+        DAIRY
+        DIESEL
+        FERTILIZER
+        FOOD
+        GOODS
+        GRAIN
+        GRAVEL
+        IRON
+        LOGS
+        LUMBER
+        MAIL
+        MILK
+        OIL
+        PAPER
+        PASSENGERS
+        PRODUCE
+        PULPWOOD
+        RUBBER
+        STEEL
+        SUGAR
+        TIRES
+        URANIUM
+        WASTE
+        WOOL
+        ALCOHOL
+        AMMUNITION
+        TROOPS
+        WEAPONS
+        --
+        -cost
+    }
+    class Scenario {
+        - map: Map
+        - year: int
+        - locomotiveTypes: List<LocomotiveType>
+        - importation: List<ResourceType>
+        - exportation: List<ResourceType>
+        - changer: int
+        + checkMap(map)
+        + checkYear(year)
+        + checkLocomotiveTypes(List<LocomotiveType>)
+        + checkImportation(List<ResourceType>)
+        + checkExportation(List<ResourceType>)
+        + checkChanger(changer)
+    }
 
-        enum LocomotiveType{
-            Steam
-            Diesel
-            Electric
-        }
+    class ScenarioDTO {
+        + getMap()
+        + getYear()
+        + getLocomotiveTypes()
+        + getImportation()
+        + getExportation()
+        + getChanger()
+    }
+    class MapDTO {
+        - name: String
+        - size: int
+        - scale: int
+    }
+    class LocomotiveTypeDTO
 
-        enum IndustryType{
-            aluminum mill
-                auto plant
-                bakery
-                bauxit mine
-                cannery
-                cattle yard
-                chemical plant
-                cement plant
-                coal mine
-                coffee farm
-                cotton farm
-                dairy farm
-                dairy processor
-                electric plant
-                fertilizer plant
-                grain silo
-                gravel pit
-                iron mine
-                landfill
-                logging camp
-                lumber mill
-                meat packing plant
-                nuclear plant
-                oil refinery
-                oil well
-                paper mill
-                produce orchard
-                rubber farm
-                steel mill
-                textile mill
-                tire factory
-                tool and die factory
-                uranium mine
-                geocore plant
-                distillery
-                munitions factory
-                weapons factory
-                port
-            --
-            importation: ResourceType
-            exportation: ResourceType
-        }
-     
-        enum IndustryChanger{
-            War
-            Vaccination Campaign
-            Schooling Program
-            --
-            -effect: int
-        }
+    class ResourceTypeDTO
+
+    class MapListMapper {
+        + toDTO(List<Map>)
+    }
+    class LocomotiveTypeListMapper {
+        + toDTO(List<LocomotiveType>)
+    }
+    class ResourceTypeListMapper {
+        + toDTO(List<ResourceType>)
+    }
+    class ScenarioMapper {
+        + toScenario(dto)
+    }
 
 
     CreateScenarioUI ..> CreateScenarioController
 
-    CreateScenarioController ..> Scenario
     CreateScenarioController ..> Repositories
 
     Repositories -> "1" Repositories : instance
-    Repositories --> "1" MapRepository: map repository
-    Repositories --> "1" LocomotiveTypeRepository : locomotive type repository
-    Repositories --> "1" IndustryTypeRepository : industry type repository
-    Repositories --> "1" IndustryChangerRepository : industry changer repository
+    Repositories --> "1" MapRepository: mapRepository
+    Repositories --> "1" LocomotiveTypeRepository: locomotiveTypeRepository
+    Repositories --> "1" ResourceTypeRepository: resourceTypeRepository
+    Repositories --> "1" ScenarioRepository: scenarioRepository
 
-    MapRepository --> "*" Map : map
-    LocomotiveTypeRepository --> "3" LocomotiveType : locomotive type
-    IndustryTypeRepository --> "3" IndustryType : industry type
-    IndustryChangerRepository --> "3" IndustryChanger : industry changer
+    CreateScenarioController ..> MapListMapper
+    CreateScenarioController ..> LocomotiveTypeListMapper
+    CreateScenarioController ..> ResourceTypeListMapper
+    CreateScenarioController ..> ScenarioRepository
+    CreateScenarioController ..> MapRepository
+    CreateScenarioController ..> ResourceTypeRepository
+    CreateScenarioController ..> LocomotiveTypeRepository
 
-    Scenario --> "1" Map : map
-    Scenario --> "1..*" LocomotiveType: locomotive type
-    Scenario --> "1..*" IndustryChanger : industry changer
-    Scenario --> "1..*" IndustryType: industry type
+    ScenarioRepository --> "1" ScenarioMapper: scenarioMapper
 
-    CreateScenarioController ..> Map
-    CreateScenarioController ..> LocomotiveType
-    CreateScenarioController ..> IndustryType
-    CreateScenarioController ..> IndustryChanger
+    MapRepository --> "1..*" Map: map
+    LocomotiveTypeRepository --> "3" LocomotiveType: locomotiveType
+    ResourceTypeRepository --> "28" ResourceType: resourceType
 
+    ScenarioMapper --> "1" Scenario: scenario
+    ScenarioMapper --> "1" ScenarioDTO: scenarioDTO
+
+
+    Scenario --> "1" Map: map
+    Scenario --> "1..*" LocomotiveType: locomotiveType
+    Scenario --> "*" ResourceType: resourceType
+
+    MapListMapper --> "1" MapDTO: mapDTO
+    LocomotiveTypeListMapper --> "1" LocomotiveTypeDTO: locomotiveTypeDTO
+    ResourceTypeListMapper --> "1" ResourceTypeDTO: resourceTypeDTO
 
     @enduml

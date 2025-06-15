@@ -31,21 +31,18 @@ As an Editor, I want to create a scenario for a selected map.
 * Typed data:
     * the request
     * a year
-    * importation availability
-    * exportation availability
 	
 * Selected data:
     * a map
     * the available locomotive types
-    * the available industry types
-    * the port's behavior
-    * the industry changers
+    * the imported resources
+    * the exported resources
+    * an industry changer
 
 **Output Data:**
 
 * List of available maps
 * List of locomotive types
-* List of industry types
 * List of resource types
 * List of industry changers
 * Data for confirmation

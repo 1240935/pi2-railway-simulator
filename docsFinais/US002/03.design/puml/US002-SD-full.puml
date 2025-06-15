@@ -9,11 +9,23 @@ autonumber
     participant ":CreateIndustryUI" as UI
     participant ":CreateIndustryController" as CTRL
     participant "Repositories" as REPOS
-    participant "MapRepository" as MREPOS
-    participant "Map" as MAP
-    participant "Position" as POS
-    participant "IndustryType <<enumeration>>" as TYPE
-    participant "Industry" as INDUSTRY
+    participant "repositories \n :Repositories" as REPO_SINGLETON
+    participant "mapRepository \n :MapRepository" as MAP_REPOS
+    participant ":MapListMapper" as MAPPER
+    participant ":List<Map>" as LIST_MAP
+    participant ":List<MapDTO>" as LDTO
+    participant ":MapDTO" as MDTO
+    participant "map \n :Map" as MAP
+    participant "industryTypeRepository \n :IndustryTypeRepository" as INDTYPE_REPOS
+    participant ":IndustryTypeListMapper" as ITMAPPER
+    participant ":List<IndustryType>" as LIST_INDTYPE
+    participant ":List<IndustryTypeDTO>" as ITLDTO
+    participant ":IndustryTypeDTO" as ITDTO
+    participant "industryRepository \n :IndustryRepository" as IND_REPOS
+    participant ":IndustryMapper" as IMAPPER
+    participant ":IndustryDTO" as IDTO
+    participant "industry \n :Industry" as INDUSTRY
+    participant "position \n :Position" as POS
 
 
 activate EDITOR
@@ -32,14 +44,51 @@ activate EDITOR
     REPOS --> CTRL: repositories
     deactivate REPOS
 
-    CTRL -> MREPOS : getMapRepository()
-    activate MREPOS
+    CTRL -> REPO_SINGLETON : getMapRepository()
+    activate REPO_SINGLETON
+    REPO_SINGLETON --> CTRL: mapRepository
+    deactivate REPO_SINGLETON
 
-    MREPOS --> CTRL : list of maps
+   CTRL -> MAP_REPOS: getMaps()
+   activate MAP_REPOS
+   MAP_REPOS --> CTRL: mapList
+   deactivate MAP_REPOS
 
-    deactivate MREPOS
+   CTRL -> MAPPER: toDTO(mapList)
+   activate MAPPER
 
-    CTRL --> UI : list of available maps
+   MAPPER --> LDTO**: create()
+
+
+   loop for each map
+
+   MAPPER -> LIST_MAP: getMap()
+   activate LIST_MAP
+   LIST_MAP --> MAPPER: map
+   deactivate LIST_MAP
+
+   MAPPER -> MAPPER: toDTO(map)
+   activate MAPPER
+
+   MAPPER --> MDTO** : create(size, name, scale)
+   deactivate MAPPER
+
+   MAPPER -> LDTO: addMap(mapDTO)
+   activate LDTO
+   deactivate LDTO
+
+   end loop
+
+   MAPPER --> CTRL: mapListDTO
+   deactivate MAPPER
+
+   CTRL -> LDTO: getAvailableMapNames(mapListDTO)
+   activate LDTO
+
+   LDTO --> CTRL: map names
+   deactivate LDTO
+
+    CTRL --> UI : map names
     deactivate CTRL
 
     UI --> EDITOR : displays the list of available maps
@@ -50,11 +99,39 @@ activate EDITOR
 
     activate UI
 
-    UI -> CTRL : setMapByIndex(index)
+    UI -> CTRL: getMapSizeByIndex(mapIndex)
     activate CTRL
 
-    CTRL --> UI : selected map
-    deactivate CTRL
+    CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+        deactivate REPOS
+
+        CTRL -> REPO_SINGLETON : getMapRepository()
+        activate REPO_SINGLETON
+        REPO_SINGLETON --> CTRL: mapRepository
+        deactivate REPO_SINGLETON
+
+        CTRL -> MAP_REPOS: getMaps()
+           activate MAP_REPOS
+           MAP_REPOS --> CTRL: mapList
+           deactivate MAP_REPOS
+
+           CTRL -> LIST_MAP: getMap(mapIndex)
+           activate LIST_MAP
+
+           LIST_MAP --> CTRL: map
+           deactivate LIST_MAP
+
+           CTRL -> MAP: getSize(map)
+           activate MAP
+
+           MAP --> CTRL: size
+           deactivate MAP
+
+           CTRL --> UI: size
+           deactivate CTRL
 
     UI --> EDITOR : asks for coordinates
     deactivate UI
@@ -62,71 +139,156 @@ activate EDITOR
     EDITOR -> UI : types coordinates
     activate UI
 
-    UI -> CTRL : createPosition(xCoordinate, yCoordinate)
+    UI -> CTRL: getAvailableIndustryTypeNames()
     activate CTRL
 
-    CTRL ->POS** : createPosition(xCoordinate, yCoordinate)
+    CTRL -> REPOS : getInstance()
+        activate REPOS
+
+        REPOS --> CTRL: repositories
+        deactivate REPOS
+
+        CTRL -> REPO_SINGLETON : getIndustryTypeRepository()
+        activate REPO_SINGLETON
+        REPO_SINGLETON --> CTRL: industryTypeRepository
+        deactivate REPO_SINGLETON
+
+       CTRL -> INDTYPE_REPOS: getIndustryTypes()
+       activate INDTYPE_REPOS
+       INDTYPE_REPOS --> CTRL: industryTypesList
+       deactivate INDTYPE_REPOS
+
+       CTRL -> ITMAPPER: toDTO(industryTypeList)
+          activate ITMAPPER
+
+          ITMAPPER --> ITLDTO**: create()
 
 
-    CTRL -> UI : position
-    deactivate CTRL
+          loop for each industryType
 
-    UI -> CTRL: checkCoordinates(xCoordinate, yCoordinate)
-    activate CTRL
+          ITMAPPER -> LIST_INDTYPE: getIndustryType()
+          activate LIST_INDTYPE
+          LIST_INDTYPE --> ITMAPPER: type
+          deactivate LIST_INDTYPE
 
+          ITMAPPER -> ITMAPPER: toDTO(type)
+          activate ITMAPPER
 
-    CTRL -> MAP : checkCoordinates(xCoordinate, yCoordinate)
-    activate MAP
+          ITMAPPER --> ITDTO** : create()
+          deactivate ITMAPPER
 
-    MAP --> CTRL : valid coordinates
-    deactivate MAP
+          ITMAPPER -> ITLDTO: addType(typeDTO)
+          activate ITLDTO
+          deactivate ITLDTO
 
-    CTRL --> UI : valid coordinates
-    deactivate CTRL
+          end loop
 
-    UI -> CTRL : getAvailableIndustriesTypeNames()
-    activate CTRL
+          ITMAPPER --> CTRL: industryTypeListDTO
+          deactivate ITMAPPER
 
-    CTRL -> TYPE : getAvailableIndustriesTypeNames()
-    activate TYPE
+          CTRL -> ITLDTO: getAvailableIndustryTypeNames(industryTypeListDTO)
+          activate ITLDTO
 
-    TYPE --> CTRL: list of industries
-    deactivate TYPE
+          ITLDTO --> CTRL: industry type names
+          deactivate ITLDTO
 
-
-    CTRL --> UI : list of available industries
-
-    deactivate CTRL
+           CTRL --> UI : industry names
+           deactivate CTRL
 
     UI --> EDITOR :shows the available industries types
-
     deactivate UI
 
     EDITOR -> UI :selects one type to build
     activate UI
 
-    UI -> CTRL : setMapByIndex(index)
+    UI -> CTRL : createIndustry(dto)
     activate CTRL
 
-    CTRL -> UI : selected type
+    CTRL -> REPOS : getInstance()
+    activate REPOS
+
+        REPOS --> CTRL : repositories
+    deactivate REPOS
+
+    CTRL -> REPO_SINGLETON : getIndustryRepository()
+    activate REPO_SINGLETON
+    REPO_SINGLETON --> CTRL: industryRepository
+    deactivate REPO_SINGLETON
+    CTRL -> IND_REPOS: createIndustry(dto)
+    activate IND_REPOS
+
+    IND_REPOS -> IMAPPER : toIndustry(dto)
+    activate IMAPPER
+
+    IMAPPER -> IDTO: getIndustryType()
+    activate IDTO
+
+    IDTO --> IMAPPER: industryType
+    deactivate IDTO
+    IMAPPER -> IDTO: getXCoordinate()
+    activate IDTO
+
+    IDTO --> IMAPPER: xCoordinate
+    deactivate IDTO
+    IMAPPER -> IDTO: getYCoordinate()
+        activate IDTO
+
+        IDTO --> IMAPPER: yCoordinate
+        deactivate IDTO
+
+        IMAPPER -> IDTO: getMapSize()
+                activate IDTO
+
+                IDTO --> IMAPPER: mapSize
+                deactivate IDTO
+
+
+    IMAPPER --> IND_REPOS: industryType, xCoordinate, yCoordinate, mapSize
+    deactivate IMAPPER
+
+    IND_REPOS -> INDUSTRY: createIndustry(industryType, xCoordinate, yCoordinate, mapSize)
+    activate INDUSTRY
+
+    INDUSTRY --> POS**: createPosition(xCoordinate, yCoordinate)
+
+    INDUSTRY -> INDUSTRY: checkPosition(position, mapSize)
+        activate INDUSTRY
+
+        INDUSTRY --> INDUSTRY: valid
+        deactivate INDUSTRY
+
+    INDUSTRY -> INDUSTRY: checkIndustryType(industryType)
+    activate INDUSTRY
+
+    INDUSTRY --> INDUSTRY: valid
+    deactivate INDUSTRY
+
+    INDUSTRY --> IND_REPOS: industry
+    deactivate INDUSTRY
+
+    IND_REPOS -> IND_REPOS: addIndustry(industry)
+    activate IND_REPOS
+
+    IND_REPOS --> IND_REPOS: success
+    deactivate IND_REPOS
+
+     IND_REPOS -> MAP: industry
+     deactivate IND_REPOS
+
+     activate MAP
+
+        MAP -> MAP: addIndustry(industry)
+        activate MAP
+
+        MAP --> MAP: success
+        deactivate MAP
+
+        MAP --> CTRL: success
+        deactivate MAP
+
+    CTRL --> UI: success
     deactivate CTRL
 
-
-
-    UI --> EDITOR: shows all data and requests \n for confirmation
-    deactivate  UI
-
-    EDITOR --> UI: confirms data
-    activate UI
-
-    UI -> CTRL : createIndustry(type, position)
-    activate CTRL
-
-    CTRL -> INDUSTRY** : create(xCoordinate, yCoordinate)
-    
-
-    CTRL --> UI : industry
-    deactivate CTRL
 
     UI --> EDITOR : displays operation success
     deactivate UI

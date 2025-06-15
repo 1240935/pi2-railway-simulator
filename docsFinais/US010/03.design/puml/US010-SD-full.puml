@@ -1,139 +1,548 @@
 @startuml
+'skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
+
 autonumber
 
+'hide footbox
 actor "Player" as PLAYER
 participant ":AssignRouteUI" as UI
 participant ":AssignRouteController" as CTRL
 participant "Repositories" as REPOS
-participant "ScenarioRepository" as SREPOS
-participant "Scenario" as SCENARIO
-participant "Station" as STATION
-participant "Route" as ROUTE
+participant "repositories \n :Repositories" as REPO_SINGLETON
+participant "scenarioRepository \n :ScenarioRepository" as SCEN_REPOS
+participant ":ScenarioListMapper" as SMAPPER
+participant ":List<Scenario>" as LIST_SCENARIO
+participant ":List<ScenarioDTO>" as SLDTO
+participant ":ScenarioDTO" as SDTO
+participant "scenario \n :Scenario" as SCENARIO
+participant "stationRepository \n :StationRepository" as STATION_REPOS
+participant ":StationListMapper" as STATIONMAPPER
+participant ":List<Station>" as LIST_STATION
+participant ":List<StationDTO>" as STATIONLDTO
+participant ":StationDTO" as STATIONDTO
+participant "station \n :Station" as STATION
+participant "cargoRepository\n:CargoRepository" as CARGO_REPO
+participant ":CargoListMapper" as CARGO_MAPPER
+participant ":List<Cargo>" as CARGO_LIST
+participant ":List<CargoDTO>" as CARGO_LIST_DTO
+participant ":CargoDTO" as CARGO_DTO
+participant "cargoModeRepository\n:CargoModeRepository" as CARGO_MODE_REPO
+participant ":CargoModeListMapper" as CARGO_MODE_MAPPER
+participant ":List<CargoMode>" as CARGO_MODE_LIST
+participant ":List<CargoModeDTO>" as CARGO_MODE_LIST_DTO
+participant ":CargoModeDTO" as CARGO_MODE_DTO
+participant "pointsOfRouteRepository\n:PointsOfRouteRepository" as POINT_OF_ROUTE_REPO
+participant ":PointsOfRouteListMapper" as POINT_OF_ROUTE_MAPPER
+participant ":PointsOfRouteDTO" as POINT_OF_ROUTE_DTO
+participant "pointsOfRoute \n:PointsOfRoutes" as POINT_OF_ROUTE
+participant "locomotiveRepository\n:LocomotiveRepository" as LOCO_REPO
+participant ":LocomotiveListMapper" as LOCO_MAPPER
+participant ":List<Locomotive>" as LOCO_LIST
+participant ":List<LocomotiveDTO>" as LOCO_LIST_DTO
+participant ":LocomotiveDTO" as LOCO_DTO
+participant "routeRepository\n:RouteRepository" as ROUTE_REPO
+participant ":RouteListMapper" as ROUTE_MAPPER
+participant ":List<Route>" as ROUTE_LIST
+participant ":List<RouteDTO>" as ROUTE_LIST_DTO
+participant ":RouteDTO" as ROUTE_DTO
+participant "route\n: Route" as ROUTE
+
+
 
 activate PLAYER
 
-PLAYER -> UI : asks to assign a train to a route
-activate UI
-
-UI -> CTRL** : create()
-
-UI -> CTRL : getAvailableScenarios()
-activate CTRL
-
-CTRL -> REPOS : getInstance()
-activate REPOS
-REPOS --> CTRL : repositories
-deactivate REPOS
-
-CTRL -> SREPOS : getScenarios()
-activate SREPOS
-SREPOS --> CTRL : list of scenarios
-deactivate SREPOS
-
-CTRL -> SCENARIO : getAvailableScenarioNames()
-activate SCENARIO
-
-SCENARIO --> CTRL: scenario names
-deactivate SCENARIO
-CTRL --> UI : list of scenario names
-deactivate CTRL
-
-UI --> PLAYER : shows list of scenarios
-deactivate UI
-
-PLAYER -> UI : selects a scenario
-activate UI
-UI -> CTRL : setSelectedScenario(scenario)
-activate CTRL
-CTRL --> UI : scenario selected
-deactivate CTRL
-
-UI -> CTRL : getAvailableLocomotives()
-activate CTRL
-CTRL -> SCENARIO : getLocomotives()
-activate SCENARIO
-
-SCENARIO --> CTRL: list of locomotive
-deactivate SCENARIO
-CTRL --> UI : list of locomotives
-deactivate CTRL
-
-UI --> PLAYER : shows list of locomotives
-deactivate UI
-
-PLAYER -> UI : selects a locomotive
-activate UI
-UI -> CTRL : setSelectedLocomotive(locomotive)
-activate CTRL
-CTRL --> UI : locomotive selected
-deactivate CTRL
-
-UI -> CTRL : getAvailableStations()
-activate CTRL
-
-CTRL -> SCENARIO : getStations()
-
-activate SCENARIO
-
-SCENARIO --> CTRL: list of stations
-deactivate SCENARIO
-
-loop Selecting stations
-    UI --> PLAYER : shows list of stations
-    deactivate UI
-
-    PLAYER -> UI : selects a station
+    PLAYER -> UI : asks to assign a train to a route
     activate UI
 
-    UI -> CTRL : addStation(station)
+        UI --> CTRL** : create()
+         UI -> CTRL : getAvailableScenarioNames()
+                           activate CTRL
 
-    CTRL --> UI : station added
-end loop
+                                       CTRL -> REPOS : getInstance()
+                                       activate REPOS
 
-UI -> CTRL : getSupply()
+                                       REPOS --> CTRL : repositories
+                                       deactivate REPOS
 
-CTRL -> SCENARIO : getStations()
+                                       CTRL -> REPO_SINGLETON : getScenarioRepository()
+                                       activate REPO_SINGLETON
+                                       REPO_SINGLETON --> CTRL : scenarioRepository
+                                       deactivate REPO_SINGLETON
 
-activate SCENARIO
+                                       CTRL -> SCEN_REPOS : getScenarios()
+                                       activate SCEN_REPOS
+                                       SCEN_REPOS --> CTRL : scenarioList
+                                       deactivate SCEN_REPOS
 
-SCENARIO --> CTRL: list of stations
-deactivate SCENARIO
-CTRL -> STATION: getSupply()
+                                       CTRL -> SMAPPER : toDTO(scenarioList)
+                                       activate SMAPPER
 
-activate STATION
+                                       SMAPPER --> SLDTO** : create()
 
-STATION --> CTRL: list of supplies
-deactivate STATION
-CTRL --> UI: list of supplies
-deactivate CTRL
-UI --> PLAYER : shows available cargo
+                                       loop for each scenario
+                                           SMAPPER -> LIST_SCENARIO : getScenario()
+                                           activate LIST_SCENARIO
+                                           LIST_SCENARIO --> SMAPPER : scenario
+                                           deactivate LIST_SCENARIO
 
-deactivate UI
+                                           SMAPPER -> SMAPPER : toDTO(scenario)
+                                           activate SMAPPER
 
-PLAYER -> UI : selects cargo
-activate UI
+                                           SMAPPER --> SDTO** : create(map, year, locomotiveTypes, importation, exportation, changer)
+                                           deactivate SMAPPER
 
-UI -> CTRL : selectCargoByIndex(index)
-activate CTRL
+                                           SMAPPER -> SLDTO : addScenario(scenario)
+                                           activate SLDTO
+                                           deactivate SLDTO
+                                       end loop
 
-CTRL --> UI : cargo selected
-deactivate CTRL
+                                       SMAPPER --> CTRL : scenarioListDTO
+                                       deactivate SMAPPER
 
-UI --> PLAYER: shows all data and requests confirmation
-deactivate UI
+                                       CTRL -> SLDTO : getAvailableScenarioNames(scenarioListDTO)
+                                       activate SLDTO
 
-PLAYER -> UI: confirms data
-activate UI
+                                       SLDTO --> CTRL : scenario names
+                                       deactivate SLDTO
 
-UI -> CTRL : createRoute(firstStation, lastStation, selectedLocomotive, selectedCargo)
-activate CTRL
-CTRL -> ROUTE** : create(firstStation, lastStation, selectedLocomotive, selectedCargo)
-CTRL --> UI : route created
-deactivate CTRL
+                                       CTRL --> UI : scenario names
+                           deactivate CTRL
+
+                UI --> PLAYER : shows available scenarios
+            deactivate UI
+
+    PLAYER -> UI : selects a scenario
+    activate UI
+
+    UI --> PLAYER: asks for the number of points of route
+    deactivate UI
+
+    PLAYER -> UI: types a number
+    activate UI
+
+    loop for the number of points of route
+
+        UI -> CTRL : getAvailableStationNames()
+                         activate CTRL
+
+                                              CTRL -> REPOS : getInstance()
+                                              activate REPOS
+
+                                              REPOS --> CTRL : repositories
+                                              deactivate REPOS
+
+                                              CTRL -> REPO_SINGLETON : getStationRepository()
+                                              activate REPO_SINGLETON
+                                              REPO_SINGLETON --> CTRL : stationRepository
+                                              deactivate REPO_SINGLETON
+
+                                              CTRL -> STATION_REPOS : getStations()
+                                              activate STATION_REPOS
+                                              STATION_REPOS --> CTRL : stationList
+                                              deactivate STATION_REPOS
+
+                                              CTRL -> STATIONMAPPER : toDTO(stationList)
+                                              activate STATIONMAPPER
+
+                                              STATIONMAPPER --> STATIONLDTO** : create()
+
+                                              loop for each station
+                                                  STATIONMAPPER -> LIST_STATION : getStation()
+                                                  activate LIST_STATION
+                                                  LIST_STATION --> STATIONMAPPER : station
+                                                  deactivate LIST_STATION
+
+                                                  STATIONMAPPER -> STATIONMAPPER : toDTO(station)
+                                                  activate STATIONMAPPER
+
+                                                  STATIONMAPPER --> STATIONDTO** : create(stationType, position, name, center, demandedCargo, suppliedCargo)
+                                                  deactivate STATIONMAPPER
+
+                                                  STATIONMAPPER -> STATIONLDTO : addStation(stationDTO)
+                                                  activate STATIONLDTO
+                                                  deactivate STATIONLDTO
+                                              end loop
+
+                                              STATIONMAPPER --> CTRL : stationListDTO
+                                              deactivate STATIONMAPPER
+
+                                              CTRL -> STATIONLDTO : getAvailableStationNames(stationListDTO)
+                                              activate STATIONLDTO
+
+                                              STATIONLDTO --> CTRL : station names
+                                              deactivate STATIONLDTO
+
+                                              CTRL --> UI : station names
+                         deactivate CTRL
+
+                        UI --> PLAYER : shows the list of stations
+                deactivate UI
+
+        PLAYER -> UI : selects a station
+        activate UI
+
+            UI -> CTRL : getAvailableCargoNames()
+            activate CTRL
+
+                CTRL -> REPOS : getInstance()
+                activate REPOS
+
+                    REPOS --> CTRL : repositories
+                deactivate REPOS
+
+                CTRL -> REPO_SINGLETON : getStationRepository()
+                activate REPO_SINGLETON
+
+                    REPO_SINGLETON --> CTRL : stationRepository
+                deactivate REPO_SINGLETON
+
+                CTRL -> STATION_REPOS : getStationByIndex(stationIndex)
+                activate STATION_REPOS
+
+                    STATION_REPOS --> CTRL : station
+                deactivate STATION_REPOS
+
+                CTRL -> STATION : getSuppliedCargo()
+                activate STATION
+
+                    STATION --> CTRL : suppliedCargo
+                deactivate STATION
+
+
+                CTRL -> CARGO_MAPPER : toDTO (suppliedCargo)
+                activate CARGO_MAPPER
+
+                    CARGO_MAPPER --> CARGO_LIST_DTO** : create()
+
+            loop for every cargo
+
+                CARGO_MAPPER -> CARGO_LIST : getCargo()
+                activate CARGO_LIST
+
+                    CARGO_LIST --> CARGO_MAPPER : cargo
+                deactivate CARGO_LIST
+
+                CARGO_MAPPER -> CARGO_MAPPER : toDTO(cargo)
+                activate CARGO_MAPPER
+
+                CARGO_MAPPER --> CARGO_DTO** : createCargo(type, quantity)
+                deactivate CARGO_MAPPER
+
+                CARGO_MAPPER -> CARGO_LIST_DTO : addCargo(cargoDTO)
+                activate CARGO_LIST_DTO
+                deactivate CARGO_LIST_DTO
+
+            end loop
+
+                CARGO_MAPPER --> CTRL : listOfCargoDTO
+                deactivate CARGO_MAPPER
+
+            CTRL -> CARGO_LIST_DTO : getAvailableCargoNames(listOfCargoDTO)
+            activate CARGO_LIST_DTO
+
+                CARGO_LIST_DTO --> CTRL : cargo names
+            deactivate CARGO_LIST_DTO
+
+            CTRL --> UI : cargo names
+            deactivate CTRL
+
+        UI --> PLAYER : shows list of available supplied cargo
+        deactivate UI
+
+        PLAYER -> UI : selects cargo
+        activate UI
+
+         UI -> CTRL : getAvailableCargoModeNames()
+         activate CTRL
+
+             CTRL -> REPOS : getInstance()
+             activate REPOS
+
+                 REPOS --> CTRL : repositories
+             deactivate REPOS
+
+             CTRL -> REPO_SINGLETON : getCargoModeRepository()
+             activate REPO_SINGLETON
+
+                 REPO_SINGLETON --> CTRL : cargoModeRepository
+             deactivate REPO_SINGLETON
+
+             CTRL -> CARGO_MODE_REPO : getCargoModes()
+             activate CARGO_MODE_REPO
+
+                  CARGO_MODE_REPO --> CTRL : cargoModesList
+              deactivate CARGO_MODE_REPO
+
+             CTRL -> CARGO_MODE_MAPPER : toDTO (cargoModesList)
+             activate CARGO_MODE_MAPPER
+
+                 CARGO_MODE_MAPPER --> CARGO_MODE_LIST_DTO** : create()
+
+             loop for every cargo
+
+                 CARGO_MODE_MAPPER -> CARGO_MODE_LIST : getCargoMode()
+                 activate CARGO_MODE_LIST
+
+                     CARGO_MODE_LIST --> CARGO_MODE_MAPPER : cargo mode
+                 deactivate CARGO_MODE_LIST
+
+                 CARGO_MODE_MAPPER -> CARGO_MODE_MAPPER : toDTO(cargoMode)
+                 activate CARGO_MODE_MAPPER
+
+                 CARGO_MODE_MAPPER --> CARGO_MODE_DTO** : createCargoMode()
+                 deactivate CARGO_MODE_MAPPER
+
+                 CARGO_MODE_MAPPER -> CARGO_MODE_LIST_DTO : addCargoMode(cargoModeDTO)
+                 activate CARGO_MODE_LIST_DTO
+                 deactivate CARGO_MODE_LIST_DTO
+
+             end loop
+
+                 CARGO_MODE_MAPPER --> CTRL : cargoModesListDTO
+                 deactivate CARGO_MODE_MAPPER
+
+             CTRL -> CARGO_MODE_LIST_DTO : getAvailableCargoModeNames(cargoModesListDTO)
+             activate CARGO_MODE_LIST_DTO
+
+                 CARGO_MODE_LIST_DTO --> CTRL : cargo mode names
+             deactivate CARGO_MODE_LIST_DTO
+
+         CTRL --> UI : cargo mode names
+         deactivate CTRL
+
+        UI --> PLAYER : shows list of available cargo modes
+        deactivate UI
+
+        PLAYER -> UI : selects a cargo mode
+        activate UI
+
+        UI -> CTRL : createPointOfRoute(dto)
+        activate CTRL
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPO_SINGLETON : getPointOfRouteRepository()
+            activate REPO_SINGLETON
+
+                REPO_SINGLETON --> CTRL : pointOfRouteRepository
+            deactivate REPO_SINGLETON
+
+            CTRL -> POINT_OF_ROUTE_REPO : createPointOfRoute(dto)
+            activate POINT_OF_ROUTE_REPO
+
+               POINT_OF_ROUTE_REPO -> POINT_OF_ROUTE_MAPPER : toPointOfRoute(dto)
+               activate POINT_OF_ROUTE_MAPPER
+
+                    POINT_OF_ROUTE_MAPPER -> POINT_OF_ROUTE_DTO : getStation()
+                    activate POINT_OF_ROUTE_DTO
+
+                        POINT_OF_ROUTE_DTO --> POINT_OF_ROUTE_MAPPER : station
+                    deactivate POINT_OF_ROUTE_DTO
+
+                    POINT_OF_ROUTE_MAPPER -> POINT_OF_ROUTE_DTO : getCargo()
+                    activate POINT_OF_ROUTE_DTO
+
+                        POINT_OF_ROUTE_DTO --> POINT_OF_ROUTE_MAPPER : cargo
+                    deactivate POINT_OF_ROUTE_DTO
+
+                    POINT_OF_ROUTE_MAPPER -> POINT_OF_ROUTE_DTO : getCargoMode()
+                    activate POINT_OF_ROUTE_DTO
+
+                        POINT_OF_ROUTE_DTO --> POINT_OF_ROUTE_MAPPER : cargoMode
+                    deactivate POINT_OF_ROUTE_DTO
+
+               POINT_OF_ROUTE_MAPPER --> POINT_OF_ROUTE_REPO : stations, cargo, cargoMode
+               deactivate POINT_OF_ROUTE_MAPPER
+
+               POINT_OF_ROUTE_REPO -> POINT_OF_ROUTE: createPointOfRoute(stations, cargo, cargoMode)
+               activate POINT_OF_ROUTE
+
+                    POINT_OF_ROUTE -> POINT_OF_ROUTE : checkStation(stations)
+                    activate POINT_OF_ROUTE
+
+                        POINT_OF_ROUTE --> POINT_OF_ROUTE : valid
+                    deactivate POINT_OF_ROUTE
+
+                     POINT_OF_ROUTE -> POINT_OF_ROUTE : checkCargo(cargo)
+                                        activate POINT_OF_ROUTE
+
+                                            POINT_OF_ROUTE --> POINT_OF_ROUTE : valid
+                                        deactivate POINT_OF_ROUTE
+
+
+                   POINT_OF_ROUTE -> POINT_OF_ROUTE : checkCargoMode(cargoMode)
+                                      activate POINT_OF_ROUTE
+
+                                          POINT_OF_ROUTE --> POINT_OF_ROUTE : valid
+                                      deactivate POINT_OF_ROUTE
+
+                    POINT_OF_ROUTE --> POINT_OF_ROUTE_REPO : pointOfRoute
+                    deactivate POINT_OF_ROUTE
+
+                    POINT_OF_ROUTE_REPO -> POINT_OF_ROUTE_REPO : addPointOfRoute(pointsOfRoute)
+                    activate POINT_OF_ROUTE_REPO
+
+                    POINT_OF_ROUTE_REPO --> POINT_OF_ROUTE_REPO : success
+
+                    deactivate POINT_OF_ROUTE_REPO
+
+                    POINT_OF_ROUTE_REPO --> CTRL : success
+                    deactivate POINT_OF_ROUTE_REPO
+
+               CTRL --> UI : success
+               deactivate CTRL
+
+               end
+
+            UI -> CTRL : getAvailableLocomotiveNames()
+            activate CTRL
+
+                CTRL -> REPOS : getInstance()
+                activate REPOS
+
+                    REPOS --> CTRL : repositories
+                deactivate REPOS
+
+                CTRL -> REPO_SINGLETON : getLocomotiveRepository()
+                activate REPO_SINGLETON
+
+                    REPO_SINGLETON --> CTRL : locomotiveRepository
+                deactivate REPO_SINGLETON
+
+                CTRL -> LOCO_REPO : getLocomotives()
+                activate LOCO_REPO
+
+                    LOCO_REPO --> CTRL : locomotiveList
+                deactivate LOCO_REPO
+
+                CTRL -> LOCO_MAPPER : toDTO(locomotiveList)
+                activate LOCO_MAPPER
+
+                    LOCO_MAPPER --> LOCO_LIST_DTO** : create()
+
+                loop for every locomotive
+
+                    LOCO_MAPPER -> LOCO_LIST : getLocomotives()
+                    activate LOCO_LIST
+
+                        LOCO_LIST --> LOCO_MAPPER : locomotives
+                    deactivate LOCO_LIST
+
+                    LOCO_MAPPER -> LOCO_MAPPER : toDTO(locomotives)
+                    activate LOCO_MAPPER
+
+                        LOCO_MAPPER --> LOCO_DTO** : createLocomotive(id, model)
+                    deactivate LOCO_MAPPER
+
+                    LOCO_MAPPER -> LOCO_LIST_DTO : addLocomotive(locomotiveDTO)
+                    activate LOCO_LIST_DTO
+                    deactivate LOCO_LIST_DTO
+
+                end
+
+                LOCO_MAPPER --> CTRL : locomotivesDTO
+                deactivate LOCO_MAPPER
+
+            CTRL -> LOCO_LIST_DTO: getAvailableLocomotiveNames(locomotiveListDTO)
+            activate LOCO_LIST_DTO
+
+                LOCO_LIST_DTO --> CTRL : locomotive names
+            deactivate LOCO_LIST_DTO
+
+            CTRL --> UI : locomotive names
+            deactivate CTRL
+
+        UI --> PLAYER : shows list of available locomotives
+        deactivate UI
+
+        PLAYER -> UI : selects a locomotive
+        activate UI
+
+            UI-> CTRL : createRoute(dto)
+            activate CTRL
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPO_SINGLETON : getRouteRepository()
+            activate REPO_SINGLETON
+
+                REPO_SINGLETON --> CTRL : routeRepository
+            deactivate REPO_SINGLETON
+
+            CTRL -> ROUTE_REPO : createRoute(dto)
+            activate ROUTE_REPO
+
+            ROUTE_REPO -> ROUTE_MAPPER : toRoute(dto)
+            activate ROUTE_MAPPER
+
+                ROUTE_MAPPER -> ROUTE_DTO : getPointsOfRoute()
+                activate ROUTE_DTO
+
+                    ROUTE_DTO --> ROUTE_MAPPER : pointsOfRoute
+                deactivate ROUTE_DTO
+
+                ROUTE_MAPPER -> ROUTE_DTO : getLocomotive()
+                activate ROUTE_DTO
+
+                    ROUTE_DTO --> ROUTE_MAPPER : locomotive
+                deactivate ROUTE_DTO
+
+                ROUTE_MAPPER --> ROUTE_REPO : pointsOfRoute, locomotive
+                deactivate ROUTE_MAPPER
+
+            ROUTE_REPO -> ROUTE : createRoute(pointsOfRoute, locomotive)
+            activate ROUTE
+
+                ROUTE -> ROUTE : checkPointsOfRoute(pointsOfRoute)
+                activate ROUTE
+
+                    ROUTE --> ROUTE : valid
+                deactivate ROUTE
+
+                ROUTE -> ROUTE : checkLocomotive(locomotive)
+                activate ROUTE
+
+                    ROUTE --> ROUTE : valid
+                deactivate ROUTE
+
+            ROUTE --> ROUTE_REPO : route
+            deactivate ROUTE
+
+            ROUTE_REPO -> ROUTE_REPO : addRoute(route)
+            activate ROUTE_REPO
+
+                ROUTE_REPO --> ROUTE_REPO : success
+             deactivate ROUTE_REPO
+
+        ROUTE_REPO --> SCENARIO : route
+        deactivate ROUTE_REPO
+        activate SCENARIO
+
+            SCENARIO -> SCENARIO : addRoute(route)
+            activate SCENARIO
+
+            SCENARIO --> SCENARIO : success
+            deactivate SCENARIO
+
+        SCENARIO --> CTRL : success
+        deactivate SCENARIO
+
+    CTRL --> UI : success
+    deactivate CTRL
 
 UI --> PLAYER : displays operation success
 deactivate UI
+
 deactivate PLAYER
+
 @enduml

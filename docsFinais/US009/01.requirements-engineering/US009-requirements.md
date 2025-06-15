@@ -45,7 +45,7 @@ The presentation of the list of locomotives is part of US009."
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** The player should choose the locomotive from a list of available locomotives for the scenario as well as a current date.
+* AC01: The player should choose the locomotive from a list of available locomotives for the scenario as well as a current date.
 
 
 ### 1.4. Found out Dependencies

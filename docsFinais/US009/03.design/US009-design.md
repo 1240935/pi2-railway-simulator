@@ -4,20 +4,26 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...            | Answer                    | Justification (with patterns)                                                                    |
-|:---------------|:-------------------------------------------------------|:--------------------------|:-------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                        | BuyLocomotiveUI           | Pure Fabrication: Responsible for handling user interaction; not a domain class.                 |
-|                | ... coordinating the US?                               | BuyLocomotiveController   | Controller: Centralizes control over the use case flow and interacts with the domain layer.      |
-|                | ... knowing the user using the system?                 | Player                    | IE: Knows its own data (e.g. name, current state, etc.).                                         |
-| Step 2         | ... knowing all existing locomotive models?            | LocomotiveModelRepository | IE: Specializes in locomotive models.                                                            |
-| Step 3         | ... saving the selected model?                         | BuyLocomotiveController   | IE: Keeps track of the selected model as part of the application logic.                          |
-| Step 4         | ... requesting data?                                   | BuyLocomotiveUI           | IE: Handles all user-driven requests.                                                            |
-| Step 5         | ... saving the inputted data?                          | BuyLocomotiveUI           | IE: Stores selections to be used when creating the locomotive.                                   |
-| Step 6         | ... showing all data and requesting confirmation?      | BuyLocomotiveUI           | IE: All UI interactions are the responsibility of this class.                                    |
-| Step 7         | ... instantiating a new Locomotive?                    | BuyLocomotiveController   | Creator: Has access to the required data (model, id), and logically coordinates object creation. |
-| Step 8         | ... validating all data (local validation)?            | Locomotive                | IE: Owns the data (id and model)                                                                 |
-| Step 9         | ... saving the created locomotive?                     | LocomotiveRepository      | IE: Repository owns all locomotives and generates new IDs (suggesting it also stores them).      |
-| Step 10        | ... informing operation success?                       | BuyLocomotiveUI           | IE: In charge of communicating results to the user.                                              |
+| **Interaction ID(s)** | **Question: Which class is responsible for...**                             | **Answer**                             | **Justification (with patterns)**                                                        |
+|-----------------------|-----------------------------------------------------------------------------|----------------------------------------|------------------------------------------------------------------------------------------|
+| 1–5                   | Handling user input and initiating the use case                             | `:BuyLocomotiveUI`                     | **Controller (UI Layer)** – Captures player input and starts the interaction.            |
+| 6–10                  | Coordinating scenario retrieval and returning names to UI                   | `:BuyLocomotiveController`             | **Controller** – Orchestrates the scenario listing and communicates with the repository. |
+| 11                    | Providing access to repositories                                            | `Repositories`                         | **Pure Fabrication (Singleton)** – Central access point for repositories.                |
+| 12                    | Retrieving available scenarios                                              | `ScenarioRepository`                   | **Information Expert** – Responsible for storing and retrieving Scenario entities.       |
+| 13–21                 | Mapping domain scenarios to DTOs (`ScenarioDTO`)                            | `ScenarioListMapper`                   | **Pure Fabrication** – Responsible for converting domain objects to DTOs.                |
+| 22                    | Returning list of `ScenarioDTO` to UI                                       | `:BuyLocomotiveController`             | **Controller** – Sends mapped data back to the UI.                                       |
+| 23–27                 | Handling user scenario selection                                            | `:BuyLocomotiveUI`                     | **Controller (UI Layer)** – Collects and forwards user selection to the controller.      |
+| 28–30                 | Requesting locomotive models from scenario                                  | `:BuyLocomotiveController`, `Scenario` | **Controller** + **Information Expert** – Scenario knows which models are available.     |
+| 31–41                 | Mapping domain models to DTOs (`LocomotiveModelDTO`)                        | `LocomotiveModelListMapper`            | **Pure Fabrication** – Converts domain `LocomotiveModel` objects to DTOs.                |
+| 42                    | Returning list of `LocomotiveModelDTO` to UI                                | `:BuyLocomotiveController`             | **Controller** – Returns list of mapped DTOs.                                            |
+| 43–46                 | Handling player’s model selection and budget input                          | `:BuyLocomotiveUI`                     | **Controller (UI Layer)** – Captures user selection and budget.                          |
+| 47–49                 | Passing selected `Scenario`, `LocomotiveModelDTO`, and budget to controller | `:BuyLocomotiveUI`                     | **Controller (UI Layer)** – Forwards structured data to domain-level logic.              |
+| 50–52                 | Creating `LocomotiveDTO` from input DTO and data                            | `:BuyLocomotiveController`             | **Controller** – Combines input to trigger domain object creation.                       |
+| 53–56                 | Converting DTO to domain object (`Locomotive`)                              | `LocomotiveMapper`                     | **Pure Fabrication** – Converts DTOs into domain model objects.                          |
+| 57                    | Accessing `LocomotiveRepository`                                            | `Repositories`                         | **Pure Fabrication (Singleton)** – Central repository access.                            |
+| 58–60                 | Creating and storing the `Locomotive`                                       | `LocomotiveRepository`                 | **Creator** – Responsible for constructing and saving new locomotives.                   |
+| 61                    | Returning the created `Locomotive` (or success confirmation) to controller  | `LocomotiveRepository`                 | **Information Expert** – Owns and returns newly created object.                          |
+| 62–63                 | Presenting purchase result to the user                                      | `:BuyLocomotiveUI`                     | **Controller (UI Layer)** – Displays final result to the player.                         |
 
 ### Systematization ##
 
@@ -26,6 +32,7 @@ According to the taken rationale, the conceptual classes promoted to software cl
 * Scenario
 * Locomotive
 * LocomotiveModel
+* Player
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
@@ -35,6 +42,12 @@ Other software classes (i.e. Pure Fabrication) identified:
 * ScenarioRepository
 * LocomotiveModelRepository
 * LocomotiveRepository
+* ScenarioListMapper
+* ScenarioDTO
+* LocomotiveModelListMapper
+* LocomotiveModelDTO
+* LocomotiveDTO
+* LocomotiveMapper
 
 
 ## 3.2. Sequence Diagram (SD)

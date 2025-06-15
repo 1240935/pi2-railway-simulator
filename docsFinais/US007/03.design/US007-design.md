@@ -4,18 +4,21 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for... | Answer                | Justification (with patterns)                                                                    |
-|:---------------|:--------------------------------------------|:----------------------|:-------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?             | ViewStationUI         | Pure Fabrication: UI is responsible for interfacing with the user; not part of the domain model. |
-|                | ... coordinating the US?                    | ViewStationController | Controller: Coordinates the use case by delegating to domain or infrastructure classes.          |
-|                | ... knowing the user using the system?      | Player                | IE: Knows its own data (e.g. name, current state, etc.).                                         |
-| Step 2         | ... knowing all existing scenarios to show? | ScenarioRepository    | IE: ScenarioRepository stores and provides access to all scenarios.                              |
-| Step 3         | ... saving the selected scenario?           | ViewStationUI         | IE: Holds and manages the selected scenario to use in subsequent steps.                          |
-| Step 4         | ... knowing all existing stations to show?  | StationRepository     | IE: StationRepository provides access to stations.                                               |
-| Step 5         | ... saving the selected station?            | ViewStationUI         | IE: Manages references to objects involved in the current operation.                             |
-| Step 6         | ... retrieving station’s building details?  | Station               | IE: Station is the expert on its own structure (i.e., its Building).                             |
-|                | ... retrieving station’s cargo?             | Station               | IE: Station knows what cargo it holds.                                                           |
-| Step 7         | ... informing operation success?            | ViewStationUI         | IE: UI handles user interaction and is responsible for providing feedback to the user.           |
+| **Interaction ID(s)** | **Question: Which class is responsible for...**                       | **Answer**                                 | **Justification (with GRASP and Design Patterns)**                                               |
+|-----------------------|-----------------------------------------------------------------------|--------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 1–4                   | Handling user input and initiating the use case                       | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures user input and starts interaction.                          |
+| 5–23                  | Coordinating scenario retrieval and sending scenario names to UI      | `:ViewStationDetailsController`            | **Controller** – Orchestrates the retrieval, mapping, and return of scenario data.               |
+| 6, 12                 | Providing singleton access to repositories                            | `Repositories`                             | **Pure Fabrication** (Singleton) – Centralized factory/provider for domain repositories.         |
+| 8                     | Retrieving all scenarios from storage                                 | `ScenarioRepository`                       | **Information Expert** – Knows how to access and manage `Scenario` objects.                      |
+| 9–21                  | Mapping `Scenario` objects to `ScenarioDTO`                           | `ScenarioListMapper`                       | **Pure Fabrication** – Responsible for transforming domain objects into DTOs.                    |
+| 24–26                 | Handling the player’s selection of a scenario                         | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures and forwards scenario choice.                               |
+| 27–53                 | Coordinating station retrieval and returning station names to UI      | `:ViewStationDetailsController`            | **Controller** – Retrieves station data for selected scenario and maps it.                       |
+| 29, 35                | Accessing the station repository                                      | `Repositories`, `StationRepository`        | **Pure Fabrication** + **Information Expert** – Provides access to station data.                 |
+| 36–50                 | Mapping `Station` domain objects to `StationDTO`                      | `StationListMapper`                        | **Pure Fabrication** – Handles transformation from domain model to DTO.                          |
+| 54–55                 | Handling the player’s selection of a station                          | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Captures and forwards user’s station selection.                      |
+| 56–60                 | Retrieving and returning building details of the selected station     | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Controller coordinates; `Station` knows its buildings. |
+| 61–65                 | Retrieving and returning cargo details of the selected station        | `:ViewStationDetailsController`, `Station` | **Controller** + **Information Expert** – Controller coordinates; `Station` knows its cargo.     |
+| 66                    | Displaying complete station details (buildings + cargo) to the player | `:ViewStationDetailsUI`                    | **Controller (UI Layer)** – Presents result back to the player.                                  |
 
 ### Systematization ##
 
@@ -23,6 +26,7 @@ According to the taken rationale, the conceptual classes promoted to software cl
 
 * Scenario
 * Station
+* Player
 
 Other software classes (i.e. Pure Fabrication) identified: 
 
@@ -31,7 +35,10 @@ Other software classes (i.e. Pure Fabrication) identified:
 * Repositories
 * ScenarioRepository
 * StationRepository
-
+* ScenarioListMapper
+* StationListMapper
+* ScenarioDTO
+* StationDTO
 
 ## 3.2. Sequence Diagram (SD)
 

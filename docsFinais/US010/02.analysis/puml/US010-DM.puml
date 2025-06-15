@@ -39,7 +39,7 @@ class Route {
 class Station {
     name
     capacity
-    center
+    centre
 }
 
 class StationType{
@@ -49,10 +49,9 @@ class StationType{
 
 class Cargo {
     quantity
-    status
 }
 
-class CargoType{
+class ResourceType{
     value
 }
 
@@ -85,8 +84,6 @@ class TechnologicalRestriction{
 }
 
 class Scenario{
-    importation
-    exportation
 }
 
 class CargoStatus{
@@ -94,7 +91,10 @@ class CargoStatus{
     demand
 }
 
-
+class PointOfRoute{
+    quantity
+    mode
+}
 
 Player "*" -- "1" Scenario : selects >
 Player "1" -- "*" Station : builds >
@@ -105,29 +105,34 @@ Player "1" -- "1..*" Locomotive : buys >
 
 Scenario "1" -- "*" TechnologicalRestriction: includes >
 Scenario "1" -- "*" TimeRestriction: includes >
+Scenario "1" -- "*" Station: contains >
+Scenario "1" -- "*" Route: contains >
+Scenario "1" -- "*" Locomotive: contains >
 
 TimeRestriction "1" -- "*" LocomotiveModel: affects >
+
 TechnologicalRestriction "1" -- "*" LocomotiveType: affects >
 
 Position "1" -- "1" Station: has <
-Position "1" -- "1" Railway: has <
 
 Station "1" -- "*" Cargo : stores >
-Station "2..*" -- "*" Route: has <
 Station "1" -- "1" StationType: has >
+Station "1" -- "1" PointOfRoute: includes <
 
 Locomotive "*" -- "1" LocomotiveModel: has >
 LocomotiveModel "1..*" -- "1" LocomotiveType: has >
 
-
 Carriage "1..*" -- "*" Cargo: transports >
 
-Railway "1" -- "1..*" Route: requires <
 Railway "1..*" -- "2..*" Station : connects >
 Railway "1" -- "1" RailwayType: has >
 
-Cargo "1" -- "1" CargoType: has >
+Cargo "1" -- "1" ResourceType: has >
 Cargo "1" -- "1" CargoStatus: has >
+Cargo "*" -- "1" PointOfRoute: includes <
+
+Route "*" -- "1..*" Railway: requires >
+Route "1" -- "2..*" PointOfRoute: has >
 
 Train "1" -- "1" Locomotive: is part of <
 Train "1" -- "*" Carriage: is part of <

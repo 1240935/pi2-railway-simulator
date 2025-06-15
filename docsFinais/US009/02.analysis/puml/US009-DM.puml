@@ -35,8 +35,6 @@ class Player {
 
 
 class Scenario {
-    importation
-    exportation
 }
 
 class TimeRestriction{

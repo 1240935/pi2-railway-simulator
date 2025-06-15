@@ -4,18 +4,15 @@
 
 ### 3.1. Rationale
 
-| Interaction ID | Question: Which class is responsible for...           | Answer              | Justification (with patterns)                                                                                         |
-|:---------------|:------------------------------------------------------|:--------------------|:----------------------------------------------------------------------------------------------------------------------|
-| Step 1         | ... interacting with the actor?                       | CreateMapUI         | Pure Fabrication: no existing domain class is responsible for interaction; UI class handles user-facing interactions. |
-|                | ... coordinating the US?                              | CreateMapController | Controller : Coordinates the use case by delegating responsibilities to domain or fabricated classes.                 |
-|                | ... knowing the user using the system?                | Editor              | IE: knows its own data (e.g. username, password)                                                                      |
-| Step 2         | ... requesting the map name and size?                 | CreateMapUI         | IE: responsible for managing the user input flow.                                                                     |
-| Step 3         | ... saving the inputted map data (name and size)?     | CreateMapUI         | IE: responsible for temporarily storing data until confirmation.                                                      |
-| Step 4         | ... confirming user input and submitting the request? | CreateMapUI         | IE: is responsible for user interactions.                                                                             |
-| Step 5         | ... checking if a map name already exists?            | MapRepository       | IE: responsible for managing persistence and access to stored Maps.                                                   |
-| Step 6         | ... creating a new Map?                               | Map                 | Creator: the Map class is the one whose instances are being created.                                                  |              
-| Step 7         | ... saving the newly created Map?                     | MapRepository       | IE: responsible for persisting domain entities.                                                                       |
-| Step 8         | ... informing operation success?                      | CreateMapUI         | IE: responsible for output to the actor (Editor).                                                                     | 
+| **Interaction ID** | **Question: Which class is responsible for...**                     | **Answer**                      | **Justification (with patterns)**                                                                   |
+|--------------------|---------------------------------------------------------------------|---------------------------------|-----------------------------------------------------------------------------------------------------|
+| 2                  | Handling the user’s request to create a map?                        | `:CreateMapController`          | **Controller** – Coordinates system operations, separates UI from logic.                            |
+| 15                 | Extracting data from the DTO to create a domain object?             | `:MapMapper`                    | **Information Expert**, **Pure Fabrication** – Knows both DTO and domain; added to reduce coupling. |
+| 16–22              | Providing access to size, name, and scale attributes?               | `:MapDTO`                       | **Information Expert** – Holds and provides its own data.                                           |
+| 25–34              | Validating the size, name, and scale of the map?                    | `map : Map`                     | **Information Expert**, **Controller** – Owns and validates its data internally.                    |
+| 24                 | Creating the `Map` object from raw parameters?                      | `mapRepository : MapRepository` | **Creator** – Aggregates maps; responsible for creating and storing them.                           |
+| 1–14               | Interacting with the user to collect map input (size, name, scale)? | `:CreateMapUI`                  | **Low Coupling** – Delegates logic to the controller, interacts only with UI inputs.                |
+| 15                 | Converting a `MapDTO` into a `Map` domain object?                   | `:MapMapper`                    | **High Cohesion**, **Pure Fabrication** – Dedicated to transformation logic.                        |
 
 ### Systematization ##
 
@@ -27,6 +24,10 @@ Other software classes (i.e. Pure Fabrication) identified:
 
 * CreateMapUI
 * CreateMapController
+* MapDTO
+* MapMapper
+* Repositories
+* MapRepository
 
 
 ## 3.2. Sequence Diagram (SD)

@@ -26,7 +26,7 @@ class CityRepositoryTest {
     void testAddCity_AddsSuccessfully() {
         Position pos = new Position(0, 0);
         List<CityBlock> blocks = new ArrayList<>();
-        City city = new City("Lisbon", pos, blocks);
+        City city = new City("Lisboa", pos, blocks);
 
         repository.addCity(city);
 
@@ -57,7 +57,7 @@ class CityRepositoryTest {
     @Test
     void testGetCities_ModifyingReturnedListAffectsOriginal() {
         Position pos = new Position(0, 0);
-        City city = new City("Faro", pos, Collections.emptyList());
+        City city = new City("Albufeira", pos, Collections.emptyList());
 
         repository.addCity(city);
 
@@ -73,10 +73,10 @@ class CityRepositoryTest {
         List<CityBlock> blocks = List.of(new CityBlock(new Position(1, 2)));
         int size = 10;
 
-        City city = CityRepository.createCity(5, 5, "Braga", blocks, size);
+        City city = CityRepository.createCity(5, 5, "Póvoa de Varzim", blocks, size);
 
         assertNotNull(city);
-        assertEquals("Braga", city.getName());
+        assertEquals("Póvoa de Varzim", city.getName());
         assertEquals(new Position(5, 5), city.getPosition());
         assertEquals(blocks, city.getBlocks());
     }

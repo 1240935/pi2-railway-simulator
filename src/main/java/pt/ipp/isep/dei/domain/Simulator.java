@@ -251,7 +251,6 @@ public class Simulator implements Serializable {
         for (String alert : alerts) {
             sb.append(" - ").append(alert).append("\n");
         }
-        // Aqui pode colocar mais detalhes, se desejar
         return sb.toString();
     }
 
@@ -281,5 +280,21 @@ public class Simulator implements Serializable {
         int year = scenario.getYear() + (currentMonth - 1) / 12;
         int month = ((currentMonth - 1) % 12) + 1;
         return "Year " + year + ", Month " + month;
+    }
+
+    public int getCurrentMonth() {
+        return currentMonth;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Scenario getScenario() {
+        return scenario;
+    }
+
+    public List<String> getAlerts() {
+        return alerts;
     }
 }

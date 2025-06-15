@@ -114,7 +114,7 @@ public class MenuUI {
             System.out.println("7. View Station Details");
             System.out.println("9. Buy Locomotive");
             System.out.println("10. Assign Route");
-            System.out.println("12. Simulator");
+            System.out.println("12. Simulator Menu");
             System.out.println("13. Train Route Verification");
             System.out.println("14. Railway Maintenance");
             System.out.println("23. Save a Simulator");
@@ -131,7 +131,7 @@ public class MenuUI {
                 case "7" -> new ViewStationDetailsUI().start();
                 case "9" -> new BuyLocomotiveUI().start(player);
                 case "10" -> new AssignRouteUI().start();
-                case "12" -> new SimulatorUI().start(player);
+                case "12" -> new SimulatorMenuUI(player).start();
                 case "13" -> new VerifyTrainTravelUI().start();
                 case "14" -> new RailwayMaintenanceUI().start();
                 case "23" -> new SaveSimulatorUI().start();

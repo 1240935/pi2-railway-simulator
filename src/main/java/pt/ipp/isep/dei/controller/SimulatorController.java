@@ -120,4 +120,7 @@ public class SimulatorController {
         }
         return simulator.getLastMonthSummary();
     }
+    public Simulator getSimulator() {
+        return simulator;
+    }
 }

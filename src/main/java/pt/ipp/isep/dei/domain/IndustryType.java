@@ -77,6 +77,8 @@ public enum IndustryType implements Serializable {
         this.exportation = List.of(exportation);
     }
 
+
+
     /**
      * Constructor for industries with a single import and single export.
      *
@@ -111,6 +113,8 @@ public enum IndustryType implements Serializable {
      * Default constructor for industries with no imports or exports defined (e.g., PORT).
      */
     IndustryType() {
+        this.importation = List.of();
+        this.exportation = List.of();
     }
 
     /**

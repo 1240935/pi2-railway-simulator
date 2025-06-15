@@ -297,4 +297,8 @@ public class Simulator implements Serializable {
     public List<String> getAlerts() {
         return alerts;
     }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
 }

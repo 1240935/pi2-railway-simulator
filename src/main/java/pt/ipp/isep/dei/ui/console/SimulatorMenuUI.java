@@ -146,7 +146,7 @@ public class SimulatorMenuUI {
             System.out.println("No active simulation to continue.");
             return;
         }
-        controller.startSimulation();
+        controller.setSimulator(activeSimulator);
 
         System.out.print("Enter number of years to simulate: ");
         int years;

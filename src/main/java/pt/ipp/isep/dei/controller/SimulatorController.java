@@ -123,4 +123,10 @@ public class SimulatorController {
     public Simulator getSimulator() {
         return simulator;
     }
+    public void setSimulator(Simulator simulator) {
+        this.simulator = simulator;
+        this.player = simulator.getPlayer();
+        this.selectedScenario = simulator.getScenario();
+        this.selectedRoutes = simulator.getRoutes();
+    }
 }

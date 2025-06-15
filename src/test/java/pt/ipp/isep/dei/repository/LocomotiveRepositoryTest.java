@@ -50,4 +50,36 @@ class LocomotiveRepositoryTest {
 
         assertEquals(6, repository.nextID());
     }
+    // Verifica que a lista retornada não afeta a lista interna do repositório
+    @Test
+    void testGetAll_returnsIndependentList() {
+        Locomotive loco = new Locomotive(1, LocomotiveModel.BOBO);
+        repository.addLocomotive(loco);
+
+        ArrayList<Locomotive> copy = repository.getAll();
+        copy.clear(); // modificar a cópia
+
+        ArrayList<Locomotive> original = repository.getAll();
+        assertEquals(1, original.size(), "Modifying the returned list should not affect the repository's internal list.");
+    }
+    // Verifica que a locomotiva é criada corretamente com dados válidos
+    @Test
+    void testCreateLocomotive_validData_returnsLocomotive() {
+        Locomotive locomotive = LocomotiveRepository.createLocomotive(LocomotiveModel.A3, 10);
+        assertNotNull(locomotive, "Locomotive should be created with valid model and ID.");
+        assertEquals(10, locomotive.getId());
+        assertEquals(LocomotiveModel.A3, locomotive.getLocomotiveModel());
+    }
+    // Verifica que a criação falha com ID inválido
+    @Test
+    void testCreateLocomotive_invalidId_returnsNull() {
+        Locomotive locomotive = LocomotiveRepository.createLocomotive(LocomotiveModel.A3, -1);
+        assertNull(locomotive, "Locomotive creation should fail with invalid ID.");
+    }
+    // Verifica que a criação falha com modelo nulo
+    @Test
+    void testCreateLocomotive_nullModel_returnsNull() {
+        Locomotive locomotive = LocomotiveRepository.createLocomotive(null, 5);
+        assertNull(locomotive, "Locomotive creation should fail with null model.");
+    }
 }

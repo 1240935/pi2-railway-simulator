@@ -28,12 +28,24 @@ public class ScenarioRepository {
         }
     }
 
+    /**
+     * Creates a new {@link Scenario} object with the provided parameters,
+     * adds it to a new repository instance, and returns it.
+     *
+     * @param map the {@link Map} object associated with the scenario
+     * @param year the year of the scenario
+     * @param locomotiveTypes list of {@link LocomotiveType} for the scenario
+     * @param importation list of {@link ResourceType} imported in the scenario
+     * @param exportation list of {@link ResourceType} exported in the scenario
+     * @param changer an integer parameter (purpose based on domain logic)
+     * @return the created {@link Scenario} object
+     */
     public static Scenario createScenario(Map map, int year, List<LocomotiveType> locomotiveTypes,
-                                      List<ResourceType> importation, List<ResourceType> exportation, int changer){
-         ScenarioRepository scenarioRepository = new ScenarioRepository();
-         Scenario scenario = new Scenario(map,year,locomotiveTypes,importation,exportation,changer);
-         scenarioRepository.addScenario(scenario);
-         return scenario;
+                                          List<ResourceType> importation, List<ResourceType> exportation, int changer){
+        ScenarioRepository scenarioRepository = new ScenarioRepository();
+        Scenario scenario = new Scenario(map,year,locomotiveTypes,importation,exportation,changer);
+        scenarioRepository.addScenario(scenario);
+        return scenario;
     }
 
     /**
@@ -57,7 +69,7 @@ public class ScenarioRepository {
     }
 
     /**
-     * Saves a scenario object to a serialized file (.ser)
+     * Saves a scenario object to a serialized file (.ser).
      *
      * @param scenario the scenario to serialize
      * @param filePath the destination file path
@@ -74,7 +86,7 @@ public class ScenarioRepository {
     }
 
     /**
-     * Loads a serialized scenario from a file
+     * Loads a serialized scenario from a file.
      *
      * @param filePath path to the serialized file
      * @return deserialized Scenario object or null if failed

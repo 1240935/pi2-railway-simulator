@@ -15,7 +15,7 @@ public class BuildingRepository {
     /**
      * Adds a Building to the repository.
      *
-     * @param building the Building to addScenario
+     * @param building the Building to add
      * @throws NullPointerException if the building is null
      */
     public void addBuilding(Building building) {
@@ -25,13 +25,19 @@ public class BuildingRepository {
         buildings.add(building);
     }
 
-    public static Building createBuilding(BuildingType buildingType){
+    /**
+     * Creates a Building with the given BuildingType and adds it to the repository.
+     *
+     * @param buildingType the type of building to create
+     * @return the created Building, or null if the type is invalid
+     */
+    public static Building createBuilding(BuildingType buildingType) {
         if (!Building.checkType(buildingType)) {
             System.out.println("Invalid type.");
             return null;
         }
         Building building = new Building(buildingType);
-        System.out.println("Station created successfully!");
+        System.out.println("Building created successfully!");
         Repositories.getInstance().getBuildingRepository().addBuilding(building);
         return building;
     }

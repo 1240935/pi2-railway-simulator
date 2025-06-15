@@ -6,18 +6,17 @@ import java.io.*;
 
 /**
  * Repository class responsible for storing and managing {@link Map} objects.
- * Provides methods to addScenario maps and retrieve the list of stored maps.
+ * Provides methods to add maps, retrieve the list of stored maps,
+ * and save/load maps via serialization.
  */
 public class MapRepository {
 
-    /**
-     * Internal list that holds the stored maps.
-     */
+    /** Internal list that holds the stored maps. */
     private ArrayList<Map> maps = new ArrayList<>();
 
     /**
      * Returns the list of all maps stored in the repository.
-     * Note that this returns a direct reference to the internal list,
+     * Note: this returns a direct reference to the internal list,
      * so external modifications will affect the repository's state.
      *
      * @return the list of {@link Map} objects
@@ -35,6 +34,14 @@ public class MapRepository {
         maps.add(map);
     }
 
+    /**
+     * Creates a new {@link Map} if the parameters are valid.
+     *
+     * @param size  size of the map
+     * @param name  name of the map
+     * @param scale scale factor of the map
+     * @return a new Map object if parameters are valid; otherwise, null
+     */
     public static Map createMap(int size, String name, int scale) {
         Map map = new Map(size, name, scale);
         if (map.checkName(name) && map.checkSize(size) && map.checkScale(scale)) {
@@ -45,11 +52,13 @@ public class MapRepository {
             return null;
         }
     }
+
     /**
-     * Saves a map object to a serialized file (.ser)
+     * Saves a map object to a serialized file (.ser).
      *
      * @param map      the map to serialize
      * @param filePath the destination file path (e.g., "maps/portugal.ser")
+     * @return true if the map was saved successfully, false otherwise
      */
     public boolean saveMapToSerializedFile(Map map, String filePath) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -69,8 +78,7 @@ public class MapRepository {
      */
     public Map loadMapFromSerializedFile(String filePath) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
-            Map map = (Map) in.readObject();
-            return map;
+            return (Map) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error loading map: " + e.getMessage());
             return null;

@@ -6,11 +6,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository class responsible for managing {@link Simulator} objects,
+ * including saving/loading from files and managing the active simulator.
+ */
 public class SimulatorRepository {
+
+    /** Currently active {@link Simulator}, or null if none set. */
     private Simulator activeSimulator = null;
+
+    /** List storing all simulators added to the repository. */
     private final List<Simulator> simulators = new ArrayList<>();
+
     /**
-     * Saves a scenario object to a serialized file (.ser)
+     * Saves the currently active simulator to a serialized file (.ser).
+     *
      * @param filepath the destination file path
      * @return true if successful, false otherwise
      */
@@ -30,29 +40,47 @@ public class SimulatorRepository {
     }
 
     /**
-     * Loads a serialized simulator from a file
+     * Loads a simulator from a serialized file and sets it as the active simulator.
      *
      * @param filepath path to the serialized file
-     * @return deserialized simulator object or null if failed
+     * @return the deserialized {@link Simulator} object, or null if loading fails
      */
     public Simulator loadSimulatorFromFile(String filepath) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filepath))) {
             Simulator simulator = (Simulator) in.readObject();
-            setActiveSimulator(simulator); // Define como ativo
+            setActiveSimulator(simulator); // Set as active simulator
             return simulator;
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error loading simulation: " + e.getMessage());
             return null;
         }
     }
+
+    /**
+     * Adds a simulator to the repository.
+     *
+     * @param simulator the {@link Simulator} to add
+     */
     public void addSimulator(Simulator simulator) {
         simulators.add(simulator);
     }
 
+    /**
+     * Returns a new list containing all simulators in the repository.
+     * Modifications to the returned list will not affect the repository.
+     *
+     * @return list of all simulators
+     */
     public List<Simulator> getSimulators() {
         return new ArrayList<>(simulators);
     }
 
+    /**
+     * Retrieves a simulator by its name (case-insensitive).
+     *
+     * @param name the name of the simulator to find
+     * @return the matching {@link Simulator} or null if none found
+     */
     public Simulator getSimulatorByName(String name) {
         return simulators.stream()
                 .filter(s -> s.getName().equalsIgnoreCase(name))
@@ -61,27 +89,27 @@ public class SimulatorRepository {
     }
 
     /**
-     * Define o simulador ativo atual.
+     * Sets the currently active simulator.
      *
-     * @param simulator simulador a ser definido como ativo
+     * @param simulator the {@link Simulator} to set as active
      */
     public void setActiveSimulator(Simulator simulator) {
         activeSimulator = simulator;
     }
 
     /**
-     * Retorna o simulador atualmente ativo.
+     * Returns the currently active simulator.
      *
-     * @return simulador ativo ou null se nenhum estiver definido
+     * @return the active {@link Simulator} or null if none is set
      */
     public Simulator getActiveSimulator() {
         return activeSimulator;
     }
 
     /**
-     * Verifica se existe um simulador ativo.
+     * Checks if there is a currently active simulator.
      *
-     * @return true se houver um simulador ativo, false caso contrário
+     * @return true if an active simulator is set, false otherwise
      */
     public boolean hasActiveSimulator() {
         return activeSimulator != null;

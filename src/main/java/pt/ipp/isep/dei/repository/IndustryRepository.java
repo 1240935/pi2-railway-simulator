@@ -16,7 +16,7 @@ public class IndustryRepository {
     /**
      * Adds a new Industry to the repository.
      *
-     * @param industry the Industry object to addScenario
+     * @param industry the Industry object to add
      */
     public void addIndustry(Industry industry) {
         industries.add(industry);
@@ -31,8 +31,17 @@ public class IndustryRepository {
         return industries;
     }
 
+    /**
+     * Creates an Industry with the specified type and position, validating parameters.
+     *
+     * @param industryType the type of the industry
+     * @param x            X coordinate of the industry's position
+     * @param y            Y coordinate of the industry's position
+     * @param size         Size parameter used for position validation
+     * @return the created Industry if parameters are valid; null otherwise
+     */
     public static Industry createIndustry(IndustryType industryType, int x, int y, int size) {
-        Position position = Industry.createPosition(x,y);
+        Position position = Industry.createPosition(x, y);
         Industry industry = new Industry(industryType, position);
         if (industry.getPosition().checkPosition(position, size) && industry.checkIndustryType(industryType)) {
             System.out.println("Industry created successfully!");
@@ -43,5 +52,3 @@ public class IndustryRepository {
         }
     }
 }
-
-

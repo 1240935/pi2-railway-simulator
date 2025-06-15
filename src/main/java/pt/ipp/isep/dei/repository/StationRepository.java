@@ -38,7 +38,7 @@ public class StationRepository {
         try (BufferedReader br = new BufferedReader(new FileReader(stationsFile))) {
             String line = br.readLine();
             if (line != null) {
-                String[] stationNames = line.split(";");    
+                String[] stationNames = line.split(";");
                 for (String name : stationNames) {
                     StationType type = getStationTypeFromName(name);
                     stations.add(new Station(name, type));
@@ -94,11 +94,24 @@ public class StationRepository {
         stations.add(station);
     }
 
+    /**
+     * Creates a new {@link Station} with the provided parameters after validating them.
+     * If any validation fails, prints an error message and returns null.
+     * If creation succeeds, the station is added to the repository.
+     *
+     * @param position the position of the station
+     * @param name the name of the station
+     * @param center the station center
+     * @param type the station type
+     * @param demandedCargoes list of demanded cargoes
+     * @param suppliedCargoes list of supplied cargoes
+     * @param map the map where the station is located
+     * @param scenario the scenario context
+     * @return the created {@link Station} or null if creation failed
+     */
     public static Station createStation(Position position, String name, StationCenter center,
                                         StationType type, List<Cargo> demandedCargoes,
                                         List<Cargo> suppliedCargoes, Map map, Scenario scenario) {
-
-
 
         if (!position.checkPosition(position, map.getSize())) {
             System.out.println("Invalid position.");
@@ -110,7 +123,7 @@ public class StationRepository {
             return null;
         }
 
-        if(!Station.checkName(name)){
+        if (!Station.checkName(name)) {
             System.out.println("Invalid name.");
             return null;
         }
@@ -130,5 +143,4 @@ public class StationRepository {
         Repositories.getInstance().getStationRepository().addStation(station);
         return station;
     }
-
 }

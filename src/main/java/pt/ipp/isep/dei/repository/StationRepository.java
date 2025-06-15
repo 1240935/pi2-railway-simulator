@@ -110,6 +110,11 @@ public class StationRepository {
             return null;
         }
 
+        if(!Station.checkName(name)){
+            System.out.println("Invalid name.");
+            return null;
+        }
+
         if (!Station.checkCenter(center)) {
             System.out.println("Center is out of bounds.");
             return null;

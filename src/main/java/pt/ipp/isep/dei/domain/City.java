@@ -123,7 +123,7 @@ public class City implements Serializable {
 
 
     public boolean checkName(String name) {
-        return name.matches("^[a-zA-Z\\s]+$");
+        return name != null && name.matches("^[A-Za-z ]+$");
     }
 
     public boolean checkCityBlocks(List<CityBlock> blocks) {

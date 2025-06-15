@@ -283,6 +283,10 @@ public class Station implements Serializable {
         return Repositories.getInstance().getBuildingRepository().createBuilding(buildingType);
     }
 
+    public static boolean checkName(String name) {
+        return name != null && name.matches("^[A-Za-z ]+$");
+    }
+
     public static boolean checkOverbuilding(Position position, Map map, Scenario scenario) {
         if (!map.checkCoordinates(position)) {
             return false;

@@ -132,8 +132,8 @@ public class Map implements Serializable {
     }
 
 
-    public boolean checkName(String name) {
-        return name.matches("^[a-zA-Z\\s]+$");
+    public static boolean checkName(String name) {
+        return name != null && name.matches("^[A-Za-z ]+$");
     }
 
     public boolean checkSize(int size) {

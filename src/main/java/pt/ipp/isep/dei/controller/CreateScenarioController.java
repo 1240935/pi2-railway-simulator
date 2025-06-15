@@ -10,12 +10,11 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Controller class responsible for creating a new Scenario.
- * It handles the selection and configuration of maps, years,
- * locomotive types, industry types, resource import/export, and industry changers.
+ * Controller class responsible for creating and configuring a new Scenario.
+ * This includes selecting maps, configuring locomotive types, industry types,
+ * resource imports/exports, and setting industry changers.
  */
 public class CreateScenarioController {
-
 
     /**
      * Default constructor for CreateScenarioController.
@@ -23,6 +22,11 @@ public class CreateScenarioController {
     public CreateScenarioController() {
     }
 
+    /**
+     * Retrieves the list of available map names from the repository.
+     *
+     * @return List of names of available maps.
+     */
     public List<String> getAvailableMapNames() {
         MapListMapper mapListMapper = new MapListMapper();
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
@@ -36,11 +40,22 @@ public class CreateScenarioController {
         return names;
     }
 
+    /**
+     * Returns the size of the map identified by the given index.
+     *
+     * @param index Index of the map in the repository.
+     * @return Size of the map.
+     */
     public int getMapSizeByIndex(int index) {
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         return maps.get(index).getSize();
     }
-  
+
+    /**
+     * Retrieves the list of names of all available resource types.
+     *
+     * @return List of resource type names.
+     */
     public List<String> getAvailableResourceTypeNames() {
         ResourceTypeListMapper resourceTypeListMapper = new ResourceTypeListMapper();
         List<ResourceType> types = Repositories.getInstance().getResourceTypeRepository().getAvailableResourceTypes();
@@ -57,7 +72,7 @@ public class CreateScenarioController {
     /**
      * Retrieves all available industry types from the repository.
      *
-     * @return List of available IndustryType objects.
+     * @return List of IndustryType domain objects.
      */
     public List<IndustryType> getAvailableIndustryTypes(){
         return Repositories.getInstance().getIndustryTypeRepository().getIndustryTypes();
@@ -66,16 +81,16 @@ public class CreateScenarioController {
     /**
      * Retrieves all available locomotive types from the repository.
      *
-     * @return List of available LocomotiveType objects.
+     * @return List of LocomotiveType domain objects.
      */
     public List<LocomotiveType> getAvailableLocomotivesTypes(){
         return Repositories.getInstance().getLocomotiveTypeRepository().getLocomotiveTypes();
     }
 
     /**
-     * Retrieves the names of all available locomotive types.
+     * Returns the names of all available locomotive types as strings.
      *
-     * @return List of Strings representing locomotive type names.
+     * @return List of locomotive type names.
      */
     public List<String> getAvailableLocomotiveTypeNames() {
         List<String> names = new ArrayList<>();
@@ -85,11 +100,10 @@ public class CreateScenarioController {
         return names;
     }
 
-
     /**
-     * Retrieves the names of all available industry types.
+     * Returns the names of all available industry types as strings.
      *
-     * @return List of Strings representing industry type names.
+     * @return List of industry type names.
      */
     public List<String> getAvailableIndustryTypeNames() {
         List<String> names = new ArrayList<>();
@@ -99,6 +113,12 @@ public class CreateScenarioController {
         return names;
     }
 
+    /**
+     * Selects locomotive types based on a list of user choices (indexes).
+     *
+     * @param choices List of integer indexes representing the user selection.
+     * @return List of selected LocomotiveType objects.
+     */
     public List<LocomotiveType> chooseLocomotiveTypes(List<Integer> choices) {
         List<LocomotiveType> types = getAvailableLocomotivesTypes();
         List<LocomotiveType> selected = new ArrayList<>();
@@ -112,6 +132,12 @@ public class CreateScenarioController {
         return selected;
     }
 
+    /**
+     * Selects resource types based on a list of user choices (indexes).
+     *
+     * @param choices List of integer indexes representing the user selection.
+     * @return List of selected ResourceType objects.
+     */
     public List<ResourceType> chooseResourceTypes(List<Integer> choices) {
         List<ResourceType> types = Repositories.getInstance().getResourceTypeRepository().getAvailableResourceTypes();
         List<ResourceType> selected = new ArrayList<>();
@@ -126,6 +152,12 @@ public class CreateScenarioController {
         return selected;
     }
 
+    /**
+     * Retrieves the list of port industries from the map identified by the given index.
+     *
+     * @param mapIndex Index of the map.
+     * @return List of Industry objects that are ports.
+     */
     public List<Industry> getPorts(int mapIndex){
         List<Industry> industries = getMapByIndex(mapIndex).getIndustries();
         List<Industry> ports = new ArrayList<>();
@@ -139,6 +171,13 @@ public class CreateScenarioController {
         return ports;
     }
 
+    /**
+     * Configures import and export resource types for all ports on the map identified by the given index.
+     *
+     * @param mapIndex Index of the map.
+     * @param imports List of resource types to import.
+     * @param exports List of resource types to export.
+     */
     public void configurePorts(int mapIndex, List<ResourceType> imports, List<ResourceType> exports) {
         List<Industry> ports = getPorts(mapIndex);
 
@@ -149,7 +188,7 @@ public class CreateScenarioController {
     }
 
     /**
-     * Retrieves all available locomotive types.
+     * Retrieves all locomotive types from the repository.
      *
      * @return List of LocomotiveType objects.
      */
@@ -157,13 +196,14 @@ public class CreateScenarioController {
         return Repositories.getInstance().getLocomotiveTypeRepository().getLocomotiveTypes();
     }
 
-
     /**
-     * Reads a list of integer selections from user input, separated by whitespace.
+     * Reads a line of integer selections from user input.
+     * User input must be integers separated by whitespace.
+     * If the input is "!", returns null to indicate cancellation.
      * Invalid inputs are ignored with an error message.
      *
-     * @param prompt String prompt message shown to the user.
-     * @return List of integers parsed from user input.
+     * @param prompt Message to display when asking for input.
+     * @return List of integers parsed from the input, or null if cancelled.
      */
     public List<Integer> readIntegerSelections(String prompt) {
         Scanner scanner = new Scanner(System.in);
@@ -184,13 +224,22 @@ public class CreateScenarioController {
         }
     }
 
+    /**
+     * Retrieves the Map object by index from the map repository.
+     *
+     * @param mapIndex Index of the map.
+     * @return Map object at the specified index.
+     */
     public Map getMapByIndex(int mapIndex){
         List<Map> maps = Repositories.getInstance().getMapRepository().getMaps();
         return maps.get(mapIndex);
     }
 
     /**
-     * Creates a new Scenario using the selected parameters and adds it to the scenario repository.
+     * Creates a new Scenario from the provided ScenarioDTO and adds it to the scenario repository.
+     *
+     * @param dto Data transfer object containing scenario configuration.
+     * @return true if the scenario was created successfully.
      */
     public boolean createScenario(ScenarioDTO dto) {
         ScenarioMapper scenarioMapper = new ScenarioMapper();

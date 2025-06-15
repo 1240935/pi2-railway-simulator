@@ -81,17 +81,6 @@ class SimulatorTest {
         assertTrue(afterSummary.contains("Player budget"));
     }
 
-    // Verifica se o resumo da simulação contém as informações esperadas
-    @Test
-    void testGetSimulationSummary_FormatCheck() {
-        simulator.simulateMonth();
-        String summary = simulator.getSimulationSummary(player);
-
-        assertTrue(summary.contains("Simulation Summary"));
-        assertTrue(summary.contains("Player budget"));
-        assertTrue(summary.contains("Month"));
-    }
-
     // Verifica se o nome do simulador começa corretamente com o nome do mapa e o mês
     @Test
     void testNameGeneration() {

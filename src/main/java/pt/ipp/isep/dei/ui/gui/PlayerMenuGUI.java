@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import pt.ipp.isep.dei.domain.Player;
-import pt.ipp.isep.dei.ui.console.*;
 
 import java.io.IOException;
 

@@ -15,15 +15,10 @@ import java.util.List;
  */
 public class UpgradeStationController {
 
-
-
-
-
     /**
      * The player performing the upgrade operation.
      */
     private Player player;
-
 
     /**
      * Default constructor for UpgradeStationController.
@@ -34,12 +29,19 @@ public class UpgradeStationController {
     /**
      * Retrieves the list of all available scenarios from the repository.
      *
-     * @return list of scenarios
+     * @return list of all Scenario objects available.
      */
     public List<Scenario> getAvailableScenarios() {
         return Repositories.getInstance().getScenarioRepository().getScenarios();
     }
 
+    /**
+     * Retrieves a Scenario by its index in the repository.
+     *
+     * @param index index of the scenario
+     * @return Scenario at the given index
+     * @throws IndexOutOfBoundsException if index is invalid
+     */
     public Scenario getScenarioByIndex(int index) {
         List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
 
@@ -50,16 +52,33 @@ public class UpgradeStationController {
         return scenarios.get(index);
     }
 
+    /**
+     * Retrieves a Station by its index in the repository.
+     *
+     * @param index index of the station
+     * @return Station at the given index
+     * @throws IndexOutOfBoundsException if index is invalid
+     */
     public Station getStationByIndex(int index) {
         List<Station> stations = Repositories.getInstance().getStationRepository().getStations();
 
         if (index < 0 || index >= stations.size()) {
-            throw new IndexOutOfBoundsException("Invalid scenario index: " + index);
+            throw new IndexOutOfBoundsException("Invalid station index: " + index);
         }
 
         return stations.get(index);
     }
 
+    /**
+     * Retrieves a BuildingType by its index among the available building types
+     * for the given scenario and station.
+     *
+     * @param scenarioIndex    index of the scenario
+     * @param stationIndex     index of the station
+     * @param buildingTypeIndex index of the building type
+     * @return BuildingType at the given index
+     * @throws IndexOutOfBoundsException if buildingTypeIndex is invalid
+     */
     public BuildingType getBuildingTypeByIndex(int scenarioIndex, int stationIndex, int buildingTypeIndex) {
         List<BuildingType> buildingTypes = getAvailableBuildingTypes(scenarioIndex, stationIndex);
         if (buildingTypeIndex < 0 || buildingTypeIndex >= buildingTypes.size()) {
@@ -72,7 +91,8 @@ public class UpgradeStationController {
     /**
      * Retrieves the list of stations available in the selected scenario.
      *
-     * @return list of stations in the selected scenario, or empty list if no scenario selected
+     * @param scenarioIndex index of the scenario
+     * @return list of stations in the selected scenario
      */
     public List<Station> getAvailableStations(int scenarioIndex) {
         return getScenarioByIndex(scenarioIndex).getStations();
@@ -81,7 +101,7 @@ public class UpgradeStationController {
     /**
      * Returns the string representations of all available scenarios.
      *
-     * @return list of scenario names/descriptions
+     * @return list of scenario names or descriptions
      */
     public List<String> getAvailableScenarioNames() {
         List<String> names = new ArrayList<>();
@@ -95,7 +115,8 @@ public class UpgradeStationController {
      * Returns the string representations of all available stations
      * within the selected scenario.
      *
-     * @return list of station names/descriptions
+     * @param scenarioIndex index of the scenario
+     * @return list of station names or descriptions
      */
     public List<String> getAvailableStationNames(int scenarioIndex) {
         List<String> names = new ArrayList<>();
@@ -110,7 +131,9 @@ public class UpgradeStationController {
      * available for the upgrade, filtered by scenario year and
      * building exclusivity.
      *
-     * @return list of building type names/descriptions
+     * @param scenarioIndex index of the scenario
+     * @param stationIndex  index of the station
+     * @return list of building type names or descriptions
      */
     public List<String> getAvailableBuildingTypeNames(int scenarioIndex, int stationIndex) {
         List<String> names = new ArrayList<>();
@@ -124,6 +147,18 @@ public class UpgradeStationController {
         return names;
     }
 
+    /**
+     * Retrieves the available building types for upgrade filtered by:
+     * <ul>
+     *     <li>Scenario year (only buildings available up to that year)</li>
+     *     <li>Mutual exclusivity with existing buildings in the station</li>
+     *     <li>Handles special case for Telephone vs Telegraph exclusivity</li>
+     * </ul>
+     *
+     * @param scenarioIndex index of the scenario
+     * @param stationIndex  index of the station
+     * @return list of available BuildingType objects
+     */
     public List<BuildingType> getAvailableBuildingTypes(int scenarioIndex, int stationIndex) {
         Scenario scenario = getScenarioByIndex(scenarioIndex);
         Station station = getStationByIndex(stationIndex);
@@ -147,6 +182,7 @@ public class UpgradeStationController {
         for (BuildingType candidate : availableTypes) {
             if (candidate.getAvailabilityYear() > year) continue;
 
+            // If Telephone is available, exclude Telegraph building type
             if (telephoneAvailable && "Telegraph".equalsIgnoreCase(candidate.name())) continue;
 
             boolean isExclusive = false;
@@ -177,17 +213,23 @@ public class UpgradeStationController {
     /**
      * Sets the player who is performing the upgrade operation.
      *
-     * @param player the Player instance
+     * @param player the Player instance to set
      */
     public void setPlayer(Player player){
         this.player = player;
     }
 
+    /**
+     * Creates a new Building in the specified station and deducts
+     * the cost from the player's budget.
+     *
+     * @param buildingDTO Data transfer object representing the building to create
+     * @param stationIndex index of the station where the building will be added
+     */
     public void createBuilding(BuildingDTO buildingDTO, int stationIndex){
         BuildingMapper buildingMapper = new BuildingMapper();
         player.deductBudget(buildingDTO.getBuildingType().getCost());
         Building building = buildingMapper.toBuilding(buildingDTO);
         getStationByIndex(stationIndex).addBuilding(building);
     }
-
 }

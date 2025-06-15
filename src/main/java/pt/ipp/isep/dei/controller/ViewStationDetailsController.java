@@ -13,26 +13,28 @@ import java.util.List;
 /**
  * Controller class responsible for managing the viewing of stations within scenarios.
  *
- * It provides functionality to:
- * - Retrieve available scenarios and their descriptions.
- * - Select a scenario.
- * - Retrieve stations and their details (such as buildings and cargo information).
+ * <p>This controller provides functionality to:
+ * <ul>
+ *   <li>Retrieve available scenarios and their descriptions.</li>
+ *   <li>Select a scenario.</li>
+ *   <li>Retrieve stations and their details (such as buildings and cargo information) within a scenario.</li>
+ * </ul>
  *
- * This controller interacts with repositories to fetch domain data,
- * and supports UI components by providing relevant information in simple formats.
+ * <p>It interacts with repositories to fetch domain data and supports UI components by providing
+ * relevant information in simple formats like lists of strings or domain objects.</p>
  */
 public class ViewStationDetailsController {
 
     /**
-     * Default constructor for the ViewStationController.
+     * Default constructor for the ViewStationDetailsController.
      */
     public ViewStationDetailsController() {
     }
 
     /**
-     * Retrieves all available scenarios from the repository.
+     * Retrieves all available scenarios from the scenario repository.
      *
-     * @return A list of all scenarios.
+     * @return a list of all scenarios currently stored in the repository.
      */
     public List<Scenario> getAvailableScenarios() {
         return Repositories.getInstance().getScenarioRepository().getScenarios();
@@ -40,28 +42,27 @@ public class ViewStationDetailsController {
 
     /**
      * Returns a list of descriptive strings representing each available scenario.
-     * Each description contains the map name and the year of the scenario.
+     * Each description typically includes the map name and the scenario year.
      *
-     * @return List of scenario descriptions.
+     * @return list of scenario descriptions as strings.
      */
     public List<String> getAvailableScenarioNames() {
         ScenarioListMapper scenarioListMapper = new ScenarioListMapper();
-        List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
+        List<Scenario> scenarios = getAvailableScenarios();
         List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
 
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < scenarioDTOS.size(); i++) {
-            names.add(scenarioDTOS.get(i).toString());
+        for (ScenarioDTO dto : scenarioDTOS) {
+            names.add(dto.toString());
         }
-
         return names;
     }
 
-
     /**
-     * Returns a list of names of all available stations.
+     * Returns a list of names of all stations available within the specified scenario.
      *
-     * @return List of station names.
+     * @param scenarioIndex the index of the scenario in the scenario list.
+     * @return list of station names/descriptions in the specified scenario.
      */
     public List<String> getAvailableStationNames(int scenarioIndex) {
         StationListMapper stationListMapper = new StationListMapper();
@@ -70,14 +71,19 @@ public class ViewStationDetailsController {
         List<StationDTO> stationDTOS = stationListMapper.toDTOList(stations);
 
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < stationDTOS.size(); i++) {
-            names.add(stationDTOS.get(i).toString());
+        for (StationDTO dto : stationDTOS) {
+            names.add(dto.toString());
         }
-
         return names;
     }
 
-
+    /**
+     * Retrieves a specific station by index within the selected scenario.
+     *
+     * @param stationIndex the index of the station within the scenario's station list.
+     * @param scenarioIndex the index of the scenario.
+     * @return the Station object if the index is valid, otherwise null.
+     */
     public Station getStationByIndex(int stationIndex, int scenarioIndex) {
         Scenario scenario = setScenario(scenarioIndex);
         List<Station> stations = getAvailableStations(scenario);
@@ -87,11 +93,24 @@ public class ViewStationDetailsController {
         return null;
     }
 
+    /**
+     * Selects and returns a scenario by its index.
+     *
+     * @param index the index of the scenario to select.
+     * @return the Scenario object at the specified index.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     */
     public Scenario setScenario(int index){
-            return getAvailableScenarios().get(index);
+        return getAvailableScenarios().get(index);
     }
 
-
+    /**
+     * Retrieves the list of buildings associated with a specific station in a scenario.
+     *
+     * @param stationIndex the index of the station.
+     * @param scenarioIndex the index of the scenario.
+     * @return list of Building objects for the station, or null if station not found.
+     */
     public List<Building> getBuildingDetails(int stationIndex, int scenarioIndex) {
         Station station = getStationByIndex(stationIndex, scenarioIndex);
         if (station != null) {
@@ -100,6 +119,13 @@ public class ViewStationDetailsController {
         return null;
     }
 
+    /**
+     * Provides a formatted string containing details about all buildings in a specified station.
+     *
+     * @param stationIndex the index of the station.
+     * @param scenarioIndex the index of the scenario.
+     * @return a multi-line string with building details or a message if none are available.
+     */
     public String getBuildingDetailsString(int stationIndex, int scenarioIndex) {
         List<Building> buildings = getBuildingDetails(stationIndex, scenarioIndex);
         if (buildings != null && !buildings.isEmpty()) {
@@ -112,11 +138,18 @@ public class ViewStationDetailsController {
         return "No building details available.";
     }
 
+    /**
+     * Retrieves cargo information for a given station within a selected scenario.
+     *
+     * @param stationIndex the index of the station.
+     * @param scenarioIndex the index of the scenario.
+     * @return a string representation of the cargo status or a message if none is available.
+     */
     public String getCargoInfo(int stationIndex, int scenarioIndex) {
         Station station = getStationByIndex(stationIndex, scenarioIndex);
         Scenario scenario = setScenario(scenarioIndex);
         if (station != null) {
-            CargoStatus cargoStatus = getCargoInfo(station,scenario );
+            CargoStatus cargoStatus = getCargoInfo(station, scenario);
             if (cargoStatus != null) {
                 return cargoStatus.toString();
             }
@@ -125,20 +158,22 @@ public class ViewStationDetailsController {
     }
 
     /**
-     * Retrieves all available stations from the repository.
+     * Retrieves the list of stations available within the specified scenario.
      *
-     * @return A list of all stations.
+     * @param scenario the scenario whose stations are to be retrieved.
+     * @return list of Station objects associated with the scenario.
      */
     public List<Station> getAvailableStations(Scenario scenario) {
         return scenario.getStations();
     }
 
     /**
-     * Retrieves cargo information of the given station relative to the currently selected scenario.
+     * Retrieves cargo information of the given station relative to the provided scenario.
      *
      * @param station Station for which cargo information is requested.
-     * @return CargoStatus object containing cargo information.
-     * @throws IllegalStateException if no scenario has been selected.
+     * @param scenario Scenario context to determine industries and cities relevant for cargo.
+     * @return CargoStatus object containing cargo information for the station.
+     * @throws IllegalStateException if the scenario is not set.
      */
     public CargoStatus getCargoInfo(Station station, Scenario scenario) {
         if (scenario == null) {

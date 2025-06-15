@@ -9,6 +9,17 @@ import pt.ipp.isep.dei.domain.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Graphical User Interface (GUI) controller for the Simulator feature.
+ * <p>
+ * This class manages the interaction between the user and the simulation system,
+ * allowing the user to select a scenario, choose routes to simulate, specify simulation duration,
+ * start the simulation month by month, and view feedback including budget and date updates.
+ * </p>
+ * <p>
+ * It connects UI components defined in the FXML file with the underlying {@link SimulatorController} and the current {@link Player}.
+ * </p>
+ */
 public class SimulatorGUI {
 
     @FXML
@@ -41,6 +52,12 @@ public class SimulatorGUI {
     private int currentMonth = 0;
     private boolean simulationStarted = false;
 
+    /**
+     * Sets the player who is performing the simulation.
+     * Updates the controller and UI with the player's budget and available scenarios.
+     *
+     * @param player the Player instance representing the current user
+     */
     public void setPlayer(Player player) {
         this.player = player;
         controller.setPlayer(player);
@@ -51,6 +68,16 @@ public class SimulatorGUI {
         updateBudgetAndDate();
     }
 
+    /**
+     * Initializes the GUI components and their event handlers.
+     * <p>
+     * - Allows multiple route selections.
+     * - Loads routes when a scenario is selected.
+     * - Starts and progresses simulation on simulate button press.
+     * - Ends simulation on exit button press.
+     * </p>
+     * This method is automatically called by JavaFX after the FXML fields are injected.
+     */
     @FXML
     public void initialize() {
         routeListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -129,6 +156,10 @@ public class SimulatorGUI {
         });
     }
 
+    /**
+     * Updates the UI labels for current budget and current simulation date.
+     * Called after each simulation step or when player data changes.
+     */
     private void updateBudgetAndDate() {
         if (player != null) {
             currentBudgetLabel.setText("Budget: " + player.getBudget());

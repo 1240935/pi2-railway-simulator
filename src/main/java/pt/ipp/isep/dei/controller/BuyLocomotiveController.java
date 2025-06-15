@@ -43,13 +43,20 @@ public class BuyLocomotiveController {
         List<ScenarioDTO> scenarioDTOS = scenarioListMapper.toDTOList(scenarios);
 
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < scenarioDTOS.size(); i++) {
-            names.add(scenarioDTOS.get(i).toString());
+        for (ScenarioDTO scenarioDTO : scenarioDTOS) {
+            names.add(scenarioDTO.toString());
         }
 
         return names;
     }
 
+    /**
+     * Returns the scenario at the specified index from the scenario repository.
+     *
+     * @param index The index of the scenario.
+     * @return The Scenario object at the given index.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     */
     public Scenario getScenarioByIndex(int index) {
         List<Scenario> scenarios = Repositories.getInstance().getScenarioRepository().getScenarios();
 
@@ -64,10 +71,10 @@ public class BuyLocomotiveController {
      * Retrieves a specific locomotive model by its index in the filtered list
      * of available locomotive models for the selected scenario.
      *
-     * @param index the index of the locomotive model to retrieve
-     * @param scenarioIndex the index of the selected scenario
-     * @return the LocomotiveModel at the specified index
-     * @throws IndexOutOfBoundsException if the index is invalid
+     * @param index the index of the locomotive model to retrieve.
+     * @param scenarioIndex the index of the selected scenario.
+     * @return the LocomotiveModel at the specified index.
+     * @throws IndexOutOfBoundsException if the index is invalid.
      */
     public LocomotiveModel getModelByIndex(int index, int scenarioIndex) {
         List<LocomotiveModelDTO> models = getAvailableLocomotiveModels(scenarioIndex);
@@ -80,19 +87,18 @@ public class BuyLocomotiveController {
         return LocomotiveModel.valueOf(chosenDTO.getName());
     }
 
-
     /**
      * Retrieves a filtered list of locomotive models that are allowed
      * in the current scenario based on locomotive type and scenario year.
      *
-     * @return List of locomotive models available for purchase.
+     * @param scenarioIndex The index of the scenario for filtering models.
+     * @return List of locomotive model DTOs available for purchase.
      */
     public List<LocomotiveModelDTO> getAvailableLocomotiveModels(int scenarioIndex) {
         LocomotiveModelListMapper locomotiveModelListMapper = new LocomotiveModelListMapper();
         List<LocomotiveModel> allModels = Repositories.getInstance()
                 .getLocomotiveModelRepository()
                 .getLocomotiveModels();
-
 
         List<LocomotiveModel> available = new ArrayList<>();
 
@@ -121,7 +127,8 @@ public class BuyLocomotiveController {
      * Returns descriptive strings for all available locomotive models,
      * including stats like power, acceleration, top speed, cost, and type.
      *
-     * @return List of model descriptions.
+     * @param scenarioIndex The index of the scenario to filter locomotive models.
+     * @return List of locomotive model descriptions.
      */
     public List<String> getAvailableModelDescriptions(int scenarioIndex) {
         List<String> descriptions = new ArrayList<>();
@@ -142,9 +149,10 @@ public class BuyLocomotiveController {
 
     /**
      * Creates a new locomotive for the player if they have sufficient budget.
-     * Deducts the cost from the player's budget and adds the locomotive to the repository.
+     * Deducts the cost from the player's budget and adds the locomotive to the scenario and repository.
      *
-     * @return true if locomotive was successfully created and purchased, false if budget is insufficient.
+     * @param locomotiveDTO Data Transfer Object containing locomotive details.
+     * @param scenarioIndex The index of the scenario where the locomotive will be added.
      */
     public void createLocomotive(LocomotiveDTO locomotiveDTO, int scenarioIndex) {
         LocomotiveMapper locomotiveMapper = new LocomotiveMapper();

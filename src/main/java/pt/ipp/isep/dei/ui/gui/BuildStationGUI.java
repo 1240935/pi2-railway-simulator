@@ -7,32 +7,46 @@ import javafx.scene.layout.HBox;
 import pt.ipp.isep.dei.controller.BuildStationController;
 import pt.ipp.isep.dei.domain.Player;
 
-
+/**
+ * GUI controller for the "Build Station" feature.
+ * <p>
+ * Manages the user interface for selecting scenarios, station types,
+ * coordinates, compass directions, and station naming.
+ * Coordinates user input with the BuildStationController to create stations,
+ * update player budget, and provide user feedback.
+ * </p>
+ */
 public class BuildStationGUI {
 
     private final BuildStationController controller = new BuildStationController();
     private Player player;
 
     @FXML
-    private ComboBox<String> scenarioComboBox;
+    private ComboBox<String> scenarioComboBox; // Dropdown to select the scenario
 
     @FXML
-    private TextField xField, yField, nameField, compassDirectionField;
+    private TextField xField, yField, nameField, compassDirectionField; // Input fields for position, name, and compass direction
 
     @FXML
-    private ComboBox<String> stationTypeComboBox;
+    private ComboBox<String> stationTypeComboBox; // Dropdown for selecting station type
 
     @FXML
-    private Label feedbackLabel, costLabel, budgetLabel;
+    private Label feedbackLabel, costLabel, budgetLabel; // Labels to display feedback, cost, and current budget
 
     @FXML
-    private HBox compassDirectionBox;
+    private HBox compassDirectionBox; // Container for compass direction input, shown only for certain station types
 
     @FXML
-    private Button buyButton, proposeNameButton;
+    private Button buyButton, proposeNameButton; // Buttons for purchasing station and proposing a name
 
-    private boolean initialized = false;
+    private boolean initialized = false; // Flag to ensure initialization happens only once
 
+    /**
+     * Sets the current player and initializes the UI if not already done.
+     * Updates the UI fields with player-related data such as budget.
+     *
+     * @param player the Player currently logged in and building stations
+     */
     public void setPlayer(Player player) {
         this.player = player;
         controller.setPlayer(player);
@@ -43,19 +57,29 @@ public class BuildStationGUI {
         populateFields();
     }
 
+    /**
+     * Initializes UI components and their event handlers.
+     * Populates scenario and station type dropdowns.
+     * Sets up dynamic UI behavior based on selections.
+     */
     public void start() {
+        // Clear any existing items before populating
         scenarioComboBox.getItems().clear();
         stationTypeComboBox.getItems().clear();
 
+        // Populate scenario and station type combo boxes with data from controller
         scenarioComboBox.setItems(FXCollections.observableArrayList(controller.getAvailableScenarioDescriptions()));
         stationTypeComboBox.setItems(FXCollections.observableArrayList(controller.getAvailableStationTypes()));
 
+        // Enable station type selection
         stationTypeComboBox.setDisable(false);
 
+        // Show/hide compass direction input and update cost when station type changes
         stationTypeComboBox.setOnAction(e -> {
             int index = stationTypeComboBox.getSelectionModel().getSelectedIndex();
             if (index >= 0) {
                 boolean isStation = controller.isSelectedTypeStation(index);
+                // Only show compass direction box if the selected type is a Station (not Depot or Terminal)
                 compassDirectionBox.setVisible(isStation);
                 compassDirectionBox.setManaged(isStation);
 
@@ -68,15 +92,16 @@ public class BuildStationGUI {
             }
         });
 
+        // Update feedback and budget when scenario changes
         scenarioComboBox.setOnAction(e -> {
             int index = scenarioComboBox.getSelectionModel().getSelectedIndex();
             if (index >= 0) {
-                // Optionally do something on scenario change, like reset feedback or update budget
                 feedbackLabel.setText("");
                 budgetLabel.setText(String.valueOf(player.getBudget()));
             }
         });
 
+        // Propose a station name based on position, scenario, and station type
         proposeNameButton.setOnAction(e -> {
             try {
                 int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
@@ -92,7 +117,7 @@ public class BuildStationGUI {
                     nameField.clear();
                 } else {
                     nameField.setText(proposed);
-                    feedbackLabel.setText(""); // Clear feedback if name proposed
+                    feedbackLabel.setText(""); // Clear any previous error feedback
                 }
             } catch (Exception ex) {
                 feedbackLabel.setStyle("-fx-text-fill: darkred;");
@@ -100,7 +125,7 @@ public class BuildStationGUI {
             }
         });
 
-
+        // Attempt to create and buy the station with the specified parameters
         buyButton.setOnAction(e -> {
             try {
                 int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
@@ -108,11 +133,13 @@ public class BuildStationGUI {
                 int x = Integer.parseInt(xField.getText());
                 int y = Integer.parseInt(yField.getText());
 
+                // Use proposed name if name field is empty
                 String direction = compassDirectionField.getText();
                 String name = nameField.getText().isEmpty()
                         ? controller.getRecommendedName(x, y, scenarioIndex, typeIndex)
                         : nameField.getText();
 
+                // Call controller to create the station
                 controller.createStationGUI(
                         controller.createPosition(x, y),
                         name,
@@ -127,10 +154,9 @@ public class BuildStationGUI {
                         controller.getScenarioByIndex(scenarioIndex)
                 );
 
+                // Indicate success and update budget display
                 feedbackLabel.setStyle("-fx-text-fill: green;");
                 feedbackLabel.setText("Station built successfully!");
-
-                // Update budget display after purchase
                 budgetLabel.setText(String.valueOf(player.getBudget()));
 
             } catch (Exception ex) {
@@ -139,17 +165,22 @@ public class BuildStationGUI {
             }
         });
 
+        // Initially hide compass direction input (only relevant for some station types)
         compassDirectionBox.setVisible(false);
         compassDirectionBox.setManaged(false);
 
+        // Initialize cost and budget labels
         costLabel.setText("0");
         budgetLabel.setText(String.valueOf(player.getBudget()));
     }
 
+    /**
+     * Populates UI fields related to player data, such as the budget label.
+     * Called after player is set or when UI is refreshed.
+     */
     private void populateFields() {
         if (player != null) {
             budgetLabel.setText(String.valueOf(player.getBudget()));
         }
     }
 }
-

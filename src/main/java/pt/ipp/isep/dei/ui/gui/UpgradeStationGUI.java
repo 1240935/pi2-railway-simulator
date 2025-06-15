@@ -7,32 +7,50 @@ import pt.ipp.isep.dei.domain.BuildingType;
 import pt.ipp.isep.dei.domain.Player;
 import pt.ipp.isep.dei.dto.BuildingDTO;
 
+/**
+ * GUI controller for the "Upgrade Station" feature.
+ * <p>
+ * Allows a player to select a scenario, then a station within that scenario,
+ * and finally a building type to upgrade the station with.
+ * The interface shows the player’s current budget, the cost of the selected upgrade,
+ * and provides feedback on purchase success or failure.
+ * <p>
+ * Coordinates with {@link UpgradeStationController} for business logic and data retrieval.
+ * Handles user input events, updates UI elements accordingly,
+ * and manages budget validation and purchase confirmation dialogs.
+ */
 public class UpgradeStationGUI {
 
     @FXML
-    private ComboBox<String> scenarioComboBox;
+    private ComboBox<String> scenarioComboBox;      // Dropdown to select the scenario
 
     @FXML
-    private ComboBox<String> stationComboBox;
+    private ComboBox<String> stationComboBox;       // Dropdown to select the station within the scenario
 
     @FXML
-    private ComboBox<String> buildingTypeComboBox;
+    private ComboBox<String> buildingTypeComboBox;  // Dropdown to select the building type for upgrade
 
     @FXML
-    private Label budgetLabel;
+    private Label budgetLabel;                       // Displays player's current budget
 
     @FXML
-    private Label costLabel;
+    private Label costLabel;                         // Displays cost of selected building upgrade
 
     @FXML
-    private Button buyButton;
+    private Button buyButton;                        // Button to confirm and perform the purchase
 
     @FXML
-    private Label feedbackLabel;
+    private Label feedbackLabel;                     // Label to show feedback messages to the user
 
     private final UpgradeStationController controller = new UpgradeStationController();
     private Player player;
 
+    /**
+     * Sets the current player, initializing the controller and updating the budget display.
+     * Also triggers loading of available scenarios.
+     *
+     * @param player the current player
+     */
     public void setPlayer(Player player) {
         this.player = player;
         controller.setPlayer(player);
@@ -40,6 +58,11 @@ public class UpgradeStationGUI {
         loadScenarios();
     }
 
+    /**
+     * Initializes the GUI controls and sets event handlers.
+     * Disables the buy button until valid selections are made.
+     * Event handlers load dependent dropdown options and update cost and feedback labels.
+     */
     public void initialize() {
         buyButton.setDisable(true);
 
@@ -76,6 +99,10 @@ public class UpgradeStationGUI {
         buyButton.setOnAction(e -> handleBuy());
     }
 
+    /**
+     * Loads available scenarios into the scenario combo box.
+     * Clears stations and building types selections and resets related UI fields.
+     */
     private void loadScenarios() {
         scenarioComboBox.getItems().clear();
         scenarioComboBox.getItems().addAll(controller.getAvailableScenarioNames());
@@ -87,6 +114,12 @@ public class UpgradeStationGUI {
         buyButton.setDisable(true);
     }
 
+    /**
+     * Loads stations available for the selected scenario.
+     * Clears building types and resets cost and feedback labels.
+     *
+     * @param scenarioIndex index of the selected scenario
+     */
     private void loadStations(int scenarioIndex) {
         stationComboBox.getItems().clear();
         stationComboBox.getItems().addAll(controller.getAvailableStationNames(scenarioIndex));
@@ -97,6 +130,13 @@ public class UpgradeStationGUI {
         buyButton.setDisable(true);
     }
 
+    /**
+     * Loads building types available for the selected scenario and station.
+     * Resets cost, feedback labels, and disables the buy button.
+     *
+     * @param scenarioIndex index of the selected scenario
+     * @param stationIndex  index of the selected station
+     */
     private void loadBuildingTypes(int scenarioIndex, int stationIndex) {
         buildingTypeComboBox.getItems().clear();
         buildingTypeComboBox.getItems().addAll(controller.getAvailableBuildingTypeNames(scenarioIndex, stationIndex));
@@ -106,6 +146,12 @@ public class UpgradeStationGUI {
         buyButton.setDisable(true);
     }
 
+    /**
+     * Handles the purchase action when the buy button is clicked.
+     * Validates selections and budget, prompts for confirmation,
+     * creates the building upgrade, deducts budget, updates UI,
+     * and displays feedback messages.
+     */
     private void handleBuy() {
         int scenarioIndex = scenarioComboBox.getSelectionModel().getSelectedIndex();
         int stationIndex = stationComboBox.getSelectionModel().getSelectedIndex();
@@ -154,6 +200,11 @@ public class UpgradeStationGUI {
         });
     }
 
+    /**
+     * Shows an error message in the feedback label and disables the buy button.
+     *
+     * @param message the error message to display
+     */
     private void showError(String message) {
         feedbackLabel.setText(message);
         feedbackLabel.setStyle("-fx-text-fill: darkred;");

@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Railway implements Serializable {
 
@@ -14,6 +15,7 @@ public class Railway implements Serializable {
         this.end = end;
         this.type = type;
         this.distance = distance;
+
     }
 
     public Station getStart() {
@@ -42,6 +44,18 @@ public class Railway implements Serializable {
     public boolean isDoubleTrack(){
         return type == RailwayType.ELECDOUBLE || type == RailwayType.DOUBLE;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Railway railway = (Railway) o;
+        return (start.equals(railway.start) && end.equals(railway.end)) ||
+                (start.equals(railway.end) && end.equals(railway.start));
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end) + Objects.hash(end, start);
+    }
 }
+

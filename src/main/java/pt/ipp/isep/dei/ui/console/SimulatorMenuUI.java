@@ -28,6 +28,7 @@ public class SimulatorMenuUI {
             System.out.println("1. Create New Simulation");
             System.out.println("2. Check Simulation Status");
             System.out.println("3. Continue Existing Simulation");
+            System.out.println("4. View Financial Report");
             System.out.println("0. Back to Main Menu");
 
             System.out.print("Choose an option: ");
@@ -44,12 +45,24 @@ public class SimulatorMenuUI {
                 case 3:
                     continueSimulation(scanner);
                     break;
+                case 4:
+                    showFinancialReport();
+                    break;
                 case 0:
                     return;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
         }
+    }
+    private void showFinancialReport() {
+        Simulator activeSimulator = repository.getActiveSimulator();
+        if (activeSimulator == null) {
+            System.out.println("No active simulation.");
+            return;
+        }
+
+        System.out.println(activeSimulator.generateFinancialReport());
     }
 
     private void createNewSimulation(Scanner scanner) {

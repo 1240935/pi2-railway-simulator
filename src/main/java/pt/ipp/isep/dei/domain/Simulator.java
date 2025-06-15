@@ -2,8 +2,7 @@ package pt.ipp.isep.dei.domain;
 
 import pt.ipp.isep.dei.repository.Repositories;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.io.Serializable;
 
 public class Simulator implements Serializable {
@@ -15,6 +14,11 @@ public class Simulator implements Serializable {
     private List<String> alerts;
     private String lastMonthSummary;
 
+    private double yearlyRevenue;
+    private double yearlyTrackMaintenance;
+    private double yearlyTrainMaintenance;
+    private double yearlyFuelCost;
+    private java.util.Map<Locomotive, Double> locomotiveDistanceMap = new java.util.HashMap<>();
     private List<LocomotiveModel> alertedModels = new ArrayList<>();
 
     public Simulator(List<Route> routes, Player player, Scenario scenario) {
@@ -23,10 +27,14 @@ public class Simulator implements Serializable {
         this.scenario = scenario;
         this.currentMonth = 1;
         this.alerts = new ArrayList<>();
+        resetYearlyFinancials();
     }
 
     public void simulateMonth() {
         System.out.println("=== Month " + currentMonth + " ===");
+        if (currentMonth % 12 == 1) {
+            resetYearlyFinancials();
+        }
         simulateDepartures();
         simulateArrivals();
         checkNewLocomotivesAvailable();
@@ -41,12 +49,20 @@ public class Simulator implements Serializable {
 
         if (currentMonth % 12 == 0) {
             updateDemand();
+            System.out.println(generateFinancialReport());
         }
 
         // Atualiza o resumo do mês anterior
         lastMonthSummary = generateMonthlySummary();
 
         currentMonth++;
+    }
+    private void resetYearlyFinancials() {
+        yearlyRevenue = 0;
+        yearlyTrackMaintenance = 0;
+        yearlyTrainMaintenance = 0;
+        yearlyFuelCost = 0;
+        locomotiveDistanceMap.clear();
     }
 
     private void simulateDepartures() {
@@ -99,6 +115,7 @@ public class Simulator implements Serializable {
                 priceMultiplier += bonus;
 
                 double finalRevenue = baseRevenue * priceMultiplier;
+                yearlyRevenue += finalRevenue;
 
                 int totalCargoDelivered = 0;
                 StringBuilder cargoNames = new StringBuilder();
@@ -238,8 +255,114 @@ public class Simulator implements Serializable {
     }
 
     private void travelToNextPoint(Locomotive loco, PointOfRoute from, PointOfRoute to) {
+        Railway railway = new Railway(from.getStation(), to.getStation(), RailwayType.DOUBLE, from.getStation().getPosition().euclideanDistance(to.getStation().getPosition()));
+        double distance = railway.getDistance();
+
+        locomotiveDistanceMap.merge(loco, distance, Double::sum);
         System.out.println("Locomotive " + loco.getId() + " traveling from " +
                 from.getStation().getName() + " to " + to.getStation().getName());
+    }
+    public String generateFinancialReport() {
+        // Calcular despesas
+        yearlyTrackMaintenance = calculateTrackMaintenance();
+        yearlyTrainMaintenance = calculateTrainMaintenance();
+        yearlyFuelCost = calculateFuelCost();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n=== Year ").append(scenario.getYear() + (currentMonth - 1) / 12).append(" Financial Results ===\n");
+
+        // Receitas
+        sb.append(String.format("Revenues (Cargo Deliveries): $%,.2f%n", yearlyRevenue));
+
+        // Despesas
+        sb.append("\nExpenses:\n");
+        sb.append(String.format("  - Track Maintenance: $%,.2f%n", yearlyTrackMaintenance));
+        sb.append(String.format("  - Train Maintenance: $%,.2f%n", yearlyTrainMaintenance));
+        sb.append(String.format("  - Fuel: $%,.2f%n", yearlyFuelCost));
+
+        // Resumo
+        double totalExpenses = yearlyTrackMaintenance + yearlyTrainMaintenance + yearlyFuelCost;
+        double netProfit = yearlyRevenue - totalExpenses;
+
+        sb.append("\nSummary:\n");
+        sb.append(String.format("Total Revenue: $%,.2f%n", yearlyRevenue));
+        sb.append(String.format("Total Expenses: $%,.2f%n", totalExpenses));
+        sb.append(String.format("Net Profit: $%,.2f%n", netProfit));
+
+        return sb.toString();
+    }
+    private double calculateTrackMaintenance() {
+        double totalCost = 0;
+        Set<Railway> uniqueRailways = new HashSet<>();
+
+        for (Route route : routes) {
+            List<PointOfRoute> points = route.getPointsOfRoute();
+            for (int i = 0; i < points.size() - 1; i++) {
+                Station s1 = points.get(i).getStation();
+                Station s2 = points.get(i + 1).getStation();
+                Railway railway = Railway.getRailwayBetween(s1, s2);
+                uniqueRailways.add(railway);
+            }
+        }
+
+        for (Railway railway : uniqueRailways) {
+            // Custo baseado no tipo de via (SINGLE, DOUBLE, etc.)
+            double maintenanceCost = railway.getType().getCost() * railway.getDistance();
+            totalCost += maintenanceCost;
+        }
+
+        return totalCost;
+    }
+
+    private double calculateTrainMaintenance() {
+        double total = 0;
+        for (Route route : routes) {
+            if (route.getLocomotive() != null) {
+                LocomotiveModel model = route.getLocomotive().getLocomotiveModel();
+                total += model.getMaintenancePYear();
+            }
+        }
+        return total;
+    }
+
+    private double calculateFuelCost() {
+        double total = 0;
+        for (java.util.Map.Entry<Locomotive, Double> entry : locomotiveDistanceMap.entrySet()) {
+            Locomotive loco = entry.getKey();
+            double distance = entry.getValue();
+            LocomotiveModel model = loco.getLocomotiveModel();
+
+            // Fatores de custo baseados no tipo de locomotiva
+            double fuelFactor = 1.0;
+            switch(model.getLocomotiveType()) {
+                case STEAM: fuelFactor = 1.5; break;
+                case DIESEL: fuelFactor = 1.2; break;
+                case ELECTRIC: fuelFactor = 0.8; break;
+            }
+
+            total += (model.getFuelCost() / 1000.0) * distance * fuelFactor;
+        }
+        return total;
+    }
+    private double calculateTotalTrackLength() {
+        Set<Railway> uniqueRailways = new HashSet<>();
+
+        for (Route route : routes) {
+            List<PointOfRoute> points = route.getPointsOfRoute();
+            for (int i = 0; i < points.size() - 1; i++) {
+                Station s1 = points.get(i).getStation();
+                Station s2 = points.get(i + 1).getStation();
+                Railway railway = Railway.getRailwayBetween(s1, s2);
+                uniqueRailways.add(railway);
+            }
+        }
+
+        double totalLength = 0;
+        for (Railway railway : uniqueRailways) {
+            totalLength += railway.getDistance();
+        }
+
+        return totalLength;
     }
 
     // Gera um resumo do mês atual

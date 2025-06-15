@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Interface de consola para salvar mapas serializados.
- * Permite ao utilizador escolher um mapa disponível e guardar num ficheiro.
+ * Console interface to save serialized maps.
+ * Allows the user to choose an available map and save it to a file.
  */
 public class SaveMapUI {
 
     private final SaveMapController controller = new SaveMapController();
 
     /**
-     * Inicia o processo de salvar um mapa.
-     * Lista os mapas disponíveis, pede ao utilizador para escolher um e o nome do ficheiro de destino.
+     * Starts the process of saving a map.
+     * Lists available maps, asks the user to select one and enter the destination filename.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -36,7 +36,7 @@ public class SaveMapUI {
         int index = scanner.nextInt() - 1;
         scanner.nextLine(); // consume newline
 
-        System.out.print("Serialized File name (e.g., mapa.ser): ");
+        System.out.print("Serialized File name (e.g., map.ser): ");
         String filename = scanner.nextLine();
 
         boolean success = controller.saveMapByIndex(index, filename);

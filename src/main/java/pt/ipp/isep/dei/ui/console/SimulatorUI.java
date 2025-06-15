@@ -8,20 +8,20 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Interface de consola para iniciar e controlar uma simulação.
+ * Console interface to start and control a simulation.
  */
 public class SimulatorUI {
     private final SimulatorController controller = new SimulatorController();
 
     /**
-     * Inicia a simulação a partir da interação do utilizador.
+     * Starts the simulation based on user interaction.
      *
-     * @param player jogador que participará na simulação
+     * @param player player who will participate in the simulation
      */
     public void start(Player player) {
         Scanner scanner = new Scanner(System.in);
 
-        // Obter e listar cenários disponíveis
+        // Get and list available scenarios
         List<String> scenarioDescriptions = controller.getAvailableScenarioDescriptions();
         if (scenarioDescriptions.isEmpty()) {
             System.out.println("No scenarios available.");
@@ -33,7 +33,7 @@ public class SimulatorUI {
             System.out.println((i + 1) + ". " + scenarioDescriptions.get(i));
         }
 
-        // Selecionar cenário
+        // Select scenario
         System.out.print("Select scenario by number: ");
         int scenarioIndex = scanner.nextInt() - 1;
         scanner.nextLine();
@@ -45,7 +45,7 @@ public class SimulatorUI {
 
         controller.setPlayer(player);
 
-        // Obter e listar rotas disponíveis
+        // Get and list available routes
         List<String> routeDescriptions = controller.getAvailableRouteDescriptions();
         if (routeDescriptions.isEmpty()) {
             System.out.println("No routes available.");
@@ -57,7 +57,7 @@ public class SimulatorUI {
             System.out.println(routeDescription);
         }
 
-        // Selecionar rotas manualmente ou deixar em branco para selecionar todas
+        // Select routes manually or leave blank to select all
         System.out.print("Select one or more routes by number (separated by space), or press Enter to select all: ");
         String line = scanner.nextLine().trim();
 
@@ -73,10 +73,10 @@ public class SimulatorUI {
         }
         controller.selectRoutesByIndexes(selectedIndexes);
 
-        // Iniciar simulação
+        // Start simulation
         controller.startSimulation();
 
-        // Definir número de anos a simular
+        // Set number of years to simulate
         System.out.print("Enter number of years to simulate: ");
         int years;
         try {
@@ -89,7 +89,7 @@ public class SimulatorUI {
         int totalMonths = years * 12;
         System.out.println("Simulating " + years + " years (" + totalMonths + " months)...");
 
-        // Simular mês a mês com opção de parar
+        // Simulate month by month with option to stop
         for (int month = 1; month <= totalMonths; month++) {
             controller.simulateMonths(1);
 

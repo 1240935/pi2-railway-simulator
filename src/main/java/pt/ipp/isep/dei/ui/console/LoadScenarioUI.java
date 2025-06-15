@@ -4,15 +4,15 @@ import pt.ipp.isep.dei.controller.LoadScenarioController;
 import java.util.Scanner;
 
 /**
- * Interface de consola para carregar um cenário a partir de um ficheiro serializado.
+ * Console interface for loading a scenario from a serialized file.
  */
 public class LoadScenarioUI {
 
     private final LoadScenarioController controller = new LoadScenarioController();
 
     /**
-     * Inicia o processo de carregamento do cenário.
-     * Solicita ao utilizador o caminho do ficheiro serializado e tenta carregar o cenário.
+     * Starts the process of loading the scenario.
+     * Prompts the user for the path of the serialized file and attempts to load the scenario.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);

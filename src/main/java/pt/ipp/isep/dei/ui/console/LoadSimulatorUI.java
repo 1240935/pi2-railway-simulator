@@ -5,13 +5,13 @@ import pt.ipp.isep.dei.controller.LoadSimulatorController;
 import java.util.Scanner;
 
 /**
- * Interface de consola para carregar um simulador previamente serializado.
+ * Console interface to load a previously serialized simulator.
  */
 public class LoadSimulatorUI {
     private final LoadSimulatorController controller = new LoadSimulatorController();
 
     /**
-     * Inicia o processo de carregamento de um simulador a partir de um ficheiro .ser.
+     * Starts the process of loading a simulator from a .ser file.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);

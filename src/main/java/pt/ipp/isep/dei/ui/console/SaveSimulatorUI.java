@@ -4,14 +4,14 @@ import pt.ipp.isep.dei.controller.SaveSimulatorController;
 import java.util.Scanner;
 
 /**
- * Interface de consola para salvar o simulador ativo em um ficheiro serializado.
+ * Console interface to save the active simulator to a serialized file.
  */
 public class SaveSimulatorUI {
     private final SaveSimulatorController controller = new SaveSimulatorController();
 
     /**
-     * Inicia o processo de salvamento do simulador ativo,
-     * solicitando o nome do ficheiro para armazenamento.
+     * Starts the process of saving the active simulator,
+     * asking the user for the filename to store it.
      */
     public void start() {
         if (!controller.hasActiveSimulator()) {

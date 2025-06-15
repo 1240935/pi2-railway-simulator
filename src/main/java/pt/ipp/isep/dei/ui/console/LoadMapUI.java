@@ -5,15 +5,15 @@ import pt.ipp.isep.dei.controller.LoadMapController;
 import java.util.Scanner;
 
 /**
- * Interface de consola para carregar um mapa a partir de um ficheiro serializado.
+ * Console interface for loading a map from a serialized file.
  */
 public class LoadMapUI {
 
     private final LoadMapController controller = new LoadMapController();
 
     /**
-     * Inicia o processo de carregamento do mapa.
-     * Solicita ao utilizador o caminho do ficheiro serializado e tenta carregar o mapa.
+     * Starts the process of loading the map.
+     * Prompts the user for the path of the serialized file and attempts to load the map.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);

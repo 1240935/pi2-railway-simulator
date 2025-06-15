@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Interface de consola para criação de uma indústria.
- * Permite ao utilizador escolher um mapa, definir coordenadas e tipo de indústria.
+ * Console interface for creating an industry.
+ * Allows the user to choose a map, define coordinates, and select the industry type.
  */
 public class CreateIndustryUI {
 
     private final CreateIndustryController controller = new CreateIndustryController();
 
     /**
-     * Inicia o fluxo para criar uma indústria.
-     * Solicita seleção do mapa, coordenadas e tipo de indústria ao utilizador,
-     * depois envia os dados ao controlador para criação.
+     * Starts the flow to create an industry.
+     * Requests selection of map, coordinates, and industry type from the user,
+     * then sends the data to the controller for creation.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);

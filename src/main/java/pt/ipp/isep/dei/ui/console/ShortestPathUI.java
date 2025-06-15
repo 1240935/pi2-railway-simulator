@@ -16,20 +16,20 @@ public class ShortestPathUI {
     }
 
     /**
-     * Inicia a interface para cálculo do caminho mais curto.
-     * Solicita ao utilizador os ficheiros de estações, linhas e rota,
-     * carrega os dados, calcula o caminho mais curto passando por todos os waypoints,
-     * apresenta o resultado e visualiza o grafo.
+     * Starts the interface for calculating the shortest path.
+     * Asks the user for the stations, lines, and route files,
+     * loads the data, calculates the shortest path passing through all waypoints,
+     * displays the result, and visualizes the graph.
      */
     public void start() {
-        // Solicita ficheiros para construir o grafo de estações e linhas
+        // Request files to build the graph of stations and lines
         System.out.print("Enter stations file path: ");
         String stationsFile = scanner.nextLine();
         System.out.print("Enter lines file path: ");
         String linesFile = scanner.nextLine();
         controller.setFiles(stationsFile, linesFile);
 
-        // Solicita ficheiro com a rota (start;waypoints;end)
+        // Request the file with the route (start;waypoints;end)
         System.out.print("Enter route file path: ");
         String routeFile = scanner.nextLine();
 
@@ -40,7 +40,7 @@ public class ShortestPathUI {
             return;
         }
 
-        // Calcula o caminho mais curto considerando waypoints
+        // Calculate the shortest path considering waypoints
         List<String> path = controller.getShortestPathAsNames(
                 controller.getStartStation(),
                 controller.getEndStation(),
@@ -58,10 +58,10 @@ public class ShortestPathUI {
                 if (i < path.size() - 1) System.out.print(" -> ");
             }
             System.out.println();
-            System.out.println("Total Cost (Distance): " + cost + "km");
+            System.out.println("Total Cost (Distance): " + cost + " km");
         }
 
-        // Visualiza o grafo e o caminho encontrado
+        // Visualize the graph and the found path
         controller.visualizeGraph();
     }
 }

@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Interface de utilizador via consola para interagir com a simulação.
+ * Console user interface to interact with the simulator.
+ * <p>
+ * Allows the player to create new simulations, check the current status,
+ * continue existing simulations, and view financial reports.
+ * Provides an interactive console menu to manage the simulation lifecycle.
  */
 public class SimulatorMenuUI {
 
@@ -20,14 +24,23 @@ public class SimulatorMenuUI {
     private final Player player;
 
     /**
-     * Construtor que associa o menu a um jogador.
+     * Constructor that associates the menu with a specific player.
+     *
+     * @param player the player who interacts with the simulator through this menu
      */
     public SimulatorMenuUI(Player player) {
         this.player = player;
     }
 
     /**
-     * Inicia o menu da simulação e trata as opções do utilizador.
+     * Starts the main simulator menu.
+     * <p>
+     * Presents available options to the user, including:
+     * creating a new simulation, checking simulation status,
+     * continuing existing simulations, viewing financial reports,
+     * or returning to the main application menu.
+     * <p>
+     * This method keeps the menu active until the user chooses to exit (option 0).
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -42,7 +55,7 @@ public class SimulatorMenuUI {
 
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine(); // Clear buffer
 
             switch (choice) {
                 case 1 -> createNewSimulation(scanner);
@@ -56,7 +69,9 @@ public class SimulatorMenuUI {
     }
 
     /**
-     * Apresenta o relatório financeiro da simulação ativa, se existir.
+     * Displays the financial report of the active simulation.
+     * <p>
+     * If no active simulation exists, informs the user.
      */
     private void showFinancialReport() {
         Simulator activeSimulator = repository.getActiveSimulator();
@@ -69,7 +84,16 @@ public class SimulatorMenuUI {
     }
 
     /**
-     * Cria uma nova simulação: escolhe cenário, rotas, e inicia.
+     * Allows creating a new simulation.
+     * <p>
+     * Lists available scenarios, allows the user to select one,
+     * then lists routes available for the chosen scenario.
+     * The user can select one or more routes.
+     * Starts the simulation with the selected options and sets it as active in the repository.
+     * <p>
+     * After creation, automatically starts continuing the simulation.
+     *
+     * @param scanner Scanner to read user inputs
      */
     private void createNewSimulation(Scanner scanner) {
         List<String> scenarioDescriptions = controller.getAvailableScenarioDescriptions();
@@ -83,7 +107,7 @@ public class SimulatorMenuUI {
             System.out.printf("%d. %s%n", i + 1, scenarioDescriptions.get(i));
         }
 
-        // Seleção do cenário
+        // Scenario selection
         int scenarioIndex = -1;
         while (true) {
             System.out.print("Select scenario by number: ");
@@ -107,7 +131,7 @@ public class SimulatorMenuUI {
 
         controller.setPlayer(player);
 
-        // Seleção das rotas
+        // Route selection
         List<String> routeDescriptions = controller.getAvailableRouteDescriptions();
         if (routeDescriptions.isEmpty()) {
             System.out.println("No routes available for the selected scenario.");
@@ -128,13 +152,13 @@ public class SimulatorMenuUI {
             String line = scanner.nextLine().trim();
 
             if (line.isEmpty()) {
-                // Seleciona todas as rotas
+                // Select all routes
                 for (int i = 0; i < routeDescriptions.size(); i++) {
                     selectedIndexes.add(i);
                 }
                 break;
             } else {
-                // Valida seleção manual
+                // Validate manual selection
                 String[] tokens = line.split("\\s+");
                 boolean allValid = true;
                 selectedIndexes.clear();
@@ -160,19 +184,22 @@ public class SimulatorMenuUI {
             }
         }
 
-        // Inicia simulação
+        // Start simulation
         controller.selectRoutesByIndexes(selectedIndexes);
         controller.startSimulation();
         repository.setActiveSimulator(controller.getSimulator());
 
         System.out.println("\nNew simulation started successfully!");
 
-        // Continua logo após iniciar
+        // Continue simulation immediately after starting
         continueSimulation(scanner);
     }
 
     /**
-     * Mostra o estado atual da simulação (mês, orçamento, alertas).
+     * Shows the current status of the active simulation,
+     * including the current month, player budget, and any alerts.
+     * <p>
+     * If no active simulation exists, informs the user.
      */
     private void checkSimulationStatus() {
         Simulator activeSimulator = repository.getActiveSimulator();
@@ -196,7 +223,15 @@ public class SimulatorMenuUI {
     }
 
     /**
-     * Permite simular vários meses da simulação ativa.
+     * Allows the user to advance the active simulation by a specified number
+     * of years, simulating month by month.
+     * <p>
+     * After each simulated month, asks the user if they wish to continue
+     * the simulation.
+     * <p>
+     * Displays a summary of the simulation at the end.
+     *
+     * @param scanner Scanner to read user inputs
      */
     private void continueSimulation(Scanner scanner) {
         Simulator activeSimulator = repository.getActiveSimulator();
@@ -229,7 +264,7 @@ public class SimulatorMenuUI {
             controller.simulateMonths(1);
             System.out.printf("Simulated month %d/%d.%n", month, totalMonths);
 
-            // Pergunta ao utilizador se quer continuar mês a mês
+            // Ask user if they want to continue month-by-month
             String answer;
             while (true) {
                 System.out.print("Continue simulation? (y/n): ");

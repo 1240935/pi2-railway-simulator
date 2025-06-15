@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Interface de consola para salvar um cenário selecionado em ficheiro serializado.
+ * Console interface to save a selected scenario into a serialized file.
  */
 public class SaveScenarioUI {
 
     private final SaveScenarioController controller = new SaveScenarioController();
 
     /**
-     * Inicia o processo de salvar um cenário.
-     * Mostra os cenários disponíveis, permite a seleção por número,
-     * e solicita o nome do ficheiro para salvar o cenário.
+     * Starts the process of saving a scenario.
+     * Displays available scenarios, allows selection by number,
+     * and asks for the filename to save the scenario.
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);

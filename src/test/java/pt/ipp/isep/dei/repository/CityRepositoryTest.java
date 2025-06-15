@@ -21,10 +21,11 @@ class CityRepositoryTest {
         repository = new CityRepository();
     }
 
+    // Testa se uma cidade é adicionada com sucesso ao repositório
     @Test
     void testAddCity_AddsSuccessfully() {
-        Position pos = new Position(0, 0);  // Exemplo de posição
-        List<CityBlock> blocks = new ArrayList<>();  // Lista vazia de cityBlocks
+        Position pos = new Position(0, 0);
+        List<CityBlock> blocks = new ArrayList<>();
         City city = new City("Lisbon", pos, blocks);
 
         repository.addCity(city);
@@ -34,6 +35,7 @@ class CityRepositoryTest {
         assertTrue(cities.contains(city));
     }
 
+    // Testa se todas as cidades adicionadas são corretamente retornadas
     @Test
     void testGetCities_ReturnsAllAddedCities() {
         Position pos1 = new Position(0, 0);
@@ -51,6 +53,7 @@ class CityRepositoryTest {
         assertTrue(cities.contains(city2));
     }
 
+    // Testa se modificar a lista retornada por getCities() afeta a lista original (referência direta)
     @Test
     void testGetCities_ModifyingReturnedListAffectsOriginal() {
         Position pos = new Position(0, 0);
@@ -61,7 +64,53 @@ class CityRepositoryTest {
         List<City> cities = repository.getCities();
         cities.clear();
 
-        // Como getCities() retorna a lista interna, limpar a lista externa deve afetar a interna
         assertEquals(0, repository.getCities().size());
+    }
+
+    // Testa se uma cidade é criada corretamente com parâmetros válidos
+    @Test
+    void testCreateCity_WithValidParameters_ShouldCreateCity() {
+        List<CityBlock> blocks = List.of(new CityBlock(new Position(1, 2)));
+        int size = 10;
+
+        City city = CityRepository.createCity(5, 5, "Braga", blocks, size);
+
+        assertNotNull(city);
+        assertEquals("Braga", city.getName());
+        assertEquals(new Position(5, 5), city.getPosition());
+        assertEquals(blocks, city.getBlocks());
+    }
+
+    // Testa se o método retorna null ao criar cidade com nome inválido
+    @Test
+    void testCreateCity_WithInvalidName_ShouldReturnNull() {
+        List<CityBlock> blocks = List.of(new CityBlock(new Position(1, 2)));
+        int size = 10;
+
+        City city = CityRepository.createCity(5, 5, "", blocks, size);
+
+        assertNull(city);
+    }
+
+    // Testa se o método retorna null ao criar cidade com lista de blocos inválida (vazia)
+    @Test
+    void testCreateCity_WithInvalidBlocks_ShouldReturnNull() {
+        List<CityBlock> blocks = new ArrayList<>();
+        int size = 10;
+
+        City city = CityRepository.createCity(5, 5, "InvalidCity", blocks, size);
+
+        assertNull(city);
+    }
+
+    // Testa se o método retorna null ao criar cidade com posição fora dos limites
+    @Test
+    void testCreateCity_WithInvalidPosition_ShouldReturnNull() {
+        List<CityBlock> blocks = List.of(new CityBlock(new Position(0, 0)));
+        int size = 5;
+
+        City city = CityRepository.createCity(10, 10, "OutOfBounds", blocks, size);
+
+        assertNull(city);
     }
 }

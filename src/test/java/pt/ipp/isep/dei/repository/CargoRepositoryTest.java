@@ -18,9 +18,10 @@ class CargoRepositoryTest {
         repository = new CargoRepository();
     }
 
+    // Testa se um Cargo é adicionado corretamente
     @Test
     void testAddCargo_AddsSuccessfully() {
-        Cargo coal = new Cargo(ResourceType.COAL, ResourceType.COAL.getValue()); // getvalue added to get the corresponding value on (ResourceType.java)
+        Cargo coal = new Cargo(ResourceType.COAL, ResourceType.COAL.getValue());
         repository.addCargo(coal);
 
         List<Cargo> cargoes = repository.getCargoes();
@@ -28,46 +29,48 @@ class CargoRepositoryTest {
         assertTrue(cargoes.contains(coal));
     }
 
+    // Testa se um Cargo duplicado não é adicionado
     @Test
     void testAddCargo_DuplicateNotAdded() {
         Cargo oil = new Cargo(ResourceType.OIL, ResourceType.OIL.getValue());
         repository.addCargo(oil);
-        repository.addCargo(oil); // Tenta adicionar o mesmo objeto novamente
+        repository.addCargo(oil);
 
         List<Cargo> cargoes = repository.getCargoes();
         assertEquals(1, cargoes.size());
     }
 
+    // Testa se null não é adicionado
     @Test
     void testAddCargo_NullNotAdded() {
         repository.addCargo(null);
-        List<Cargo> cargoes = repository.getCargoes();
-        assertEquals(0, cargoes.size());
+        assertEquals(0, repository.getCargoes().size());
     }
 
+    // Testa se a lista retornada é uma cópia (não pode ser modificada externamente)
     @Test
     void testGetCargoes_DefensiveCopy() {
         Cargo steel = new Cargo(ResourceType.STEEL, ResourceType.STEEL.getValue());
         repository.addCargo(steel);
 
         List<Cargo> cargoes = repository.getCargoes();
-        cargoes.clear(); // Modifica a lista retornada, mas não deve afetar o repositório
+        cargoes.clear();
 
         assertEquals(1, repository.getCargoes().size());
     }
 
+    // Testa se encontra corretamente um Cargo pelo ResourceType
     @Test
     void testGetCargoForResourceType_FindsCorrectCargo() {
         Cargo grain = new Cargo(ResourceType.GRAIN, ResourceType.GRAIN.getValue());
-        Cargo autos = new Cargo(ResourceType.AUTOS, ResourceType.AUTOS.getValue());
         repository.addCargo(grain);
-        repository.addCargo(autos);
 
         Cargo found = repository.getCargoForResourceType(ResourceType.GRAIN);
         assertNotNull(found);
         assertEquals(ResourceType.GRAIN, found.getType());
     }
 
+    // Testa se retorna null ao procurar um tipo que não existe
     @Test
     void testGetCargoForResourceType_NotFoundReturnsNull() {
         repository.addCargo(new Cargo(ResourceType.WOOL, ResourceType.WOOL.getValue()));
@@ -76,12 +79,13 @@ class CargoRepositoryTest {
         assertNull(result);
     }
 
+    // Testa se retorna null quando o repositório está vazio
     @Test
     void testGetCargoForResourceType_EmptyRepoReturnsNull() {
-        Cargo result = repository.getCargoForResourceType(ResourceType.PASSENGERS);
-        assertNull(result);
+        assertNull(repository.getCargoForResourceType(ResourceType.PASSENGERS));
     }
 
+    // Testa se múltiplos cargos com tipos diferentes são corretamente armazenados e encontrados
     @Test
     void testMultipleCargoTypesAreHandled() {
         ResourceType[] types = { ResourceType.COFFEE, ResourceType.MILK, ResourceType.FOOD };
@@ -95,4 +99,25 @@ class CargoRepositoryTest {
             assertEquals(type, cargo.getType());
         }
     }
+
+    //  Testa se dois cargos diferentes com mesmo ResourceType não são tratados como duplicados
+    @Test
+    void testAddCargo_SameTypeDifferentInstance() {
+        Cargo c1 = new Cargo(ResourceType.COAL, 20);
+        Cargo c2 = new Cargo(ResourceType.COAL, 35);
+        repository.addCargo(c1);
+        repository.addCargo(c2);
+
+        assertEquals(2, repository.getCargoes().size(), "Deveria permitir se forem instâncias diferentes");
+    }
+
+    //  Stress test leve com muitos cargos
+    @Test
+    void testAddManyCargoes() {
+        for (int i = 0; i < 1000; i++) {
+            repository.addCargo(new Cargo(ResourceType.WOOL, i));
+        }
+        assertEquals(1000, repository.getCargoes().size());
+    }
 }
+

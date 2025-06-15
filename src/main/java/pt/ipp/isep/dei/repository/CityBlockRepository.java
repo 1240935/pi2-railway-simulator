@@ -9,11 +9,11 @@ public class CityBlockRepository {
     private List<CityBlock> cityBlocks = new ArrayList<>();
 
     /**
-     * Cria uma lista de CityBlocks a partir de uma lista de posições,
-     * usando a quantidade especificada de blocos.
-     * @param positions lista de posições base
-     * @param cityBlocks número de blocos a criar
-     * @return lista de CityBlocks criados
+     * Creates a list of CityBlocks from a list of positions,
+     * using the specified number of blocks.
+     * @param positions base list of positions
+     * @param cityBlocks number of blocks to create
+     * @return list of created CityBlocks
      */
     public static List<CityBlock> createBlocks(List<Position> positions, int cityBlocks){
         List<CityBlock> blocks = new ArrayList<>();
@@ -25,12 +25,12 @@ public class CityBlockRepository {
     }
 
     /**
-     * Gera uma lista de CityBlocks com posições aleatórias em torno das
-     * coordenadas (x, y), baseado numa distribuição normal.
-     * @param x coordenada x central
-     * @param y coordenada y central
-     * @param number quantidade de blocos a gerar
-     * @return lista de CityBlocks gerados
+     * Generates a list of CityBlocks with random positions around
+     * coordinates (x, y), based on a normal distribution.
+     * @param x central x coordinate
+     * @param y central y coordinate
+     * @param number number of blocks to generate
+     * @return list of generated CityBlocks
      */
     public static List<CityBlock> generateBlocks(int x, int y, int number) {
         List<CityBlock> blocks = new ArrayList<>();
@@ -49,16 +49,16 @@ public class CityBlockRepository {
     }
 
     /**
-     * Adiciona um CityBlock à lista gerenciada por esta instância.
-     * @param block bloco a adicionar
+     * Adds a CityBlock to the list managed by this instance.
+     * @param block block to add
      */
     public void addCityBlock(CityBlock block) {
         cityBlocks.add(block);
     }
 
     /**
-     * Retorna a lista atual de CityBlocks armazenados nesta instância.
-     * @return lista de CityBlocks
+     * Returns the current list of CityBlocks stored in this instance.
+     * @return list of CityBlocks
      */
     public List<CityBlock> getCityBlocks() {
         return cityBlocks;

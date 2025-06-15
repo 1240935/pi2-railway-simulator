@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Repositório responsável por fornecer os tipos de estação disponíveis.
+ * Repository responsible for providing the available station types.
  */
 public class StationTypeRepository {
 
     /**
-     * Obtém a lista de todos os tipos de estação definidos.
+     * Gets the list of all defined station types.
      *
-     * @return Lista imutável contendo todos os valores do enum StationType.
+     * @return Immutable list containing all values of the StationType enum.
      */
     public List<StationType> getStationTypes() {
         return Arrays.asList(StationType.values());

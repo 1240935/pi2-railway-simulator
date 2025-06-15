@@ -8,8 +8,8 @@ import java.util.List;
 public class CargoModeRepository {
 
     /**
-     * Retorna a lista de todos os modos de carga disponíveis.
-     * @return lista com todos os valores do enum CargoMode.
+     * Returns the list of all available cargo modes.
+     * @return list with all the values of the CargoMode enum.
      */
     public List<CargoMode> getCargoModes() {
         return Arrays.asList(CargoMode.values());

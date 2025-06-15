@@ -12,27 +12,27 @@ public class PointOfRouteRepository {
     private final ArrayList<PointOfRoute> pointsOfRoute = new ArrayList<>();
 
     /**
-     * Obtém a lista de pontos de rota armazenados no repositório.
-     * @return lista de pontos de rota
+     * Gets the list of points of route stored in the repository.
+     * @return list of points of route
      */
     public ArrayList<PointOfRoute> getPointsOfRoute() {
         return pointsOfRoute;
     }
 
     /**
-     * Adiciona um novo ponto de rota ao repositório.
-     * @param pointOfRoute ponto de rota a ser adicionado
+     * Adds a new point of route to the repository.
+     * @param pointOfRoute point of route to be added
      */
     public void addPointOfRoute(PointOfRoute pointOfRoute) {
         pointsOfRoute.add(pointOfRoute);
     }
 
     /**
-     * Cria um novo ponto de rota validando seus parâmetros.
-     * @param station estação do ponto de rota
-     * @param cargo lista de cargas associadas ao ponto
-     * @param cargoMode modo de carga utilizado no ponto
-     * @return ponto de rota criado caso seja válido; caso contrário, retorna null
+     * Creates a new point of route validating its parameters.
+     * @param station station of the point of route
+     * @param cargo list of cargos associated with the point
+     * @param cargoMode cargo mode used at the point
+     * @return created point of route if valid; otherwise, returns null
      */
     public static PointOfRoute createPointOfRoute(Station station, List<Cargo> cargo, CargoMode cargoMode){
         PointOfRoute pointOfRoute = new PointOfRoute(station, cargo, cargoMode);

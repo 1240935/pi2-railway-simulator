@@ -35,10 +35,11 @@ public class Map implements Serializable {
     private List<City> cities;
 
     /**
-     * Constructs a new {@code Map} instance with the specified name and size.
+     * Constructs a new {@code Map} instance with the specified name, size, and scale.
      *
-     * @param name the name of the map
-     * @param size the size of the map grid
+     * @param size  the size of the map grid
+     * @param name  the name of the map
+     * @param scale the scale of the map
      */
     public Map(int size, String name, int scale) {
         this.size = size;
@@ -98,7 +99,7 @@ public class Map implements Serializable {
     /**
      * Adds a city to the map.
      *
-     * @param city the city to addScenario
+     * @param city the city to add
      */
     public void addCity(City city) {
         cities.add(city);
@@ -116,7 +117,7 @@ public class Map implements Serializable {
     /**
      * Adds an industry to the map.
      *
-     * @param industry the industry to addScenario
+     * @param industry the industry to add
      */
     public void addIndustry(Industry industry) {
         industries.add(industry);
@@ -131,27 +132,53 @@ public class Map implements Serializable {
         return industries;
     }
 
-
+    /**
+     * Checks if the given name is valid (non-null and contains only letters and spaces).
+     *
+     * @param name the name to check
+     * @return {@code true} if the name is valid, {@code false} otherwise
+     */
     public static boolean checkName(String name) {
         return name != null && name.matches("^[A-Za-z ]+$");
     }
 
+    /**
+     * Checks if the given size is valid (greater than zero).
+     *
+     * @param size the size to check
+     * @return {@code true} if the size is valid, {@code false} otherwise
+     */
     public boolean checkSize(int size) {
         return size > 0;
     }
 
+    /**
+     * Checks if the given scale is valid (greater than zero).
+     *
+     * @param scale the scale to check
+     * @return {@code true} if the scale is valid, {@code false} otherwise
+     */
     public boolean checkScale(int scale) {
         return scale > 0;
     }
 
+    /**
+     * Returns the scale of the map.
+     *
+     * @return the map scale
+     */
     public int getScale() {
         return scale;
     }
 
+    /**
+     * Sets the scale of the map.
+     *
+     * @param scale the new map scale
+     */
     public void setScale(int scale) {
         this.scale = scale;
     }
-
 
     /**
      * Returns a string representation of the map.

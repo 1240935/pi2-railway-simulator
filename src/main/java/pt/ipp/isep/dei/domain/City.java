@@ -11,6 +11,7 @@ import java.util.Random;
  * <p>
  * A {@code City} has a name, a central position, and a list of associated {@link CityBlock}s.
  * It defines specific cargo types that it supplies and demands.
+ * </p>
  */
 public class City implements Serializable {
 
@@ -121,11 +122,32 @@ public class City implements Serializable {
         return blocks;
     }
 
-
+    /**
+     * Checks if the provided city name is valid.
+     * <p>
+     * A valid name contains only letters (uppercase or lowercase) and spaces.
+     * </p>
+     *
+     * @param name the city name to validate
+     * @return {@code true} if the name is valid, {@code false} otherwise
+     */
     public boolean checkName(String name) {
         return name != null && name.matches("^[A-Za-z ]+$");
     }
 
+    /**
+     * Checks if the provided list of city blocks is valid.
+     * <p>
+     * Validity criteria:
+     * <ul>
+     *     <li>No two city blocks share the same position.</li>
+     *     <li>No city block occupies the same position as the city's central position.</li>
+     * </ul>
+     * </p>
+     *
+     * @param blocks the list of city blocks to validate
+     * @return {@code true} if all blocks have unique positions and none match the city's position, {@code false} otherwise
+     */
     public boolean checkCityBlocks(List<CityBlock> blocks) {
         List<Position> seen = new ArrayList<>();
         for (CityBlock block : blocks) {
@@ -140,6 +162,5 @@ public class City implements Serializable {
         }
         return true;
     }
-
 
 }

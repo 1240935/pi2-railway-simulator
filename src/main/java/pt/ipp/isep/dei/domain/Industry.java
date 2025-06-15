@@ -5,8 +5,9 @@ import java.io.Serializable;
 /**
  * Represents an industry placed on a map at a specific position.
  * <p>
- * Each industry has a defined {@link IndustryType} and a {@link Position} indicating
+ * Each {@code Industry} has a defined {@link IndustryType} and a {@link Position} indicating
  * where it is located on the map grid.
+ * </p>
  */
 public class Industry implements Serializable {
 
@@ -64,15 +65,35 @@ public class Industry implements Serializable {
         this.position = position;
     }
 
+    /**
+     * Checks if the given position is valid within the boundaries of the map.
+     *
+     * @param position the position to check
+     * @param size the size (width/height) of the square map grid
+     * @return {@code true} if the position is within the map bounds; {@code false} otherwise
+     */
     public boolean checkPosition(Position position, int size) {
         return position.getxCoordinate() >= 0 && position.getxCoordinate() < size &&
                 position.getyCoordinate() >= 0 && position.getyCoordinate() < size;
     }
 
+    /**
+     * Creates a new {@link Position} object with the specified x and y coordinates.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return a new {@code Position} instance
+     */
     public static Position createPosition(int x, int y){
         return Position.createPosition(x, y);
     }
 
+    /**
+     * Checks if the given industry type is valid (not {@code null}).
+     *
+     * @param industryType the industry type to check
+     * @return {@code true} if the industry type is not null; {@code false} otherwise
+     */
     public boolean checkIndustryType(IndustryType industryType) {
         return industryType != null;
     }

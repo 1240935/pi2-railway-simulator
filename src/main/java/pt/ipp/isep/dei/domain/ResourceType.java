@@ -55,7 +55,7 @@ public enum ResourceType implements Serializable {
     private int value;
 
     /**
-     * Constructs a ResourceType with the specified value.
+     * Constructs a ResourceType with the specified integer value.
      *
      * @param value Integer value associated with the resource type.
      */
@@ -64,19 +64,30 @@ public enum ResourceType implements Serializable {
     }
 
     /**
-     * Returns the value associated with this resource type.
+     * Returns the integer value associated with this resource type.
      *
-     * @return the integer value of the resource type
+     * @return the value of the resource type
      */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Returns the name of the resource type with the first letter capitalized
+     * and the rest in lowercase.
+     *
+     * @return formatted name of the resource type
+     */
     public String getName() {
         String lower = name().toLowerCase();
         return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
     }
 
+    /**
+     * Sets the value associated with this resource type.
+     *
+     * @param value the new integer value to set
+     */
     public void setValue(int value) {
         this.value = value;
     }

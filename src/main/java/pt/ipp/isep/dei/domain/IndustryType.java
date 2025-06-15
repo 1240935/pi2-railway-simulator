@@ -57,7 +57,7 @@ public enum IndustryType implements Serializable {
 
     /**
      * List of resource types this industry imports (inputs).
-     * Can be null if industry has no imports.
+     * Can be {@code null} if the industry has no imports.
      */
     private List<ResourceType> importation;
 
@@ -76,8 +76,6 @@ public enum IndustryType implements Serializable {
         this.importation = importation;
         this.exportation = List.of(exportation);
     }
-
-
 
     /**
      * Constructor for industries with a single import and single export.
@@ -120,7 +118,7 @@ public enum IndustryType implements Serializable {
     /**
      * Returns the list of resource types this industry imports.
      *
-     * @return List of import resource types, or null if none.
+     * @return List of import resource types, or {@code null} if none.
      */
     public List<ResourceType> getImportation() {
         return importation;
@@ -163,14 +161,30 @@ public enum IndustryType implements Serializable {
         return scenario.getExportation();
     }
 
+    /**
+     * Sets the list of resource types this industry imports.
+     *
+     * @param importation List of import resource types.
+     */
     public void setImportation(List<ResourceType> importation) {
         this.importation = importation;
     }
 
+    /**
+     * Sets the list of resource types this industry exports.
+     *
+     * @param exportation List of export resource types.
+     */
     public void setExportation(List<ResourceType> exportation) {
         this.exportation = exportation;
     }
 
+    /**
+     * Returns a string representation of the industry type,
+     * including its imports and exports if available.
+     *
+     * @return String describing the industry type and its resources.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

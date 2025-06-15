@@ -21,21 +21,34 @@ public class Position implements Serializable {
         this.yCoordinate = yCoordinate;
     }
 
+    /**
+     * Checks if the given position is valid within the bounds of a square grid of given size.
+     *
+     * @param position the position to validate
+     * @param size     the size of the grid (width and height)
+     * @return {@code true} if the position is within bounds, {@code false} otherwise
+     */
     public static boolean isValid(Position position, int size) {
         int x = position.getxCoordinate();
         int y = position.getyCoordinate();
         return x >= 0 && y >= 0 && x < size && y < size;
     }
 
-
+    /**
+     * Checks if the given position is valid within the bounds of the map.
+     * Prints a message if the position is invalid.
+     *
+     * @param position the position to check
+     * @param size     the size of the map
+     * @return {@code true} if the position is valid, {@code false} otherwise
+     */
     public boolean checkPosition(Position position, int size){
         int x = position.getxCoordinate();
         int y = position.getyCoordinate();
         if (x >= size || y >= size || x < 0 || y < 0) {
             System.out.println("Invalid position: coordinates exceed map bounds.");
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
@@ -79,7 +92,7 @@ public class Position implements Serializable {
     /**
      * Calculates the Euclidean distance between this position and another position.
      *
-     * @param other the other position to which distance is calculated
+     * @param other the other position to which the distance is calculated
      * @return the Euclidean distance as a double
      */
     public double euclideanDistance(Position other) {
@@ -88,6 +101,13 @@ public class Position implements Serializable {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    /**
+     * Factory method to create a new Position instance.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return a new Position object with given coordinates
+     */
     public static Position createPosition(int x, int y){
         return new Position(x, y);
     }

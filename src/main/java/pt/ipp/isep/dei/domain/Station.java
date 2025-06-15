@@ -12,27 +12,19 @@ import java.io.Serializable;
  * A station is characterized by its name, geographical position, center position, type,
  * building type, and cargo demands and supplies.
  * It can provide cargo status based on nearby industries and cities within its influence radius.
+ * </p>
  */
 public class Station implements Serializable {
+
     private String name;
-
     private StationCenter center;
-
     private Position position;
-
     private StationType type;
-
     private List<Building> buildings = new ArrayList<>();
-
     private List<Cargo> demands;
-
     private List<Cargo> supplies;
-
     private int demandLevel;
-
     private int deliveriesCount;
-
-
 
     /**
      * Creates a Station with specified name, center, position, type, demands, and supplies.
@@ -54,15 +46,15 @@ public class Station implements Serializable {
     }
 
     /**
-     * Creates a Station including a building type along with other attributes.
+     * Creates a Station including buildings along with other attributes.
      *
-     * @param name     Name of the station.
-     * @param position Geographical position of the station.
-     * @param center   The center position of the station.
-     * @param type     Station type.
+     * @param name      Name of the station.
+     * @param position  Geographical position of the station.
+     * @param center    The center position of the station.
+     * @param type      Station type.
      * @param buildings Buildings associated with the station.
-     * @param demands  Cargo demands list.
-     * @param supplies Cargo supplies list.
+     * @param demands   Cargo demands list.
+     * @param supplies  Cargo supplies list.
      */
     public Station(String name, Position position, StationCenter center, StationType type, List<Building> buildings, List<Cargo> demands, List<Cargo> supplies) {
         this.name = name;
@@ -86,29 +78,16 @@ public class Station implements Serializable {
         this.type = type;
     }
 
-    /**
-     * Sets the name of the station.
-     *
-     * @param name New name for the station.
-     */
+    // Setters
+
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Sets the center position of the station.
-     *
-     * @param center New center position.
-     */
     public void setCenter(StationCenter center) {
         this.center = center;
     }
 
-    /**
-     * Sets the type of the station.
-     *
-     * @param type New station type.
-     */
     public void setType(StationType type) {
         this.type = type;
     }
@@ -121,93 +100,65 @@ public class Station implements Serializable {
         this.supplies = supplies;
     }
 
-    /**
-     * Returns the name of the station.
-     *
-     * @return Station's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Returns the center position of the station.
-     *
-     * @return Station center.
-     */
-    public StationCenter getCenter() {
-        return center;
-    }
-
-    /**
-     * Returns the type of the station.
-     *
-     * @return Station type.
-     */
-    public StationType getType() {
-        return type;
-    }
-
-    /**
-     * Returns the geographical position of the station on the map.
-     *
-     * @return Position object representing the station location.
-     */
-    public Position getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets the geographical position of the station.
-     *
-     * @param position New position of the station.
-     */
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public List<Building> getBuildings() {
-        return buildings;
-    }
-
-    public void addBuilding(Building building) {
-        this.buildings.add(building);
     }
 
     public void setBuildings(List<Building> buildings) {
         this.buildings = buildings;
     }
 
-    /**
-     * Returns the list of cargo demands at this station.
-     *
-     * @return a list of Cargo objects representing what is demanded
-     */
+    // Getters
+
+    public String getName() {
+        return name;
+    }
+
+    public StationCenter getCenter() {
+        return center;
+    }
+
+    public StationType getType() {
+        return type;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
     public List<Cargo> getDemands() {
         return demands;
     }
 
-    /**
-     * Returns the list of cargo supplies available at this station.
-     *
-     * @return a list of Cargo objects representing what is supplied
-     */
     public List<Cargo> getSupplies() {
         return supplies;
     }
 
     /**
-     * Computes the cargo status (supplied and demanded cargo) for the station
-     * based on the industries and cities within the station's influence radius.
+     * Adds a building to the station's list of buildings.
      *
-     * <p>Industries and cities are considered if their positions are within the station's
+     * @param building The building to add.
+     */
+    public void addBuilding(Building building) {
+        this.buildings.add(building);
+    }
+
+    /**
+     * Computes the cargo status (supplied and demanded cargo) for the station
+     * based on industries and cities within the station's influence radius.
+     * <p>
+     * Industries and cities are considered if their positions are within the station's
      * radius (defined by the station type) from the station center.
      * Supplied and demanded cargoes from these industries and cities are aggregated
      * and returned in a {@link CargoStatus} object.
      *
-     * @param industries List of all industries to consider.
-     * @param cities     List of all cities to consider.
-     * @return A CargoStatus containing supplied and demanded cargo lists.
+     * @param industries List of industries to consider.
+     * @param cities     List of cities to consider.
+     * @return CargoStatus containing lists of supplied and demanded cargo.
      */
     public CargoStatus getCargoes(List<Industry> industries, List<City> cities) {
         int radius = type.getRadius();
@@ -217,7 +168,7 @@ public class Station implements Serializable {
         for (Industry industry : industries) {
             if (center.getPosition().euclideanDistance(industry.getPosition()) <= radius) {
                 for (ResourceType resourceType : industry.getType().getExportation()) {
-                    supplied.add(new Cargo(resourceType, 0));  // quantity 0 (default or placeholder)
+                    supplied.add(new Cargo(resourceType, 0)); // quantity 0 placeholder
                 }
                 for (ResourceType resourceType : industry.getType().getImportation()) {
                     demanded.add(new Cargo(resourceType, 0));
@@ -240,17 +191,13 @@ public class Station implements Serializable {
     }
 
     /**
-     * Computes the cargo supplies for the station
-     * based on the industries and cities within the station's influence radius.
+     * Computes only the cargo supplies for the station based on nearby industries and cities.
+     * <p>
+     * Industries and cities are considered if within the station's radius.
      *
-     * <p>Industries and cities are considered if their positions are within the station's
-     * radius (defined by the station type) from the station center.
-     * Supplied cargoes from these industries and cities are aggregated
-     * and returned as a list of Cargo objects.
-     *
-     * @param industries List of all industries to consider.
-     * @param cities     List of all cities to consider.
-     * @return A list of Cargo objects representing the supplies.
+     * @param industries List of industries.
+     * @param cities     List of cities.
+     * @return List of supplied cargo.
      */
     public List<Cargo> getSuppliesOnly(List<Industry> industries, List<City> cities) {
         int radius = type.getRadius();
@@ -275,11 +222,13 @@ public class Station implements Serializable {
         return supplied;
     }
 
+    // Static helpers
+
     public static Position createPosition(int x, int y) {
         return Position.createPosition(x, y);
     }
 
-    public static Building createBuilding(BuildingType buildingType){
+    public static Building createBuilding(BuildingType buildingType) {
         return Repositories.getInstance().getBuildingRepository().createBuilding(buildingType);
     }
 
@@ -287,6 +236,15 @@ public class Station implements Serializable {
         return name != null && name.matches("^[A-Za-z ]+$");
     }
 
+    /**
+     * Checks if the given position is valid for placing a station on the map,
+     * ensuring no overlap with cities, industries, or existing stations.
+     *
+     * @param position Position to check.
+     * @param map      Map containing cities and industries.
+     * @param scenario Scenario containing stations.
+     * @return true if position is valid (no overlap), false otherwise.
+     */
     public static boolean checkOverbuilding(Position position, Map map, Scenario scenario) {
         if (!map.checkCoordinates(position)) {
             return false;
@@ -313,23 +271,15 @@ public class Station implements Serializable {
         return true;
     }
 
-    /**
-     * Checks if the station center is defined.
-     *
-     * @return true if the center is not null, false otherwise.
-     */
     public static boolean checkCenter(StationCenter center) {
         return center != null;
     }
 
-    /**
-     * Checks if the station type is defined.
-     *
-     * @return true if the type is not null, false otherwise.
-     */
     public static boolean checkType(StationType type) {
         return type != null;
     }
+
+    // Demand level accessors
 
     public int getDemandLevel() {
         return demandLevel;
@@ -339,6 +289,11 @@ public class Station implements Serializable {
         this.demandLevel = demandLevel;
     }
 
+    /**
+     * Calculates total revenue bonus from all buildings associated with this station.
+     *
+     * @return sum of revenue bonuses
+     */
     public double getTotalRevenueBonus() {
         double totalBonus = 0;
         for (Building b : buildings) {
@@ -347,6 +302,9 @@ public class Station implements Serializable {
         return totalBonus;
     }
 
+    /**
+     * Increments the delivery count by one.
+     */
     public void incrementDeliveries() {
         deliveriesCount++;
     }
@@ -355,14 +313,17 @@ public class Station implements Serializable {
         return deliveriesCount;
     }
 
+    /**
+     * Resets the delivery count to zero.
+     */
     public void resetDeliveries() {
         this.deliveriesCount = 0;
     }
 
     /**
-     * Returns the name of the station.
+     * Returns the name of the station as its string representation.
      *
-     * @return Station name.
+     * @return station name
      */
     @Override
     public String toString() {

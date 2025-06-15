@@ -102,7 +102,6 @@ public class AssignRouteController {
         return names;
     }
 
-
     public void createPointOfRoute(PointOfRouteDTO pointOfRouteDTO) {
         PointsOfRouteMapper pointsOfRouteMapper = new PointsOfRouteMapper();
         PointOfRoute pointOfRoute = pointsOfRouteMapper.toPointOfRoute(pointOfRouteDTO);

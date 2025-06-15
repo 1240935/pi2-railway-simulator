@@ -98,6 +98,8 @@ public class StationRepository {
                                         StationType type, List<Cargo> demandedCargoes,
                                         List<Cargo> suppliedCargoes, Map map, Scenario scenario) {
 
+
+
         if (!position.checkPosition(position, map.getSize())) {
             System.out.println("Invalid position.");
             return null;

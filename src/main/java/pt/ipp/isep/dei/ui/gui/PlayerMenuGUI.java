@@ -118,8 +118,23 @@ public class PlayerMenuGUI {
 
     @FXML
     private void handleSimulator() {
-        new SimulatorUI().start(player);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Simulator.fxml"));
+            Parent root = loader.load();
+
+            SimulatorGUI controller = loader.getController();
+            controller.setPlayer(player);
+            controller.initialize();
+
+            Stage stage = new Stage();
+            stage.setTitle("Simulator");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void handleLogout() {

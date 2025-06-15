@@ -52,7 +52,7 @@ public enum ResourceType implements Serializable {
     TROOPS(56000),
     WEAPONS(38000);
 
-    private final int value;
+    private int value;
 
     /**
      * Constructs a ResourceType with the specified value.
@@ -75,5 +75,9 @@ public enum ResourceType implements Serializable {
     public String getName() {
         String lower = name().toLowerCase();
         return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

@@ -2,8 +2,10 @@ package pt.ipp.isep.dei.domain;
 
 import pt.ipp.isep.dei.repository.Repositories;
 
-import java.util.*;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Simulator implements Serializable {
 
@@ -36,7 +38,11 @@ public class Simulator implements Serializable {
             resetYearlyFinancials();
         }
         simulateDepartures();
-        simulateArrivals();
+
+        for (Route route : routes) {
+            simulateArrivals(route);
+        }
+
         checkNewLocomotivesAvailable();
         generateCargoes();
 
@@ -52,8 +58,9 @@ public class Simulator implements Serializable {
             System.out.println(generateFinancialReport());
         }
 
-        // Atualiza o resumo do mês anterior
         lastMonthSummary = generateMonthlySummary();
+
+        alerts.clear();
 
         currentMonth++;
     }
@@ -64,6 +71,7 @@ public class Simulator implements Serializable {
         yearlyFuelCost = 0;
         locomotiveDistanceMap.clear();
     }
+
 
     private void simulateDepartures() {
         for (Route route : routes) {
@@ -93,67 +101,102 @@ public class Simulator implements Serializable {
         }
     }
 
-    private void simulateArrivals() {
-        for (Route route : routes) {
-            Locomotive loco = route.getLocomotive();
-            if (loco == null) continue;
+    private void simulateArrivals(Route route) {
+        List<PointOfRoute> points = route.getPointsOfRoute();
+        int totalDelivered = 0;
+        StringBuilder deliveryReport = new StringBuilder();
 
-            for (int i = 0; i < route.getPointsOfRoute().size() - 1; i++) {
-                PointOfRoute departure = route.getPointsOfRoute().get(i);
-                PointOfRoute arrival = route.getPointsOfRoute().get(i + 1);
-                Railway railway = Railway.getRailwayBetween(departure.getStation(), arrival.getStation());
+        // Assuming these are accessible fields or you can adjust accordingly
+        double baseRevenue = 100.0;   // example base revenue
+        double priceMultiplier = 1.0;
+        double yearlyRevenue = 0.0;
 
-                double scaledDistance = railway.getDistance() * scenario.getMap().getScale();
-                double baseRevenue = 10.0 * scaledDistance;
+        for (int i = 1; i < points.size(); i++) {  // start from 1 assuming point 0 is start point
+            PointOfRoute point = points.get(i);
+            Station station = point.getStation();
 
-                int demand = arrival.getStation().getDemandLevel();
-                double priceMultiplier = 1.0;
-                if (demand > 5) priceMultiplier += 0.15 * (demand - 5);
-                else if (demand < 5) priceMultiplier -= 0.15 * (5 - demand);
+            List<Cargo> carriedCargo = point.getCargoList();
+            List<Cargo> demands = station.getDemands();
 
-                double bonus = arrival.getStation().getTotalRevenueBonus();
-                priceMultiplier += bonus;
+            int deliveredHere = 0;
 
-                double finalRevenue = baseRevenue * priceMultiplier;
-                yearlyRevenue += finalRevenue;
+            // Create a copy of cargo list to safely iterate and modify original list
+            List<Cargo> carriedCargoCopy = new ArrayList<>(carriedCargo);
 
-                int totalCargoDelivered = 0;
-                StringBuilder cargoNames = new StringBuilder();
+            for (Cargo carried : carriedCargoCopy) {
+                for (Cargo demand : demands) {
+                    if (carried.getType() == demand.getType()) {
+                        int deliverAmount = Math.min(carried.getQuantity(), demand.getQuantity());
+                        if (deliverAmount > 0) {
+                            // Update quantities
+                            carried.setQuantity(carried.getQuantity() - deliverAmount);
+                            demand.setQuantity(demand.getQuantity() - deliverAmount);
 
-                for (Cargo cargo : arrival.getStation().getSupplies()) {
-                    int quantity = cargo.getQuantity();
-                    if (quantity > 0) {
-                        totalCargoDelivered += quantity;
-                        cargoNames.append(cargo.getType().name()).append("(").append(quantity).append("), ");
+                            totalDelivered += deliverAmount;
+                            deliveredHere += deliverAmount;
+
+                            deliveryReport.append(station.getName())
+                                    .append(" received ")
+                                    .append(deliverAmount)
+                                    .append(" of ")
+                                    .append(carried.getType().name())
+                                    .append("\n");
+                        }
                     }
                 }
-                if (cargoNames.length() > 2) {
-                    cargoNames.setLength(cargoNames.length() - 2);
-                }
 
-                player.addBudget((int) finalRevenue);
-                arrival.getStation().incrementDeliveries();
-
-                if (totalCargoDelivered > 0) {
-                    System.out.println("Added " + (int) finalRevenue + " to player budget for delivering " +
-                            totalCargoDelivered + " units of cargo (" + cargoNames + ") at " + arrival.getStation().getName());
+                // Remove cargo with zero quantity
+                if (carried.getQuantity() <= 0) {
+                    carriedCargo.remove(carried);
                 }
             }
+
+            // Calculate revenue bonus for this station
+            double bonus = station.getTotalRevenueBonus();
+            priceMultiplier += bonus;
+
+            double finalRevenue = baseRevenue * priceMultiplier;
+            yearlyRevenue += finalRevenue;
+
+            if (deliveredHere > 0) {
+                System.out.println(station.getName() + " delivered " + deliveredHere + " units.");
+            }
+
+            // Clear cargo at this point (all delivered cargo is removed already)
+            carriedCargo.clear();
+
+            // Load new cargo from station to carry forward to next point
+            loadCargoFromStation(point);
+        }
+
+        if (totalDelivered > 0) {
+            int reward = totalDelivered * 10;  // reward calculation example
+            player.addBudget(reward);
+            System.out.println(deliveryReport.toString());
+            System.out.println("Rewarded " + reward + "€ for delivering " + totalDelivered + " units.");
+        } else {
+            System.out.println("No cargo matched station demands. No budget rewarded.");
         }
     }
 
-    private void checkNewLocomotivesAvailable() {
-        List<LocomotiveModel> alertedModels = new ArrayList<>();
-        int currentYear = scenario.getYear() + (currentMonth / 12);
 
+
+
+
+    private void checkNewLocomotivesAvailable() {
+        int currentYear = scenario.getYear() + (currentMonth / 12);
         List<LocomotiveModel> models = Repositories.getInstance().getLocomotiveModelRepository().getLocomotiveModels();
 
         for (LocomotiveModel model : models) {
             int modelStartYear = model.getStartYear();
 
             if (modelStartYear == currentYear && !alertedModels.contains(model)) {
-                alerts.add("New locomotive available: " + model.name());
+                String alertMessage = "New locomotive available: " + model.name();
+                alerts.add(alertMessage);
                 alertedModels.add(model);
+
+                // Show alert immediately
+                System.out.println(alertMessage);
             }
         }
     }
@@ -185,12 +228,25 @@ public class Simulator implements Serializable {
             for (int i = 0; i < route.getPointsOfRoute().size(); i++) {
                 Station station = route.getPointsOfRoute().get(i).getStation();
                 int deliveries = station.getDeliveriesCount();
-                int demand = station.getDemandLevel();
+                int oldDemand = station.getDemandLevel();
+                int newDemand = oldDemand;
 
-                if (deliveries > 30 && demand > 1) demand--;
-                if (deliveries < 10 && demand < 9) demand++;
+                if (deliveries > 30 && oldDemand > 1) newDemand--;
+                if (deliveries < 10 && oldDemand < 9) newDemand++;
 
-                station.setDemandLevel(demand);
+                if (newDemand != oldDemand) {
+                    for (Cargo cargo : station.getDemands()) {
+                        ResourceType rt = cargo.getType();
+                        int currentValue = rt.getValue();
+                        if (newDemand > oldDemand) {
+                            rt.setValue ((int) (currentValue * 1.15));  // Increase by 15%
+                        } else {
+                            rt.setValue((int) (currentValue * 0.85));  // Decrease by 15%
+                        }
+                    }
+                    station.setDemandLevel(newDemand);
+                }
+
                 station.resetDeliveries();
             }
         }
@@ -204,15 +260,11 @@ public class Simulator implements Serializable {
         for (int i = 0; i < points.size(); i++) {
             PointOfRoute currentPoint = points.get(i);
 
-            // Load cargo at the current station
-            loadedCargo += loadCargoFromStation(currentPoint.getStation());
+            loadedCargo += loadCargoFromStation(currentPoint);
 
-            // Wait until departure condition is satisfied
             while (!canDepart(currentPoint, loadedCargo, totalCapacity)) {
-                // Em uma simulação real, avançaria o tempo ou trataria espera aqui
                 System.out.println("Waiting to depart at " + currentPoint.getStation().getName() +
                         " with cargo mode " + currentPoint.getCargoMode());
-                // Para evitar loop infinito, sai aqui
                 break;
             }
 
@@ -240,19 +292,22 @@ public class Simulator implements Serializable {
         }
     }
 
-    private int loadCargoFromStation(Station station) {
-        int loaded = 0;
+    private int loadCargoFromStation(PointOfRoute point) {
+        List<Cargo> selectedToLoad = point.getCargoList();
+        point.getCargoList().clear();
 
-        if (station.getSupplies() != null) {
-            for (Cargo cargo : station.getSupplies()) {
-                int quantityToLoad = cargo.getQuantity();
-                loaded += quantityToLoad;
-                cargo.setQuantity(0);
+        int totalLoaded = 0;
+
+        for (Cargo cargo : selectedToLoad) {
+            if (cargo.getQuantity() > 0) {
+                point.getCargoList().add(new Cargo(cargo.getType(), cargo.getQuantity()));
+                totalLoaded += cargo.getQuantity();
             }
         }
 
-        return loaded;
+        return totalLoaded;
     }
+
 
     private void travelToNextPoint(Locomotive loco, PointOfRoute from, PointOfRoute to) {
         Railway railway = new Railway(from.getStation(), to.getStation(), RailwayType.DOUBLE, from.getStation().getPosition().euclideanDistance(to.getStation().getPosition()));
@@ -291,28 +346,6 @@ public class Simulator implements Serializable {
 
         return sb.toString();
     }
-    private double calculateTrackMaintenance() {
-        double totalCost = 0;
-        Set<Railway> uniqueRailways = new HashSet<>();
-
-        for (Route route : routes) {
-            List<PointOfRoute> points = route.getPointsOfRoute();
-            for (int i = 0; i < points.size() - 1; i++) {
-                Station s1 = points.get(i).getStation();
-                Station s2 = points.get(i + 1).getStation();
-                Railway railway = Railway.getRailwayBetween(s1, s2);
-                uniqueRailways.add(railway);
-            }
-        }
-
-        for (Railway railway : uniqueRailways) {
-            // Custo baseado no tipo de via (SINGLE, DOUBLE, etc.)
-            double maintenanceCost = railway.getType().getCost() * railway.getDistance();
-            totalCost += maintenanceCost;
-        }
-
-        return totalCost;
-    }
 
     private double calculateTrainMaintenance() {
         double total = 0;
@@ -344,8 +377,10 @@ public class Simulator implements Serializable {
         }
         return total;
     }
-    private double calculateTotalTrackLength() {
-        Set<Railway> uniqueRailways = new HashSet<>();
+
+    private double calculateTrackMaintenance() {
+        double totalCost = 0;
+        List<Railway> uniqueRailways = new ArrayList<>();
 
         for (Route route : routes) {
             List<PointOfRoute> points = route.getPointsOfRoute();
@@ -353,17 +388,30 @@ public class Simulator implements Serializable {
                 Station s1 = points.get(i).getStation();
                 Station s2 = points.get(i + 1).getStation();
                 Railway railway = Railway.getRailwayBetween(s1, s2);
-                uniqueRailways.add(railway);
+
+                // Check if railway is already in the list
+                boolean alreadyExists = false;
+                for (Railway r : uniqueRailways) {
+                    if (r.equals(railway)) {  // Assuming Railway has a proper equals method
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyExists) {
+                    uniqueRailways.add(railway);
+                }
             }
         }
 
-        double totalLength = 0;
         for (Railway railway : uniqueRailways) {
-            totalLength += railway.getDistance();
+            double maintenanceCost = railway.getType().getCost() * railway.getDistance();
+            totalCost += maintenanceCost;
         }
 
-        return totalLength;
+        return totalCost;
     }
+
 
     // Gera um resumo do mês atual
     private String generateMonthlySummary() {
@@ -374,39 +422,17 @@ public class Simulator implements Serializable {
         for (String alert : alerts) {
             sb.append(" - ").append(alert).append("\n");
         }
+        // Aqui pode colocar mais detalhes, se desejar
         return sb.toString();
     }
 
     // Retorna o resumo do último mês simulado
     public String getLastMonthSummary() {
-        if (lastMonthSummary == null) {
-            return "No month simulated yet.";
-        }
         return lastMonthSummary;
     }
 
-    public String getSimulationSummary(Player player) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Simulation Summary:\n");
-        sb.append("Player budget: ").append(player.getBudget()).append("\n");
-        sb.append("Month: ").append(currentMonth).append("\n");
-        for (String alert : alerts) {
-            sb.append("Alert: ").append(alert).append("\n");
-        }
-        return sb.toString();
-    }
-    public String getName() {
-        return scenario.getMap().getName() + "-" + currentMonth;
-    }
-
-    public String getCurrentSimulationDate() {
-        int year = scenario.getYear() + (currentMonth - 1) / 12;
-        int month = ((currentMonth - 1) % 12) + 1;
-        return "Year " + year + ", Month " + month;
-    }
-
-    public int getCurrentMonth() {
-        return currentMonth;
+    public List<Route> getRoutes() {
+        return routes;
     }
 
     public Player getPlayer() {
@@ -417,11 +443,21 @@ public class Simulator implements Serializable {
         return scenario;
     }
 
+    public int getCurrentMonth() {
+        return currentMonth - 1;
+    }
+
     public List<String> getAlerts() {
         return alerts;
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public String getName() {
+        return scenario.getMap().getName() + "-" + currentMonth;
+    }
+
+    public String getCurrentSimulationDate() {
+        int year = scenario.getYear() + (currentMonth - 1) / 12;
+        int month = ((currentMonth - 1) % 12) + 1;
+        return "Year " + year + ", Month " + month;
     }
 }

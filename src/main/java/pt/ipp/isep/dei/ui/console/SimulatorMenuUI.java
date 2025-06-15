@@ -66,77 +66,104 @@ public class SimulatorMenuUI {
     }
 
     private void createNewSimulation(Scanner scanner) {
-        // Configurar cenário
         List<String> scenarioDescriptions = controller.getAvailableScenarioDescriptions();
         if (scenarioDescriptions.isEmpty()) {
-            System.out.println("No scenarios available.");
+            System.out.println("No scenarios available at the moment.");
             return;
         }
 
-        System.out.println("Available Scenarios:");
+        System.out.println("\nAvailable Scenarios:");
         for (int i = 0; i < scenarioDescriptions.size(); i++) {
-            System.out.println((i + 1) + ". " + scenarioDescriptions.get(i));
+            System.out.printf("%d. %s%n", i + 1, scenarioDescriptions.get(i));
         }
 
-        System.out.print("Select scenario by number: ");
-        int scenarioIndex = scanner.nextInt() - 1;
-        scanner.nextLine();
+        int scenarioIndex = -1;
+        while (true) {
+            System.out.print("Select scenario by number: ");
+            String input = scanner.nextLine().trim();
+            try {
+                scenarioIndex = Integer.parseInt(input) - 1;
+                if (scenarioIndex < 0 || scenarioIndex >= scenarioDescriptions.size()) {
+                    System.out.println("Invalid scenario number, please try again.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid scenario number.");
+            }
+        }
 
         if (!controller.setScenario(scenarioIndex)) {
-            System.out.println("Invalid scenario selection.");
+            System.out.println("Failed to set the selected scenario.");
             return;
         }
-
         controller.setPlayer(player);
 
-        // Configurar rotas
         List<String> routeDescriptions = controller.getAvailableRouteDescriptions();
         if (routeDescriptions.isEmpty()) {
-            System.out.println("No routes available.");
+            System.out.println("No routes available for the selected scenario.");
             return;
         }
 
-        System.out.println("Available Routes:");
+        System.out.println("\nAvailable Routes:");
         for (int i = 0; i < routeDescriptions.size(); i++) {
-            System.out.println((i + 1) + ". " + routeDescriptions.get(i));
+            System.out.printf("%d. %s%n", i + 1, routeDescriptions.get(i));
         }
 
-        System.out.print("Select one or more routes by number (separated by space), or press Enter to select all: ");
-        String line = scanner.nextLine().trim();
+        System.out.println("Select one or more routes by entering their numbers separated by spaces.");
+        System.out.println("Or just press Enter to select all routes.");
 
         List<Integer> selectedIndexes = new ArrayList<>();
-        if (!line.isEmpty()) {
-            String[] tokens = line.split("\\s+");
-            for (String token : tokens) {
-                try {
-                    int idx = Integer.parseInt(token) - 1;
-                    selectedIndexes.add(idx);
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input ignored: " + token);
+        while (true) {
+            System.out.print("Enter route numbers or press Enter: ");
+            String line = scanner.nextLine().trim();
+
+            if (line.isEmpty()) {
+                // Select all routes
+                for (int i = 0; i < routeDescriptions.size(); i++) {
+                    selectedIndexes.add(i);
                 }
-            }
-        } else {
-            // Selecionar todas as rotas
-            for (int i = 0; i < routeDescriptions.size(); i++) {
-                selectedIndexes.add(i);
+                break;
+            } else {
+                String[] tokens = line.split("\\s+");
+                boolean allValid = true;
+                selectedIndexes.clear();
+                for (String token : tokens) {
+                    try {
+                        int idx = Integer.parseInt(token) - 1;
+                        if (idx < 0 || idx >= routeDescriptions.size()) {
+                            System.out.printf("Route number %s is out of range.%n", token);
+                            allValid = false;
+                            break;
+                        }
+                        if (!selectedIndexes.contains(idx)) {
+                            selectedIndexes.add(idx);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.printf("Invalid route number ignored: %s%n", token);
+                        allValid = false;
+                        break;
+                    }
+                }
+                if (allValid) break;
+                else System.out.println("Please enter valid route numbers.");
             }
         }
-        controller.selectRoutesByIndexes(selectedIndexes);
 
-        // Iniciar nova simulação
+        controller.selectRoutesByIndexes(selectedIndexes);
         controller.startSimulation();
         repository.setActiveSimulator(controller.getSimulator());
 
         System.out.println("\nNew simulation started successfully!");
 
-        // Simular meses imediatamente
+        // Immediately continue simulation
         continueSimulation(scanner);
     }
 
     private void checkSimulationStatus() {
         Simulator activeSimulator = repository.getActiveSimulator();
         if (activeSimulator == null) {
-            System.out.println("No active simulation.");
+            System.out.println("No active simulation currently.");
             return;
         }
 
@@ -144,12 +171,13 @@ public class SimulatorMenuUI {
         System.out.println("Current Month: " + activeSimulator.getCurrentMonth());
         System.out.println("Player Budget: " + activeSimulator.getPlayer().getBudget());
 
-        // Mostrar alertas se houver
         if (!activeSimulator.getAlerts().isEmpty()) {
             System.out.println("\nAlerts:");
             for (String alert : activeSimulator.getAlerts()) {
                 System.out.println("- " + alert);
             }
+        } else {
+            System.out.println("No alerts at this time.");
         }
     }
 
@@ -161,30 +189,44 @@ public class SimulatorMenuUI {
         }
         controller.setSimulator(activeSimulator);
 
-        System.out.print("Enter number of years to simulate: ");
         int years;
-        try {
-            years = Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number of years.");
-            return;
+        while (true) {
+            System.out.print("Enter number of years to simulate (positive integer): ");
+            String input = scanner.nextLine().trim();
+            try {
+                years = Integer.parseInt(input);
+                if (years <= 0) {
+                    System.out.println("Please enter a positive integer.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number of years.");
+            }
         }
 
         int totalMonths = years * 12;
-
-        System.out.println("Simulating " + years + " years (" + totalMonths + " months)...");
+        System.out.printf("Starting simulation for %d years (%d months).%n", years, totalMonths);
 
         for (int month = 1; month <= totalMonths; month++) {
             controller.simulateMonths(1);
+            System.out.printf("Simulated month %d/%d.%n", month, totalMonths);
 
-            System.out.print("Continue simulation? (y/n): ");
-            String answer = scanner.nextLine().trim().toLowerCase();
-            if (!answer.equals("y")) {
+            String answer;
+            while (true) {
+                System.out.print("Continue simulation? (y/n): ");
+                answer = scanner.nextLine().trim().toLowerCase();
+                if (answer.equals("y") || answer.equals("n")) {
+                    break;
+                }
+                System.out.println("Please enter 'y' for yes or 'n' for no.");
+            }
+            if (answer.equals("n")) {
                 break;
             }
         }
 
-        System.out.println("Simulation finished.");
+        System.out.println("\nSimulation finished.");
         System.out.println(controller.getSimulationSummary());
     }
 }

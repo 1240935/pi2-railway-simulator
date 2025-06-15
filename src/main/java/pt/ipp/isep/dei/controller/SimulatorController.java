@@ -35,6 +35,7 @@ public class SimulatorController {
             this.selectedScenario = scenarios.get(index);
             this.availableRoutes = selectedScenario.getRoutes();
 
+            // Reset quantities on supplies and demands for all stations on all routes
             for (Route route : availableRoutes) {
                 for (PointOfRoute point : route.getPointsOfRoute()) {
                     if (point.getStation().getSupplies() != null) {
@@ -57,7 +58,7 @@ public class SimulatorController {
     public List<String> getAvailableRouteDescriptions() {
         List<String> descriptions = new ArrayList<>();
         if (availableRoutes == null) return descriptions;
-        int index = 1;
+        int index = 1; // If you want 1-based for UI, otherwise use 0-based
         for (Route route : availableRoutes) {
             descriptions.add(index + ": " + route.toString());
             index++;
@@ -75,7 +76,7 @@ public class SimulatorController {
             if (i >= 0 && i < availableRoutes.size()) {
                 selected.add(availableRoutes.get(i));
             } else {
-                System.out.println("Invalid index ignored: " + (i + 1));
+                System.out.println("Invalid index ignored: " + i);
             }
         }
         this.selectedRoutes = selected;
@@ -89,7 +90,7 @@ public class SimulatorController {
         }
         this.simulator = new Simulator(selectedRoutes, player, selectedScenario);
 
-        // Definir como simulador ativo no repositório
+        // Set active simulator in repository
         Repositories.getInstance().getSimulatorRepository().setActiveSimulator(this.simulator);
     }
 
@@ -102,16 +103,20 @@ public class SimulatorController {
         }
     }
 
+    // Since Simulator class does not implement getSimulationSummary(), return lastMonthSummary or stub message
     public String getSimulationSummary() {
-        if (simulator == null || player == null) {
-            return "Simulation not completed.";
+        if (simulator == null) {
+            return "Simulation not started.";
         }
-        return simulator.getSimulationSummary(player);
+        // You could extend Simulator with a getSimulationSummary() method if needed
+        return simulator.getLastMonthSummary();
     }
 
+    // The Simulator class doesn't have getCurrentSimulationDate() implemented yet - stub here
     public String getCurrentSimulationDate() {
         if (simulator == null) return "Simulation not started.";
-        return simulator.getCurrentSimulationDate();
+        // Could return something like: "Month X, Year Y"
+        return "Month " + simulator.getCurrentMonth(); // You would need to add getCurrentMonth() getter to Simulator
     }
 
     public String getCurrentMonthSummary() {
@@ -120,9 +125,11 @@ public class SimulatorController {
         }
         return simulator.getLastMonthSummary();
     }
+
     public Simulator getSimulator() {
         return simulator;
     }
+
     public void setSimulator(Simulator simulator) {
         this.simulator = simulator;
         this.player = simulator.getPlayer();

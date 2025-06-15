@@ -115,7 +115,6 @@ public class AssignRouteGUI {
     }
 
     private int calculateRealStationIndex(int filteredIndex) {
-        // Map the filtered stationComboBox index back to the real station index in scenario
         int realIndex = -1;
         if (selectedScenarioIndex >= 0) {
             List<String> stationNames = controller.getAvailableStationNames(selectedScenarioIndex + 1);
@@ -136,7 +135,7 @@ public class AssignRouteGUI {
     @FXML
     private void addPointOfRoute() {
         int stationIndexFiltered = stationComboBox.getSelectionModel().getSelectedIndex();
-        int cargoIndexSelected = cargoComboBox.getSelectionModel().getSelectedIndex(); // optional
+        int cargoIndexSelected = cargoComboBox.getSelectionModel().getSelectedIndex();
         int cargoModeIndex = cargoModeComboBox.getSelectionModel().getSelectedIndex();
 
         if (stationIndexFiltered < 0 || cargoModeIndex < 0) {
@@ -146,41 +145,33 @@ public class AssignRouteGUI {
 
         int realStationIndex = calculateRealStationIndex(stationIndexFiltered);
 
-        // Get Station domain object
         Station station = controller.getStationByIndex(selectedScenarioIndex + 1, realStationIndex + 1);
 
-        // Get available cargo for this station (needed to map selected indices to Cargo objects)
         List<Industry> industries = controller.getScenarioByIndex(selectedScenarioIndex + 1).getMap().getIndustries();
         List<City> cities = controller.getScenarioByIndex(selectedScenarioIndex + 1).getMap().getCities();
         List<Cargo> availableCargoList = station.getSuppliesOnly(industries, cities);
 
-        // Selected cargos from combo box
         List<Integer> selectedCargoIndices = new ArrayList<>();
         if (cargoIndexSelected >= 0) {
-            selectedCargoIndices.add(cargoIndexSelected + 1); // 1-based index for controller method
+            selectedCargoIndices.add(cargoIndexSelected + 1);
         }
 
         List<Cargo> selectedCargoList = controller.getSelectedCargoList(selectedCargoIndices, availableCargoList);
 
-        // Get CargoMode domain object
         CargoMode cargoMode = controller.getCargoModeByIndex(cargoModeIndex + 1);
 
-        // Add point to route
         PointOfRouteDTO pointOfRouteDTO = new PointOfRouteDTO();
-        pointOfRouteDTO.setStation(controller.getStationByIndex(selectedScenarioIndex, stationIndexFiltered));
+        pointOfRouteDTO.setStation(controller.getStationByIndex(selectedScenarioIndex + 1, realStationIndex + 1));
         pointOfRouteDTO.setCargo(controller.getSelectedCargoList(selectedCargoIndices, availableCargoList));
-        pointOfRouteDTO.setCargoMode(controller.getCargoModeByIndex(cargoModeIndex));
+        pointOfRouteDTO.setCargoMode(controller.getCargoModeByIndex(cargoModeIndex + 1));
         controller.createPointOfRoute(pointOfRouteDTO);
 
-        // Mark this station as used
         usedStationIndices.add(realStationIndex);
 
-        // Update route preview UI
         String stationName = stationComboBox.getSelectionModel().getSelectedItem();
         routePreview.add("→ " + stationName);
         refreshRoutePreview();
 
-        // Update stations and clear cargo selection
         updateStations();
         cargoComboBox.getItems().clear();
         feedbackLabel.setText("");
@@ -197,16 +188,18 @@ public class AssignRouteGUI {
 
         try {
             RouteDTO routeDTO = new RouteDTO();
-            routeDTO.setLocomotive(controller.getLocomotiveByIndex(selectedScenarioIndex, locoIndex));
+            routeDTO.setLocomotive(controller.getLocomotiveByIndex(selectedScenarioIndex + 1, locoIndex + 1));
             routeDTO.setPointsOfRoute(controller.getPointsOfRoute());
-            controller.createRoute(routeDTO, selectedScenarioIndex);
+            controller.createRoute(routeDTO, selectedScenarioIndex + 1);
             feedbackLabel.setStyle("-fx-text-fill: green;");
             feedbackLabel.setText("Route assigned successfully!");
         } catch (Exception ex) {
+            ex.printStackTrace();
             feedbackLabel.setStyle("-fx-text-fill: red;");
             feedbackLabel.setText("Error: " + ex.getMessage());
         }
     }
+
 
     private void refreshRoutePreview() {
         routePreviewBox.getChildren().clear();

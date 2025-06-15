@@ -33,4 +33,23 @@ class IndustryTypeRepositoryTest {
             assertTrue(types.contains(type), "The list should contain the IndustryType: " + type);
         }
     }
+    // Verifica que modificar a lista retornada não afeta futuras chamadas
+    @Test
+    void testReturnedListIsIndependent() {
+        IndustryTypeRepository repo = new IndustryTypeRepository();
+        ArrayList<IndustryType> first = repo.getIndustryTypes();
+        first.clear(); // Tentativa de limpar
+
+        ArrayList<IndustryType> second = repo.getIndustryTypes();
+        assertFalse(second.isEmpty(), "Clearing returned list should not affect internal state.");
+    }
+    // Verifica que a lista não contém valores nulos
+    @Test
+    void testGetIndustryTypes_ContainsNoNulls() {
+        IndustryTypeRepository repo = new IndustryTypeRepository();
+        ArrayList<IndustryType> types = repo.getIndustryTypes();
+
+        assertFalse(types.contains(null), "The returned list should not contain null values.");
+    }
+
 }

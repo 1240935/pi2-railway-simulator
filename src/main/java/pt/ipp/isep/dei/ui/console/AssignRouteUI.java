@@ -129,8 +129,10 @@ public class AssignRouteUI {
         // Select locomotive for the route
         List<String> locomotiveNames = controller.getAvailableLocomotiveNames(scenarioIndex);
         System.out.println("\nAvailable Locomotives:");
+        int locoId = 1;
         for (String locomotiveName : locomotiveNames) {
-            System.out.println("ID:" + locomotiveName);
+            System.out.println(locoId+ ": " + locomotiveName);
+            locoId++;
         }
 
         System.out.print("Select locomotive number: ");
